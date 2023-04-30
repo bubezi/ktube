@@ -1,0 +1,64 @@
+{% load static %}
+{% load crispy_forms_filters %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	  <a class="navbar-brand" href="{% url 'home' %}"><div class="logo">K <span>TUBE</span></div></a>
+	  
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	    <span class="navbar-toggler-icon"></span>
+	  </button>
+
+	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+	    <ul class="navbar-nav mr-auto">
+			<li class="nav-item active">
+				<a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+			</li>
+
+			<li class="nav-item active">
+                	<a class="nav-link" href="#">Subscriptions<span class="sr-only">(current)</span></a>
+			</li>
+            <li class="nav-item active">
+				<a class="nav-link" href="#">Library <span class="sr-only">(current)</span></a>
+			</li>
+
+            {% if user.is_authenticated %}
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">{{user.username | title }}</a>
+				<div class="dropdown-menu">
+                    <a class="dropdown-item" href="#">Profile</a>
+					{% if user.is_superuser %}
+					<a class="dropdown-item" href="admin">Admin</a>
+					{% endif %}
+					<a class="dropdown-item" href="accounts/password_change">Change Password</a>
+					<a class="dropdown-item" href="accounts/password_reset">Reset Password</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="logout">Log Out</a>
+				</div>
+			</li>
+            {% endif %}
+
+	    </ul>
+
+		<form class="form-inline" method=POST
+		action="#">
+
+			{% csrf_token %}
+
+			<input class="form-control mr-sm-2" type="search" name="searched" placeholder="Search K TUBE" aria-label="Search">
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+		</form>
+
+
+	    <div class="form-inline my-2 my-lg-0">
+			{% if user.is_authenticated %}
+			<a href="{% url 'logout' %}"class="btn btn-warning">Log Out</a>
+			{% else %}
+	     	<a href="{% url 'login' %}"class="btn btn-warning">Login</a>
+	     	{% endif %}
+
+	    </div>
+	  </div>
+    </nav>

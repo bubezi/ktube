@@ -1,0 +1,19 @@
+{% extends 'tube/base.html' %}
+{% load static %}
+{% block content %}
+    {% include 'tube/homescreen.html' %}
+
+    {% comment %} <div class="row">
+        <div style="margin: auto; text-align: center">
+            <h1 style="text-align: center;
+                        font-family: 'Perpetua Titling MT';
+                        font-size: 60px;
+                        color: #16202B;
+                        text-shadow: #16202B;">Shows That Are Just You</h1>
+        </div>
+    </div> {% endcomment %}
+    
+    {% include 'tube/videos.html' %}
+
+
+{% endblock content %}
