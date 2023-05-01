@@ -25,14 +25,14 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home_view, name='home'),
     
-    path('accounts', include('django.contrib.auth.urls')),
-    path('', include("django.contrib.auth.urls")),
-    
     path('video/<str:pk>', views.watch_video, name="watch"),
+    path('channel/<str:pk>', views.channnel_view, name="channel"),
     
     path('bye', views_reg.bye_page, name="bye"),
     path('register', views_reg.register, name="register"),
     path('profile', views_reg.profile_page, name='profile'),
+    
+    path('accounts', include('django.contrib.auth.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

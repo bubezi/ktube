@@ -26,8 +26,9 @@ class Viewer(models.Model):
 class Channel(models.Model):
     user = models.ForeignKey(Viewer, on_delete=models.CASCADE)
     name = models.CharField(max_length=150, null=True, unique=True)
-    about = models.CharField(max_length=300, null=True)
-    subscribers = models.ManyToOneRel(field_name='subscribers', to=Viewer, field=Viewer)
+    about = models.CharField(max_length=300, null=True, blank=True)
+    subscribers = []
+    subscriber_count = len(subscribers)
     # subscribers = models.ManyToManyField(Viewer, related_name='subscribers')
     
     def __str__(self):
@@ -61,7 +62,8 @@ class Video(models.Model):
     
 class Comment(models.Model):
     comment_text = models.TextField(max_length=500, null=True)
-    channel = models.ForeignKey(Channel, on_delete=models.DO_NOTHING)
+    video = models.ForeignKey(Video, null=True, on_delete=models.CASCADE)
+    channel = models.ForeignKey(Channel, null=True, on_delete=models.DO_NOTHING)
     likes = models.BigIntegerField(default=0)
     dislikes = models.BigIntegerField(default=0)
     
@@ -70,8 +72,9 @@ class Comment(models.Model):
 
 
 class CommentReply(models.Model):
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     reply = models.TextField(max_length=500, null=True)
-    comment = models.ForeignKey(Comment, on_delete=models.DO_NOTHING)
+    channel = models.ForeignKey(Channel, null=True, on_delete=models.DO_NOTHING)
     likes = models.BigIntegerField(default=0)
     dislikes = models.BigIntegerField(default=0)
     
@@ -82,7 +85,8 @@ class CommentReply(models.Model):
 class Playlist(models.Model):
     name = models.CharField(max_length=150, blank=False, null=False, default="Playlist")
     channel = models.ForeignKey(Channel, on_delete=models.CASCADE)
-    videos = models.ManyToManyField(Video, blank=True)
+    videos = []
+    video_count = len(videos)
     views = models.BigIntegerField(default=0)
     
     def __str__(self):

@@ -4,17 +4,18 @@
 {% load humanize %}
 {% load crispy_forms_tags %}
 
-{% block title %}{{ video.title }}| K TUBE{% endblock title%}
+{% block title %}{{ video.title }} | K TUBE{% endblock title%}
 
 {% block content %}
 
     <div class="row">
         <video 
-        seeking="true" 
         controls="true" 
         autoplay="true" 
         class="video" id="video-watching" src="{{video.videoURL}}"></video>
     </div>
+
+    <!-- ###################     Video details     ################# --> 
     <div class="row box-element">
         <div class="col-lg-12">
             <div class="row">
@@ -29,32 +30,47 @@
                     <h6 style="font-size: 18px; float: left"><strong> {{video.views | intcomma }} view</strong></h6>
                 {% endif %}
             </div>
-            <div class="row">
-                {% if video.likes is not 1 %}
-                    <h6 style="font-size: 18px; float: left"><strong> {{video.likes }} likes</strong></h6>
-                {% else %}
-                    <h6 style="font-size: 18px; float: left"><strong> {{video.likes}} like</strong></h6>
-                {% endif %}
-                {% if video.dislikes is not 1 %}
-                    <h6 style="font-size: 18px; margin-left:5px; float: left"><strong> {{video.dislikes }} dislikes</strong></h6>
-                {% else %}
-                    <h6 style="font-size: 18px; margin-left:5px; float: left"><strong> {{video.dislikes }} dislike</strong></h6>
-                {% endif %}
-            </div>
-            {% if user.is_authenticated %}
-            <div class="row">
-                <button data-product="{{video.id}}" 
-                    data-action="like" 
-                    class="btn btn-outline-secondary add-btn update-cart"
-                    style="margin-left:0px;">Like</button>
-                <button data-product="{{video.id}}" 
-                    data-action="dislike" 
-                    class="btn btn-outline-secondary add-btn update-cart"
-                    style="margin-left:35px;">Dislike</button>
-            </div>
-            {% endif %}
         </div>
     </div>
+    
+    <hr style="padding-top: 3px;">
+
+    <div class="row box-element">
+        <div class="col-lg-12">
+
+    <!-- ##### Likes and Dislikes ###### -->
+
+            <div class="row">
+                {% if video.likes is not 1 %}
+                    <h6 style="font-size: 18px; float: left"><strong> {{video.likes | intcomma}} likes</strong></h6>
+                {% else %}
+                    <h6 style="font-size: 18px; float: left"><strong> {{video.likes | intcomma}} like</strong></h6>
+                {% endif %}
+                {% if video.dislikes is not 1 %}
+                    <h6 style="font-size: 18px; margin-left:5px; float: left"><strong> {{video.dislikes | intcomma}} dislikes</strong></h6>
+                {% else %}
+                    <h6 style="font-size: 18px; margin-left:5px; float: left"><strong> {{video.dislikes | intcomma}} dislike</strong></h6>
+                {% endif %}
+            </div>
+
+    <!-- ##### Like and Dislike buttons ###### -->
+
+            {% if user.is_authenticated %}
+                <div class="row">
+                    <button data-product="{{video.id}}" 
+                        data-action="like" 
+                        class="btn btn-outline-secondary add-btn update-cart"
+                        style="margin-left:0px;">Like</button>
+                    <button data-product="{{video.id}}" 
+                        data-action="dislike" 
+                        class="btn btn-outline-secondary add-btn update-cart"
+                        style="margin-left:50px;">Dislike</button>
+                </div>
+            {% endif %}
+            </div>
+    </div>
+    <!-- ##### Description ###### -->
+    <hr style="padding-top: 3px;">
     <div class="row box-element">
         <div class="col-lg-12">
             <div class="description">
@@ -66,7 +82,90 @@
             </div>
         </div>
     </div>
-{% endblock content %}
+
+    <!-- ###################     Comments       ################# --> 
+    {% if comments %}
+        <h4>Comments</h4>
+        {% for comment in comments%}
+            <div class="row box-element">
+                <div class="col-lg-12">
+                    <div class="row description">
+                        <p><strong>{{comment.channel}}</strong></p>
+                    </div>
+                    <div class="row description">
+                        <p>{{comment}}</p>
+                    </div>
+                    <div class="row">
+                        {% if comment.likes is not 1 %}
+                            <div class="col-md-6">{{comment.likes | intcomma}} likes</div>
+                        {% else %}
+                            <div class="col-md-6">{{comment.likes | intcomma}} like</div>
+                        {% endif %}
+                        {% if comment.dislikes is not 1 %}
+                            <div class="col-md-6"><p style="padding-left: 10px;">{{comment.dislikes | intcomma}} dislike</p></div>
+                        {% else %}
+                            <div class="col-md-6"><p style="padding-left: 10px;">{{comment.dislikes | intcomma}} dislike</p></div>
+                        {% endif %}
+                    </div>
+                    {% if user.is_authenticated %}
+                        <div class="row">
+                            <button data-product="{{video.id}}" 
+                                data-action="like" 
+                                class="btn btn-outline-secondary add-btn update-cart"
+                                style="margin-left:0px;">Like</button>
+                            <button data-product="{{video.id}}" 
+                                data-action="dislike" 
+                                class="btn btn-outline-secondary add-btn update-cart"
+                                style="margin-left:50px;">Dislike</button>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- ###################     Comment Replies      ################# --> 
+            {% for reply in comment_replies %}
+                {% if  reply.comment == comment %}
+                    <div class="row box-element" style="margin-left: 30px;">
+                        <div class="col-lg-12">
+                            <div class="row description">
+                                <p><strong>{{reply.channel}}</strong> replied to <strong>{{comment.channel}}</strong></p>
+                            </div>
+                            <div class="row description">
+                                <p>{{reply}}</p>
+                            </div>
+                            <div class="row">
+                                {% if reply.likes is not 1 %}
+                                    <div class="col-md-6">{{reply.likes | intcomma}} likes</div>
+                                {% else %}
+                                    <div class="col-md-6">{{reply.likes | intcomma}} like</div>
+                                {% endif %}
+                                {% if reply.dislikes is not 1 %}
+                                    <div class="col-md-6"><p style="padding-left: 10px;">{{reply.dislikes | intcomma}} dislike</p></div>
+                                {% else %}
+                                    <div class="col-md-6"><p style="padding-left: 10px;">{{reply.dislikes | intcomma}} dislike</p></div>
+                                {% endif %}
+                            </div>
+                            {% if user.is_authenticated %}
+                                <div class="row">
+                                    <button data-product="{{video.id}}" 
+                                        data-action="like" 
+                                        class="btn btn-outline-secondary add-btn update-cart"
+                                        style="margin-left:0px;">Like</button>
+                                    <button data-product="{{video.id}}" 
+                                        data-action="dislike" 
+                                        class="btn btn-outline-secondary add-btn update-cart"
+                                        style="margin-left:50px;">Dislike</button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+    {% else %}
+        <h4>No Comments</h4>
+    {% endif %}
+    {% endblock content %}
 
 <script type="text/javascript" src="{% static 'js/watch.js' %}"></script>
 

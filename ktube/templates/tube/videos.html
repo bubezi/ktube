@@ -7,16 +7,27 @@
 
      <div class="row">
         {% for video in videos %}
-            <div class="col-lg-4">
-                <img class="thumbnail" src="{{video.thumbnailURL}}" alt="">
+            <div class="col-lg-6">
+                <img class="thumbnail" style="" src="{{video.thumbnailURL}}" alt="">
                 <div class="box-element product">
-                    <h4><strong>{{video.title}}</strong></h4>
-                    <hr>
-
-                    <h6 style="font-size: 18px; display: inline-block; float: left"><strong> {{video.views}} Views</strong></h6>
-                    <h6 style="font-size: 18px; display: inline-block; float: right"><strong> {{video.upload_time}}</strong></h6>
+                    <div class="row">
+                        <h6 style="float: left">{{video.title}}</h6>
+                    </div><div class="row">
+                        <h6 style="">{{video.channel}}</h6>
+                    </div>
+                    <div class="row">
+                        {% if video.views is not 1 %}
+                            <h6 style="float: left">{{video.views | intcomma }} views</h6>
+                        {% else %}
+                            <h6 style="float: left">{{video.views | intcomma }} view</h6>
+                        {% endif %}
+                    </div>
+                    <h6 style="float: right"><strong> {{video.upload_time}}</strong></h6>
                     <a class="btn btn-outline-success" href="video/{{video.id}}">
                         <button class="btn btn-outline-secondary add-btn update-cart">Watch</button>
+                    </a>
+                    <a class="btn btn-outline-success" href="channel/{{video.channel.id}}">
+                        <button class="btn btn-outline-secondary add-btn update-cart">{{video.channel}}</button>
                     </a>
                 </div>
             </div>

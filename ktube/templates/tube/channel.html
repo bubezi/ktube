@@ -1,0 +1,45 @@
+{% extends 'tube/base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ channel.name }} | K TUBE{% endblock title %}
+
+{% block content %}
+
+
+    <div class="row">
+        <h3></h3>
+    </div>
+ 
+    <div class="row box-element">
+        <div class="col-lg-12">
+            <div class="row">
+            </div>
+            <div class="row">
+            </div>
+            <div class="row">
+            </div>
+        </div>
+    </div>
+    
+    <hr style="padding-top: 3px;">
+
+    <div class="row box-element">
+        <div class="col-lg-12">
+            <div class="row">
+            </div>
+            {% if user.is_authenticated %}
+                <div class="row">
+                    <button data-product="{{channel.id}}" 
+                        data-action="dislike" 
+                        class="btn btn-outline-secondary add-btn update-cart"
+                        style="margin-left:50px;">Subscribe</button>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    
+{% endblock content %}
