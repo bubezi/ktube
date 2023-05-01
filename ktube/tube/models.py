@@ -10,6 +10,7 @@ GENDERS = (
     ('OTHER', 'OTHER'),
     ('prefer not to say', 'PREFER NOT TO SAY'),
 )
+
 # Create your models here.
 class Viewer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -37,8 +38,8 @@ class Video(models.Model):
     title = models.CharField(max_length=150, blank=False, null=True)
     video = models.FileField(blank=False, null=True)
     thumbnail = models.ImageField(null=True, blank=False)
-    description = models.TextField(max_length=10000, null=True)
-    path = models.URLField(max_length=150, null=True)
+    description = models.TextField(max_length=10000, null=True, blank=True, default="Video Description")
+    # path = models.URLField(max_length=150, null=True)
     upload_time = models.DateTimeField(auto_now_add=True)
     channel = models.ForeignKey(Channel, null=True, on_delete=models.CASCADE)
     likes = models.BigIntegerField(default=0)
@@ -81,7 +82,7 @@ class CommentReply(models.Model):
 class Playlist(models.Model):
     name = models.CharField(max_length=150, blank=False, null=False, default="Playlist")
     channel = models.ForeignKey(Channel, on_delete=models.CASCADE)
-    videos = models.ManyToManyField(Video)
+    videos = models.ManyToManyField(Video, blank=True)
     views = models.BigIntegerField(default=0)
     
     def __str__(self):

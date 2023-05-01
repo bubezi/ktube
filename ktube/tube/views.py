@@ -17,3 +17,9 @@ def home_view(request):
         pass
                 
     return render(request, 'tube/home.html', context)
+
+
+def watch_video(request, pk):
+    video = Video.objects.get(id=pk)
+    context = {"video": video}
+    return render(request, 'tube/watch.html', context)

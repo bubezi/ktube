@@ -28,7 +28,7 @@ urlpatterns = [
     path('accounts', include('django.contrib.auth.urls')),
     path('', include("django.contrib.auth.urls")),
     
-    # path('videos/<str:pk>', views.watch_video, name="view"),
+    path('video/<str:pk>', views.watch_video, name="watch"),
     
     path('bye', views_reg.bye_page, name="bye"),
     path('register', views_reg.register, name="register"),

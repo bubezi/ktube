@@ -4,52 +4,20 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-{% comment %} <div class="scroll-left">
-    <p>Website still under Development...</p>
-    </div>
-
-<div class="row">
-    <div class="col">
-        <form method="GET"
-            id='form1'
-            class="form-inline mr-sm-2 space"
-            type="search"
-            name="searched"
-            style="font-weight: bold;
-                    font-size: larger;
-	                background-color: #fff;
-	                border-radius: 4px;
-                    padding: 10px;
-                    ">
-            {{ myFilter.form | crispy }}
-            {% csrf_token %}        
-
-            <button class="btn btn-primary" type="submit">Search</button>
-        </form>
-    </div>
-</div>
-
-
-    <div class="row">
-        <div class="col-xs col-centered">
-            <button type="button" id="formButton" class="btn btn-secondary btn-lg btn-block">View / Hide Detailed Search</button>
-        </div>
-    </div> {% endcomment %}
 
      <div class="row">
         {% for video in videos %}
             <div class="col-lg-4">
                 <img class="thumbnail" src="{{video.thumbnailURL}}" alt="">
-                <div class="box-element video">
-                    <h6><strong>{{video.title}}</strong></h6>
+                <div class="box-element product">
+                    <h4><strong>{{video.title}}</strong></h4>
                     <hr>
 
-                    {% comment %} <button data-product="{{video.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Watch</button> {% endcomment %}
-
-                    <a class="btn btn-outline-success" href="video/{{video}}">Watch</a>
+                    <h6 style="font-size: 18px; display: inline-block; float: left"><strong> {{video.views}} Views</strong></h6>
                     <h6 style="font-size: 18px; display: inline-block; float: right"><strong> {{video.upload_time}}</strong></h6>
-                    <h6 style="font-size: 18px; display: inline-block; float: right"><strong> {{video.views}}</strong></h6>
-
+                    <a class="btn btn-outline-success" href="video/{{video.id}}">
+                        <button class="btn btn-outline-secondary add-btn update-cart">Watch</button>
+                    </a>
                 </div>
             </div>
         {% endfor %}
