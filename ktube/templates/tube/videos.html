@@ -13,7 +13,7 @@
             </a>
             <div class="box-element product">
                 <div class="row">
-                    <a href="video/{{video.id}}">
+                    <a href="/video/{{video.id}}">
                         <h6 style="float: left">{{video.title}}</h6>
                     </a>
                 </div>
@@ -21,6 +21,7 @@
                     <div class="row">
                         <h6>{{video.channel}}</h6>
                     </div>
+                </a>
                 <div class="row">
                     {% if video.views is not 1 %}
                         <h6 style="float: left">{{video.views | intcomma }} views</h6>

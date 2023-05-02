@@ -8,13 +8,18 @@
 
 {% block content %}
 
-    <div class="row box-element">
+    <div class="row box-element" style="margin-top: -22px;">
         <div class="col-lg-12">
             <div class="row">
                 {% if channel.profile_picture %}
-                    <img src="#" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                    <img src="{{channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 40px; height: 40px;">
+                {% else %}
+                    <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 40px; height: 40px;">
                 {% endif %}
                 <h3>{{ channel.name }}</h3>
+            </div>
+            <div class="row">
+                <h5 style="padding-left: 45px;">{{ subscriber_count }} Subscribers</h5>
             </div>
             {% if user.is_authenticated %}
                 <div class="row">
@@ -26,8 +31,13 @@
             {% endif %}
         </div>
     </div>
+
+
  
     <div class="row box-element">
+        <h2>Channel videos</h2>
+    </div>
+    <div class="row">
         {% for video in videos %}
             <div class="col-lg-4">
                 <a href="/video/{{video.id}}">
@@ -35,7 +45,7 @@
                 </a>
                 <div class="box-element product">
                     <div class="row">
-                        <a href="video/{{video.id}}">
+                        <a href="/video/{{video.id}}">
                             <h6 style="float: left">{{video.title}}</h6>
                         </a>
                     </div>
@@ -55,20 +65,43 @@
                     <div class="row"><h6 style="float: right"><strong> {{video.upload_time}}</strong></h6></div>
                 </div>
             </div>
+        {% empty %}
+        <div class="col-lg-12 box-element">
+                <h4>No Uploads</h4>
+        </div>
         {% endfor %}
      </div>
 
-    <div class="row box-element">
-        <div class="col-lg-12">
-            <div class="row">
-            </div>
-            <div class="row">
-            </div>
-            <div class="row">
+
+
+    <div class="row box-element" style="margin-top: 10px;">
+        <h2>Playlists</h2>
+    </div>
+    <div class="row">
+        {% for playlist in playlists %}
+        <div class="col-lg-4 box-element">
+            <div style="padding-left: 10px;">
+                <div class="row">
+                    <a href="/playlist/{{playlist.id}}">
+                    <h3>{{playlist.name}}</h3>
+                    </a>
+                    <h4 style="padding-left: 5px;"> - {{playlist.video_count}} videos</h4>
+                </div>
+                <div class="row">
+                    <h4>{{playlist.channel}}</h4>
+                </div>
+                <div class="row">
+                    <h5>{{playlist.views}} views</h5>
+                </div>
             </div>
         </div>
+        {% empty %}
+        <div class="col-lg-12 box-element">
+            <<h4>No Playlists</h4>
+        </div>
+        {% endfor %}
     </div>
-    
+
     <hr style="padding-top: 3px;">
     
     

@@ -4,14 +4,14 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    {% comment %} {% include 'tube/homescreen.html' %} {% endcomment %}
-    <div class="scroll-left">
-        <p>Website still under Development...</p>
+    {% include 'tube/homescreen.html' %}
+    <div class="scroll-left box-element">
+        <p>Website still under Development... SOME VIDEOS include: {% for video in videos %} {{video.title}};{% endfor%} </p>
     </div>
     <div class="row">
-        <div class="col-log-12" style="left: 50%; transform: translate(100%);">
+        <div class="col-lg-12 box-element">
             {% if channel %}
-                <h2>Welcome <a href="channel/{{channel.id}}">{{channel.name}}</h2>
+                <h2>Welcome <a href="/channel/{{channel.id}}">{{channel.name}}</h2>
                 <!-- look for sentence case humanize tag -->
             {% endif %}
         </div>

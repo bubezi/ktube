@@ -1,7 +1,19 @@
-Username:allowme
-Password:1q2w3enininiw
+Add playlist(s) page
+x Add DP
+views update
+add upload page
+add signup page
+Like and Sub
+History
+Liked Videos
+Change like and dislike buttons
+video SHORTCUTS
+FIX comments
+PLAY ALL BUTTON FOR Playlists
 
+ABILITY TO tag individuals in comments
 
+#############################################################
 Create logic
     Channel
     comments
@@ -11,12 +23,10 @@ Create logic
     ACC SHOUD ONLY LIKE, dislike & SUB ONCE
     Seaking
 
-
 PROBLEMS
     / THE URL problem
     GET data from video
-
-    
+ 
 Funtionality
     User video Upload
     Streaming
@@ -27,3 +37,41 @@ UI
     responsiveness
     Possibly with react
 
+
+
+############################################################
+Username:allowme
+Password:1q2w3enininiw
+
+
+
+
+
+
+
+
+#############################################################
+channel.playlist_set.all()
+<QuerySet [<Playlist: Playlist>]>
+
+>>> channel.playlist_set.all()[0]
+<Playlist: Playlist>
+
+>>> print(channel.playlist_set.all()[0])
+Playlist
+
+>>> channel.playlist_set.all()[0].all()  
+Traceback (most recent call last):
+  File "<console>", line 1, in <module>
+AttributeError: 'Playlist' object has no attribute 'all'
+
+>>> channel.playlist_set.all()[0].videos
+<django.db.models.fields.related_descriptors.create_forward_many_to_many_manager.<locals>.ManyRelatedManager object at 0x000001CAAEE910D0>
+
+>>> channel.playlist_set.all()[0].videos.all()
+<QuerySet [<Video: Battlebox>]>
+
+>>> channel.playlist_set.all()[0].videos.all()[0] 
+<Video: Battlebox>
+
+>>>

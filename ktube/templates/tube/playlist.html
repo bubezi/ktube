@@ -1,0 +1,51 @@
+{% extends 'tube/base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ playlist.name }} | K TUBE{% endblock title %}
+
+{% block content %}
+    <div class="row box-element">
+        <div class="col-lg-12">
+            <div class="row">
+                <h3>{{playlist.name}}</h3><h4 style="padding-left: 7px;">- {{playlist.video_count}} videos</h4>
+            </div>
+            <a href="/channel/{{playlist.channel.id}}"><div class="row"><h4>{{playlist.channel.name}}</h4></div></a>
+            <div class="row"><h4>{{playlist.views}} Views</h4></div>
+        </div>
+    </div>
+    <div class="row box-element">
+        {% for video in videos %}
+            <div class="col-lg-4">
+                <a href="/video/{{video.id}}">
+                <img class="thumbnail" src="{{video.thumbnailURL}}" alt="">
+                </a>
+                <div class="box-element product">
+                    <div class="row">
+                        <a href="/video/{{video.id}}">
+                            <h6 style="float: left">{{video.title}}</h6>
+                        </a>
+                    </div>
+                    <a href="/channel/{{video.channel.id}}">
+                        <div class="row">
+                            <h6>{{video.channel}}</h6>
+                        </div>
+                    </a>
+                    <div class="row">
+                        {% if video.views is not 1 %}
+                            <h6 style="float: left">{{video.views | intcomma }} views</h6>
+                        {% else %}
+                            <h6 style="float: left">{{video.views | intcomma }} view</h6>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+        <div class="col-lg-12 box-element">
+                <h4>Empty Playlist</h4>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock content %}

@@ -13,6 +13,16 @@ h1,h2,h3,h4,h5,h6{
 	color:hsl(0, 0%, 30%);
 }
 
+p {
+	margin-bottom: 0px !important;
+}
+
+a:hover {
+	opacity: .7;
+	padding-bottom: 2px;
+	transform: translate(1%);
+}
+
 .navbar {
 	display: flex;
 	position: fixed !important; /* Set the navbar to fixed position */

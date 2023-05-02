@@ -1,53 +1,18 @@
-<!DOCTYPE html>
+{% extends 'tube/head.html' %}
 {% load static %}
 {% load humanize %}
 {% load crispy_forms_tags %}
-<html>
-<head>
-    <title> {% block title %}K TUBE{% endblock title %}</title>
-    <meta name="description" content="Shows That Are Just You">
 
-    <meta charset="UTF-8">
- 	<meta name="keywords" content="Shows, Videos, Music, Documentaries" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="robots" content="index,follow">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
-	
+{% block title %}K TUBE{% endblock title %}
 
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static '/images/apple-touch-icon.png' %}">
-	<link rel="icon" type="image/png" sizes="32x32" href="{% static '/images/favicon-32x32.png' %}">
-	<link rel="icon" type="image/png" sizes="16x16" href="{% static '/images/favicon-16x16.png' %}">
-	<link rel="manifest" href="{% static '/images/site.webmanifest' %}">
-
-
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
-    <link href="http://fonts.googleapis.com/css?family=Cookie" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="C:\Users\Leo Nine\Documents\bubezi\code\temp\bootstrap-4.0.0-dist\css\bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'css/tube.css' %}">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-	<script type="text/javascript" src="{% static 'js/main.js' %}"></script>
-	
-	<script type="text/javascript">
-		
-	</script>
-</head>
-
-<body>
+	{% block bigbody %}
     {% include 'tube/navbar.html' %}
-	<div class="container" style="background: linear-gradient(Grey, whitesmoke)!important;">
+		<div class="container" style="background: linear-gradient(Grey, whitesmoke)!important;">
             <br>
             {% block content %}
 
             {% endblock content %}
          </div>
     {% include 'tube/footer.html' %}
-	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-</body>
-
-</html>
+	{% endblock bigbody %}
+	

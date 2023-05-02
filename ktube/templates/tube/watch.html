@@ -1,27 +1,33 @@
-{% extends 'tube/base.html' %}
-{% load crispy_forms_filters %}
+{% extends 'tube/head.html' %}
 {% load static %}
 {% load humanize %}
 {% load crispy_forms_tags %}
 
-{% block title %}{{ video.title }} | K TUBE{% endblock title%}
-
-{% block content %}
-
-    <div class="row">
+    {% block title %}{{video.title}} | K TUBE{% endblock title %}
+    {% block bigbody %}
+    {% include 'tube/navbar.html' %}
         <video 
-        controls="true" 
+        controls
         autoplay="true" 
-        class="video" id="video-watching" src="{{video.videoURL}}"></video>
-    </div>
-
+        class="video" id="currentVideo" src="{{video.videoURL}}"></video>
+		
+        
+<div class="container" style="background: linear-gradient(Grey, whitesmoke)!important;">       
     <!-- ###################     Video details     ################# --> 
     <div class="row box-element">
         <div class="col-lg-12">
             <div class="row">
                 <h6 style="font-size: 25px; float: left"><strong>{{video.title}}</strong></h6>
             </div><div class="row">
-                <h6 style="font-size: 20px;"><strong>{{video.channel}}</strong></h6>
+                {% if video.channel.profile_picture %}
+                <img src="{{video.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 30px; height: 30px;">
+                {% else %}
+                <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 30px; height: 30px;">
+                {% endif %}
+                <a href="/channel/{{video.channel.id}}">
+                    <h6 style="font-size: 20px;"><strong>{{video.channel}}</strong></h6>
+                </a>
+                <h5 style="padding-left: 10px;">- {{ subscriber_count }} Subscribers</h5>
             </div>
             <div class="row">
                 {% if video.views is not 1 %}
@@ -33,7 +39,6 @@
         </div>
     </div>
     
-    <hr style="padding-top: 3px;">
 
     <div class="row box-element">
         <div class="col-lg-12">
@@ -64,13 +69,12 @@
                     <button data-product="{{video.id}}" 
                         data-action="dislike" 
                         class="btn btn-outline-secondary add-btn update-cart"
-                        style="margin-left:50px;">Dislike</button>
+                        style="margin-left:30px;">Dislike</button>
                 </div>
             {% endif %}
             </div>
     </div>
     <!-- ##### Description ###### -->
-    <hr style="padding-top: 3px;">
     <div class="row box-element">
         <div class="col-lg-12">
             <div class="description">
@@ -90,21 +94,26 @@
             <div class="row box-element">
                 <div class="col-lg-12">
                     <div class="row description">
-                        <p><strong>{{comment.channel}}</strong></p>
+                        {% if comment.channel.profile_picture %}
+                        <img src="{{comment.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
+                        {% else %}
+                        <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
+                        {% endif %}
+                        <a href="/channel/{{comment.channel.id}}"><p><strong>{{comment.channel}}</strong></p></a>
                     </div>
                     <div class="row description">
                         <p>{{comment}}</p>
                     </div>
                     <div class="row">
                         {% if comment.likes is not 1 %}
-                            <div class="col-md-6">{{comment.likes | intcomma}} likes</div>
+                            <div class="">{{comment.likes | intcomma}} likes</div>
                         {% else %}
-                            <div class="col-md-6">{{comment.likes | intcomma}} like</div>
+                            <div class="">{{comment.likes | intcomma}} like</div>
                         {% endif %}
                         {% if comment.dislikes is not 1 %}
-                            <div class="col-md-6"><p style="padding-left: 10px;">{{comment.dislikes | intcomma}} dislike</p></div>
+                            <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{comment.dislikes | intcomma}} dislike</p></div>
                         {% else %}
-                            <div class="col-md-6"><p style="padding-left: 10px;">{{comment.dislikes | intcomma}} dislike</p></div>
+                            <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{comment.dislikes | intcomma}} dislike</p></div>
                         {% endif %}
                     </div>
                     {% if user.is_authenticated %}
@@ -116,7 +125,7 @@
                             <button data-product="{{video.id}}" 
                                 data-action="dislike" 
                                 class="btn btn-outline-secondary add-btn update-cart"
-                                style="margin-left:50px;">Dislike</button>
+                                style="margin-left:20px;">Dislike</button>
                         </div>
                     {% endif %}
                 </div>
@@ -128,21 +137,26 @@
                     <div class="row box-element" style="margin-left: 30px;">
                         <div class="col-lg-12">
                             <div class="row description">
-                                <p><strong>{{reply.channel}}</strong> replied to <strong>{{comment.channel}}</strong></p>
+                                {% if reply.channel.profile_picture %}
+                                <img src="{{reply.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
+                                {% else %}
+                                <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
+                                {% endif %}
+                                <p><strong><a href="/channel/{{reply.channel.id}}">{{reply.channel}}</a></strong> replied to <strong><a href="/channel/{{comment.channel.id}}">{{comment.channel}}</a></strong></p>
                             </div>
                             <div class="row description">
                                 <p>{{reply}}</p>
                             </div>
                             <div class="row">
                                 {% if reply.likes is not 1 %}
-                                    <div class="col-md-6">{{reply.likes | intcomma}} likes</div>
+                                    <div class="">{{reply.likes | intcomma}} likes</div>
                                 {% else %}
-                                    <div class="col-md-6">{{reply.likes | intcomma}} like</div>
+                                    <div class="">{{reply.likes | intcomma}} like</div>
                                 {% endif %}
                                 {% if reply.dislikes is not 1 %}
-                                    <div class="col-md-6"><p style="padding-left: 10px;">{{reply.dislikes | intcomma}} dislike</p></div>
+                                    <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
                                 {% else %}
-                                    <div class="col-md-6"><p style="padding-left: 10px;">{{reply.dislikes | intcomma}} dislike</p></div>
+                                    <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
                                 {% endif %}
                             </div>
                             {% if user.is_authenticated %}
@@ -154,7 +168,7 @@
                                     <button data-product="{{video.id}}" 
                                         data-action="dislike" 
                                         class="btn btn-outline-secondary add-btn update-cart"
-                                        style="margin-left:50px;">Dislike</button>
+                                        style="margin-left:20px;">Dislike</button>
                                 </div>
                             {% endif %}
                         </div>
@@ -165,7 +179,13 @@
     {% else %}
         <h4>No Comments</h4>
     {% endif %}
-    {% endblock content %}
+</div>
+</div>
+    {% include 'tube/footer.html' %}
+    {% endblock bigbody %}
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
 
-<script type="text/javascript" src="{% static 'js/watch.js' %}"></script>
-
+</html>

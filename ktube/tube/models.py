@@ -17,7 +17,7 @@ class Viewer(models.Model):
     username = models.CharField(max_length=100, null=True, blank=False)
     email = models.EmailField(max_length=100, null=True, blank=False, unique=True)
     phone = PhoneNumberField(null=True, blank=False)
-    gender = models.CharField(null=True, max_length=100, choices=GENDERS)
+    gender = models.CharField(null=True, max_length=30, choices=GENDERS)
     
     def __str__(self):
         return self.username
@@ -28,9 +28,7 @@ class Channel(models.Model):
     name = models.CharField(max_length=150, null=True, unique=True)
     profile_picture = models.ImageField(null=True, blank=True)
     about = models.CharField(max_length=300, null=True, blank=True)
-    subscribers = []
-    subscriber_count = len(subscribers)
-    # subscribers = models.ManyToManyField(Viewer, related_name='subscribers')
+    subscribers = models.ManyToManyField(Viewer, related_name="Subscribed_viewers", blank=True)
     
     def __str__(self):
         return self.name
@@ -90,9 +88,12 @@ class CommentReply(models.Model):
 class Playlist(models.Model):
     name = models.CharField(max_length=150, blank=False, null=False, default="Playlist")
     channel = models.ForeignKey(Channel, on_delete=models.CASCADE)
-    videos = []
-    video_count = len(videos)
+    videos = models.ManyToManyField(Video, related_name='playlists', blank=True)
     views = models.BigIntegerField(default=0)
     
     def __str__(self):
         return self.name
+    
+    def video_count(self):
+        video_count = self.videos.count()
+        return video_count
