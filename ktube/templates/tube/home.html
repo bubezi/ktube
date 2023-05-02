@@ -5,8 +5,11 @@
 
 {% block content %}
     {% comment %} {% include 'tube/homescreen.html' %} {% endcomment %}
+    <div class="scroll-left">
+        <p>Website still under Development...</p>
+    </div>
     <div class="row">
-        <div class="col-log-12">
+        <div class="col-log-12" style="left: 50%; transform: translate(100%);">
             {% if channel %}
                 <h2>Welcome <a href="channel/{{channel.id}}">{{channel.name}}</h2>
                 <!-- look for sentence case humanize tag -->
