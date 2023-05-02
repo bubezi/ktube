@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Video, Comment, CommentReply, Channel
 from django.contrib.auth.models import User
 from .filters import VideoFilter
@@ -12,22 +12,28 @@ def home_view(request):
     context = {'videos': videos, 'myFilter': myFilter}
         
     if request.user.is_authenticated:
-        # viewer = request.user.viewer
-        # context['viewer'] = viewer
-        pass
+        viewer = request.user.viewer
+        context['viewer'] = viewer
+        
+        try:
+            channel = Channel.objects.get(user=viewer)
+            context['channel'] = channel
+        except Channel.DoesNotExist as e:
+            pass
                 
     return render(request, 'tube/home.html', context)
 
 
 def watch_video(request, pk):
     video = Video.objects.get(id=pk)
+    
+        
     comments = Comment.objects.filter(video=video)
     comment_replies = CommentReply.objects.all()
     replies_dict = comment_replies.in_bulk()
     replies_list = []
     for key in range(len(replies_dict)):
         replies_list.append(replies_dict[key+1].reply) # strings
-        
     
     context = {"video": video, "comments": comments, "comment_replies": comment_replies}
     return render(request, 'tube/watch.html', context)
@@ -35,6 +41,7 @@ def watch_video(request, pk):
 
 def channnel_view(request, pk):
     channel = Channel.objects.get(id=pk)
+    videos = Video.objects.filter(channel=channel)
     
-    context = {'channel': channel}
+    context = {'channel': channel, "videos": videos}
     return render(request, 'tube/channel.html', context)

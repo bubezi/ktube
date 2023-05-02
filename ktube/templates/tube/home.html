@@ -1,17 +1,18 @@
 {% extends 'tube/base.html' %}
 {% load static %}
-{% block content %}
-    {% include 'tube/homescreen.html' %}
+{% load humanize %}
+{% load crispy_forms_tags %}
 
-    {% comment %} <div class="row">
-        <div style="margin: auto; text-align: center">
-            <h1 style="text-align: center;
-                        font-family: 'Perpetua Titling MT';
-                        font-size: 60px;
-                        color: #16202B;
-                        text-shadow: #16202B;">Shows That Are Just You</h1>
+{% block content %}
+    {% comment %} {% include 'tube/homescreen.html' %} {% endcomment %}
+    <div class="row">
+        <div class="col-log-12">
+            {% if channel %}
+                <h2>Welcome <a href="channel/{{channel.id}}">{{channel.name}}</h2>
+                <!-- look for sentence case humanize tag -->
+            {% endif %}
         </div>
-    </div> {% endcomment %}
+    </div>
     
     {% include 'tube/videos.html' %}
 

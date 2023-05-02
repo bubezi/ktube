@@ -30,10 +30,10 @@
 				<div class="dropdown-menu">
                     <a class="dropdown-item" href="#">Profile</a>
 					{% if user.is_superuser %}
-					<a class="dropdown-item" href="admin">Admin</a>
+					<a class="dropdown-item" href="/admin">Admin</a>
 					{% endif %}
-					<a class="dropdown-item" href="accounts/password_change">Change Password</a>
-					<a class="dropdown-item" href="accounts/password_reset">Reset Password</a>
+					<a class="dropdown-item" href="/accounts/password_change">Change Password</a>
+					<a class="dropdown-item" href="/accounts/password_reset">Reset Password</a>
 					<div class="dropdown-divider"></div>
 					<a class="dropdown-item" href="logout">Log Out</a>
 				</div>

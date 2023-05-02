@@ -8,11 +8,56 @@
 
 {% block content %}
 
-
-    <div class="row">
-        <h3></h3>
+    <div class="row box-element">
+        <div class="col-lg-12">
+            <div class="row">
+                {% if channel.profile_picture %}
+                    <img src="#" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                {% endif %}
+                <h3>{{ channel.name }}</h3>
+            </div>
+            {% if user.is_authenticated %}
+                <div class="row">
+                    <button data-product="{{channel.id}}" 
+                        data-action="dislike" 
+                        class="btn btn-outline-secondary add-btn update-cart"
+                        style="margin-left:50px;">Subscribe</button>
+                </div>
+            {% endif %}
+        </div>
     </div>
  
+    <div class="row box-element">
+        {% for video in videos %}
+            <div class="col-lg-4">
+                <a href="/video/{{video.id}}">
+                    <img class="thumbnail" src="{{video.thumbnailURL}}" alt="">
+                </a>
+                <div class="box-element product">
+                    <div class="row">
+                        <a href="video/{{video.id}}">
+                            <h6 style="float: left">{{video.title}}</h6>
+                        </a>
+                    </div>
+                    <div class="row">
+                        {% if channel.profile_picture %}
+                        <img src="#" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                        {% endif %}
+                        <h6>{{video.channel}}</h6>
+                    </div>
+                    <div class="row">
+                        {% if video.views is not 1 %}
+                            <h6 style="float: left">{{video.views | intcomma }} views</h6>
+                        {% else %}
+                            <h6 style="float: left">{{video.views | intcomma }} view</h6>
+                        {% endif %}
+                    </div>
+                    <div class="row"><h6 style="float: right"><strong> {{video.upload_time}}</strong></h6></div>
+                </div>
+            </div>
+        {% endfor %}
+     </div>
+
     <div class="row box-element">
         <div class="col-lg-12">
             <div class="row">
@@ -25,21 +70,6 @@
     </div>
     
     <hr style="padding-top: 3px;">
-
-    <div class="row box-element">
-        <div class="col-lg-12">
-            <div class="row">
-            </div>
-            {% if user.is_authenticated %}
-                <div class="row">
-                    <button data-product="{{channel.id}}" 
-                        data-action="dislike" 
-                        class="btn btn-outline-secondary add-btn update-cart"
-                        style="margin-left:50px;">Subscribe</button>
-                </div>
-            {% endif %}
-        </div>
-    </div>
     
     
 {% endblock content %}

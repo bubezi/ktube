@@ -13,7 +13,7 @@ GENDERS = (
 
 # Create your models here.
 class Viewer(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     username = models.CharField(max_length=100, null=True, blank=False)
     email = models.EmailField(max_length=100, null=True, blank=False, unique=True)
     phone = PhoneNumberField(null=True, blank=False)
@@ -26,6 +26,7 @@ class Viewer(models.Model):
 class Channel(models.Model):
     user = models.ForeignKey(Viewer, on_delete=models.CASCADE)
     name = models.CharField(max_length=150, null=True, unique=True)
+    profile_picture = models.ImageField(null=True, blank=True)
     about = models.CharField(max_length=300, null=True, blank=True)
     subscribers = []
     subscriber_count = len(subscribers)
@@ -33,6 +34,10 @@ class Channel(models.Model):
     
     def __str__(self):
         return self.name
+    
+    @property
+    def profilePictureURL(self):
+        return self.profile_picture.url
            
     
 class Video(models.Model):
