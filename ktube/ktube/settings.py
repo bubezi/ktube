@@ -19,10 +19,10 @@ SECRET_KEY = env("SECRET_KEY")
 ######################## COMMENT THIS OUT DURING DEVELOPMENT AND TESTING AND UNCOMMENT THE ONE BELOW IT ###########################################
 
 
-# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ktube.pythonanywhere.com']
 
-# # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = False
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
 
 # # Database
 # # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -47,9 +47,9 @@ SECRET_KEY = env("SECRET_KEY")
 ######################## COMMENT THIS OUT WHEN DEPLOYING TO PRODUCTION AND UNCOMMENT THE ONE ABOVE IT ###############################################
 
 
-ALLOWED_HOSTS = ['192.168.87.137', '127.0.0.1']
+# ALLOWED_HOSTS = ['192.168.87.137', '127.0.0.1']
 
-DEBUG = True
+# DEBUG = True
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
