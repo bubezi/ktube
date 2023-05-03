@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from phonenumber_field.formfields import PhoneNumberField
-from tube.models import Viewer
+from tube.models import Viewer, Channel
 
 GENDERS = (
     ('select', 'SELECT'),
@@ -21,6 +21,26 @@ class ViewerForm(forms.ModelForm):
     class Meta:
         model = Viewer
         fields = ["phone", "gender"]
+
+
+class ChannelForm(forms.ModelForm):
+            
+    class Meta:
+        model = Channel
+        fields = ["name", "profile_picture", "about"]
+        
+    def save(self, pk, commit=True):
+        
+        user = Viewer.objects.get(id=pk)
+        channel = super().save(commit=False)
+        channel.user = user
+        channel.name = self.cleaned_data['name']
+        channel.profile_picture = self.cleaned_data['profile_picture']
+        channel.about = self.cleaned_data['about']
+        if commit:
+            channel.save()
+        return channel
+        
 
 
 class UserSignUpForm(UserCreationForm, ViewerForm):

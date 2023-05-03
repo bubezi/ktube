@@ -29,6 +29,7 @@ urlpatterns = [
     path('bye', views_reg.bye_page, name="bye"),
     path('register', views_reg.register, name="register"),
     path('profile', views_reg.profile_page, name='profile'),
+    path('create_channel/<str:pk>', views_reg.create_channel, name='create_channel'),
     
     path('accounts/', include('django.contrib.auth.urls')),
     path('/', include('django.contrib.auth.urls')),

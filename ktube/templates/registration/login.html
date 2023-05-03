@@ -10,8 +10,8 @@
             {% csrf_token %}
             {{ form|crispy }}
             <button type="submit" class="btn btn-success">Login</button>
-            <a href="#" class=""><p>Forgot Password?</p></a>
-            <a href="#" class=""><p>Sign Up</p></a>
+            <a href="#" class=""><h6>Forgot Password?</h6></a>
+            <h6>Don't have an account? <a href="{% url 'register' %}" class="">Sign Up</a></h6>
         </form>
     {% else %}
     <p>Invalid request</p>

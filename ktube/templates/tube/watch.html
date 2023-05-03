@@ -36,6 +36,7 @@
                     <h6 style="font-size: 18px; float: left"><strong> {{video.views | intcomma }} view</strong></h6>
                 {% endif %}
             </div>
+            <div class="row"><h6 style="font-size: 18px; display: flex;">{{video.upload_period}}</h6></div>
         </div>
     </div>
     
@@ -78,18 +79,21 @@
     <div class="row box-element">
         <div class="col-lg-12">
             <div class="description">
-                <h6 style="font-size: 18px; display: flex;">{{video.upload_time}}</h6>
+                <h4><u>Description</u></h4>
                 {% if video.description %}
-                <hr>
-                <p>{{video.description}}</p>
+                <div class="row"><h6 >{{video.description}}</h6></div>
+                {% else %}
+                <div class="row"><h6 >No Description</h6></div>
                 {% endif %}
+                <hr>
+                <div class="row"><h6>Video uploaded on {{video.upload_time}}</h6></div>
             </div>
         </div>
     </div>
 
     <!-- ###################     Comments       ################# --> 
     {% if comments %}
-        <h4>Comments</h4>
+    <div class="row"><h4 class="col-lg-12 box-element" style="margin-top: 0; margin-bottom: 0!important;"><u>Comments</u></h4></div>
         {% for comment in comments%}
             <div class="row box-element">
                 <div class="col-lg-12">

@@ -30,6 +30,11 @@
                     </div>
                     <a href="/channel/{{video.channel.id}}">
                         <div class="row">
+                            {% if video.channel.profile_picture %}
+                            <img src="{{video.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                            {% else %}
+                            <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                            {% endif %}
                             <h6>{{video.channel}}</h6>
                         </div>
                     </a>

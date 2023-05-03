@@ -44,34 +44,17 @@ Username:allowme
 Password:1q2w3enininiw
 
 
+i have the save method in the form class and the image ('profile_picture') is not saving
 
 
-
-
-
-
-#############################################################
-channel.playlist_set.all()
-<QuerySet [<Playlist: Playlist>]>
-
->>> channel.playlist_set.all()[0]
-<Playlist: Playlist>
-
->>> print(channel.playlist_set.all()[0])
-Playlist
-
->>> channel.playlist_set.all()[0].all()  
-Traceback (most recent call last):
-  File "<console>", line 1, in <module>
-AttributeError: 'Playlist' object has no attribute 'all'
-
->>> channel.playlist_set.all()[0].videos
-<django.db.models.fields.related_descriptors.create_forward_many_to_many_manager.<locals>.ManyRelatedManager object at 0x000001CAAEE910D0>
-
->>> channel.playlist_set.all()[0].videos.all()
-<QuerySet [<Video: Battlebox>]>
-
->>> channel.playlist_set.all()[0].videos.all()[0] 
-<Video: Battlebox>
-
->>>
+def save(self, pk, commit=True):
+        
+        user = Viewer.objects.get(id=pk)
+        channel = super().save(commit=False)
+        channel.user = user
+        channel.name = self.cleaned_data['name']
+        channel.profile_picture = self.data['profile_picture']
+        channel.about = self.cleaned_data['about']
+        if commit:
+            channel.save()
+        return channel

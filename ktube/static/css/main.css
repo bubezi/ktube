@@ -13,8 +13,8 @@ h1,h2,h3,h4,h5,h6{
 	color:hsl(0, 0%, 30%);
 }
 
-p {
-	margin-bottom: 0px !important;
+p, h1, h2, h3, h4, h5, h6 {
+	margin-bottom: 4px !important;
 }
 
 a:hover {

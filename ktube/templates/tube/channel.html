@@ -18,9 +18,7 @@
                 {% endif %}
                 <h3>{{ channel.name }}</h3>
             </div>
-            <div class="row">
-                <h5 style="padding-left: 45px;">{{ subscriber_count }} Subscribers</h5>
-            </div>
+            <div class="row"><h5 style="padding-left: 45px;">{{ subscriber_count }} Subscribers</h5></div>
             {% if user.is_authenticated %}
                 <div class="row">
                     <button data-product="{{channel.id}}" 
@@ -46,23 +44,27 @@
                 <div class="box-element product">
                     <div class="row">
                         <a href="/video/{{video.id}}">
-                            <h6 style="float: left">{{video.title}}</h6>
+                            <h4 style="float: left">{{video.title}}</h4>
                         </a>
                     </div>
                     <div class="row">
                         {% if channel.profile_picture %}
-                        <img src="#" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                        <img src="{{channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                        {% else %}
+                        <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
                         {% endif %}
                         <h6>{{video.channel}}</h6>
                     </div>
-                    <div class="row">
-                        {% if video.views is not 1 %}
+                    <div class="row" style="display:contents">
+                        <div class="col-lg-6" style="display: contents;">
+                            {% if video.views is not 1 %}
                             <h6 style="float: left">{{video.views | intcomma }} views</h6>
-                        {% else %}
+                            {% else %}
                             <h6 style="float: left">{{video.views | intcomma }} view</h6>
-                        {% endif %}
+                            {% endif %}
+                        </div>
+                        <div class="col-lg-6" style="text-align: right; align-items:end; display:contents"><h6><small><strong> {{video.upload_period}}</strong></small></h6></div>
                     </div>
-                    <div class="row"><h6 style="float: right"><strong> {{video.upload_time}}</strong></h6></div>
                 </div>
             </div>
         {% empty %}
@@ -83,15 +85,20 @@
             <div style="padding-left: 10px;">
                 <div class="row">
                     <a href="/playlist/{{playlist.id}}">
-                    <h3>{{playlist.name}}</h3>
+                    <h4>{{playlist.name}}</h4>
                     </a>
-                    <h4 style="padding-left: 5px;"> - {{playlist.video_count}} videos</h4>
+                    <h5 style="padding-left: 5px;"> - {{playlist.video_count}} videos</h5>
                 </div>
                 <div class="row">
-                    <h4>{{playlist.channel}}</h4>
+                    {% if playlist.channel.profile_picture %}
+                    <img src="{{playlist.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                    {% else %}
+                    <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                    {% endif %}
+                    <h5>{{playlist.channel}}</h5>
                 </div>
                 <div class="row">
-                    <h5>{{playlist.views}} views</h5>
+                    <h6>{{playlist.views}} views</h6>
                 </div>
             </div>
         </div>
@@ -106,3 +113,5 @@
     
     
 {% endblock content %}
+
+

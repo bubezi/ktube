@@ -9,17 +9,21 @@ def home_view(request):
     
     myFilter = VideoFilter(request.GET, queryset=videos)
         
-    context = {'videos': videos, 'myFilter': myFilter}
+    context = {'videos': videos, 'myFilter': myFilter, }
         
     if request.user.is_authenticated:
-        viewer = request.user.viewer
-        context['viewer'] = viewer
-        
         try:
-            channel = Channel.objects.get(user=viewer)
-            context['channel'] = channel
-        except Channel.DoesNotExist as e:
+            viewer = request.user.viewer
+            context['viewer'] = viewer
+            try:
+                channel = Channel.objects.get(user=viewer)
+                context['channel'] = channel
+                context['no_channel'] = False
+            except Channel.DoesNotExist as e:
+                context['no_channel'] = True
+        except:
             pass
+        
                 
     return render(request, 'tube/home.html', context)
 
