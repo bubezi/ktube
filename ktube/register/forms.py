@@ -2,15 +2,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from phonenumber_field.formfields import PhoneNumberField
-from tube.models import Viewer, Channel
+from tube.models import GENDERS, Viewer, Channel
 
-GENDERS = (
-    ('select', 'SELECT'),
-    ('male','MALE'),
-    ('female', 'FEMALE'),
-    ('OTHER', 'OTHER'),
-    ('prefer not to say', 'PREFER NOT TO SAY'),
-)
 
 
 class ViewerForm(forms.ModelForm):
@@ -40,6 +33,23 @@ class ChannelForm(forms.ModelForm):
         if commit:
             channel.save()
         return channel
+    
+class ChangeChannelForm(forms.ModelForm):
+            
+    class Meta:
+        model = Channel
+        fields = ["name", "profile_picture", "about"]
+        
+    def save(self, pk, commit=True):
+        channel = Channel.objects.get(id=pk)
+        channel.name = self.cleaned_data['name']
+        channel.profile_picture = self.cleaned_data['profile_picture']
+        channel.about = self.cleaned_data['about']
+        print(channel.profile_picture, "!!!!!!!!!!!!                         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        print(channel.about, "!!!!!!!!!!!!                         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        if commit:
+            channel.save()
+        return channel
         
 
 
@@ -65,6 +75,7 @@ class UserSignUpForm(UserCreationForm, ViewerForm):
     def save(self, commit=True):
         user = super().save(commit=False)
         user.email = self.cleaned_data['email']
+        user.username = self.cleaned_data['username']
         if commit:
             user.save()
 
@@ -74,8 +85,11 @@ class UserSignUpForm(UserCreationForm, ViewerForm):
         except Viewer.DoesNotExist:
             viewer = Viewer(user=user)
 
+        viewer.username = self.cleaned_data['username']
+        viewer.email = self.cleaned_data['email']
         viewer.phone = self.cleaned_data['phone']
         viewer.gender = self.cleaned_data['gender']
+    
         
         if commit:
             viewer.save()
@@ -83,18 +97,33 @@ class UserSignUpForm(UserCreationForm, ViewerForm):
         return user
 
 
-class ChangeUserDetailsForm(forms.ModelForm):
+class ChangePhoneForm(forms.ModelForm):
     phone = PhoneNumberField(widget=forms.TextInput())
+
+    class Meta:
+        model = Viewer
+        fields = ["phone"]
+            
+    def save(self, commit=True):
+        viewer = super().save(commit=False)
+        viewer.phone = self.cleaned_data['phone']
+        if commit:
+            viewer.save()
+        return viewer
+    
+    
+class ChangeGenderForm(forms.ModelForm):
     gender = forms.ChoiceField(choices=GENDERS, widget=forms.Select())
 
     class Meta:
         model = Viewer
-        fields = ["phone", "gender"]
+        fields = ["gender"]
+        
 
     def save(self, commit=True):
         viewer = super().save(commit=False)
-        viewer.phone = self.cleaned_data['phone']
         viewer.gender = self.cleaned_data['gender']
-        if commit:
+        if commit and not viewer.gender=='select':
             viewer.save()
         return viewer
+    

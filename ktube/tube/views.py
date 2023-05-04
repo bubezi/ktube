@@ -3,6 +3,7 @@ from .models import *
 from .filters import VideoFilter
 from django.http import HttpResponse
 
+
 # Create your views here.
 def home_view(request):
     videos = Video.objects.all()
@@ -16,14 +17,16 @@ def home_view(request):
             viewer = request.user.viewer
             context['viewer'] = viewer
             try:
-                channel = Channel.objects.get(user=viewer)
-                context['channel'] = channel
+                nav_channel = Channel.objects.get(user=viewer)
+                context['nav_channel'] = nav_channel
                 context['no_channel'] = False
-            except Channel.DoesNotExist as e:
+            except Channel.DoesNotExist:
+                context['no_channel'] = True
+            except:
+                context['many_channels'] = True
                 context['no_channel'] = True
         except:
-            pass
-        
+            context['no_channel'] = True
                 
     return render(request, 'tube/home.html', context)
 
@@ -44,6 +47,23 @@ def watch_video(request, pk):
     
     context = {"video": video, "comments": comments, "comment_replies": comment_replies,
                "subscriber_count": subscriber_count}
+
+    if request.user.is_authenticated:
+        try:
+            viewer = request.user.viewer
+            context['viewer'] = viewer
+            try:
+                nav_channel = Channel.objects.get(user=viewer)
+                context['nav_channel'] = nav_channel
+                context['no_channel'] = False
+            except Channel.DoesNotExist:
+                context['no_channel'] = True
+            except:
+                context['many_channels'] = True
+                context['no_channel'] = True
+        except:
+            context['no_channel'] = True
+    
     return render(request, 'tube/watch.html', context)
 
 
@@ -59,6 +79,23 @@ def channnel_view(request, pk):
         
     context = {'channel': channel, "videos": videos, "subscriber_count": subscriber_count,
                'playlists': playlists} 
+    
+    if request.user.is_authenticated:
+        try:
+            viewer = request.user.viewer
+            context['viewer'] = viewer
+            try:
+                nav_channel = Channel.objects.get(user=viewer)
+                context['nav_channel'] = nav_channel
+                context['no_channel'] = False
+            except Channel.DoesNotExist:
+                context['no_channel'] = True
+            except:
+                context['many_channels'] = True
+                context['no_channel'] = True
+        except:
+            context['no_channel'] = True
+        
     return render(request, 'tube/channel.html', context)
 
 def playlist(request, pk):
@@ -69,4 +106,21 @@ def playlist(request, pk):
     
     videos=playlist.videos.all()
     context = {'playlist':playlist, "videos":videos}
+    
+    if request.user.is_authenticated:
+        try:
+            viewer = request.user.viewer
+            context['viewer'] = viewer
+            try:
+                nav_channel = Channel.objects.get(user=viewer)
+                context['nav_channel'] = nav_channel
+                context['no_channel'] = False
+            except Channel.DoesNotExist:
+                context['no_channel'] = True
+            except:
+                context['many_channels'] = True
+                context['no_channel'] = True
+        except:
+            context['no_channel'] = True
+        
     return render(request, 'tube/playlist.html', context)

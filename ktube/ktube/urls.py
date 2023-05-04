@@ -30,9 +30,9 @@ urlpatterns = [
     path('register', views_reg.register, name="register"),
     path('profile', views_reg.profile_page, name='profile'),
     path('create_channel/<str:pk>', views_reg.create_channel, name='create_channel'),
+    path('change_channel_details/<str:pk>', views_reg.change_channel_details, name='change_channel_details'),
     
     path('accounts/', include('django.contrib.auth.urls')),
-    # path('/', include('django.contrib.auth.urls')),
     
     path('video/<str:pk>', views.watch_video, name="watch"),
     path('channel/<str:pk>', views.channnel_view, name="channel"),
@@ -42,6 +42,6 @@ urlpatterns = [
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
-admin.site.site_header = "K TUBE Admin Panel"
+admin.site.site_header = "Admin Panel | K TUBE"
 admin.site.site_title = "K TUBE"
 admin.site.index_title = "K TUBE"

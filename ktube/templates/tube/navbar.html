@@ -24,29 +24,31 @@
 				<a class="nav-link" href="#">Library <span class="sr-only">(current)</span></a>
 			</li>
 			{% if user.is_authenticated %}
-				{% if no_channel %}
-					<li class="nav-item active">
-						<a class="nav-link" href="/create_channel/{{viewer.id}}">Create Channel <span class="sr-only">(current)</span></a>
-					</li>
+				{% if many_channels %}{% else %}
+					{% if no_channel %}
+						<li class="nav-item active">
+							<a class="nav-link" href="/create_channel/{{viewer.id}}">Create Channel <span class="sr-only">(current)</span></a>
+						</li>
 					{% else %}
 						<li class="nav-item active">
-							<a class="nav-link" href="/channel/{{channel.id}}">Your Channel<span class="sr-only">(current)</span></a>
+							<a class="nav-link" href="/channel/{{nav_channel.id}}">Your Channel<span class="sr-only">(current)</span></a>
 						</li>
+					{% endif %}
 				{% endif %}
 			{% endif %}
 
             {% if user.is_authenticated %}
 			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">{{user.username | title }}</a>
+				<a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="false" aria-expanded="false">{{user.username | title }}</a>
 				<div class="dropdown-menu">
-                    <a class="dropdown-item" href="#">Profile</a>
+                    <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
 					{% if user.is_superuser %}
 					<a class="dropdown-item" href="/admin">Admin</a>
 					{% endif %}
-					<a class="dropdown-item" href="/accounts/password_change">Change Password</a>
-					<a class="dropdown-item" href="/accounts/password_reset">Reset Password</a>
+					<a class="dropdown-item" href="{% url 'password_change' %}">Change Password</a>
+					<a class="dropdown-item" href="{% url 'password_reset' %}">Reset Password</a>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="/accounts/logout">Log Out</a>
+					<a class="dropdown-item" href="{% url 'logout' %}">Log Out</a>
 				</div>
 			</li>
             {% endif %}

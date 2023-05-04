@@ -22,10 +22,11 @@
             {% if user.is_authenticated %}
                 <div class="row">
                     <button data-product="{{channel.id}}" 
-                        data-action="dislike" 
+                        data-action="subscribe" 
                         class="btn btn-outline-secondary add-btn update-cart"
                         style="margin-left:50px;">Subscribe</button>
                 </div>
+                {% if channel == nav_channel %}<div class="row"><h6><a href="/change_channel_details/{{channel.id}}">Change Channel Details</a></h6></div>{% endif %}
             {% endif %}
         </div>
     </div>
