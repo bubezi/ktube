@@ -73,3 +73,46 @@ GOOGLE AND TODO
 ############################################################
 Username:allowme
 Password:1q2w3enininiw
+
+
+
+
+Sure, here is a complete list of all the tags and filters provided by the "humanize" app in Django:
+
+**Filters:**
+
+1. `apnumber`: Converts a number to its corresponding English ordinal word, such as "1st", "2nd", "3rd", etc.
+2. `intcomma`: Adds commas to an integer for readability, such as "1,000".
+3. `intword`: Converts an integer to a word-based representation, such as "one thousand" for 1000.
+4. `naturalday`: Converts a date to a human-readable format like "today", "tomorrow", or "yesterday".
+5. `naturaltime`: Converts a datetime to a human-readable format like "now", "1 minute ago", or "3 days, 2 hours from now".
+6. `ordinal`: Converts a number to its corresponding English ordinal word, such as "1st", "2nd", "3rd", etc.
+7. `filesizeformat`: Converts a file size to a human-readable format like "13.37 MB" or "1.21 GB".
+8. `date`: Formats a date according to a given format string.
+9. `time`: Formats a time according to a given format string.
+
+**Tags:**
+
+1. `apnumber`: Same as the `apnumber` filter.
+2. `intcomma`: Same as the `intcomma` filter.
+3. `intword`: Same as the `intword` filter.
+4. `naturalday`: Same as the `naturalday` filter.
+5. `naturaltime`: Same as the `naturaltime` filter.
+6. `ordinal`: Same as the `ordinal` filter.
+7. `filesizeformat`: Same as the `filesizeformat` filter.
+8. `date`: Same as the `date` filter.
+9. `time`: Same as the `time` filter.
+
+To use any of these tags or filters, you need to include the "humanize" app in your Django project's settings.py file and load it in your template using the `{% load humanize %}` tag. For example, to use the `naturalday` filter to display a date in a human-readable format, you can use:
+
+```
+{{ some_date|naturalday }}
+```
+
+Or you can use the `naturalday` tag in a block like this:
+
+```
+{% load humanize %}
+{% naturalday some_date as humanized_date %}
+{{ humanized_date }}
+```

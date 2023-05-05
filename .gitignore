@@ -175,3 +175,4 @@ settings.py
 ktube/static/css/bootstrap.min.css
 ktube/static/js/bootstrap.min.js
 docs pad.txt
+ktube/ktube/settings.py

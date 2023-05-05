@@ -100,31 +100,49 @@ def channnel_view(request, pk):
 
 
 def playlist(request, pk):
-    try:
-        playlist = Playlist.objects.get(id=pk)
-    except Playlist.DoesNotExist:
-        return HttpResponse('Playlist Does Not Exist! SORRYYY')
-    viewer = request.user.viewer
-    if not playlist.public:
-        if not playlist.channel.viewer == viewer: # IGNORE pylance ###########
-            return HttpResponseForbidden("This Playlist is Private")
-        else:
-            pass
-    videos=playlist.videos.all()
-    context = {'playlist':playlist, "videos":videos}
+    context = {}
     if request.user.is_authenticated:
+        try:
+            playlist = Playlist.objects.get(id=pk)
+        except Playlist.DoesNotExist:
+            return HttpResponse('Playlist Does Not Exist! SORRYYY')
+        videos=playlist.videos.filter(private=False)
         try:
             viewer = request.user.viewer
             context['viewer'] = viewer
+            if not playlist.public:
+                if not playlist.channel.user == viewer: # IGNORE pylance ###########
+                    return HttpResponseForbidden("This Playlist is Private")
+                
+            if playlist.channel.user == viewer: # IGNORE pylance ###########
+                videos=playlist.videos.all()
             try:
                 nav_channel = Channel.objects.get(user=viewer)
                 context['nav_channel'] = nav_channel
                 context['no_channel'] = False
             except Channel.DoesNotExist:
+                context['many_channels'] = False
                 context['no_channel'] = True
             except:
                 context['many_channels'] = True
                 context['no_channel'] = False
         except:
-            context['no_channel'] = True  
+            context['no_channel'] = True 
+        
+
+        context['playlist']=playlist 
+        context["videos"]  =videos
+    else:
+        try:
+            playlist = Playlist.objects.get(id=pk)
+        except Playlist.DoesNotExist:
+            return HttpResponse('Playlist Does Not Exist! SORRYYY')
+        if not playlist.public:
+            return HttpResponseForbidden("This Playlist is Private")
+
+        videos=playlist.videos.filter(private=False)
+        context['playlist']=playlist 
+        context["videos"]  =videos
+        context['many_channels'] = False
+        context['no_channel'] = True
     return render(request, 'tube/playlist.html', context)

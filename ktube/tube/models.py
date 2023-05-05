@@ -120,6 +120,10 @@ class Playlist(models.Model):
     def video_count(self):
         video_count = self.videos.count()
         return video_count
+    
+    def public_video_count(self):
+        public_video_count = self.videos.filter(private = False).count()
+        return public_video_count
         
     def upload_period(self):
         return period(self.created_on)
