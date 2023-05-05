@@ -19,6 +19,11 @@
                 <h3>{{playlist.name}}</h3><h4 style="padding-left: 7px;">- {{playlist.video_count}} videos</h4>
             </div>
             {% endif %}
+            {% if playlist.public_video_count == 1 %}
+            <div class="row"><h4 style="padding-left: 7px;">({{playlist.public_video_count}} public video)</h4></div>
+            {% else %}
+            <div class="row"><h4 style="padding-left: 7px;">({{playlist.public_video_count}} public videos)</h4></div>
+            {% endif %}
         {% else %}
             {% if playlist.public_video_count == 1 %}
             <div class="row">
@@ -46,8 +51,9 @@
                 <div class="box-element product">
                     <div class="row">
                         <a href="/video/{{video.id}}">
-                            <h6 style="float: left">{{video.title}}</h6>
-                        </a>
+                            <h6 style="float: left">{{video.title}}</h6> 
+                        </a>{% if video.private %}<h6 style="padding-left: 10px;">(private)</h6>
+                            {% elif video.unlisted %}<h6 style="padding-left: 10px;">(unlisted)</h6>{% endif %}
                     </div>
                     <a href="/channel/{{video.channel.id}}">
                         <div class="row">

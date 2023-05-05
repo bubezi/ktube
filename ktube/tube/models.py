@@ -44,6 +44,9 @@ class Channel(models.Model):
     @property
     def profilePictureURL(self):
         return self.profile_picture.url
+    
+    def public_video_count(self):
+        return self.video_set.filter(private=False, unlisted=False).count()  # type: ignore
            
     
 class Video(models.Model):
@@ -73,8 +76,7 @@ class Video(models.Model):
         return self.thumbnail.url
     
     def upload_period(self):
-        return period(self.upload_time)
-       
+        return period(self.upload_time)       
                             
                             
 class Comment(models.Model):

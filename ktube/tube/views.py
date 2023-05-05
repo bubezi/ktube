@@ -34,15 +34,15 @@ def watch_video(request, pk):
         return HttpResponseBadRequest('Video Does Not Exist! SORRYYY')
     viewer = request.user.viewer
     if video.private:
-        if not video.channel.user == viewer: # IGNORE pylance   ######################
+        if not video.channel.user == viewer: # type: ignore
             return HttpResponseForbidden('Video is private')
-    subscriber_count = video.channel.subscribers.count() # IGNORE pylance   ##################
+    subscriber_count = video.channel.subscribers.count() # type: ignore
     comments = Comment.objects.filter(video=video)
     comment_replies = CommentReply.objects.all()
-    replies_dict = comment_replies.in_bulk()
-    replies_list = []
-    for key in range(len(replies_dict)):
-        replies_list.append(replies_dict[key+1].reply) # replies here are strings
+    # replies_dict = comment_replies.in_bulk()
+    # replies_list = []
+    # for key in range(len(replies_dict)):
+    #     replies_list.append(replies_dict[key+1].reply) # replies here are strings
     context = {"video": video, "comments": comments, "comment_replies": comment_replies,
                "subscriber_count": subscriber_count}
     if request.user.is_authenticated:
@@ -55,10 +55,12 @@ def watch_video(request, pk):
                 context['no_channel'] = False
             except Channel.DoesNotExist:
                 context['no_channel'] = True
+                context['many_channels'] = False
             except:
                 context['many_channels'] = True
                 context['no_channel'] = False
         except:
+            context['many_channels'] = False
             context['no_channel'] = True
     
     return render(request, 'tube/watch.html', context)
@@ -111,10 +113,10 @@ def playlist(request, pk):
             viewer = request.user.viewer
             context['viewer'] = viewer
             if not playlist.public:
-                if not playlist.channel.user == viewer: # IGNORE pylance ###########
+                if not playlist.channel.user == viewer: # type: ignore 
                     return HttpResponseForbidden("This Playlist is Private")
                 
-            if playlist.channel.user == viewer: # IGNORE pylance ###########
+            if playlist.channel.user == viewer: # type: ignore 
                 videos=playlist.videos.all()
             try:
                 nav_channel = Channel.objects.get(user=viewer)

@@ -22,6 +22,8 @@
         <div class="col-lg-12">
             <div class="row">
                 <h6 style="font-size: 25px; float: left"><strong>{{video.title}}</strong></h6>
+                {% if video.private %}<h6 style="padding-left: 10px;">(private)</h6>
+                {% elif video.unlisted %}<h6 style="padding-left: 10px;">(unlisted)</h6>{% endif %}
             </div><div class="row">
                 {% if video.channel.profile_picture %}
                 <img src="{{video.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 30px; height: 30px;">

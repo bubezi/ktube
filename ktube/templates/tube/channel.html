@@ -34,7 +34,13 @@
 
  
     <div class="row box-element">
-        <h2>Channel videos</h2>
+        <h2>Channel videos </h2> 
+        {% if channel.public_video_count == 1 %}
+        <h4 style="margin-bottom: 0 !important; 
+        padding-left: 10px;"> - {{channel.public_video_count}} Video</h4>
+        {% else %}<h4 style="margin-bottom: 0 !important; 
+        padding-left: 10px;"> - {{channel.public_video_count}} Videos</h4>
+        {% endif %}
     </div>
     <div class="row">
         {% for video in videos %}
@@ -88,8 +94,16 @@
                     <a href="/playlist/{{playlist.id}}">
                     <h4>{{playlist.name}}</h4>
                     </a>
+                    
+                    {% if playlist.channel.user == viewer %}
                     {% if playlist.video_count == 1 %}<h5 style="padding-left: 5px;"> - {{playlist.video_count}} video</h5>
                     {% else %}<h5 style="padding-left: 5px;"> - {{playlist.video_count}} videos</h5>{% endif %}
+                    {% if playlist.public_video_count == 1 %}<h5 style="padding-left: 5px;"> ({{playlist.public_video_count}} public video)</h5>
+                    {% else %}<h5 style="padding-left: 5px;"> ({{playlist.public_video_count}} public videos)</h5>{% endif %}
+                    {% else %}
+                    {% if playlist.public_video_count == 1 %}<h5 style="padding-left: 5px;"> - {{playlist.public_video_count}} video</h5>
+                    {% else %}<h5 style="padding-left: 5px;"> - {{playlist.public_video_count}} videos</h5>{% endif %}
+                    {% endif %}
                 </div>
                 <div class="row">
                     {% if playlist.channel.profile_picture %}

@@ -1,4 +1,5 @@
 GOOGLE AND TODO
+
 [] google HUMANIze Tags
 [] Learn React
 [] UI
@@ -19,8 +20,8 @@ GOOGLE AND TODO
 [] Privacy
     [x] USER should Not be able to change other USER's details outside admin panel
     [x] USER should Not be able to create other USER'S channel
-    [] Private & Unlisted Videos
-    [] Public playlists
+    [x] Private & Unlisted Videos
+    [x] Public playlists
 
 [] Add playlist(s) page
 [] views update
@@ -42,6 +43,7 @@ GOOGLE AND TODO
 [] ABILITY for USERS to delete models
 [] ABILITY TO tag individuals in comments
 [] ABILITY TO transfer channel to another viewer
+[] Get video length
 [] Create logic
     [x] Channel
     [x] comments
