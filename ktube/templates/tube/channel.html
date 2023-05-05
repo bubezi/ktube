@@ -26,7 +26,7 @@
                         class="btn btn-outline-secondary add-btn update-cart"
                         style="margin-left:50px;">Subscribe</button>
                 </div>
-                {% if channel == nav_channel %}<div class="row"><h6><a href="/change_channel_details/{{channel.id}}">Change Channel Details</a></h6></div>{% endif %}
+                {% if viewer == channel.user %}<div class="row"><h6><a href="/change_channel_details/{{channel.id}}">Change Channel Details</a></h6></div>{% endif %}
             {% endif %}
         </div>
     </div>
@@ -88,7 +88,8 @@
                     <a href="/playlist/{{playlist.id}}">
                     <h4>{{playlist.name}}</h4>
                     </a>
-                    <h5 style="padding-left: 5px;"> - {{playlist.video_count}} videos</h5>
+                    {% if playlist.video_count == 1 %}<h5 style="padding-left: 5px;"> - {{playlist.video_count}} video</h5>
+                    {% else %}<h5 style="padding-left: 5px;"> - {{playlist.video_count}} videos</h5>{% endif %}
                 </div>
                 <div class="row">
                     {% if playlist.channel.profile_picture %}
@@ -98,9 +99,11 @@
                     {% endif %}
                     <h5>{{playlist.channel}}</h5>
                 </div>
-                <div class="row">
+                {% if playlist.views == 1 %}<div class="row">
+                    <h6>{{playlist.views}} view</h6>
+                </div>{% else %}<div class="row">
                     <h6>{{playlist.views}} views</h6>
-                </div>
+                </div>{% endif %}
             </div>
         </div>
         {% empty %}
@@ -111,8 +114,140 @@
     </div>
 
     <hr style="padding-top: 3px;">
-    
-    
+    {% if channel.about %}
+    <div class="row"><div class="col-lg-12"><h2>About</h2></div></div>
+    <div class="row"><div class="col-lg-12"><p>{{channel.about}}</p></div></div>
+    {% endif %}
+    {% if channel.website_official %}
+    <div class="row"><div class="col-lg-12"><h2>Official Website</h2></div></div>
+    <div class="row"><div class="col-lg-12"><a href="{{channel.website_official}}"><p>{{channel.website_official}}</p></a></div></div>
+    {% endif %}
+
+    {% if viewer == channel.user %}
+    <div class="row box-element">
+        <h2>Unlisted videos</h2>
+    </div>
+    <div class="row">
+        {% for video in unlisted_videos %}
+            <div class="col-lg-4">
+                <a href="/video/{{video.id}}">
+                    <img class="thumbnail" src="{{video.thumbnailURL}}" alt="">
+                </a>
+                <div class="box-element product">
+                    <div class="row">
+                        <a href="/video/{{video.id}}">
+                            <h4 style="float: left">{{video.title}}</h4>
+                        </a>
+                    </div>
+                    <div class="row">
+                        {% if channel.profile_picture %}
+                        <img src="{{channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                        {% else %}
+                        <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                        {% endif %}
+                        <h6>{{video.channel}}</h6>
+                    </div>
+                    <div class="row" style="display:contents">
+                        <div class="col-lg-6" style="display: contents;">
+                            {% if video.views is not 1 %}
+                            <h6 style="float: left">{{video.views | intcomma }} views</h6>
+                            {% else %}
+                            <h6 style="float: left">{{video.views | intcomma }} view</h6>
+                            {% endif %}
+                        </div>
+                        <div class="col-lg-6" style="text-align: right; align-items:end; display:contents"><h6><small><strong> {{video.upload_period}}</strong></small></h6></div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+        <div class="col-lg-12 box-element">
+                <h4>No Unlisted Videos</h4>
+        </div>
+        {% endfor %}
+     </div>
+    {% endif %}
+
+    {% if viewer == channel.user %}
+    <div class="row box-element">
+        <h2>Private videos</h2>
+    </div>
+    <div class="row">
+        {% for video in private_videos %}
+            <div class="col-lg-4">
+                <a href="/video/{{video.id}}">
+                    <img class="thumbnail" src="{{video.thumbnailURL}}" alt="">
+                </a>
+                <div class="box-element product">
+                    <div class="row">
+                        <a href="/video/{{video.id}}">
+                            <h4 style="float: left">{{video.title}}</h4>
+                        </a>
+                    </div>
+                    <div class="row">
+                        {% if channel.profile_picture %}
+                        <img src="{{channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                        {% else %}
+                        <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                        {% endif %}
+                        <h6>{{video.channel}}</h6>
+                    </div>
+                    <div class="row" style="display:contents">
+                        <div class="col-lg-6" style="display: contents;">
+                            {% if video.views is not 1 %}
+                            <h6 style="float: left">{{video.views | intcomma }} views</h6>
+                            {% else %}
+                            <h6 style="float: left">{{video.views | intcomma }} view</h6>
+                            {% endif %}
+                        </div>
+                        <div class="col-lg-6" style="text-align: right; align-items:end; display:contents"><h6><small><strong> {{video.upload_period}}</strong></small></h6></div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+        <div class="col-lg-12 box-element">
+                <h4>No Private Videos</h4>
+        </div>
+        {% endfor %}
+     </div>
+    {% endif %}
+
+    {% if viewer == channel.user %}
+    <div class="row box-element" style="margin-top: 10px;">
+        <h2>Private Playlists</h2>
+    </div>
+    <div class="row">
+        {% for playlist in private_playlists %}
+        <div class="col-lg-4 box-element">
+            <div style="padding-left: 10px;">
+                <div class="row">
+                    <a href="/playlist/{{playlist.id}}">
+                    <h4>{{playlist.name}}</h4>
+                    </a>
+                    {% if playlist.video_count == 1 %}<h5 style="padding-left: 5px;"> - {{playlist.video_count}} video</h5>
+                    {% else %}<h5 style="padding-left: 5px;"> - {{playlist.video_count}} videos</h5>{% endif %}
+                </div>
+                <div class="row">
+                    {% if playlist.channel.profile_picture %}
+                    <img src="{{playlist.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                    {% else %}
+                    <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                    {% endif %}
+                    <h5>{{playlist.channel}}</h5>
+                </div>
+                {% if playlist.views == 1 %}<div class="row">
+                    <h6>{{playlist.views}} view</h6>
+                </div>{% else %}<div class="row">
+                    <h6>{{playlist.views}} views</h6>
+                </div>{% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-lg-12 box-element">
+            <h4>No Private Playlists</h4>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}
 {% endblock content %}
 
 

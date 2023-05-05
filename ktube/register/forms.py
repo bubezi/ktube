@@ -16,43 +16,6 @@ class ViewerForm(forms.ModelForm):
         fields = ["phone", "gender"]
 
 
-class ChannelForm(forms.ModelForm):
-            
-    class Meta:
-        model = Channel
-        fields = ["name", "profile_picture", "about"]
-        
-    def save(self, pk, commit=True):
-        
-        user = Viewer.objects.get(id=pk)
-        channel = super().save(commit=False)
-        channel.user = user
-        channel.name = self.cleaned_data['name']
-        channel.profile_picture = self.cleaned_data['profile_picture']
-        channel.about = self.cleaned_data['about']
-        if commit:
-            channel.save()
-        return channel
-    
-class ChangeChannelForm(forms.ModelForm):
-            
-    class Meta:
-        model = Channel
-        fields = ["name", "profile_picture", "about"]
-        
-    def save(self, pk, commit=True):
-        channel = Channel.objects.get(id=pk)
-        channel.name = self.cleaned_data['name']
-        channel.profile_picture = self.cleaned_data['profile_picture']
-        channel.about = self.cleaned_data['about']
-        print(channel.profile_picture, "!!!!!!!!!!!!                         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        print(channel.about, "!!!!!!!!!!!!                         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        if commit:
-            channel.save()
-        return channel
-        
-
-
 class UserSignUpForm(UserCreationForm, ViewerForm):
     email = forms.EmailField(max_length=254, required=True, help_text='Required', widget=forms.EmailInput())
 
@@ -127,3 +90,76 @@ class ChangeGenderForm(forms.ModelForm):
             viewer.save()
         return viewer
     
+class ChannelForm(forms.ModelForm):
+            
+    class Meta:
+        model = Channel
+        fields = ["name", "profile_picture", "about"]
+        
+    def save(self, pk, commit=True):
+        
+        user = Viewer.objects.get(id=pk)
+        channel = super().save(commit=False)
+        channel.user = user
+        channel.name = self.cleaned_data['name']
+        channel.profile_picture = self.cleaned_data['profile_picture']
+        channel.about = self.cleaned_data['about']
+        if commit:
+            channel.save()
+        return channel
+
+    
+class ChangeChannelNameForm(forms.ModelForm):
+            
+    class Meta:
+        model = Channel
+        fields = ["name"]
+        
+    def save(self, pk, commit=True):
+        channel = Channel.objects.get(id=pk)
+        channel.name = self.cleaned_data['name']
+        if commit:
+            channel.save()
+        return channel
+
+    
+class ChangeChannelDPForm(forms.ModelForm):
+            
+    class Meta:
+        model = Channel
+        fields = ["profile_picture"]
+        
+    def save(self, pk, commit=True):
+        channel = Channel.objects.get(id=pk)
+        channel.profile_picture = self.cleaned_data['profile_picture']
+        if commit:
+            channel.save()
+        return channel
+        
+        
+class ChangeChannelAboutForm(forms.ModelForm):
+            
+    class Meta:
+        model = Channel
+        fields = ["about"]
+        
+    def save(self, pk, commit=True):
+        channel = Channel.objects.get(id=pk)
+        channel.about = self.cleaned_data['about']
+        if commit:
+            channel.save()
+        return channel
+        
+        
+class ChangeChannelWebsiteForm(forms.ModelForm):
+            
+    class Meta:
+        model = Channel
+        fields = ["website_official"]
+        
+    def save(self, pk, commit=True):
+        channel = Channel.objects.get(id=pk)
+        channel.website_official = self.cleaned_data['website_official']
+        if commit:
+            channel.save()
+        return channel

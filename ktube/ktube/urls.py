@@ -43,5 +43,5 @@ urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 admin.site.site_header = "Admin Panel | K TUBE"
-admin.site.site_title = "K TUBE"
-admin.site.index_title = "K TUBE"
+admin.site.site_title = "Admin | K TUBE"
+admin.site.index_title = "Adminstration | K TUBE"

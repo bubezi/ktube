@@ -22,7 +22,7 @@ SECRET_KEY = env("SECRET_KEY")
 ALLOWED_HOSTS = ['ktube.pythonanywhere.com']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # # Database
 # # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -50,6 +50,7 @@ DEBUG = True
 # ALLOWED_HOSTS = ['192.168.87.137', '127.0.0.1']
 
 # DEBUG = True
+
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

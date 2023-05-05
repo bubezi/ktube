@@ -1,8 +1,8 @@
 {% extends 'tube/base.html'%}
 {% load crispy_forms_filters %}
+{% load static %}
 
-{% block title %}Change Channel Details | K Tube{% endblock title%}
-{% load crispy_forms_tags %}
+{% block title %}{{channel.name}} | Change Channel Details | K Tube{% endblock title%}
 
 {% block content %}
 
@@ -11,13 +11,48 @@
             <p>{{ errors }}</p>
         </div>
     {% endif %}
+    <div class="container d-flex justify-content-center mt-5" style="width: 350px !important; margin-top: 0 !important;">
 
-    <div class="row">
-    <form method="POST" class="form-group" style="text-align: center; margin: auto" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <button type="submit" class="btn btn-success">Change Channel Details</button>
-    </form>
+        <div class="card" style="width: 350px !important; height: 750px;">
+            <div class="row" style="display: block;"><h4>{{channel.name}}</h4></div>
+            <div class="row">
+                <form method="POST" class="form-group" style="text-align: center; margin: auto" id="my-form" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button data-action="my-form" type="submit" class="btn btn-success">Update Channel Name</button>
+                </form>
+            </div>
+            <div class="row" style="display: block;">
+                {% if channel.profile_picture %}
+                    <img src="{{channel.profilePictureURL}}" class="channel-icon img-fluid profile-image" alt="" style="width: 70px; height: 70px; margin-right:0;">
+                {% else %}
+                    <img src="{% static 'images/placeholder.png' %}" class="img-fluid profile-image" alt="" style="width: 70px; height: 70px;">
+                {% endif %}
+            </div>
+            <div class="row">
+                <form method="POST" class="form-group" style="text-align: center; margin: auto" id="my-form2" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form2|crispy }}
+                    <button data-action="my-form2" type="submit" class="btn btn-success">Update Profile Picture</button>
+                </form>
+            </div>
+            <div class="row" style="display: block;"><h4>{{channel.about }}</h4></div>
+            <div class="row">
+                <form method="POST" class="form-group" style="text-align: center; margin: auto" id="my-form3" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form3|crispy }}
+                    <button data-action="my-form3" type="submit" class="btn btn-success">Update About</button>
+                </form>
+            </div>
+            <div class="row" style="display: block;"><a href="{{channel.website_official }}"><h4>{{channel.website_official }}</h4></a></div>
+            <div class="row">
+                <form  method="POST" class="form-group" style="text-align: center; margin: auto" id="my-form4" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form4|crispy }}
+                    <button data-action="my-form4" type="submit" class="btn btn-success">Update Website</button>
+                </form>
+            </div>
+        </div>
     </div>
 
 
