@@ -17,13 +17,13 @@ GOOGLE AND TODO
 [x] Add DP
 [x] Profile Page
 [x] fix Change Channel details form
-[] Privacy
+[x] Privacy
     [x] USER should Not be able to change other USER's details outside admin panel
     [x] USER should Not be able to create other USER'S channel
     [x] Private & Unlisted Videos
     [x] Public playlists
-
-[] Like and Sub
+[] Sub
+[] Like
 [] Liked Videos
 [] Add playlist(s) page
     [x] Watch Later ** Possibly Created after Viewer is created
