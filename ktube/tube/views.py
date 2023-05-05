@@ -1,7 +1,7 @@
-from django.shortcuts import render
-from .models import *
-from .filters import VideoFilter
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
+from django.shortcuts import render, redirect
+from .filters import VideoFilter
+from .models import *
 
 
 # Create your views here.
@@ -148,3 +148,35 @@ def playlist(request, pk):
         context['many_channels'] = False
         context['no_channel'] = True
     return render(request, 'tube/playlist.html', context)
+
+
+def watchlater(request, pk):
+    context = {}
+    try:
+        watchlater = Watchlater.objects.get(id=pk)
+    except Watchlater.DoesNotExist as e:
+        return HttpResponseBadRequest(e)
+    if request.user.is_authenticated:
+        videos = watchlater.videos.all()
+        context['videos']=videos
+        try:
+            viewer = request.user.viewer
+            context['viewer'] = viewer
+            if not viewer == watchlater.viewer:
+                return HttpResponseForbidden('You have no access to This Watch later playlist')        
+            try:
+                nav_channel = Channel.objects.get(id=pk)
+                context['nav_channel'] = nav_channel
+                context['no_channel'] = False
+                context['many_channels'] = False
+            except Channel.DoesNotExist:
+                context['no_channel'] = True
+            except:
+                context['many_channels'] = True
+                context['no_channel'] = False
+        except:
+            context['no_channel'] = True      
+        context['watchlater'] = watchlater
+        return render(request, 'tube/watchlater.html', context)
+    else:
+        return redirect('login')

@@ -23,16 +23,22 @@ GOOGLE AND TODO
     [x] Private & Unlisted Videos
     [x] Public playlists
 
+[] Like and Sub
+[] Liked Videos
 [] Add playlist(s) page
+    [x] Watch Later ** Possibly Created after Viewer is created
+    [] Libary 
+        [] Watch Later
+        [] History
+        [] Saved Playlists
+        [] Liked Videos
 [] views update
 [] add upload pages
     [] Video Upload
     [x] add signup page
     [] Create playlist
-[] Like and Sub
 [] Edit Check Errors Function and make a loop function from a conditional one
 [] History
-[] Liked Videos
 [] Change like and dislike buttons
 [] video SHORTCUTS
 [] FIX comments

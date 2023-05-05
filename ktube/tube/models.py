@@ -129,3 +129,29 @@ class Playlist(models.Model):
         
     def upload_period(self):
         return period(self.created_on)
+    
+class Watchlater(models.Model):
+    viewer = models.OneToOneField(Viewer, null=True, on_delete=models.CASCADE)
+    videos = models.ManyToManyField(Video, related_name='watch_later', blank=True)
+    public = False
+    created_on = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        if self.viewer.username: # type: ignore
+            name =  '(' + self.viewer.username + ')'  # type: ignore
+        else:
+            name = ''
+        return "My watch later " +  name  
+    
+    def video_count(self):
+        video_count = self.videos.count()
+        return video_count
+    
+    def public_video_count(self):
+        public_video_count = self.videos.filter(private = False).count()
+        return public_video_count
+        
+    def upload_period(self):
+        return period(self.created_on)
+    
+    

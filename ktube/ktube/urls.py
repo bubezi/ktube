@@ -37,6 +37,7 @@ urlpatterns = [
     path('video/<str:pk>', views.watch_video, name="watch"),
     path('channel/<str:pk>', views.channnel_view, name="channel"),
     path('playlist/<str:pk>', views.playlist, name="playlist"),
+    path('watchlater/<str:pk>', views.watchlater, name="watchlater"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

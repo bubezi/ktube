@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from phonenumber_field.formfields import PhoneNumberField
-from tube.models import GENDERS, Viewer, Channel
+from tube.models import GENDERS, Viewer, Channel, Watchlater
 
 
 
@@ -14,9 +14,16 @@ class ViewerForm(forms.ModelForm):
     class Meta:
         model = Viewer
         fields = ["phone", "gender"]
+        
+
+class WatchlaterForm(forms.ModelForm):
+    
+    class Meta:
+        model = Watchlater
+        fields = ("viewer",)
 
 
-class UserSignUpForm(UserCreationForm, ViewerForm):
+class UserSignUpForm(UserCreationForm, WatchlaterForm, ViewerForm):
     email = forms.EmailField(max_length=254, required=True, help_text='Required', widget=forms.EmailInput())
 
     class Meta:
@@ -41,21 +48,30 @@ class UserSignUpForm(UserCreationForm, ViewerForm):
         user.username = self.cleaned_data['username']
         if commit:
             user.save()
+        
 
         # Check if a viewer object already exists for the user
         try:
             viewer = user.viewer
         except Viewer.DoesNotExist:
             viewer = Viewer(user=user)
+            
+        # Check if a watchlater object already exists for the user
+        try:
+            watchlater = viewer.watchlater # type: ignore
+        except Watchlater.DoesNotExist:
+            watchlater = Watchlater(viewer=viewer)
 
         viewer.username = self.cleaned_data['username']
         viewer.email = self.cleaned_data['email']
         viewer.phone = self.cleaned_data['phone']
         viewer.gender = self.cleaned_data['gender']
+        
     
         
         if commit:
             viewer.save()
+            watchlater.save()
 
         return user
 

@@ -1,7 +1,7 @@
 from .forms import UserSignUpForm, ChangePhoneForm, ChangeGenderForm, ChangeChannelNameForm, ChangeChannelDPForm, ChangeChannelAboutForm, ChangeChannelWebsiteForm, ChannelForm
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
-from tube.models import Viewer, Channel
+from tube.models import Viewer, Channel, Watchlater
 from .myFunctions import check_errors
 from django.http import HttpResponseForbidden, HttpResponseBadRequest
 
@@ -40,7 +40,8 @@ def bye_page(request):
 def profile_page(request):        
     if request.user.is_authenticated:
         viewer = request.user.viewer
-        context={'viewer': viewer, 'many_channels': False}
+        watchlater = Watchlater.objects.get(viewer=viewer)
+        context={'viewer': viewer, 'many_channels': False, "watchlater" : watchlater}
         try:
             channel = Channel.objects.get(user=viewer)
             context['channel']=channel
