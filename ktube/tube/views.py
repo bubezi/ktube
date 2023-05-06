@@ -32,10 +32,7 @@ def watch_video(request, pk):
         video = Video.objects.get(id=pk)
     except Video.DoesNotExist:
         return HttpResponseBadRequest('Video Does Not Exist! SORRYYY')
-    viewer = request.user.viewer
-    if video.private:
-        if not video.channel.user == viewer: # type: ignore
-            return HttpResponseForbidden('Video is private')
+
     subscriber_count = video.channel.subscribers.count() # type: ignore
     comments = Comment.objects.filter(video=video)
     comment_replies = CommentReply.objects.all()
@@ -45,6 +42,19 @@ def watch_video(request, pk):
     #     replies_list.append(replies_dict[key+1].reply) # replies here are strings
     context = {"video": video, "comments": comments, "comment_replies": comment_replies,
                "subscriber_count": subscriber_count}
+    
+        
+    if video.private:
+        if request.user.is_authenticated:
+            try:
+                viewer = request.user.viewer
+                if not video.channel.user == viewer: # type: ignore
+                    return HttpResponseForbidden('Video is private')
+            except:
+                return HttpResponseForbidden('Video is private')
+        else:
+            return HttpResponseForbidden('Video is private')
+                
     if request.user.is_authenticated:
         try:
             viewer = request.user.viewer
