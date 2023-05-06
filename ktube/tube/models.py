@@ -58,9 +58,9 @@ class Video(models.Model):
     channel = models.ForeignKey(Channel, null=True, on_delete=models.CASCADE)
     private = models.BooleanField(default=False)
     unlisted = models.BooleanField(default=False)
-    likes = models.BigIntegerField(default=0)
-    dislikes = models.BigIntegerField(default=0)
-    views = models.BigIntegerField(default=0)
+    likes = models.PositiveBigIntegerField(default=0)
+    dislikes = models.PositiveBigIntegerField(default=0)
+    views = models.PositiveBigIntegerField(default=0)
     path = models.URLField(max_length=150, null=True, blank=True, unique=True)
     
     def __str__(self):
@@ -83,8 +83,8 @@ class Comment(models.Model):
     comment_text = models.TextField(max_length=500, null=True)
     video = models.ForeignKey(Video, null=True, on_delete=models.CASCADE)
     channel = models.ForeignKey(Channel, null=True, on_delete=models.DO_NOTHING)
-    likes = models.BigIntegerField(default=0)
-    dislikes = models.BigIntegerField(default=0)
+    likes = models.PositiveBigIntegerField(default=0)
+    dislikes = models.PositiveBigIntegerField(default=0)
     commmented_on = models.DateTimeField(auto_now_add=True)
         
     def __str__(self):
@@ -98,8 +98,8 @@ class CommentReply(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     reply = models.TextField(max_length=500, null=True)
     channel = models.ForeignKey(Channel, null=True, on_delete=models.DO_NOTHING)
-    likes = models.BigIntegerField(default=0)
-    dislikes = models.BigIntegerField(default=0)
+    likes = models.PositiveBigIntegerField(default=0)
+    dislikes = models.PositiveBigIntegerField(default=0)
     replied_on = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
@@ -112,7 +112,7 @@ class Playlist(models.Model):
     name = models.CharField(max_length=150, blank=False, null=False, default="Playlist")
     channel = models.ForeignKey(Channel, on_delete=models.CASCADE)
     videos = models.ManyToManyField(Video, related_name='playlists', blank=True)
-    views = models.BigIntegerField(default=0)
+    views = models.PositiveBigIntegerField(default=0)
     public = models.BooleanField(default=False)
     created_on = models.DateTimeField(auto_now_add=True)
 
