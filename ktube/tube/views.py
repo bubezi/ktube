@@ -59,6 +59,8 @@ def watch_video(request, pk):
         try:
             viewer = request.user.viewer
             context['viewer'] = viewer
+            if video.channel.subscribers.contains(viewer): # type: ignore
+                context['subscribed']=True
             try:
                 nav_channel = Channel.objects.get(user=viewer)
                 context['nav_channel'] = nav_channel
@@ -90,6 +92,8 @@ def channnel_view(request, pk):
         try:
             viewer = request.user.viewer
             context['viewer'] = viewer
+            if channel.subscribers.contains(viewer):
+                context['subscribed']=True
             try:
                 nav_channel = Channel.objects.get(id=pk)
                 context['nav_channel'] = nav_channel
@@ -102,6 +106,7 @@ def channnel_view(request, pk):
                 context['private_playlists'] = private_playlists
                 context['many_channels'] = False
             except Channel.DoesNotExist:
+                context['many_channels'] = False
                 context['no_channel'] = True
             except:
                 context['many_channels'] = True
@@ -180,6 +185,7 @@ def watchlater(request, pk):
                 context['no_channel'] = False
                 context['many_channels'] = False
             except Channel.DoesNotExist:
+                context['many_channels'] = False
                 context['no_channel'] = True
             except:
                 context['many_channels'] = True
@@ -188,5 +194,81 @@ def watchlater(request, pk):
             context['no_channel'] = True      
         context['watchlater'] = watchlater
         return render(request, 'tube/watchlater.html', context)
+    else:
+        return redirect('login')
+    
+    
+def subsribe_from_channel(request, pk):
+    if request.user.is_authenticated:
+        try:
+            channel = Channel.objects.get(id=pk)
+            try:
+                viewer = request.user.viewer
+                if channel.user == viewer: # type: ignore
+                    return HttpResponseForbidden('You cannot subscribe to your own channel')
+                else:
+                    channel.subscribers.add(viewer)
+                    return redirect(f'/channel/{pk}')
+            except:
+                return redirect('login')
+        except Channel.DoesNotExist:
+            return HttpResponseBadRequest('Channel Does Not Exist')
+    else:
+        return redirect('login')
+ 
+    
+def subsribe_from_video(request, video, pk):
+    if request.user.is_authenticated:
+        try:
+            channel = Channel.objects.get(id=pk)
+            try:
+                viewer = request.user.viewer
+                if channel.user == viewer: # type: ignore
+                    return HttpResponseForbidden('You cannot subscribe to your own channel')
+                else:
+                    channel.subscribers.add(viewer)
+                    return redirect(f'/video/{video}')
+            except:
+                return redirect('login')
+        except Channel.DoesNotExist:
+            return HttpResponseBadRequest('Channel Does Not Exist')
+    else:
+        return redirect('login')
+    
+
+def unsubsribe_from_channel(request, pk):
+    if request.user.is_authenticated:
+        try:
+            channel = Channel.objects.get(id=pk)
+            try:
+                viewer = request.user.viewer
+                if channel.user == viewer: # type: ignore
+                    return HttpResponseForbidden('You cannot subscribe to your own channel')
+                else:
+                    channel.subscribers.remove(viewer)
+                    return redirect(f'/channel/{pk}')
+            except:
+                return redirect('login')
+        except Channel.DoesNotExist:
+            return HttpResponseBadRequest('Channel Does Not Exist')
+    else:
+        return redirect('login')
+ 
+    
+def unsubsribe_from_video(request, video, pk):
+    if request.user.is_authenticated:
+        try:
+            channel = Channel.objects.get(id=pk)
+            try:
+                viewer = request.user.viewer
+                if channel.user == viewer: # type: ignore
+                    return HttpResponseForbidden('You cannot subscribe to your own channel')
+                else:
+                    channel.subscribers.remove(viewer)
+                    return redirect(f'/video/{video}')
+            except:
+                return redirect('login')
+        except Channel.DoesNotExist:
+            return HttpResponseBadRequest('Channel Does Not Exist')
     else:
         return redirect('login')

@@ -35,6 +35,31 @@
                 </a>
                 <h5 style="padding-left: 10px;">- {{ subscriber_count }} Subscribers</h5>
             </div>
+            {% if user.is_authenticated %}
+                <div class="row">
+                    {% if not subscribed %}
+                    <a href="/subscribev/{{video.id}}/{{video.channel.id}}">
+                        <button 
+                        class="btn btn-outline-secondary add-btn update-cart"
+                        style="margin-left:50px;">Subscribe</button>
+                    </a>
+                    {% else %}
+                    <a href="/unsubscribev/{{video.id}}/{{video.channel.id}}">
+                        <button 
+                        class="btn btn-outline-secondary add-btn update-cart"
+                        style="margin-left:50px;">unsubscribe</button>
+                    </a>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="row">
+                    <a href="{% url 'login' %}">
+                        <button
+                        class="btn btn-outline-secondary add-btn update-cart"
+                        style="margin-left:50px;">Subscribe</button>
+                    </a>
+                </div>
+            {% endif %}
             <div class="row">
                 {% if video.views is not 1 %}
                     <h6 style="font-size: 18px; float: left"><strong> {{video.views | intcomma }} views</strong></h6>

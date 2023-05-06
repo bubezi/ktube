@@ -34,10 +34,14 @@ urlpatterns = [
     
     path('accounts/', include('django.contrib.auth.urls')),
     
-    path('video/<str:pk>', views.watch_video, name="watch"),
-    path('channel/<str:pk>', views.channnel_view, name="channel"),
-    path('playlist/<str:pk>', views.playlist, name="playlist"),
-    path('watchlater/<str:pk>', views.watchlater, name="watchlater"),
+    path('video/<str:pk>', views.watch_video),
+    path('channel/<str:pk>', views.channnel_view),
+    path('playlist/<str:pk>', views.playlist),
+    path('watchlater/<str:pk>', views.watchlater),
+    path('subscribec/<str:pk>', views.subsribe_from_channel),
+    path('subscribev/<str:video>/<str:pk>', views.subsribe_from_video),
+    path('unsubscribec/<str:pk>', views.unsubsribe_from_channel),
+    path('unsubscribev/<str:video>/<str:pk>', views.unsubsribe_from_video),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

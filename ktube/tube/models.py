@@ -36,7 +36,7 @@ class Channel(models.Model):
     profile_picture = models.ImageField(null=True, blank=True)
     about = models.CharField(max_length=300, null=True, blank=True)
     subscribers = models.ManyToManyField(Viewer, related_name="Subscribed_viewers", blank=True)
-    website_official = models.URLField(max_length=150, null=True)
+    website_official = models.URLField(max_length=150, null=True, blank=True)
     
     def __str__(self):
         return self.name
@@ -142,6 +142,10 @@ class Watchlater(models.Model):
         else:
             name = ''
         return "My watch later " +  name  
+    
+    
+    # def __str__(self):
+    #     return "My watch later "  
     
     def video_count(self):
         video_count = self.videos.count()

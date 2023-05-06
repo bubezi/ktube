@@ -25,7 +25,7 @@
             {% endif %}
 
             
-            <a href="/viewer/{{watchlater.viewer.id}}"><div class="row"><h4>{{watchlater.viewer.username}}</h4></div></a>
+            <a href="{% url 'profile' %}"><div class="row"><h4>{{watchlater.viewer.username}}</h4></div></a>
             {% if watchlater.views == 1 %}<div class="row"><h4>{{watchlater.views}} View</h4></div>
             {% else %}<div class="row"><h4>{{watchlater.views}} Views</h4></div>{% endif %}
         </div>
@@ -57,7 +57,7 @@
             </div>
             {% empty %}
         <div class="col-lg-12 box-element">
-                <h4>Empty watchlater</h4>
+                <h4>Empty</h4>
         </div>
         {% endfor %}
     </div>

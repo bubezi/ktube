@@ -2,6 +2,11 @@ GOOGLE AND TODO
 
 [] google HUMANIze Tags
 [] Learn React
+[] Video.Js
+[] Better Place holder
+[] Django video View count
+[] Does Django use websockets
+[] Optional url additions /url/<str:pk>
 [] UI
     [] Make everything beautiful
     [] responsiveness 
@@ -23,6 +28,8 @@ GOOGLE AND TODO
     [x] Private & Unlisted Videos
     [x] Public playlists
 [] Sub
+    [] return to last video time after sub from video redirect
+[] Return to specific page after login redirect
 [] Like
 [] Liked Videos
 [] Add playlist(s) page
@@ -32,7 +39,7 @@ GOOGLE AND TODO
         [] History
         [] Saved Playlists
         [] Liked Videos
-[] views update
+[] video views update
 [] add upload pages
     [] Video Upload
     [x] add signup page
