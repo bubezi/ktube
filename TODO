@@ -6,7 +6,15 @@ GOOGLE AND TODO
 [] Better Place holder
 [] Django video View count
 [] Does Django use websockets
+[] Add page Loader
+[] Dynamic login redirect
+    [] Chat GPT Prompt
+        I am making a django youtube clone and I need the user to add a subscriber with a button. 
+        That is, having the Viewer Model added to the channel model's subscribers ManyToManyField
+        without having to handle using a new view function.
+        The same for like and deslike buttons
 [] Optional url additions /url/<str:pk>
+[] return to last video time after sub from video redirect
 [] UI
     [] Make everything beautiful
     [] responsiveness 
@@ -27,9 +35,7 @@ GOOGLE AND TODO
     [x] USER should Not be able to create other USER'S channel
     [x] Private & Unlisted Videos
     [x] Public playlists
-[] Sub
-    [] return to last video time after sub from video redirect
-[] Return to specific page after login redirect
+[x] Sub
 [] Like
 [] Liked Videos
 [] Add playlist(s) page
@@ -48,6 +54,7 @@ GOOGLE AND TODO
 [] History
 [] Change like and dislike buttons
 [] video SHORTCUTS
+[] Return to specific page after subscribe login redirect
 [] FIX comments
 [] PLAY ALL BUTTON FOR Playlists
 [] COVER PHOTO FOR CHANNELS
