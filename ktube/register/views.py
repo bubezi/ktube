@@ -2,7 +2,7 @@ from .forms import UserSignUpForm, ChangePhoneForm, ChangeGenderForm, ChangeChan
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 from tube.models import Viewer, Channel, Watchlater
-from .myFunctions import check_errors
+from .utils import check_errors
 from django.http import HttpResponseForbidden, HttpResponseBadRequest
 
 

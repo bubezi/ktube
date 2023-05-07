@@ -1,4 +1,5 @@
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from .filters import VideoFilter
 from .models import *
@@ -16,6 +17,7 @@ def home_view(request):
             try:
                 nav_channel = Channel.objects.get(user=viewer)
                 context['nav_channel'] = nav_channel
+                context['channel'] = nav_channel
                 context['no_channel'] = False
             except Channel.DoesNotExist:
                 context['no_channel'] = True
@@ -31,29 +33,34 @@ def watch_video(request, pk):
     try:
         video = Video.objects.get(id=pk)
     except Video.DoesNotExist:
-        return HttpResponseBadRequest('Video Does Not Exist! SORRYYY')
-
-    subscriber_count = video.channel.subscribers.count() # type: ignore
-    comments = Comment.objects.filter(video=video)
-    comment_replies = CommentReply.objects.all()
-    # replies_dict = comment_replies.in_bulk()
-    # replies_list = []
-    # for key in range(len(replies_dict)):
-    #     replies_list.append(replies_dict[key+1].reply) # replies here are strings
-    context = {"video": video, "comments": comments, "comment_replies": comment_replies,
-               "subscriber_count": subscriber_count}
+        return HttpResponseBadRequest('<h1>404 Not Found</h1><h3>Video Does Not Exist! SORRYYY</h3>')  
     
-        
     if video.private:
         if request.user.is_authenticated:
             try:
                 viewer = request.user.viewer
                 if not video.channel.user == viewer: # type: ignore
-                    return HttpResponseForbidden('Video is private')
+                    return HttpResponseForbidden('<h1>Forbidden</h1><h4>Video is private</h4>')
             except:
-                return HttpResponseForbidden('Video is private')
+                return HttpResponseForbidden('<h1>Forbidden</h1><h4>Video is private</h4>')
         else:
-            return HttpResponseForbidden('Video is private')
+            return HttpResponseForbidden('<h1>Forbidden</h1><h4>Video is private</h4>')  
+
+    subscriber_count = video.channel.subscribers.count() # type: ignore
+    comments = Comment.objects.filter(video=video)
+    comment_replies = CommentReply.objects.all()
+    
+    paginator = Paginator(comments, 10) # 10 comments per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    # replies_dict = comment_replies.in_bulk()
+    # replies_list = []
+    # for key in range(len(replies_dict)):
+    #     replies_list.append(replies_dict[key+1].reply) # replies here are strings
+    context = {"video": video, "comments": page_obj, "comment_replies": comment_replies,
+               "subscriber_count": subscriber_count}
+    
                 
     if request.user.is_authenticated:
         try:
@@ -82,7 +89,7 @@ def channnel_view(request, pk):
     try:    
         channel = Channel.objects.get(id=pk)
     except Channel.DoesNotExist:
-        return HttpResponse('Channel Does Not Exist! SORRYYY')  
+        return HttpResponse('<h1>404 Not Found</h1><h4>Channel Does Not Exist! SORRYYY</h4>')  
     videos = Video.objects.filter(channel=channel, unlisted=False, private=False)
     subscriber_count = channel.subscribers.count()
     playlists = Playlist.objects.filter(channel=channel, public=True) 
@@ -95,7 +102,7 @@ def channnel_view(request, pk):
             if channel.subscribers.contains(viewer):
                 context['subscribed']=True
             try:
-                nav_channel = Channel.objects.get(id=pk)
+                nav_channel = Channel.objects.get(user=viewer)
                 context['nav_channel'] = nav_channel
                 context['no_channel'] = False
                 unlisted_videos = Video.objects.filter(channel=channel, unlisted=True)
@@ -122,14 +129,14 @@ def playlist(request, pk):
         try:
             playlist = Playlist.objects.get(id=pk)
         except Playlist.DoesNotExist:
-            return HttpResponse('Playlist Does Not Exist! SORRYYY')
+            return HttpResponse('<h1>404 Not Found</h1><h4>Playlist Does Not Exist! SORRYYY</h4>')
         videos=playlist.videos.filter(private=False)
         try:
             viewer = request.user.viewer
             context['viewer'] = viewer
             if not playlist.public:
                 if not playlist.channel.user == viewer: # type: ignore 
-                    return HttpResponseForbidden("This Playlist is Private")
+                    return HttpResponseForbidden("<h1>Forbidden</h1><h4>Playlist is private</h4>")
                 
             if playlist.channel.user == viewer: # type: ignore 
                 videos=playlist.videos.all()
@@ -153,9 +160,9 @@ def playlist(request, pk):
         try:
             playlist = Playlist.objects.get(id=pk)
         except Playlist.DoesNotExist:
-            return HttpResponse('Playlist Does Not Exist! SORRYYY')
+            return HttpResponse('<h1>404 Not Found</h1><h4>Playlist Does Not Exist! SORRYYY</h4>')
         if not playlist.public:
-            return HttpResponseForbidden("This Playlist is Private")
+            return HttpResponseForbidden("<h1>Forbidden</h1><h4>Playlist is private</h4>")
 
         videos=playlist.videos.filter(private=False)
         context['playlist']=playlist 
@@ -166,21 +173,21 @@ def playlist(request, pk):
 
 
 def watchlater(request, pk):
-    context = {}
-    try:
-        watchlater = Watchlater.objects.get(id=pk)
-    except Watchlater.DoesNotExist as e:
-        return HttpResponseBadRequest(e)
     if request.user.is_authenticated:
+        context = {}
+        try:
+            watchlater = Watchlater.objects.get(id=pk)
+        except Watchlater.DoesNotExist as e:
+            return HttpResponseBadRequest(e)
         videos = watchlater.videos.all()
         context['videos']=videos
         try:
             viewer = request.user.viewer
             context['viewer'] = viewer
             if not viewer == watchlater.viewer:
-                return HttpResponseForbidden('You have no access to This Watch later playlist')        
+                return HttpResponseForbidden('<h1>Forbidden</h1><h4>You have no access to This Watch later playlist</h4>')        
             try:
-                nav_channel = Channel.objects.get(id=pk)
+                nav_channel = Channel.objects.get(user=viewer)
                 context['nav_channel'] = nav_channel
                 context['no_channel'] = False
                 context['many_channels'] = False
@@ -205,14 +212,14 @@ def subsribe_from_channel(request, pk):
             try:
                 viewer = request.user.viewer
                 if channel.user == viewer: # type: ignore
-                    return HttpResponseForbidden('You cannot subscribe to your own channel')
+                    return HttpResponseForbidden('<h1>Forbidden</h1><h4>You cannot subscribe to your own channel</h4>')
                 else:
                     channel.subscribers.add(viewer)
                     return redirect(f'/channel/{pk}')
             except:
                 return redirect('login')
         except Channel.DoesNotExist:
-            return HttpResponseBadRequest('Channel Does Not Exist')
+            return HttpResponseBadRequest('<h1>404 Not Found</h1><h4>Channel Does Not Exist</h4>')
     else:
         return redirect('login')
  
@@ -224,14 +231,14 @@ def subsribe_from_video(request, video, pk):
             try:
                 viewer = request.user.viewer
                 if channel.user == viewer: # type: ignore
-                    return HttpResponseForbidden('You cannot subscribe to your own channel')
+                    return HttpResponseForbidden('<h1>Forbidden</h1><h4>You cannot subscribe to your own channel</h4>')
                 else:
                     channel.subscribers.add(viewer)
                     return redirect(f'/video/{video}')
             except:
                 return redirect('login')
         except Channel.DoesNotExist:
-            return HttpResponseBadRequest('Channel Does Not Exist')
+            return HttpResponseBadRequest('<h1>Forbidden</h1><h4>Channel Does Not Exist</h4>')
     else:
         return redirect('login')
     
@@ -243,14 +250,14 @@ def unsubsribe_from_channel(request, pk):
             try:
                 viewer = request.user.viewer
                 if channel.user == viewer: # type: ignore
-                    return HttpResponseForbidden('You cannot subscribe to your own channel')
+                    return HttpResponseForbidden('<h1>Forbidden</h1><h4>You cannot subscribe to your own channel</h4>')
                 else:
                     channel.subscribers.remove(viewer)
                     return redirect(f'/channel/{pk}')
             except:
                 return redirect('login')
         except Channel.DoesNotExist:
-            return HttpResponseBadRequest('Channel Does Not Exist')
+            return HttpResponseBadRequest('<h1>Forbidden</h1><h4>Channel Does Not Exist</h4>')
     else:
         return redirect('login')
  
@@ -262,13 +269,13 @@ def unsubsribe_from_video(request, video, pk):
             try:
                 viewer = request.user.viewer
                 if channel.user == viewer: # type: ignore
-                    return HttpResponseForbidden('You cannot subscribe to your own channel')
+                    return HttpResponseForbidden('<h1>Forbidden</h1><h4>You cannot subscribe to your own channel</h4>')
                 else:
                     channel.subscribers.remove(viewer)
                     return redirect(f'/video/{video}')
             except:
                 return redirect('login')
         except Channel.DoesNotExist:
-            return HttpResponseBadRequest('Channel Does Not Exist')
+            return HttpResponseBadRequest('<h1>404 Not Found</h1><h4>Channel Does Not Exist</h4>')
     else:
         return redirect('login')

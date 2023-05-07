@@ -1,9 +1,10 @@
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import User
-from django.utils import timezone
 from django.db import models
 
-from register.myFunctions import period
+from register.utils import period
+# from tube.utils import WebPImageField
+from django_resized import ResizedImageField
 
 GENDERS = (
     ('select', 'SELECT'),
@@ -33,7 +34,7 @@ class Viewer(models.Model):
 class Channel(models.Model):
     user = models.ForeignKey(Viewer, on_delete=models.CASCADE)
     name = models.CharField(max_length=150, null=True, unique=True)
-    profile_picture = models.ImageField(null=True, blank=True)
+    profile_picture = ResizedImageField(quality=50, force_format="WEBP", null=True, blank=True)
     about = models.CharField(max_length=300, null=True, blank=True)
     subscribers = models.ManyToManyField(Viewer, related_name="Subscribed_viewers", blank=True)
     website_official = models.URLField(max_length=150, null=True, blank=True)
@@ -52,7 +53,8 @@ class Channel(models.Model):
 class Video(models.Model):
     title = models.CharField(max_length=150, blank=False, null=True)
     video = models.FileField(blank=False, null=True)
-    thumbnail = models.ImageField(null=True, blank=False)
+    thumbnail = ResizedImageField(quality=75, force_format="WEBP", null=True, blank=False)
+            # = ResizedImageField(size=[300, 300], quality=75, force_format="WEBP", upload_to="images/")
     description = models.TextField(max_length=10000, null=True, blank=True)
     upload_time = models.DateTimeField(auto_now_add=True)
     channel = models.ForeignKey(Channel, null=True, on_delete=models.CASCADE)
