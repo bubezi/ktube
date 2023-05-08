@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from register.utils import period
-# from tube.utils import WebPImageField
 from django_resized import ResizedImageField
 
 GENDERS = (
@@ -53,8 +52,7 @@ class Channel(models.Model):
 class Video(models.Model):
     title = models.CharField(max_length=150, blank=False, null=True)
     video = models.FileField(blank=False, null=True)
-    thumbnail = ResizedImageField(quality=75, force_format="WEBP", null=True, blank=False)
-            # = ResizedImageField(size=[300, 300], quality=75, force_format="WEBP", upload_to="images/")
+    thumbnail = ResizedImageField(quality=75, force_format="WEBP", null=True, blank=False) # ResizedImageField(size=[300, 300], quality=75, force_format="WEBP", upload_to="images/")
     description = models.TextField(max_length=10000, null=True, blank=True)
     upload_time = models.DateTimeField(auto_now_add=True)
     channel = models.ForeignKey(Channel, null=True, on_delete=models.CASCADE)
@@ -70,8 +68,7 @@ class Video(models.Model):
     
     @property
     def videoURL(self):
-        url = self.video.url
-        return url
+        return self.video.url
     
     @property
     def thumbnailURL(self):
@@ -122,12 +119,10 @@ class Playlist(models.Model):
         return self.name
     
     def video_count(self):
-        video_count = self.videos.count()
-        return video_count
+        return self.videos.count()
     
     def public_video_count(self):
-        public_video_count = self.videos.filter(private = False).count()
-        return public_video_count
+        return self.videos.filter(private = False).count()
         
     def upload_period(self):
         return period(self.created_on)
@@ -150,14 +145,11 @@ class Watchlater(models.Model):
     #     return "My watch later "  
     
     def video_count(self):
-        video_count = self.videos.count()
-        return video_count
+        return self.videos.count()
     
     def public_video_count(self):
-        public_video_count = self.videos.filter(private = False).count()
-        return public_video_count
+        return self.videos.filter(private = False).count()
         
     def upload_period(self):
-        return period(self.created_on)
-    
+        return period(self.created_on) 
     

@@ -19,7 +19,7 @@ GOOGLE AND TODO
     [] Make everything beautiful
     [] responsiveness 
         [] Google Chrome Lighthouse (target 100%)
-            [] How to convert images to WebP and AVIF from PNG or JPEG
+            [x] How to convert images to WebP and AVIF from PNG or JPEG
             [] Types for video upload
         [] RWA
     [] Possibly with react
