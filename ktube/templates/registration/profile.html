@@ -98,22 +98,16 @@
             </div>
         </div></div>
         <div class="col-lg-12">
-            <h2>Watch Later</h2>
+            <a href="/watchlater/{{watchlater.id}}">
+            <h2>{{watchlater}}</h2>
+            </a>
             <div style="padding-left: 10px;">
                 <div class="row">
                     <div class="col-lg-12">
-                        <a href="/watchlater/{{watchlater.id}}">
-                        <h4>{{watchlater}}</h4>
-                        </a>
                         {% if watchlater.video_count == 1 %}
-                        <h5 style="padding-left: 5px;"> - {{watchlater.video_count}} video</h5>
+                        <h5 style="padding-left: 5px;"> {{watchlater.video_count}} video</h5>
                         {% else %}
-                        <h5 style="padding-left: 5px;"> - {{watchlater.video_count}} videos</h5>
-                        {% endif %}
-                        {% if watchlater.public_video_count == 1 %}
-                        <h5 style="padding-left: 5px;"> ({{watchlater.public_video_count}} public video)</h5>
-                        {% else %}
-                        <h5 style="padding-left: 5px;"> ({{watchlater.public_video_count}} public videos)</h5>
+                        <h5 style="padding-left: 5px;"> {{watchlater.video_count}} videos</h5>
                         {% endif %}
                     </div>
                 </div>

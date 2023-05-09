@@ -8,12 +8,31 @@
     {% include 'tube/navbar.html' %}
 
     <!-- ##################     Video Player        #############-->
-        <video
+         {% comment %} <video
 
         controls
         autoplay="true" 
-        class="video" id="currentVideo" src="{{video.videoURL}}"></video>
-		
+        class="video" id="currentVideo" src="{{video.videoURL}}"></video> {% endcomment %}
+
+        <video
+        id="my-video"
+        class="video-js video"
+        controls
+        preload="auto"
+        autoplay
+        poster="{{video.thumbnailURL}}"
+        data-setup="{}"
+    >
+        <source src="{{video.videoURL}}" type="video/mp4" />
+        {% comment %} <source src="MY_VIDEO.webm" type="video/webm" /> {% endcomment %}
+        <p class="vjs-no-js">
+        To view this video please enable JavaScript, and consider upgrading to a
+        web browser that
+        <a href="" target="_blank"
+            >supports HTML5 video</a
+        >
+        </p>
+        </video>
 
         
 <div class="container" style="background: linear-gradient(Grey, whitesmoke)!important;">       

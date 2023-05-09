@@ -134,15 +134,7 @@ class Watchlater(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        if self.viewer.username: # type: ignore
-            name =  '(' + self.viewer.username + ')'  # type: ignore
-        else:
-            name = ''
-        return "My watch later " +  name  
-    
-    
-    # def __str__(self):
-    #     return "My watch later "  
+        return "My watchlater"  
     
     def video_count(self):
         return self.videos.count()

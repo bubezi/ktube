@@ -25,6 +25,13 @@ GOOGLE AND TODO
     [] Possibly with react
 [] Google Authentication
 
+#######################################
+Pre Hosting shit
+    [] Your browser does not support the video tag
+    [] python manage.py check ****
+        [] python manage.py check --deploy
+        [] ****
+    [] 
 
 ##############################################################
 [x] Add DP

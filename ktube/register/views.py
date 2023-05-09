@@ -40,7 +40,11 @@ def bye_page(request):
 def profile_page(request):        
     if request.user.is_authenticated:
         viewer = request.user.viewer
-        watchlater = Watchlater.objects.get(viewer=viewer)
+        try:
+            watchlater = Watchlater.objects.get(viewer=viewer)
+        except Watchlater.DoesNotExist:
+            watchlater = Watchlater(viewer=viewer)
+            watchlater.save()
         context={'viewer': viewer, 'many_channels': False, "watchlater" : watchlater}
         try:
             channel = Channel.objects.get(user=viewer)
