@@ -129,12 +129,49 @@ class Playlist(models.Model):
     
 class Watchlater(models.Model):
     viewer = models.OneToOneField(Viewer, null=True, on_delete=models.CASCADE)
-    videos = models.ManyToManyField(Video, related_name='watch_later', blank=True)
+    videos = models.ManyToManyField(Video, related_name='watch_later', blank=True) # type: ignore
     public = False
     created_on = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return "My watchlater"  
+    
+    def video_count(self):
+        return self.videos.count()
+    
+    def public_video_count(self):
+        return self.videos.filter(private = False).count()
+        
+    def upload_period(self):
+        return period(self.created_on) 
+    
+class LikedVideos(models.Model):
+    viewer = models.OneToOneField(Viewer, null=True, blank=True, on_delete=models.CASCADE)
+    videos = models.ManyToManyField(Video, related_name='liked_videos', blank=True)
+    public = False
+    created_on = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return "My Liked Videos"  
+    
+    def video_count(self):
+        return self.videos.count()
+    
+    def public_video_count(self):
+        return self.videos.filter(private = False).count()
+        
+    def upload_period(self):
+        return period(self.created_on) 
+  
+    
+class DisLikedVideos(models.Model):
+    viewer = models.OneToOneField(Viewer, null=True, blank=True, on_delete=models.CASCADE)
+    videos = models.ManyToManyField(Video, related_name='disliked_videos', blank=True)
+    public = False
+    created_on = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return "My DisLiked Videos"  
     
     def video_count(self):
         return self.videos.count()

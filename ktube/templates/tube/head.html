@@ -8,9 +8,9 @@
     <meta name="description" content="Shows That Are Just You">
 
     <meta charset="UTF-8">
- 	<meta name="keywords" content="Shows, Videos, Music, Documentaries" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="robots" content="index,follow">
+	<meta name="keywords" content="Shows, Videos, Music, Documentaries" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
 	
 
@@ -27,48 +27,46 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'css/home.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/tube.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
-	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 	<script type="text/javascript" src="{% static 'js/main.js' %}"></script>
-	<script type="text/javascript" src="{% static 'js/watch.js' %}"></script>
-	<script type="text/javascript" src="{% static 'js/jquery-3.6.4.min.js' %}"></script>
-	
-	<link rel="stylesheet" href="{% static 'css/loader.css' %}">
-	<link href="https://vjs.zencdn.net/8.3.0/video-js.css" rel="stylesheet" />
 	
 	
-	<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
-	<script src="{% static 'video.js/core.js' %}"></script>
-	<script src="{% static 'video.js/dist/video.js' %}"></script>
-	<script src="{% static 'video.js/dist/video.min.js' %}"></script>
-	<script src="{% static 'video.js/dist/video.min.js' %}"></script>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
 	
-	<link rel="stylesheet" href="{% static 'video.js/dist/video-js.css' %}">
-	<link rel="stylesheet" href="{% static 'video.js/dist/video-js.min.css' %}">
 	
 	<style>
-	
+		{% block style %}
+		
+		{% endblock style %}
 	</style>
 	
 </head>
 
+
 <body  style="background: linear-gradient(#4A6DA7, whitesmoke) !important;">
-	{% include 'tube/loader.html' %}
-    {% block bigbody %}
-
+	{% include 'loaders/loader0.html' %}
+	{% block bigbody %}
+	
     {% endblock bigbody %}
-	<script src="https://vjs.zencdn.net/8.3.0/video.min.js"></script>
-	<script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
-
-	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+	
+	
+	
+	
+	<script type="text/javascript" src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+	
+	
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+	
+	
 	<script type="text/javascript">
 		window.addEventListener('load', function() {
 			document.getElementById('loader').style.display = 'none';
-		  });
+		});
 	</script>
+	
 </body>
 
 </html>

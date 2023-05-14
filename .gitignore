@@ -3,7 +3,7 @@ media/
 .vscode/
 staticfiles/
 node_modules/
-
+video.js/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -171,4 +171,3 @@ cython_debug/
 ktube/static/css/bootstrap.css
 ktube/static/css/bootstrap.min.css
 ktube/static/js/bootstrap.min.js
-

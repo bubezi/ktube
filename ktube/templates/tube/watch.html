@@ -8,31 +8,11 @@
     {% include 'tube/navbar.html' %}
 
     <!-- ##################     Video Player        #############-->
-         {% comment %} <video
+        <video
 
         controls
         autoplay="true" 
-        class="video" id="currentVideo" src="{{video.videoURL}}"></video> {% endcomment %}
-
-        <video
-        id="my-video"
-        class="video-js video"
-        controls
-        preload="auto"
-        autoplay
-        poster="{{video.thumbnailURL}}"
-        data-setup="{}"
-    >
-        <source src="{{video.videoURL}}" type="video/mp4" />
-        {% comment %} <source src="MY_VIDEO.webm" type="video/webm" /> {% endcomment %}
-        <p class="vjs-no-js">
-        To view this video please enable JavaScript, and consider upgrading to a
-        web browser that
-        <a href="" target="_blank"
-            >supports HTML5 video</a
-        >
-        </p>
-        </video>
+        class="video" id="currentVideo" src="{{video.videoURL}}"></video>
 
         
 <div class="container" style="background: linear-gradient(Grey, whitesmoke)!important;">       
@@ -52,33 +32,63 @@
                 <a href="/channel/{{video.channel.id}}">
                     <h6 style="font-size: 20px;"><strong>{{video.channel}}</strong></h6>
                 </a>
-                <h5 style="padding-left: 10px;">- {{ subscriber_count }} Subscribers</h5>
+                <h5 style="padding-left: 10px;">-</h5>
+                {% if subscriber_count == 1 %}<h5 id='subscriber-count' style="padding-left: 10px;">{{ subscriber_count }} Subscriber</h5>{% else %}
+                <h5 id='subscriber-count' style="padding-left: 10px;">{{ subscriber_count }} Subscribers</h5>
+                {% endif %}
             </div>
+
+    <!-- ####################         Subscribe Button FUNCTIONALITY     #########################-->
             {% if user.is_authenticated %}
-                <div class="row">
+            <div class="row">
+                {% if viewer == video.channel.user %}
+                    <div class="row"><h6><a href="/edit_channel/{{video.channel.id}}"><button 
+                        class="btn btn-outline-secondary add-btn update-cart"
+                        style="margin-left:40px;">Edit Channel</button></a></h6></div>                
+                {% else %}
                     {% if not subscribed %}
-                    <a href="/subscribev/{{video.id}}/{{video.channel.id}}">
-                        <button 
-                        class="btn btn-outline-secondary add-btn update-cart"
-                        style="margin-left:50px;">Subscribe</button>
-                    </a>
+                        <form id="subscribe-form" method="POST" style="display: block;">
+                            {% csrf_token %}
+                            <input type="hidden" name="channel_id" value="{{video.channel.id}}">
+                            <button class="btn btn-outline-secondary add-btn update-cart"
+                            style="margin-left:50px;" type="submit" id="subscribe-button">Subscribe</button>
+                        </form>
+                        <form id="unsubscribe-form" method="POST" style="display: none;">
+                            {% csrf_token %}
+                            <input type="hidden" name="channel_id" value="{{video.channel.id}}">
+                            <button class="btn btn-outline-secondary add-btn update-cart"
+                            style="margin-left: 50px;"  type="submit" id="unsubscribe-button">Unsubscribe</button>
+                        </form> 
                     {% else %}
-                    <a href="/unsubscribev/{{video.id}}/{{video.channel.id}}">
-                        <button 
-                        class="btn btn-outline-secondary add-btn update-cart"
-                        style="margin-left:50px;">unsubscribe</button>
-                    </a>
+                        <form id="subscribe-form" method="POST" style="display: none;">
+                            {% csrf_token %}
+                            <input type="hidden" name="channel_id" value="{{video.channel.id}}">
+                            <button class="btn btn-outline-secondary add-btn update-cart"
+                            style="margin-left:50px;" type="submit" id="subscribe-button">Subscribe</button>
+                        </form>
+                        <form id="unsubscribe-form" method="POST" style="display: block;">
+                            {% csrf_token %}
+                            <input type="hidden" name="channel_id" value="{{video.channel.id}}">
+                            <button class="btn btn-outline-secondary add-btn update-cart"
+                            style="margin-left: 50px;"  type="submit" id="unsubscribe-button">Unsubscribe</button>
+                        </form>                 
                     {% endif %}
-                </div>
+                {% endif %}
+            </div>
             {% else %}
-                <div class="row">
-                    <a href="{% url 'login' %}" target="_blank">
-                        <button
-                        class="btn btn-outline-secondary add-btn update-cart"
-                        style="margin-left:50px;">Subscribe</button>
-                    </a>
-                </div>
+            <div class="row">
+                <a href="{% url 'login' %}" target="_blank">
+                    <button
+                    class="btn btn-outline-secondary add-btn update-cart"
+                    style="margin-left:50px;">Subscribe</button>
+                </a>
+            </div>
             {% endif %}
+
+
+
+
+            <!-- #############          Views        ##############-->
             <div class="row">
                 {% if video.views is not 1 %}
                     <h6 style="font-size: 18px; float: left"><strong> {{video.views | intcomma }} views</strong></h6>
@@ -98,30 +108,90 @@
 
             <div class="row">
                 {% if video.likes is not 1 %}
-                    <h6 style="font-size: 18px; float: left"><strong> {{video.likes | intcomma}} likes</strong></h6>
+                    <strong><h6 id="likes-count" style="font-size: 18px; float: left">{{video.likes | intcomma}} likes</h6></strong> 
                 {% else %}
-                    <h6 style="font-size: 18px; float: left"><strong> {{video.likes | intcomma}} like</strong></h6>
+                    <strong><h6 id="likes-count" style="font-size: 18px; float: left">{{video.likes | intcomma}} like</h6></strong> 
                 {% endif %}
                 {% if video.dislikes is not 1 %}
-                    <h6 style="font-size: 18px; margin-left:5px; float: left"><strong> {{video.dislikes | intcomma}} dislikes</strong></h6>
+                    <strong><h6 id="dislikes-count" style="font-size: 18px; margin-left:5px; float: left">{{video.dislikes | intcomma}} Dislikes</h6></strong>
                 {% else %}
-                    <h6 style="font-size: 18px; margin-left:5px; float: left"><strong> {{video.dislikes | intcomma}} dislike</strong></h6>
+                    <strong><h6 id="dislikes-count" style="font-size: 18px; margin-left:5px; float: left">{{video.dislikes | intcomma}} Dislike</h6></strong>
                 {% endif %}
             </div>
+
+
+
 
     <!-- ##### Like and Dislike buttons ###### -->
 
             {% if user.is_authenticated %}
-                <div class="row">
-                    <button data-product="{{video.id}}" 
-                        data-action="like" 
-                        class="btn btn-outline-secondary add-btn update-cart"
-                        style="margin-left:0px;">Like</button>
-                    <button data-product="{{video.id}}" 
-                        data-action="dislike" 
-                        class="btn btn-outline-secondary add-btn update-cart"
-                        style="margin-left:30px;">Dislike</button>
+                <div class="row"> 
+                    {% if liked %}
+                    <form id="unlike-form" method="POST" style="display: block;">
+                        {% csrf_token %}
+                        <input type="hidden" name="video_id" value="{{video.id}}">
+                        <button class="btn btn-outline-secondary add-btn update-cart"
+                        style="margin-left:0px;" type="submit" id="unlike-button">Unlike</button>
+                    </form>
+                    <form id="like-form" method="POST" style="display: none;">
+                        {% csrf_token %}
+                        <input type="hidden" name="video_id" value="{{video.id}}">
+                        <button class="btn btn-outline-secondary add-btn update-cart"
+                        style="margin-left:0px;" type="submit" id="like-button">Like</button>
+                    </form>
+                    {% else %}
+                    <form id="unlike-form" method="POST" style="display: none;">
+                        {% csrf_token %}
+                        <input type="hidden" name="video_id" value="{{video.id}}">
+                        <button class="btn btn-outline-secondary add-btn update-cart"
+                        style="margin-left:0px;" type="submit" id="unlike-button">Unlike</button>
+                    </form>
+                    <form id="like-form" method="POST" style="display: block;">
+                        {% csrf_token %}
+                        <input type="hidden" name="video_id" value="{{video.id}}">
+                        <button class="btn btn-outline-secondary add-btn update-cart"
+                        style="margin-left:0px;" type="submit" id="like-button">Like</button>
+                    </form>
+                    {% endif %}
+                    {% if disliked %}
+                    <form id="undislike-form" method="POST" style="display: block;">
+                        {% csrf_token %}
+                        <input type="hidden" name="video_id" value="{{video.id}}">
+                        <button class="btn btn-outline-secondary add-btn update-cart"
+                        style="margin-left:0px;" type="submit" id="undislike-button">Undislike</button>
+                    </form>
+                    <form id="dislike-form" method="POST" style="display: none;">
+                        {% csrf_token %}
+                        <input type="hidden" name="video_id" value="{{video.id}}">
+                        <button class="btn btn-outline-secondary add-btn update-cart"
+                        style="margin-left:0px;" type="submit" id="dislike-button">Dislike</button>
+                    </form>
+                    {% else %}
+                    <form id="undislike-form" method="POST" style="display: none;">
+                        {% csrf_token %}
+                        <input type="hidden" name="video_id" value="{{video.id}}">
+                        <button class="btn btn-outline-secondary add-btn update-cart"
+                        style="margin-left:0px;" type="submit" id="undislike-button">Undislike</button>
+                    </form>
+                    <form id="dislike-form" method="POST" style="display: block;">
+                        {% csrf_token %}
+                        <input type="hidden" name="video_id" value="{{video.id}}">
+                        <button class="btn btn-outline-secondary add-btn update-cart"
+                        style="margin-left:0px;" type="submit" id="dislike-button">Dislike</button>
+                    </form>
+                    {% endif %}
                 </div>
+            {% else %}
+            <div class="row">
+                <a href="{% url 'login' %}" target="_blank">
+                    <button class="btn btn-outline-secondary add-btn update-cart"
+                    style="margin-left:0px;">Like</button>
+                </a>
+                <a href="{% url 'login' %}" target="_blank">
+                    <button class="btn btn-outline-secondary add-btn update-cart"
+                    style="margin-left:0px;">Dislike</button>
+                </a>
+            </div>
             {% endif %}
             </div>
     </div>
@@ -257,20 +327,213 @@
     {% endif %}
 </div>
 </div>
+<script type="text/javascript" src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
+
+<script type="text/javascript" src="{% static 'js/watch.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+<!-- Jquery and Ajax -->
+<script>
+    function toggleItem(id, toggle) {
+        let element = document.getElementById(id);
+        element.style.display = (toggle) ? 'block' : 'none';
+    };
+
+    function handleSubscribe(event) {
+        event.preventDefault(); 
+        $.ajax({
+            type: 'POST',
+            url: '{% url "subscribe" %}',
+            data: $('#subscribe-form').serialize(),
+            success: (response)=> {
+                if (response.subscribed) {
+                //$('#subscribe-button').text('Subscribed');
+                toggleItem('subscribe-form', false);
+                toggleItem('unsubscribe-form', true);
+                } else {
+                //$('#subscribe-button').text('Subscribe');
+                }
+                if (response.subscriber_count===1) {
+                $('#subscriber-count').text(response.subscriber_count + " Subscriber");
+                } else {
+                $('#subscriber-count').text(response.subscriber_count + " Subscribers");
+                }
+            },
+            error: (response)=>{
+                alert(response.error)
+            }
+        });
+    };
+    $('#subscribe-form').submit(handleSubscribe);
+    
+    function handleUnSubscribe(event) {
+        event.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "unsubscribe" %}',
+            data: $('#unsubscribe-form').serialize(),
+            success: (response)=> {
+                if (response.unsubscribed) {
+                //$('#unsubscribe-button').text('Unsubscribed');
+                toggleItem('subscribe-form', true);
+                toggleItem('unsubscribe-form', false);
+                } else {
+                //$('#unsubscribe-button').text('Unsubscribe');
+                }
+                if (response.subscriber_count===1) {
+                $('#subscriber-count').text(response.subscriber_count + " Subscriber");
+                } else {
+                $('#subscriber-count').text(response.subscriber_count + " Subscribers");
+                }
+            },
+            error: (response)=>{
+                alert(response.error)
+            }
+        });
+    };
+    $('#unsubscribe-form').submit(handleUnSubscribe);
+
+    function handleLike(event) {
+        event.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "like" %}',
+            data: $('#like-form').serialize(),
+            success: (response)=> {
+                console.log(response);
+                if (response.liked) {
+                $('#like-button').text('Liked');
+                toggleItem('like-form', false);
+                toggleItem('unlike-form', true);
+                } else {
+                $('#like-button').text('Like');
+                }
+                if (response.likes_count===1) {
+                $('#likes-count').text(response.likes_count + " Like");
+                } else {
+                $('#likes-count').text(response.likes_count + " Likes");
+                }
+            },
+            error: (response)=>{
+                alert(response.error)
+            }
+        });
+    };
+    $('#like-form').submit(handleLike);
+
+    function handleDisLike(event) {
+        event.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "dislike" %}',
+            data: $('#dislike-form').serialize(),
+            success: (response)=> {
+                if (response.disliked) {
+                $('#dislike-button').text('Disliked');
+                toggleItem('dislike-form', false);
+                toggleItem('undislike-form', true);
+                } else {
+                $('#dislike-button').text('Dislike');
+                }
+                if (response.dislikes_count===1) {
+                $('#dislikes-count').text(response.dislikes_count + " Dislike");
+                } else {
+                $('#dislikes-count').text(response.dislikes_count + " Dislikes");
+                }
+            },
+            error: (response)=>{
+                alert(response.error)
+            }
+        });
+    };
+    $('#dislike-form').submit(handleDisLike);
+      
+    function handleUnLike(event) {
+        event.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "unlike" %}',
+            data: $('#unlike-form').serialize(),
+            success: (response)=> {
+                if (response.liked) {
+                $('#unlike-button').text('Unlike');
+                } else {
+                $('#unlike-button').text('Unliked');
+                toggleItem('unlike-form', false);
+                toggleItem('like-form', true);
+                }
+                if (response.dislikes_count===1) {
+                $('#likes-count').text(response.likes_count + " Like");
+                } else {
+                $('#likes-count').text(response.likes_count + " Likes");
+                }
+            },
+            error: (response)=>{
+                alert(response.error)
+            }
+        });
+    };
+    $('#unlike-form').submit(handleUnLike);
+      
+    function handleUnDisLike(event) {
+        event.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "undislike" %}',
+            data: $('#undislike-form').serialize(),
+            success: (response)=> {
+                if (response.disliked) {
+                $('#undislike-button').text('Undislike');
+                } else {
+                $('#undislike-button').text('Undisliked');
+                toggleItem('undislike-form', false);
+                toggleItem('dislike-form', true);
+                }
+                if (response.dislikes_count===1) {
+                $('#dislikes-count').text(response.dislikes_count + " Dislike");
+                } else {
+                $('#dislikes-count').text(response.dislikes_count + " Dislikes");
+                }
+            },
+            error: (response)=>{
+                alert(response.error)
+            }
+        });
+    };
+    $('#undislike-form').submit(handleUnDisLike);
+
+    $(document).ready(() => {
+        function fetchSubscriberCount() {
+            $.ajax({
+              type: 'GET',
+              url: "/get_subs/{{video.channel.id}}",
+              success: (response) => {
+                if (response.subscriber_count === 1) {
+                  $('#subscriber-count').text(response.subscriber_count + " Subscriber");
+                } else {
+                  $('#subscriber-count').text(response.subscriber_count + " Subscribers");
+                }
+              },
+              complete: () => {
+                setTimeout(fetchSubscriberCount, 10000); // Call the function again after 10 second(s)
+              }
+            });
+          }
+        
+          fetchSubscriberCount(); // Initial call to start fetching subscriber count        
+    });
+
+
+    addEventListener('offline', () => {
+        alert('You are offline\nPlease get connected to continue watching');
+      });
+      
+      addEventListener('online', () => {
+        alert('You are now online!');
+      });
+</script>
+
     {% include 'tube/footer.html' %}
     {% endblock bigbody %}
-    <script>
-        addEventListener('offline', () => {
-            alert('You are offline\nPlease get connected to continue watching')
-          })
-          
-          addEventListener('online', () => {
-            alert('You are now online!')
-          })
-    </script>
-	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-</body>
 
-</html>

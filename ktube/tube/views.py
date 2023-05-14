@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest, JsonResponse
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from .filters import VideoFilter
@@ -68,6 +68,18 @@ def watch_video(request, pk):
             context['viewer'] = viewer
             if video.channel.subscribers.contains(viewer): # type: ignore
                 context['subscribed']=True
+            try:
+                likes = LikedVideos.objects.get(viewer=viewer)
+                dislikes = DisLikedVideos.objects.get(viewer=viewer)
+            except:
+                likes = LikedVideos(viewer=viewer)
+                dislikes = DisLikedVideos(viewer=viewer)
+                likes.save()
+                dislikes.save()
+            if likes.videos.contains(video):
+                context['liked'] = True
+            if dislikes.videos.contains(video):
+                context['disliked'] = True
             try:
                 nav_channel = Channel.objects.get(user=viewer)
                 context['nav_channel'] = nav_channel
@@ -203,79 +215,164 @@ def watchlater(request, pk):
         return render(request, 'tube/watchlater.html', context)
     else:
         return redirect('login')
+ 
     
-    
-def subsribe_from_channel(request, pk):
+def subscribe(request):
     if request.user.is_authenticated:
-        try:
-            channel = Channel.objects.get(id=pk)
+        if request.method=='POST':
             try:
+                pk = request.POST['channel_id']
+                channel = Channel.objects.get(id=pk)
                 viewer = request.user.viewer
-                if channel.user == viewer: # type: ignore
-                    return HttpResponseForbidden('<h1>Forbidden</h1><h4>You cannot subscribe to your own channel</h4>')
+                if channel.user == viewer: 
+                    return JsonResponse({'success': False, 'error': 'You cannot subscribe to your own channel.'})
                 else:
-                    channel.subscribers.add(viewer)
-                    return redirect(f'/channel/{pk}')
+                    channel.subscribers.add(viewer) # type: ignore
+                    subscriber_count = channel.subscribers.count() # type: ignore
+                    return JsonResponse({'success': True, 'subscribed': True,'subscriber_count':subscriber_count})
+            except Channel.DoesNotExist:
+                return JsonResponse({'success': False, 'error': 'Channel does not exist.'})
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login')
+    
+def unsubscribe(request):
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            try:
+                pk = request.POST['channel_id']
+                channel = Channel.objects.get(id=pk)
+                viewer = request.user.viewer
+                if channel.user == viewer: 
+                    return JsonResponse({'success': False, 'error': 'You cannot unsubscribe from your own channel.'})
+                else:
+                    channel.subscribers.remove(viewer) # type: ignore
+                    subscriber_count = channel.subscribers.count() # type: ignore
+                    return JsonResponse({'success': True, 'unsubscribed': True,'subscriber_count': subscriber_count})
+            except Channel.DoesNotExist:
+                return JsonResponse({'success': False, 'error': 'Channel does not exist.'})
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login')
+    
+def like(request):
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            try:
+                pk = request.POST['video_id']
+                video = Video.objects.get(id=pk)
+                viewer = request.user.viewer
+                try:
+                    liked_videos = LikedVideos.objects.get(viewer=viewer)
+                except LikedVideos.DoesNotExist:
+                    liked_videos = LikedVideos(viewer=viewer)
+                    liked_videos.save()
+                if liked_videos.videos.contains(video): 
+                    return JsonResponse({'success':True, 'liked':True, 'likes_count': video.likes})
+                else:
+                    video.likes += 1
+                    liked_videos.videos.add(video)
+                    video.save()
+                    return JsonResponse({'success': True, 'liked':True, 'likes_count': video.likes}) 
             except:
-                return redirect('login')
-        except Channel.DoesNotExist:
-            return HttpResponseBadRequest('<h1>404 Not Found</h1><h4>Channel Does Not Exist</h4>')
+                return JsonResponse({'success':False})
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login') 
+  
+    
+def unlike(request):
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            try:
+                pk = request.POST['video_id']
+                video = Video.objects.get(id=pk)
+                viewer = request.user.viewer
+                try:
+                    liked_videos = LikedVideos.objects.get(viewer=viewer)
+                except LikedVideos.DoesNotExist:
+                    liked_videos = LikedVideos(viewer=viewer)
+                    liked_videos.save()
+                if not liked_videos.videos.contains(video): # type: ignore
+                    return JsonResponse({'success':True, 'liked':False, 'likes_count': video.likes})
+                else:
+                    video.likes -= 1
+                    liked_videos.videos.remove(video)
+                    video.save()
+                    return JsonResponse({'success': True, 'liked':False, 'likes_count': video.likes}) 
+            except:
+                return JsonResponse({'success':False})
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login') 
+ 
+    
+def dislike(request):
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            try:
+                pk = request.POST['video_id']
+                video = Video.objects.get(id=pk)
+                viewer = request.user.viewer
+                try:
+                    disliked_videos = DisLikedVideos.objects.get(viewer=viewer)
+                except DisLikedVideos.DoesNotExist:
+                    disliked_videos = DisLikedVideos(viewer=viewer)
+                    disliked_videos.save()
+                if disliked_videos.videos.contains(video): # type: ignore
+                    return JsonResponse({'success':True, 'disliked':True, 'dislikes_count': video.dislikes})
+                else:
+                    video.dislikes += 1
+                    disliked_videos.videos.add(video)
+                    video.save()
+                    return JsonResponse({'success': True, 'disliked':True, 'dislikes_count': video.dislikes}) 
+            except:
+                return JsonResponse({'success':False})
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login') 
+ 
+    
+def undislike(request):
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            try:
+                pk = request.POST['video_id']
+                video = Video.objects.get(id=pk)
+                viewer = request.user.viewer
+                try:
+                    disliked_videos = DisLikedVideos.objects.get(viewer=viewer)
+                except DisLikedVideos.DoesNotExist:
+                    disliked_videos = DisLikedVideos(viewer=viewer)
+                    disliked_videos.save()
+                if not disliked_videos.videos.contains(video): # type: ignore
+                    return JsonResponse({'success':True, 'disliked':False, 'dislikes_count': video.dislikes})
+                else:
+                    video.dislikes -= 1
+                    disliked_videos.videos.remove(video)
+                    video.save()
+                    return JsonResponse({'success': True, 'disliked':False, 'dislikes_count': video.dislikes}) 
+            except:
+                return JsonResponse({'success':False})
+        else:
+            return HttpResponse('No POST in request')
     else:
         return redirect('login')
  
-    
-def subsribe_from_video(request, video, pk):
-    if request.user.is_authenticated:
-        try:
-            channel = Channel.objects.get(id=pk)
-            try:
-                viewer = request.user.viewer
-                if channel.user == viewer: # type: ignore
-                    return HttpResponseForbidden('<h1>Forbidden</h1><h4>You cannot subscribe to your own channel</h4>')
-                else:
-                    channel.subscribers.add(viewer)
-                    return redirect(f'/video/{video}')
-            except:
-                return redirect('login')
-        except Channel.DoesNotExist:
-            return HttpResponseBadRequest('<h1>Forbidden</h1><h4>Channel Does Not Exist</h4>')
-    else:
-        return redirect('login')
-    
+ 
+def all_viewers(request):
+    return render(request, 'tube/ajax_test.html')
 
-def unsubsribe_from_channel(request, pk):
-    if request.user.is_authenticated:
-        try:
-            channel = Channel.objects.get(id=pk)
-            try:
-                viewer = request.user.viewer
-                if channel.user == viewer: # type: ignore
-                    return HttpResponseForbidden('<h1>Forbidden</h1><h4>You cannot subscribe to your own channel</h4>')
-                else:
-                    channel.subscribers.remove(viewer)
-                    return redirect(f'/channel/{pk}')
-            except:
-                return redirect('login')
-        except Channel.DoesNotExist:
-            return HttpResponseBadRequest('<h1>Forbidden</h1><h4>Channel Does Not Exist</h4>')
-    else:
-        return redirect('login')
- 
-    
-def unsubsribe_from_video(request, video, pk):
-    if request.user.is_authenticated:
-        try:
-            channel = Channel.objects.get(id=pk)
-            try:
-                viewer = request.user.viewer
-                if channel.user == viewer: # type: ignore
-                    return HttpResponseForbidden('<h1>Forbidden</h1><h4>You cannot subscribe to your own channel</h4>')
-                else:
-                    channel.subscribers.remove(viewer)
-                    return redirect(f'/video/{video}')
-            except:
-                return redirect('login')
-        except Channel.DoesNotExist:
-            return HttpResponseBadRequest('<h1>404 Not Found</h1><h4>Channel Does Not Exist</h4>')
-    else:
-        return redirect('login')
+def get_viewers(request):
+    viewers = Viewer.objects.all()
+    return JsonResponse({'viewers':list(viewers.values())})
+
+def get_subs(request, pk):
+    channel = Channel.objects.get(id=pk)
+    subscriber_count = channel.subscribers.count()
+    return JsonResponse({"subscriber_count":subscriber_count})

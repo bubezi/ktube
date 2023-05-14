@@ -1,12 +1,16 @@
 GOOGLE AND TODO
 
 [x] google HUMANIze Tags
+[]  
+    [] If yes change the get subscribers interval accordingly
+[] Not Found: /robots.txt
+[] UPDATE Favivons
 [] Learn React
 [] Video.Js
 [] Better Place holder
 [] Django video View count
 [] Does Django use websockets
-[] Add page Loader
+[x] Add page Loader
 [] Dynamic login redirect
     [] Chat GPT Prompt
         I am making a django youtube clone and I need the user to add a subscriber with a button. 
@@ -43,6 +47,9 @@ Pre Hosting shit
     [x] Private & Unlisted Videos
     [x] Public playlists
 [x] Sub
+[x] Organise Templates and views
+    [x] Script and css declarations
+    [x] include and tags
 [] Like
 [] Liked Videos
 [] Add playlist(s) page
@@ -52,15 +59,15 @@ Pre Hosting shit
         [] History
         [] Saved Playlists
         [] Liked Videos
-[] video views update
 [] add upload pages
     [] Video Upload
     [x] add signup page
     [] Create playlist
-[] Edit Check Errors Function and make a loop function from a conditional one
+[] Fix Navbar
+[] video views update
 [] History
+[] Get video length
 [] Change like and dislike buttons
-[] video SHORTCUTS
 [] Return to specific page after subscribe login redirect
 [] FIX comments
 [] PLAY ALL BUTTON FOR Playlists
@@ -69,14 +76,18 @@ Pre Hosting shit
 [] Personalise password_change_view.html and password_reset_view.html pages
 [] ABILITY for USERS to delete models
 [] ABILITY TO tag individuals in comments
+[] video SHORTCUTS
 [] ABILITY TO transfer channel to another viewer
-[] Get video length
+[] Edit Check Errors Function and make a loop function from a conditional one
+[] Compress Js code and all code or some shit
+[] Ajax all forms
 [] Create logic
     [x] Channel
     [x] comments
     [x] likes and dislikes
     [x] Subscriptions and Playlists
-    [] Streaming - Opencv
+    [] Streaming 
+        [] Opencv (and/or) [] NodeJs 
     [] ACC SHOUD ONLY LIKE, dislike & SUB ONCE
     [] Seaking
 [] PROBLEMS

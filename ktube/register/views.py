@@ -10,7 +10,7 @@ from django.http import HttpResponseForbidden, HttpResponseBadRequest
 def register(request):
     if not request.user.is_authenticated:
         if request.method == "POST":
-            form = UserSignUpForm(request.POST, request.FILES)
+            form = UserSignUpForm(request.POST, request.FILES) # type: ignore
             if form.is_valid():
                 form.save()
                 new_user = authenticate(username=form.cleaned_data['username'],
@@ -139,7 +139,7 @@ def create_channel(request, pk):
         return redirect('login')
     
 
-def change_channel_details(request, pk):
+def edit_channel(request, pk):
     if request.user.is_authenticated:
         viewer = request.user.viewer
         context={'viewer': viewer}
@@ -166,7 +166,7 @@ def change_channel_details(request, pk):
                 if request.POST.__contains__('name'):
                     if form.is_valid():
                         form.save(pk)
-                        return redirect(f'/change_channel_details/{pk}')
+                        return redirect(f'/edit_channel/{pk}')
                     else:
                         errors = check_errors(form)
                         form = ChangeChannelNameForm()
@@ -183,7 +183,7 @@ def change_channel_details(request, pk):
                 elif request.FILES.__contains__('profile_picture'):
                     if form2.is_valid():
                         form2.save(pk)
-                        return redirect(f'/change_channel_details/{pk}')
+                        return redirect(f'/edit_channel/{pk}')
                     else:
                         errors = check_errors(form2)
                         form = ChangeChannelNameForm()
@@ -199,7 +199,7 @@ def change_channel_details(request, pk):
                 elif request.POST.__contains__('about'):
                     if form3.is_valid():
                         form3.save(pk)
-                        return redirect(f'/change_channel_details/{pk}')
+                        return redirect(f'/edit_channel/{pk}')
                     else:
                         errors = check_errors(form3)
                         form = ChangeChannelNameForm()
@@ -214,7 +214,7 @@ def change_channel_details(request, pk):
                 elif request.POST.__contains__('website_official'):
                     if form4.is_valid():
                         form4.save(pk)
-                        return redirect(f'/change_channel_details/{pk}')
+                        return redirect(f'/edit_channel/{pk}')
                     else:
                         errors = check_errors(form3)
                         form = ChangeChannelNameForm()
@@ -245,7 +245,7 @@ def change_channel_details(request, pk):
                 context['form2']= form2
                 context['form3']= form3
                 context['form4']= form4
-            return render(request, 'registration/change_channel_details.html', context)
+            return render(request, 'registration/edit_channel.html', context)
         else:
             return HttpResponseForbidden("You don't Own this Channel")
     else:

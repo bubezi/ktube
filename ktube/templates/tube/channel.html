@@ -18,26 +18,42 @@
                 {% endif %}
                 <h3>{{ channel.name }}</h3>
             </div>
-            <div class="row"><h5 style="padding-left: 45px;">{{ subscriber_count }} Subscribers</h5></div>
+            <div class="row"><h5 id="subscriber-count" style="padding-left: 45px;">{{ subscriber_count }} Subscribers</h5></div>
         {% if user.is_authenticated %}
-            <div class="row">
-                {% if not subscribed %}
-                <a href="/subscribec/{{channel.id}}">
-                    <button data-product="{{channel.id}}" 
-                    data-action="subscribe" 
-                    class="btn btn-outline-secondary add-btn update-cart"
-                    style="margin-left:50px;">Subscribe</button>
-                </a>{% else %}
-                <a href="/unsubscribec/{{channel.id}}">
-                    <button data-product="{{channel.id}}" 
-                    data-action="subscribe" 
-                    class="btn btn-outline-secondary add-btn update-cart"
-                    style="margin-left:50px;">Unsubscribe</button>
-                </a>
-                {% endif %}
-            </div>
             {% if viewer == channel.user %}
-                <div class="row"><h6><a href="/change_channel_details/{{channel.id}}">Change Channel Details</a></h6></div>
+                <div class="row"><h6><a href="/edit_channel/{{channel.id}}"><button 
+                    class="btn btn-outline-secondary add-btn update-cart"
+                    style="margin-left:40px;">Edit Channel</button></a></h6></div>
+            {% else %}
+                <div class="row">    
+                {% if not subscribed %}
+                    <form id="subscribe-form" method="POST" style="display: block;">
+                        {% csrf_token %}
+                        <input type="hidden" name="channel_id" value="{{channel.id}}">
+                        <button class="btn btn-outline-secondary add-btn update-cart"
+                        style="margin-left:50px;" type="submit" id="subscribe-button">Subscribe</button>
+                    </form>
+                    <form id="unsubscribe-form" method="POST" style="display: none;">
+                        {% csrf_token %}
+                        <input type="hidden" name="channel_id" value="{{channel.id}}">
+                        <button class="btn btn-outline-secondary add-btn update-cart"
+                        style="margin-left: 50px;"  type="submit" id="unsubscribe-button">Unsubscribe</button>
+                    </form> 
+                {% else %}
+                    <form id="subscribe-form" method="POST" style="display: none;">
+                        {% csrf_token %}
+                        <input type="hidden" name="channel_id" value="{{channel.id}}">
+                        <button class="btn btn-outline-secondary add-btn update-cart"
+                        style="margin-left:50px;" type="submit" id="subscribe-button">Subscribe</button>
+                    </form>
+                    <form id="unsubscribe-form" method="POST" style="display: block;">
+                        {% csrf_token %}
+                        <input type="hidden" name="channel_id" value="{{channel.id}}">
+                        <button class="btn btn-outline-secondary add-btn update-cart"
+                        style="margin-left: 50px;"  type="submit" id="unsubscribe-button">Unsubscribe</button>
+                    </form>
+                {% endif %} 
+                </div>
             {% endif %}
         {% else %}
             <div class="row">
@@ -282,6 +298,92 @@
         {% endfor %}
     </div>
 {% endif %}
+
+<!-- Jquery and Ajax -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script type="text/javascript" src="{% static 'js/jquery-3.6.4.min.js' %}"></script>
+<script>
+    function toggleItem(id, toggle) {
+        let element = document.getElementById(id);
+        element.style.display = (toggle) ? 'block' : 'none';
+    };
+
+    function handleSubscribe(event) {
+        event.preventDefault(); 
+        $.ajax({
+            type: 'POST',
+            url: '{% url "subscribe" %}',
+            data: $('#subscribe-form').serialize(),
+            success: function(response) {
+                if (response.subscribed) {
+                //$('#subscribe-button').text('Subscribed');
+                toggleItem('subscribe-form', false);
+                toggleItem('unsubscribe-form', true);
+                } else {
+                //$('#subscribe-button').text('Subscribe');
+                }
+                if (response.subscriber_count===1) {
+                $('#subscriber-count').text(response.subscriber_count + " Subscriber");
+                } else {
+                $('#subscriber-count').text(response.subscriber_count + " Subscribers");
+                }
+            },
+            error: (response)=>{
+                alert(response.error)
+            }
+        });
+    };
+    $('#subscribe-form').submit(handleSubscribe);
+    
+    function handleUnSubscribe(event) {
+        event.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "unsubscribe" %}',
+            data: $('#unsubscribe-form').serialize(),
+            success: function(response) {
+                if (response.unsubscribed) {
+                //$('#unsubscribe-button').text('Unsubscribed');
+                toggleItem('subscribe-form', true);
+                toggleItem('unsubscribe-form', false);
+                } else {
+                //$('#unsubscribe-button').text('Unsubscribe');
+                }
+                if (response.subscriber_count===1) {
+                $('#subscriber-count').text(response.subscriber_count + " Subscriber");
+                } else {
+                $('#subscriber-count').text(response.subscriber_count + " Subscribers");
+                }
+            },
+            error: (response)=>{
+                alert(response.error)
+            }
+        });
+    };
+    $('#unsubscribe-form').submit(handleUnSubscribe);
+
+    $(document).ready(() => {
+        setInterval(()=>{
+            $.ajax({
+                type:'GET',
+                url:"/get_subs/{{channel.id}}",
+                success: (response)=>{
+                    if (response.subscriber_count===1) {
+                        $('#subscriber-count').text(response.subscriber_count + " Subscriber");
+                        } else {
+                        $('#subscriber-count').text(response.subscriber_count + " Subscribers");
+                        }
+                },
+                error:()=>{
+                    alert("An error occourred");
+                },
+            });
+        }, 1000); // 1000 is equiv to 1 seconds
+    });
+        
+</script>
+
+
 {% endblock content %}
 
 
