@@ -134,11 +134,9 @@ class ChannelForm(forms.ModelForm):
         model = Channel
         fields = ["name", "profile_picture", "about"]
         
-    def save(self, pk, commit=True):
-        
-        user = Viewer.objects.get(id=pk)
+    def save(self, viewer, commit=True):
         channel = super().save(commit=False)
-        channel.user = user
+        channel.user = viewer
         channel.name = self.cleaned_data['name']
         channel.profile_picture = self.cleaned_data['profile_picture']
         channel.about = self.cleaned_data['about']
@@ -168,7 +166,7 @@ class ChangeChannelDPForm(forms.ModelForm):
         fields = ["profile_picture"]
         
     def save(self, pk, commit=True):
-        channel = Channel.objects.get(id=pk)
+        channel = Channel.objects.get(id=pk) # type: ignore
         channel.profile_picture = self.cleaned_data['profile_picture']
         if commit:
             channel.save()

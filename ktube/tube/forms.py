@@ -1,5 +1,5 @@
 from django import forms
-from .models import Video
+from .models import Video, Playlist
 
 class VideoForm(forms.ModelForm):
     
@@ -20,5 +20,21 @@ class VideoForm(forms.ModelForm):
         
         if commit:
             video.save()
+            
+
+class PlaylistForm(forms.ModelForm):
+    
+    class Meta:
+        model = Playlist
+        fields = ("name", "public",)
         
+    def save(self, channel, commit=True):
+        playlist = super().save(commit=False)
+        
+        playlist.name = self.cleaned_data['name']
+        playlist.public = self.cleaned_data['public']
+        playlist.channel = channel
+        
+        if commit:
+            playlist.save()
             

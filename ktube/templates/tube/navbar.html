@@ -22,10 +22,31 @@
 				<div class="dropdown-menu">
 					<a class="dropdown-item" href="{% url 'library' %}">My Library</a>
 					<div class="dropdown-divider"></div>
+					{% if user.is_authenticated %}
+					{% if many_channels %}{% else %}
+					{% if no_channel %}
+							<a class="dropdown-item" href="{% url 'create_channel' %}">Create Channel</a>
+							<div class="dropdown-divider"></div>
+						{% else %}
+							<a class="dropdown-item" href="/channel/{{nav_channel.id}}">Your Channel</a>
+							<div class="dropdown-divider"></div>
+							{% endif %}
+						{% endif %}
+					{% endif %}
 					<a class="dropdown-item" href="{% url 'watchlater' %}">My Watchlater</a>
 					<a class="dropdown-item" href="{% url 'liked_videos' %}">My Liked Videos</a>
 					<a class="dropdown-item" href="{% url 'history' %}">My History</a>
 					<a class="dropdown-item" href="{% url 'saved_playlists' %}">My Saved Playlists</a>
+					{% if user.is_authenticated and not no_channel and not many_channels %}
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="/create_playlist/{{nav_channel.id}}">Create Playlist</a>
+						{% elif not user.is_authenticated %}
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="{% url 'login' %}">Create Playlist</a>
+							{% elif no_channel %}
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="{% url 'create_channel' %}">Create Playlist</a>
+					{% endif %}
 				</div>
 			</li>
 	
@@ -35,19 +56,6 @@
 			</li>
 
 
-			{% if user.is_authenticated %}
-				{% if many_channels %}{% else %}
-					{% if no_channel %}
-						<li class="nav-item active">
-							<a class="nav-link" href="/create_channel/{{viewer.id}}">Create Channel <span class="sr-only">(current)</span></a>
-						</li>
-					{% else %}
-						<li class="nav-item active">
-							<a class="nav-link" href="/channel/{{nav_channel.id}}">Your Channel<span class="sr-only">(current)</span></a>
-						</li>
-					{% endif %}
-				{% endif %}
-			{% endif %}
 
 
             {% if user.is_authenticated %}

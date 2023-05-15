@@ -100,41 +100,27 @@ def profile_page(request):
         return redirect('login')
     
     
-def create_channel(request, pk):
-    if request.user.is_authenticated:
-        try:
-            pk_viewer = Viewer.objects.get(id=pk)
-        except Viewer.DoesNotExist as e:
-            return HttpResponseBadRequest(e)
-        
+def create_channel(request):
+    if request.user.is_authenticated:    
         viewer = request.user.viewer
-        
-        owner = False
-        if viewer == pk_viewer:
-            owner = True
-        
-        if owner:
-            if request.method == "POST":
-                form = ChannelForm(request.POST, request.FILES)
-                if form.is_valid():
-                    try:
-                        form.save(pk)
-                        return redirect('/')
-                    except Viewer.DoesNotExist as e:
-                        form = ChannelForm()
-                        context = {"form": form, "errors": e, "no_channel": True}
-                else:
-                    errors = check_errors(form)
+        if request.method == "POST":
+            form = ChannelForm(request.POST, request.FILES)
+            if form.is_valid():
+                try:
+                    form.save(viewer)
+                    return redirect('/')
+                except Viewer.DoesNotExist as e:
                     form = ChannelForm()
-                    context = {"form": form, "errors": errors, "no_channel": True}
-
+                    context = {"form": form, "errors": e, "no_channel": True}
             else:
+                errors = check_errors(form)
                 form = ChannelForm()
-                context = {"form": form, "no_channel": True}
-            return render(request, 'registration/create_channel.html', context)
-        else:
-            return HttpResponseBadRequest("You cannot create a channel for this User. Click the create channel link on your profile Page.")        
+                context = {"form": form, "errors": errors, "no_channel": True}
 
+        else:
+            form = ChannelForm()
+            context = {"form": form, "no_channel": True}
+        return render(request, 'registration/create_channel.html', context)
     else:
         return redirect('login')
     
@@ -144,7 +130,7 @@ def edit_channel(request, pk):
         viewer = request.user.viewer
         context={'viewer': viewer}
         try:
-            channel = Channel.objects.get(id=pk)
+            channel = Channel.objects.get(id=pk) # type: ignore
             context['channel']=channel
             context['nav_channel']=channel
             context['no_channel'] = False

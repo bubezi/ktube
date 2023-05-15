@@ -16,7 +16,7 @@ GENDERS = (
 
 # Create your models here.
 class Viewer(models.Model):
-    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE) # type: ignore
     username = models.CharField(max_length=100, null=True, blank=False)
     email = models.EmailField(max_length=100, null=True, blank=False, unique=True)
     phone = PhoneNumberField(null=True, blank=False)

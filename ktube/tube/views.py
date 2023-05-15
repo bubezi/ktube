@@ -1,9 +1,10 @@
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest, JsonResponse
-from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
+from django.core.paginator import Paginator
+from .forms import VideoForm, PlaylistForm
+from register.utils import check_errors
 from .filters import VideoFilter
 from .models import *
-from .forms import VideoForm
 
 
 # Create your views here.
@@ -298,6 +299,8 @@ def saved_playlists(request):
             context['playlists']=saved_playlists.playlists.all()
             try:
                 nav_channel = Channel.objects.get(user=viewer)
+                my_playlists = Playlist.objects.filter(channel=nav_channel)
+                context['my_playlists'] = my_playlists
                 context['nav_channel'] = nav_channel
                 context['no_channel'] = False
                 context['many_channels'] = False
@@ -305,6 +308,13 @@ def saved_playlists(request):
                 context['many_channels'] = False
                 context['no_channel'] = True
             except:
+                my_channels = Channel.objects.filter(user=viewer)
+                my_playlists = []
+                for channel in my_channels:
+                    channel_playlists = Playlist.objects.filter(channel=channel).in_bulk().values()
+                    for channel_playlist in channel_playlists:
+                        my_playlists.append(channel_playlist)
+                context['my_playlists'] =  my_playlists
                 context['many_channels'] = True
                 context['no_channel'] = False
         except:
@@ -354,6 +364,8 @@ def library(request):
             context['watchlater_videos']=watchlater.videos.all()     
             try:
                 nav_channel = Channel.objects.get(user=viewer)
+                my_playlists = Playlist.objects.filter(channel=nav_channel)
+                context['my_playlists'] = my_playlists
                 context['nav_channel'] = nav_channel
                 context['no_channel'] = False
                 context['many_channels'] = False
@@ -361,6 +373,13 @@ def library(request):
                 context['many_channels'] = False
                 context['no_channel'] = True
             except:
+                my_channels = Channel.objects.filter(user=viewer)
+                my_playlists = []
+                for channel in my_channels:
+                    channel_playlists = Playlist.objects.filter(channel=channel).in_bulk().values()
+                    for channel_playlist in channel_playlists:
+                        my_playlists.append(channel_playlist)
+                context['my_playlists'] =  my_playlists
                 context['many_channels'] = True
                 context['no_channel'] = False
         except:
@@ -409,10 +428,12 @@ def subscriptions(request):
         return redirect('login')
     
 
-def upload_page(request, pk):
+def upload_video(request, pk):
     context = {}
     if request.user.is_authenticated:
         try:
+            context['title'] = 'Upload Video'
+            context['button'] = 'Upload'
             viewer = request.user.viewer
             context['viewer'] = viewer
             try:
@@ -423,10 +444,55 @@ def upload_page(request, pk):
                         form.save(channel=channel)
                         return redirect(f'/channel/{channel.id}') # type: ignore
                     else:
+                        errors = check_errors(form)
+                        context['errors'] = errors
                         form = VideoForm()
                         context['form'] = form
                 else:
                     context['form'] = VideoForm()
+            except Channel.DoesNotExist as e:
+                return HttpResponseBadRequest(e, ", Have you created a channel")
+            try:
+                nav_channel = Channel.objects.get(user=viewer)
+                context['nav_channel'] = nav_channel
+                context['no_channel'] = False
+                context['many_channels'] = False
+            except Channel.DoesNotExist:
+                context['many_channels'] = False
+                context['no_channel'] = True
+            except:
+                context['many_channels'] = True
+                context['no_channel'] = False
+        except:
+            context['no_channel'] = True
+             
+        return render(request, 'tube/upload.html', context)
+    else:
+        return redirect('login')
+    
+    
+def create_playlist(request, pk):
+    context = {}
+    if request.user.is_authenticated:
+        try:
+            context['title'] = 'Create Playlist'
+            context['button'] = 'Create'
+            viewer = request.user.viewer
+            context['viewer'] = viewer
+            try:
+                channel = Channel.objects.get(id=pk) # type: ignore
+                if request.method == 'POST':
+                    form = PlaylistForm(request.POST, request.FILES)
+                    if form.is_valid():
+                        form.save(channel=channel)
+                        return redirect(f'/channel/{channel.id}') # type: ignore
+                    else:
+                        errors = check_errors(form)
+                        context['errors'] = errors 
+                        form = PlaylistForm()
+                        context['form'] = form
+                else:
+                    context['form'] = PlaylistForm()
             except Channel.DoesNotExist as e:
                 return HttpResponseBadRequest(e, ", Have you created a channel")
             try:
