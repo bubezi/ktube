@@ -347,22 +347,14 @@
             url: '{% url "subscribe" %}',
             data: $('#subscribe-form').serialize(),
             success: (response)=> {
-                if (response.subscribed) {
-                //$('#subscribe-button').text('Subscribed');
                 toggleItem('subscribe-form', false);
                 toggleItem('unsubscribe-form', true);
-                } else {
-                //$('#subscribe-button').text('Subscribe');
-                }
                 if (response.subscriber_count===1) {
                 $('#subscriber-count').text(response.subscriber_count + " Subscriber");
                 } else {
                 $('#subscriber-count').text(response.subscriber_count + " Subscribers");
                 }
             },
-            error: (response)=>{
-                alert(response.error)
-            }
         });
     };
     $('#subscribe-form').submit(handleSubscribe);
@@ -374,22 +366,14 @@
             url: '{% url "unsubscribe" %}',
             data: $('#unsubscribe-form').serialize(),
             success: (response)=> {
-                if (response.unsubscribed) {
-                //$('#unsubscribe-button').text('Unsubscribed');
                 toggleItem('subscribe-form', true);
                 toggleItem('unsubscribe-form', false);
-                } else {
-                //$('#unsubscribe-button').text('Unsubscribe');
-                }
                 if (response.subscriber_count===1) {
                 $('#subscriber-count').text(response.subscriber_count + " Subscriber");
                 } else {
                 $('#subscriber-count').text(response.subscriber_count + " Subscribers");
                 }
             },
-            error: (response)=>{
-                alert(response.error)
-            }
         });
     };
     $('#unsubscribe-form').submit(handleUnSubscribe);
@@ -401,23 +385,14 @@
             url: '{% url "like" %}',
             data: $('#like-form').serialize(),
             success: (response)=> {
-                console.log(response);
-                if (response.liked) {
-                $('#like-button').text('Liked');
                 toggleItem('like-form', false);
                 toggleItem('unlike-form', true);
-                } else {
-                $('#like-button').text('Like');
-                }
                 if (response.likes_count===1) {
                 $('#likes-count').text(response.likes_count + " Like");
                 } else {
                 $('#likes-count').text(response.likes_count + " Likes");
                 }
             },
-            error: (response)=>{
-                alert(response.error)
-            }
         });
     };
     $('#like-form').submit(handleLike);
@@ -429,22 +404,14 @@
             url: '{% url "dislike" %}',
             data: $('#dislike-form').serialize(),
             success: (response)=> {
-                if (response.disliked) {
-                $('#dislike-button').text('Disliked');
                 toggleItem('dislike-form', false);
                 toggleItem('undislike-form', true);
-                } else {
-                $('#dislike-button').text('Dislike');
-                }
                 if (response.dislikes_count===1) {
                 $('#dislikes-count').text(response.dislikes_count + " Dislike");
                 } else {
                 $('#dislikes-count').text(response.dislikes_count + " Dislikes");
                 }
             },
-            error: (response)=>{
-                alert(response.error)
-            }
         });
     };
     $('#dislike-form').submit(handleDisLike);
@@ -456,22 +423,14 @@
             url: '{% url "unlike" %}',
             data: $('#unlike-form').serialize(),
             success: (response)=> {
-                if (response.liked) {
-                $('#unlike-button').text('Unlike');
-                } else {
-                $('#unlike-button').text('Unliked');
                 toggleItem('unlike-form', false);
                 toggleItem('like-form', true);
-                }
                 if (response.dislikes_count===1) {
                 $('#likes-count').text(response.likes_count + " Like");
                 } else {
                 $('#likes-count').text(response.likes_count + " Likes");
                 }
             },
-            error: (response)=>{
-                alert(response.error)
-            }
         });
     };
     $('#unlike-form').submit(handleUnLike);
@@ -483,22 +442,14 @@
             url: '{% url "undislike" %}',
             data: $('#undislike-form').serialize(),
             success: (response)=> {
-                if (response.disliked) {
-                $('#undislike-button').text('Undislike');
-                } else {
-                $('#undislike-button').text('Undisliked');
                 toggleItem('undislike-form', false);
                 toggleItem('dislike-form', true);
-                }
                 if (response.dislikes_count===1) {
                 $('#dislikes-count').text(response.dislikes_count + " Dislike");
                 } else {
                 $('#dislikes-count').text(response.dislikes_count + " Dislikes");
                 }
             },
-            error: (response)=>{
-                alert(response.error)
-            }
         });
     };
     $('#undislike-form').submit(handleUnDisLike);

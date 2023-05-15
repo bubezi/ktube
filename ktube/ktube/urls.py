@@ -11,17 +11,23 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     
-    
     path('bye', views_reg.bye_page, name="bye"),
     path('register', views_reg.register, name="register"),
     path('profile', views_reg.profile_page, name='profile'),
-    path('create_channel/<str:pk>', views_reg.create_channel, name='create_channel'),
-    path('edit_channel/<str:pk>', views_reg.edit_channel, name='edit_channel'),
     
+    path('library', views_tube.library, name="library"),
+    path('watchlater', views_tube.watchlater, name="watchlater"),
+    path('liked_videos', views_tube.liked_videos, name="liked_videos"),
+    path('history', views_tube.history, name="history"),
+    path('saved_playlists', views_tube.saved_playlists, name="saved_playlists"),
+    
+    path('subscriptions', views_tube.subscriptions, name="subscriptions"),
+    
+    path('create_channel/<str:pk>', views_reg.create_channel),
+    path('edit_channel/<str:pk>', views_reg.edit_channel),
     path('video/<str:pk>', views_tube.watch_video),
     path('channel/<str:pk>', views_tube.channnel_view),
     path('playlist/<str:pk>', views_tube.playlist),
-    path('watchlater/<str:pk>', views_tube.watchlater),
     
     path('subscribe', views_tube.subscribe, name='subscribe'), 
     path('unsubscribe', views_tube.unsubscribe, name='unsubscribe'), 

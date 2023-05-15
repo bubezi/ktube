@@ -1,0 +1,69 @@
+{% extends 'tube/base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+
+{% block title %}My Subscriptions {% endblock title %}
+
+{% block content %}
+
+                <div class="row"><div class="col-lg-12 box-element"><h1>My Subscriptions</h1></div></div>
+                <div class="row box-element">
+                    {% for channel in channels %}
+                        <div class="col-lg-4 box-element">
+                        {% if channel.profile_picture %}
+                            <img src="{{channel.profilePictureURL}}" 
+                            class="channel-icon" 
+                            alt="" 
+                            style="width: 40px; height: 40px;">
+                        {% else %}
+                            <img src="{% static 'images/placeholder.png' %}" 
+                            class="channel-icon" 
+                            alt="" 
+                            style="width: 40px; height: 40px;">
+                        {% endif %}
+                        <a href="/channel/{{channel.id}}"><h4>{{channel.name}}</h4></a>
+                        {% if channel.about %}
+                        <p>{{channel.about}}</p>
+                        {% endif %}
+                        </div>
+                    {% empty %}
+                        <div class="col-lg-12"><h5>No Subscriptions</h5></div>
+                    {% endfor %}
+                </div>
+
+                <div class="row"><div class="col-lg-12 box-element"><h1>Videos</h1></div></div>
+                <div class="row box-element">
+                    {% for video in videos %}
+                    <div class="col-lg-4">
+                        <a href="/video/{{video.id}}">
+                        <img class="thumbnail" src="{{video.thumbnailURL}}" alt="">
+                        </a>
+                        <div class="box-element product">
+                            <div class="row">
+                                <a href="/video/{{video.id}}">
+                                    <h6 style="float: left">{{video.title}}</h6>
+                                </a>
+                            </div>
+                            <a href="/channel/{{video.channel.id}}">
+                                <div class="row">
+                                    <h6>{{video.channel}}</h6>
+                                </div>
+                            </a>
+                            <div class="row">
+                                {% if video.views is not 1 %}
+                                    <h6 style="float: left">{{video.views | intcomma }} views</h6>
+                                {% else %}
+                                    <h6 style="float: left">{{video.views | intcomma }} view</h6>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                        <div class="col-lg-12"><h5>No Subscriptions</h5></div>
+                    {% endfor %}
+                </div>
+
+
+{% endblock content %}

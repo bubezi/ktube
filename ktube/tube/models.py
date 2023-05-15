@@ -107,6 +107,7 @@ class CommentReply(models.Model):
     def upload_period(self):
         return period(self.replied_on)
 
+
 class Playlist(models.Model):
     name = models.CharField(max_length=150, blank=False, null=False, default="Playlist")
     channel = models.ForeignKey(Channel, on_delete=models.CASCADE)
@@ -127,11 +128,11 @@ class Playlist(models.Model):
     def upload_period(self):
         return period(self.created_on)
     
+    
 class Watchlater(models.Model):
     viewer = models.OneToOneField(Viewer, null=True, on_delete=models.CASCADE)
     videos = models.ManyToManyField(Video, related_name='watch_later', blank=True) # type: ignore
     public = False
-    created_on = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return "My watchlater"  
@@ -141,15 +142,12 @@ class Watchlater(models.Model):
     
     def public_video_count(self):
         return self.videos.filter(private = False).count()
-        
-    def upload_period(self):
-        return period(self.created_on) 
+    
     
 class LikedVideos(models.Model):
-    viewer = models.OneToOneField(Viewer, null=True, blank=True, on_delete=models.CASCADE)
+    viewer = models.OneToOneField(Viewer, null=True, on_delete=models.CASCADE)
     videos = models.ManyToManyField(Video, related_name='liked_videos', blank=True)
     public = False
-    created_on = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return "My Liked Videos"  
@@ -159,16 +157,12 @@ class LikedVideos(models.Model):
     
     def public_video_count(self):
         return self.videos.filter(private = False).count()
-        
-    def upload_period(self):
-        return period(self.created_on) 
   
     
 class DisLikedVideos(models.Model):
-    viewer = models.OneToOneField(Viewer, null=True, blank=True, on_delete=models.CASCADE)
+    viewer = models.OneToOneField(Viewer, null=True, on_delete=models.CASCADE)
     videos = models.ManyToManyField(Video, related_name='disliked_videos', blank=True)
     public = False
-    created_on = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return "My DisLiked Videos"  
@@ -178,7 +172,43 @@ class DisLikedVideos(models.Model):
     
     def public_video_count(self):
         return self.videos.filter(private = False).count()
-        
-    def upload_period(self):
-        return period(self.created_on) 
+    
+    
+class SavedPlaylists(models.Model):
+    viewer = models.OneToOneField(Viewer, null=True, on_delete=models.CASCADE)
+    playlists = models.ManyToManyField(Playlist, related_name='saved_playlists', blank=True)
+    public = False
+    
+    def __str__(self):
+        return "My Saved Playlists"  
+    
+    def playlist_count(self):
+        return self.playlists.count()
+    
+    
+class Subscriptions(models.Model):
+    viewer = models.OneToOneField(Viewer, null=True, on_delete=models.CASCADE)
+    subscriptions = models.ManyToManyField(Channel, related_name='subscriptions', blank=True)
+    public = False
+    
+    def __str__(self):
+        return "My Subscriptions"  
+    
+    def playlist_count(self):
+        return self.subscriptions.count()
+  
+    
+class History(models.Model):
+    viewer = models.OneToOneField(Viewer, null=True, on_delete=models.CASCADE)
+    videos = models.ManyToManyField(Video, related_name='history', blank=True)
+    public = False
+    
+    def __str__(self):
+        return "My History"  
+    
+    def video_count(self):
+        return self.videos.count()
+    
+    def public_video_count(self):
+        return self.videos.filter(private = False).count()
     

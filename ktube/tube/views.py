@@ -184,20 +184,20 @@ def playlist(request, pk):
     return render(request, 'tube/playlist.html', context)
 
 
-def watchlater(request, pk):
+def watchlater(request):
     if request.user.is_authenticated:
         context = {}
         try:
-            watchlater = Watchlater.objects.get(id=pk)
-        except Watchlater.DoesNotExist as e:
-            return HttpResponseBadRequest(e)
-        videos = watchlater.videos.all()
-        context['videos']=videos
-        try:
             viewer = request.user.viewer
             context['viewer'] = viewer
-            if not viewer == watchlater.viewer:
-                return HttpResponseForbidden('<h1>Forbidden</h1><h4>You have no access to This Watch later playlist</h4>')        
+            try:
+                watchlater = Watchlater.objects.get(viewer=viewer)
+                context['watchlater'] = watchlater
+            except Watchlater.DoesNotExist:
+                watchlater = Watchlater(viewer=viewer)
+                watchlater.save()
+                context['watchlater'] = watchlater
+            context['videos']=watchlater.videos.all()       
             try:
                 nav_channel = Channel.objects.get(user=viewer)
                 context['nav_channel'] = nav_channel
@@ -211,12 +211,207 @@ def watchlater(request, pk):
                 context['no_channel'] = False
         except:
             context['no_channel'] = True      
-        context['watchlater'] = watchlater
+        
         return render(request, 'tube/watchlater.html', context)
     else:
         return redirect('login')
+
+
+def liked_videos(request):
+    if request.user.is_authenticated:
+        context = {}
+        try:
+            viewer = request.user.viewer
+            context['viewer'] = viewer
+            try:
+                liked_videos = LikedVideos.objects.get(viewer=viewer)
+                context['liked_videos'] = liked_videos
+            except LikedVideos.DoesNotExist:
+                liked_videos = LikedVideos(viewer=viewer)
+                liked_videos.save()
+                context['liked_videos'] = liked_videos
+            context['videos']=liked_videos.videos.all()
+            try:
+                nav_channel = Channel.objects.get(user=viewer)
+                context['nav_channel'] = nav_channel
+                context['no_channel'] = False
+                context['many_channels'] = False
+            except Channel.DoesNotExist:
+                context['many_channels'] = False
+                context['no_channel'] = True
+            except:
+                context['many_channels'] = True
+                context['no_channel'] = False
+        except:
+            context['no_channel'] = True        
+        return render(request, 'tube/liked_videos.html', context)
+    else:
+        return redirect('login')
+
+
+def history(request):
+    if request.user.is_authenticated:
+        context = {}
+        try:
+            viewer = request.user.viewer
+            context['viewer'] = viewer
+            try:
+                history = History.objects.get(viewer=viewer)
+                context['history'] = history
+            except History.DoesNotExist:
+                history = History(viewer=viewer)
+                history.save()
+                context['history'] = history
+            context['videos']=history.videos.all()
+            try:
+                nav_channel = Channel.objects.get(user=viewer)
+                context['nav_channel'] = nav_channel
+                context['no_channel'] = False
+                context['many_channels'] = False
+            except Channel.DoesNotExist:
+                context['many_channels'] = False
+                context['no_channel'] = True
+            except:
+                context['many_channels'] = True
+                context['no_channel'] = False
+        except:
+            context['no_channel'] = True        
+        return render(request, 'tube/history.html', context)
+    else:
+        return redirect('login')
+
+
+def saved_playlists(request):
+    if request.user.is_authenticated:
+        context = {}
+        try:
+            viewer = request.user.viewer
+            context['viewer'] = viewer
+            try:
+                saved_playlists = SavedPlaylists.objects.get(viewer=viewer)
+                context['saved_playlists'] = saved_playlists
+            except SavedPlaylists.DoesNotExist:
+                saved_playlists = SavedPlaylists(viewer=viewer)
+                saved_playlists.save()
+                context['saved_playlists'] = saved_playlists
+            context['playlists']=saved_playlists.playlists.all()
+            try:
+                nav_channel = Channel.objects.get(user=viewer)
+                context['nav_channel'] = nav_channel
+                context['no_channel'] = False
+                context['many_channels'] = False
+            except Channel.DoesNotExist:
+                context['many_channels'] = False
+                context['no_channel'] = True
+            except:
+                context['many_channels'] = True
+                context['no_channel'] = False
+        except:
+            context['no_channel'] = True        
+        return render(request, 'tube/saved_playlists.html', context)
+    else:
+        return redirect('login')
  
+ 
+def library(request):
+    if request.user.is_authenticated:
+        context = {}
+        try:
+            viewer = request.user.viewer
+            context['viewer'] = viewer
+            try:
+                watchlater = Watchlater.objects.get(viewer=viewer)
+                context['watchlater'] = watchlater
+            except Watchlater.DoesNotExist:
+                watchlater = Watchlater(viewer=viewer)
+                watchlater.save()
+                context['watchlater'] = watchlater
+            try:
+                liked_videos = LikedVideos.objects.get(viewer=viewer)
+                context['liked_videos'] = liked_videos
+            except LikedVideos.DoesNotExist:
+                liked_videos = LikedVideos(viewer=viewer)
+                liked_videos.save()
+                context['liked_videos'] = liked_videos
+            try:
+                history = History.objects.get(viewer=viewer)
+                context['history'] = history
+            except History.DoesNotExist:
+                history = History(viewer=viewer)
+                history.save()
+                context['history'] = history
+            try:
+                saved_playlists = SavedPlaylists.objects.get(viewer=viewer)
+                context['saved_playlists'] = saved_playlists
+            except SavedPlaylists.DoesNotExist:
+                saved_playlists = SavedPlaylists(viewer=viewer)
+                saved_playlists.save()
+                context['saved_playlists'] = saved_playlists
+            context['playlists']=saved_playlists.playlists.all()
+            context['history_videos']=history.videos.all()
+            context['liked_videos_videos']=liked_videos.videos.all()
+            context['watchlater_videos']=watchlater.videos.all()     
+            try:
+                nav_channel = Channel.objects.get(user=viewer)
+                context['nav_channel'] = nav_channel
+                context['no_channel'] = False
+                context['many_channels'] = False
+            except Channel.DoesNotExist:
+                context['many_channels'] = False
+                context['no_channel'] = True
+            except:
+                context['many_channels'] = True
+                context['no_channel'] = False
+        except:
+            context['no_channel'] = True      
+        
+        return render(request, 'tube/library.html', context)
+    else:
+        return redirect('login')
     
+    
+def subscriptions(request):
+    if request.user.is_authenticated:
+        context = {}
+        try:
+            viewer = request.user.viewer
+            context['viewer'] = viewer
+            try:
+                subscription = Subscriptions.objects.get(viewer=viewer)
+            except Subscriptions.DoesNotExist:
+                subscription = Subscriptions(viewer=viewer)
+                subscription.save()
+            channels = subscription.subscriptions.all()
+            videos = []
+            for channel in channels:
+                videos_dict = channel.video_set.filter(private=False, unlisted=False).in_bulk().values()
+                for video in videos_dict:
+                    videos.append(video)
+            context['videos'] = videos
+            context['channels'] = channels
+            context['subscription'] = subscription
+            try:
+                nav_channel = Channel.objects.get(user=viewer)
+                context['nav_channel'] = nav_channel
+                context['no_channel'] = False
+                context['many_channels'] = False
+            except Channel.DoesNotExist:
+                context['many_channels'] = False
+                context['no_channel'] = True
+            except:
+                context['many_channels'] = True
+                context['no_channel'] = False
+        except:
+            context['no_channel'] = True        
+        return render(request, 'tube/subscriptions.html', context)
+    else:
+        return redirect('login')
+    
+    
+##############################################################################################
+#############################              AJAX FUNCTIONS       ##############################
+##############################################################################################
+
 def subscribe(request):
     if request.user.is_authenticated:
         if request.method=='POST':
@@ -227,6 +422,12 @@ def subscribe(request):
                 if channel.user == viewer: 
                     return JsonResponse({'success': False, 'error': 'You cannot subscribe to your own channel.'})
                 else:
+                    try:
+                        subscriptions = Subscriptions.objects.get(viewer=viewer)
+                    except Subscriptions.DoesNotExist:
+                        subscriptions = Subscriptions(viewer=viewer)
+                        subscriptions.save()
+                    subscriptions.subscriptions.add(channel)
                     channel.subscribers.add(viewer) # type: ignore
                     subscriber_count = channel.subscribers.count() # type: ignore
                     return JsonResponse({'success': True, 'subscribed': True,'subscriber_count':subscriber_count})
@@ -247,6 +448,12 @@ def unsubscribe(request):
                 if channel.user == viewer: 
                     return JsonResponse({'success': False, 'error': 'You cannot unsubscribe from your own channel.'})
                 else:
+                    try:
+                        subscriptions = Subscriptions.objects.get(viewer=viewer)
+                        subscriptions.subscriptions.remove(channel)
+                    except Subscriptions.DoesNotExist:
+                        subscriptions = Subscriptions(viewer=viewer)
+                        subscriptions.save()
                     channel.subscribers.remove(viewer) # type: ignore
                     subscriber_count = channel.subscribers.count() # type: ignore
                     return JsonResponse({'success': True, 'unsubscribed': True,'subscriber_count': subscriber_count})
@@ -270,9 +477,9 @@ def like(request):
                     liked_videos = LikedVideos(viewer=viewer)
                     liked_videos.save()
                 if liked_videos.videos.contains(video): 
-                    return JsonResponse({'success':True, 'liked':True, 'likes_count': video.likes})
+                    return JsonResponse({'success':False})
                 else:
-                    video.likes += 1
+                    video.likes += 1 # type: ignore
                     liked_videos.videos.add(video)
                     video.save()
                     return JsonResponse({'success': True, 'liked':True, 'likes_count': video.likes}) 
@@ -293,16 +500,17 @@ def unlike(request):
                 viewer = request.user.viewer
                 try:
                     liked_videos = LikedVideos.objects.get(viewer=viewer)
+                    liked_videos.videos.remove(video)
                 except LikedVideos.DoesNotExist:
                     liked_videos = LikedVideos(viewer=viewer)
                     liked_videos.save()
-                if not liked_videos.videos.contains(video): # type: ignore
-                    return JsonResponse({'success':True, 'liked':False, 'likes_count': video.likes})
-                else:
-                    video.likes -= 1
-                    liked_videos.videos.remove(video)
-                    video.save()
-                    return JsonResponse({'success': True, 'liked':False, 'likes_count': video.likes}) 
+                    return JsonResponse({'success':False})
+                except:
+                    return JsonResponse({'success':False})
+                    
+                video.likes -= 1
+                video.save()
+                return JsonResponse({'success': True, 'liked':False, 'likes_count': video.likes}) 
             except:
                 return JsonResponse({'success':False})
         else:
@@ -324,7 +532,7 @@ def dislike(request):
                     disliked_videos = DisLikedVideos(viewer=viewer)
                     disliked_videos.save()
                 if disliked_videos.videos.contains(video): # type: ignore
-                    return JsonResponse({'success':True, 'disliked':True, 'dislikes_count': video.dislikes})
+                    return JsonResponse({'success':False})
                 else:
                     video.dislikes += 1
                     disliked_videos.videos.add(video)
@@ -347,16 +555,17 @@ def undislike(request):
                 viewer = request.user.viewer
                 try:
                     disliked_videos = DisLikedVideos.objects.get(viewer=viewer)
+                    disliked_videos.videos.remove(video)
                 except DisLikedVideos.DoesNotExist:
                     disliked_videos = DisLikedVideos(viewer=viewer)
                     disliked_videos.save()
-                if not disliked_videos.videos.contains(video): # type: ignore
-                    return JsonResponse({'success':True, 'disliked':False, 'dislikes_count': video.dislikes})
-                else:
-                    video.dislikes -= 1
-                    disliked_videos.videos.remove(video)
-                    video.save()
-                    return JsonResponse({'success': True, 'disliked':False, 'dislikes_count': video.dislikes}) 
+                    return JsonResponse({'success':False})
+                except:
+                    return JsonResponse({'success':False})
+                
+                video.dislikes -= 1
+                video.save()
+                return JsonResponse({'success': True, 'disliked':False, 'dislikes_count': video.dislikes}) 
             except:
                 return JsonResponse({'success':False})
         else:

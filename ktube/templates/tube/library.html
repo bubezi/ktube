@@ -1,0 +1,222 @@
+{% extends 'tube/base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ channel.name }} {% endblock title %}
+
+{% block content %}
+    <div class="row box-element">
+        <div class="col-lg-12">
+            {% if watchlater.video_count == 1 %}
+            <div class="row">
+                <h3>{{watchlater}}</h3><h4 style="padding-left: 7px;">- {{watchlater.video_count}} video</h4>
+            </div>
+            {% else %}
+            <div class="row">
+                <h3>{{watchlater}}</h3><h4 style="padding-left: 7px;">- {{watchlater.video_count}} videos</h4>
+            </div>
+            {% endif %}
+            {% if watchlater.public_video_count == 1 %}
+            <div class="row"><h4 style="padding-left: 7px;">({{watchlater.public_video_count}} public video)</h4></div>
+            {% else %}
+            <div class="row"><h4 style="padding-left: 7px;">({{watchlater.public_video_count}} public videos)</h4></div>
+            {% endif %}
+
+            
+            <a href="{% url 'profile' %}"><div class="row"><h4>{{watchlater.viewer.username}}</h4></div></a>
+        </div>
+    </div>
+    <div class="row box-element">
+        {% for video in watchlater_videos %}
+            <div class="col-lg-4">
+                <a href="/video/{{video.id}}">
+                <img class="thumbnail" src="{{video.thumbnailURL}}" alt="">
+                </a>
+                <div class="box-element product">
+                    <div class="row">
+                        <a href="/video/{{video.id}}">
+                            <h6 style="float: left">{{video.title}}</h6> 
+                        </a>{% if video.private %}<h6 style="padding-left: 10px;">(private)</h6>
+                            {% elif video.unlisted %}<h6 style="padding-left: 10px;">(unlisted)</h6>{% endif %}
+                    </div>
+                    <a href="/channel/{{video.channel.id}}">
+                        <div class="row">
+                            {% if video.channel.profile_picture %}
+                            <img src="{{video.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                            {% else %}
+                            <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                            {% endif %}
+                            <h6>{{video.channel}}</h6>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+        <div class="col-lg-12 box-element">
+                <h4>Empty</h4>
+        </div>
+        {% endfor %}
+    </div>
+
+    <hr style="padding-top: 3px;">
+
+    <div class="row box-element">
+        <div class="col-lg-12">
+            {% if liked_videos.video_count == 1 %}
+            <div class="row">
+                <h3>{{liked_videos}}</h3><h4 style="padding-left: 7px;">- {{liked_videos.video_count}} video</h4>
+            </div>
+            {% else %}
+            <div class="row">
+                <h3>{{liked_videos}}</h3><h4 style="padding-left: 7px;">- {{liked_videos.video_count}} videos</h4>
+            </div>
+            {% endif %}
+            {% if liked_videos.public_video_count == 1 %}
+            <div class="row"><h4 style="padding-left: 7px;">({{liked_videos.public_video_count}} public video)</h4></div>
+            {% else %}
+            <div class="row"><h4 style="padding-left: 7px;">({{liked_videos.public_video_count}} public videos)</h4></div>
+            {% endif %}
+
+            
+            <a href="{% url 'profile' %}"><div class="row"><h4>{{liked_videos.viewer.username}}</h4></div></a>
+        </div>
+    </div>
+    <div class="row box-element">
+        {% for video in liked_videos_videos %}
+            <div class="col-lg-4">
+                <a href="/video/{{video.id}}">
+                <img class="thumbnail" src="{{video.thumbnailURL}}" alt="">
+                </a>
+                <div class="box-element product">
+                    <div class="row">
+                        <a href="/video/{{video.id}}">
+                            <h6 style="float: left">{{video.title}}</h6> 
+                        </a>{% if video.private %}<h6 style="padding-left: 10px;">(private)</h6>
+                            {% elif video.unlisted %}<h6 style="padding-left: 10px;">(unlisted)</h6>{% endif %}
+                    </div>
+                    <a href="/channel/{{video.channel.id}}">
+                        <div class="row">
+                            {% if video.channel.profile_picture %}
+                            <img src="{{video.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                            {% else %}
+                            <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                            {% endif %}
+                            <h6>{{video.channel}}</h6>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+        <div class="col-lg-12 box-element">
+                <h4>Empty</h4>
+        </div>
+        {% endfor %}
+    </div>
+
+     <hr style="padding-top: 3px;">
+
+     <div class="row box-element">
+        <div class="col-lg-12">
+            {% if history.video_count == 1 %}
+            <div class="row">
+                <h3>{{history}}</h3><h4 style="padding-left: 7px;">- {{history.video_count}} video</h4>
+            </div>
+            {% else %}
+            <div class="row">
+                <h3>{{history}}</h3><h4 style="padding-left: 7px;">- {{history.video_count}} videos</h4>
+            </div>
+            {% endif %}
+            {% if history.public_video_count == 1 %}
+            <div class="row"><h4 style="padding-left: 7px;">({{history.public_video_count}} public video)</h4></div>
+            {% else %}
+            <div class="row"><h4 style="padding-left: 7px;">({{history.public_video_count}} public videos)</h4></div>
+            {% endif %}
+
+            
+            <a href="{% url 'profile' %}"><div class="row"><h4>{{history.viewer.username}}</h4></div></a>
+        </div>
+    </div>
+    <div class="row box-element">
+        {% for video in history_videos %}
+            <div class="col-lg-4">
+                <a href="/video/{{video.id}}">
+                <img class="thumbnail" src="{{video.thumbnailURL}}" alt="">
+                </a>
+                <div class="box-element product">
+                    <div class="row">
+                        <a href="/video/{{video.id}}">
+                            <h6 style="float: left">{{video.title}}</h6> 
+                        </a>{% if video.private %}<h6 style="padding-left: 10px;">(private)</h6>
+                            {% elif video.unlisted %}<h6 style="padding-left: 10px;">(unlisted)</h6>{% endif %}
+                    </div>
+                    <a href="/channel/{{video.channel.id}}">
+                        <div class="row">
+                            {% if video.channel.profile_picture %}
+                            <img src="{{video.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                            {% else %}
+                            <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                            {% endif %}
+                            <h6>{{video.channel}}</h6>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+        <div class="col-lg-12 box-element">
+                <h4>Empty</h4>
+        </div>
+        {% endfor %}
+    </div>
+
+    <hr style="padding-top: 3px;">
+
+    <div class="row box-element" style="margin-top: 10px;">
+        <div class="col-lg-12"><div class="row"><h2>Saved Playlists</h2></div></div>
+        <a href="{% url 'profile' %}"><div class="col-lg-12"><h4>{{saved_playlists.viewer.username}}</h4></div></a>
+    </div>
+    <div class="row">
+        {% for playlist in playlists %}
+        <div class="col-lg-4 box-element">
+            <div style="padding-left: 10px;">
+                <div class="row">
+                    <a href="/playlist/{{playlist.id}}">
+                    <h4>{{playlist.name}}</h4>
+                    </a>
+                    
+                    {% if playlist.channel.user == viewer %}
+                    {% if playlist.video_count == 1 %}<h5 style="padding-left: 5px;"> - {{playlist.video_count}} video</h5>
+                    {% else %}<h5 style="padding-left: 5px;"> - {{playlist.video_count}} videos</h5>{% endif %}
+                    {% if playlist.public_video_count == 1 %}<h5 style="padding-left: 5px;"> ({{playlist.public_video_count}} public video)</h5>
+                    {% else %}<h5 style="padding-left: 5px;"> ({{playlist.public_video_count}} public videos)</h5>{% endif %}
+                    {% else %}
+                    {% if playlist.public_video_count == 1 %}<h5 style="padding-left: 5px;"> - {{playlist.public_video_count}} video</h5>
+                    {% else %}<h5 style="padding-left: 5px;"> - {{playlist.public_video_count}} videos</h5>{% endif %}
+                    {% endif %}
+                </div>
+                <div class="row">
+                    {% if playlist.channel.profile_picture %}
+                    <img src="{{playlist.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                    {% else %}
+                    <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                    {% endif %}
+                    <h5>{{playlist.channel}}</h5>
+                </div>
+                {% if playlist.views == 1 %}<div class="row">
+                    <h6>{{playlist.views}} view</h6>
+                </div>{% else %}<div class="row">
+                    <h6>{{playlist.views}} views</h6>
+                </div>{% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-lg-12 box-element">
+            <h4>No Playlists</h4>
+        </div>
+        {% endfor %}
+    </div>
+    
+{% endblock content %}
+
+

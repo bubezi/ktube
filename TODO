@@ -7,7 +7,7 @@ GOOGLE AND TODO
 [] UPDATE Favivons
 [] Learn React
 [] Video.Js
-[] Better Place holder
+[] Better profile image Placeholder
 [] Django video View count
 [] Does Django use websockets
 [x] Add page Loader
@@ -50,21 +50,22 @@ Pre Hosting shit
 [x] Organise Templates and views
     [x] Script and css declarations
     [x] include and tags
-[] Like
-[] Liked Videos
+[x] Like
+[x] Liked Videos 
 [] Add playlist(s) page
     [x] Watch Later ** Possibly Created after Viewer is created
-    [] Libary 
-        [] Watch Later
-        [] History
-        [] Saved Playlists
-        [] Liked Videos
+    [x] Libary 
+        [x] Watch Later
+        [x] Saved Playlists
+        [x] Liked Videos
+        [x] History
 [] add upload pages
     [] Video Upload
     [x] add signup page
-    [] Create playlist
+    [] Create playlist page
 [] Fix Navbar
 [] video views update
+[] playlist views update
 [] History
 [] Get video length
 [] Change like and dislike buttons

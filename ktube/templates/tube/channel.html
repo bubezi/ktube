@@ -328,9 +328,6 @@
                 $('#subscriber-count').text(response.subscriber_count + " Subscribers");
                 }
             },
-            error: (response)=>{
-                alert(response.error)
-            }
         });
     };
     $('#subscribe-form').submit(handleSubscribe);
@@ -355,9 +352,6 @@
                 $('#subscriber-count').text(response.subscriber_count + " Subscribers");
                 }
             },
-            error: (response)=>{
-                alert(response.error)
-            }
         });
     };
     $('#unsubscribe-form').submit(handleUnSubscribe);
@@ -373,9 +367,6 @@
                         } else {
                         $('#subscriber-count').text(response.subscriber_count + " Subscribers");
                         }
-                },
-                error:()=>{
-                    alert("An error occourred");
                 },
             });
         }, 1000); // 1000 is equiv to 1 seconds

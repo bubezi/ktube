@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from phonenumber_field.formfields import PhoneNumberField
-from tube.models import GENDERS, Viewer, Channel, Watchlater, LikedVideos, DisLikedVideos
+from tube.models import GENDERS, Viewer, Channel, Watchlater, LikedVideos, DisLikedVideos, SavedPlaylists, Subscriptions
 
 
 
@@ -50,25 +50,35 @@ class UserSignUpForm(UserCreationForm, WatchlaterForm, ViewerForm):
             user.save()
         
 
-        # Check if a viewer object already exists for the user
         try:
             viewer = user.viewer
         except Viewer.DoesNotExist:
             viewer = Viewer(user=user)
             
-        # Check if a watchlater object already exists for the user
         try:
             watchlater = Watchlater.objects.get(viewer=viewer)
         except Watchlater.DoesNotExist:
             watchlater = Watchlater(viewer=viewer)
+            
+        try:
+            savedPlaylists = SavedPlaylists.objects.get(viewer=viewer)
+        except SavedPlaylists.DoesNotExist:
+            savedPlaylists = SavedPlaylists(viewer=viewer)
 
-        # Check if a watchlater object already exists for the user
         try:
             liked_videos = LikedVideos.objects.get(viewer=viewer)
-            disliked_videos = LikedVideos.objects.get(viewer=viewer)
         except LikedVideos.DoesNotExist:
             liked_videos = LikedVideos(viewer=viewer)
-            disliked_videos = LikedVideos(viewer=viewer)
+            
+        try:
+            disliked_videos = DisLikedVideos.objects.get(viewer=viewer)
+        except DisLikedVideos.DoesNotExist:
+            disliked_videos = DisLikedVideos(viewer=viewer)
+            
+        try:
+            subscriptions = Subscriptions.objects.get(viewer=viewer)
+        except Subscriptions.DoesNotExist:
+            subscriptions = Subscriptions(viewer=viewer)
             
         viewer.username = self.cleaned_data['username']
         viewer.email = self.cleaned_data['email']
@@ -80,8 +90,10 @@ class UserSignUpForm(UserCreationForm, WatchlaterForm, ViewerForm):
         if commit:
             viewer.save()
             watchlater.save()
+            savedPlaylists.save()
             liked_videos.save()
             disliked_videos.save()
+            subscriptions.save()
 
         return user
 

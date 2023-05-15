@@ -12,17 +12,29 @@
 	  </button>
 
 	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-	    <ul class="navbar-nav mr-auto">
+		  <ul class="navbar-nav mr-auto">
 			<li class="nav-item active">
 				<a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
 			</li>
 
+			<li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="false" aria-expanded="false">Library</a>
+				<div class="dropdown-menu">
+					<a class="dropdown-item" href="{% url 'library' %}">My Library</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="{% url 'watchlater' %}">My Watchlater</a>
+					<a class="dropdown-item" href="{% url 'liked_videos' %}">My Liked Videos</a>
+					<a class="dropdown-item" href="{% url 'history' %}">My History</a>
+					<a class="dropdown-item" href="{% url 'saved_playlists' %}">My Saved Playlists</a>
+				</div>
+			</li>
+	
+				
 			<li class="nav-item active">
-                	<a class="nav-link" href="#">Subscriptions<span class="sr-only">(current)</span></a>
+                	<a class="nav-link" href="{% url 'subscriptions' %}">Subscriptions<span class="sr-only">(current)</span></a>
 			</li>
-            <li class="nav-item active">
-				<a class="nav-link" href="#">Library <span class="sr-only">(current)</span></a>
-			</li>
+
+
 			{% if user.is_authenticated %}
 				{% if many_channels %}{% else %}
 					{% if no_channel %}
@@ -36,6 +48,7 @@
 					{% endif %}
 				{% endif %}
 			{% endif %}
+
 
             {% if user.is_authenticated %}
 			<li class="nav-item dropdown">
