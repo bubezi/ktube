@@ -21,9 +21,14 @@
             <div class="row"><h5 id="subscriber-count" style="padding-left: 45px;">{{ subscriber_count }} Subscribers</h5></div>
         {% if user.is_authenticated %}
             {% if viewer == channel.user %}
-                <div class="row"><h6><a href="/edit_channel/{{channel.id}}"><button 
-                    class="btn btn-outline-secondary add-btn update-cart"
-                    style="margin-left:40px;">Edit Channel</button></a></h6></div>
+                <div class="row">
+                    <a href="/edit_channel/{{channel.id}}"><button 
+                        class="btn btn-outline-secondary add-btn update-cart"
+                        style="margin-left:40px;">Edit Channel</button></a>
+                    <a href="/upload/{{channel.id}}"><button 
+                        class="btn btn-success"
+                        style="margin-left:40px;">Upload</button></a>
+                </div>
             {% else %}
                 <div class="row">    
                 {% if not subscribed %}

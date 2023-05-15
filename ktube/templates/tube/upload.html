@@ -1,0 +1,17 @@
+{% extends 'tube/base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+
+{% block title %}Upload {% endblock title %}
+
+{% block content %}
+    <div class="row">
+        <form method="POST" class="form-group" style="text-align: center; margin: auto" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-success">Upload</button>
+        </form>
+    </div>
+{% endblock content %}

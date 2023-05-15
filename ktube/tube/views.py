@@ -3,6 +3,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 from .filters import VideoFilter
 from .models import *
+from .forms import VideoForm
 
 
 # Create your views here.
@@ -407,10 +408,50 @@ def subscriptions(request):
     else:
         return redirect('login')
     
+
+def upload_page(request, pk):
+    context = {}
+    if request.user.is_authenticated:
+        try:
+            viewer = request.user.viewer
+            context['viewer'] = viewer
+            try:
+                channel = Channel.objects.get(id=pk)
+                if request.method == 'POST':
+                    form = VideoForm(request.POST, request.FILES)
+                    if form.is_valid():
+                        form.save(channel=channel)
+                        return redirect(f'/channel/{channel.id}') # type: ignore
+                    else:
+                        form = VideoForm()
+                        context['form'] = form
+                else:
+                    context['form'] = VideoForm()
+            except Channel.DoesNotExist as e:
+                return HttpResponseBadRequest(e, ", Have you created a channel")
+            try:
+                nav_channel = Channel.objects.get(user=viewer)
+                context['nav_channel'] = nav_channel
+                context['no_channel'] = False
+                context['many_channels'] = False
+            except Channel.DoesNotExist:
+                context['many_channels'] = False
+                context['no_channel'] = True
+            except:
+                context['many_channels'] = True
+                context['no_channel'] = False
+        except:
+            context['no_channel'] = True
+             
+        return render(request, 'tube/upload.html', context)
+    else:
+        return redirect('login')
+    
     
 ##############################################################################################
 #############################              AJAX FUNCTIONS       ##############################
 ##############################################################################################
+
 
 def subscribe(request):
     if request.user.is_authenticated:

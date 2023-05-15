@@ -28,6 +28,7 @@ urlpatterns = [
     path('video/<str:pk>', views_tube.watch_video),
     path('channel/<str:pk>', views_tube.channnel_view),
     path('playlist/<str:pk>', views_tube.playlist),
+    path('upload/<str:pk>', views_tube.upload_page),
     
     path('subscribe', views_tube.subscribe, name='subscribe'), 
     path('unsubscribe', views_tube.unsubscribe, name='unsubscribe'), 
