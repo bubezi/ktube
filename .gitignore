@@ -171,3 +171,5 @@ cython_debug/
 ktube/static/css/bootstrap.css
 ktube/static/css/bootstrap.min.css
 ktube/static/js/bootstrap.min.js
+package-lock.json
+package.json
