@@ -454,6 +454,20 @@
     };
     $('#undislike-form').submit(handleUnDisLike);
 
+    setTimeout(()=>{
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'add_view' %}",
+            data: {
+                video_id: {{video.id}},
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+            },
+            success:()=>{
+                console.log('Success, View logged')
+            },
+        });
+    }, 5000);
+
     $(document).ready(() => {
         function fetchSubscriberCount() {
             $.ajax({

@@ -29,8 +29,9 @@ urlpatterns = [
     path('dislike', views_tube.dislike, name='dislike'), 
     path('unlike', views_tube.unlike, name='unlike'), 
     path('undislike', views_tube.undislike, name='undislike'), 
+    path('add_view', views_tube.add_view, name='add_view'), 
     
-    path('viewers',views_tube.all_viewers),
+    path('viewers',views_tube.all_viewers, name='viewers'),
     path('get_viewers',views_tube.get_viewers, name='get_viewers'),
     
     ## The following are associated with a specific channel

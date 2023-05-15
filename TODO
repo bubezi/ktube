@@ -60,15 +60,16 @@ Pre Hosting shit
         [x] Liked Videos
         [x] History
     [x] Subscriptions
-[] add upload pages
+[x] add upload pages
     [x] Video Upload
     [x] add signup page
-    [] Create playlist page
+    [x] Create playlist page
+[x] Fix Profile on mobile
+[x] History
 [] Add video to playlist functionality
 [] Fix Navbar
 [] video views update
 [] playlist views update
-[] History
 [] Get video length
 [] Change like and dislike buttons
 [] Return to specific page after subscribe login redirect

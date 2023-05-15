@@ -68,20 +68,25 @@ def watch_video(request, pk):
         try:
             viewer = request.user.viewer
             context['viewer'] = viewer
+            
             if video.channel.subscribers.contains(viewer): # type: ignore
                 context['subscribed']=True
+                
             try:
                 likes = LikedVideos.objects.get(viewer=viewer)
                 dislikes = DisLikedVideos.objects.get(viewer=viewer)
+  
             except:
                 likes = LikedVideos(viewer=viewer)
                 dislikes = DisLikedVideos(viewer=viewer)
                 likes.save()
                 dislikes.save()
+                
             if likes.videos.contains(video):
                 context['liked'] = True
             if dislikes.videos.contains(video):
                 context['disliked'] = True
+                
             try:
                 nav_channel = Channel.objects.get(user=viewer)
                 context['nav_channel'] = nav_channel
@@ -264,7 +269,9 @@ def history(request):
                 history = History(viewer=viewer)
                 history.save()
                 context['history'] = history
-            context['videos']=history.videos.all()
+            views = history.views.order_by('viewed_on')
+            views = views.reverse()
+            context['views']=views
             try:
                 nav_channel = Channel.objects.get(user=viewer)
                 context['nav_channel'] = nav_channel
@@ -347,9 +354,13 @@ def library(request):
             try:
                 history = History.objects.get(viewer=viewer)
                 context['history'] = history
+                history_views = history.views.order_by('viewed_on')
+                history_views = history_views.reverse()
             except History.DoesNotExist:
                 history = History(viewer=viewer)
                 history.save()
+                history_views = history.views.order_by('viewed_on')
+                history_views = history_views.reverse()
                 context['history'] = history
             try:
                 saved_playlists = SavedPlaylists.objects.get(viewer=viewer)
@@ -358,8 +369,8 @@ def library(request):
                 saved_playlists = SavedPlaylists(viewer=viewer)
                 saved_playlists.save()
                 context['saved_playlists'] = saved_playlists
+            context['history_views']=history_views
             context['playlists']=saved_playlists.playlists.all()
-            context['history_videos']=history.videos.all()
             context['liked_videos_videos']=liked_videos.videos.all()
             context['watchlater_videos']=watchlater.videos.all()     
             try:
@@ -677,6 +688,29 @@ def undislike(request):
                 return JsonResponse({'success':False})
         else:
             return HttpResponse('No POST in request')
+    else:
+        return redirect('login')
+    
+
+def add_view(request):
+    if request.user.is_authenticated:
+        viewer = request.user.viewer
+        pk = request.POST['video_id']
+        video = Video.objects.get(id=pk)
+        view = VideoView(viewer=viewer, video=video)
+        view.save()
+        print(view)
+        
+        try:
+            history = History.objects.get(viewer=viewer)
+            
+        except:
+            history = History(viewer=viewer)
+            history.save()
+            
+        history.views.add(view)
+        print(history.views.all())
+        return JsonResponse({'success': True})
     else:
         return redirect('login')
  

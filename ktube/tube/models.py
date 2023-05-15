@@ -196,19 +196,25 @@ class Subscriptions(models.Model):
     
     def playlist_count(self):
         return self.subscriptions.count()
-  
+
+
+class VideoView(models.Model):
+    video = models.ForeignKey(Video, null=True, on_delete=models.DO_NOTHING)
+    viewer = models.ForeignKey(Viewer, null=True, on_delete=models.DO_NOTHING)
+    viewed_on = models.DateTimeField(auto_now_add=True) 
+    
+    def __str__(self) -> str:
+        return 'Title : ' + str(self.video) +', watched by: '+ str(self.viewer) +', watched: '+ str(self.viewed_on)
+
     
 class History(models.Model):
     viewer = models.OneToOneField(Viewer, null=True, on_delete=models.CASCADE)
-    videos = models.ManyToManyField(Video, related_name='history', blank=True)
+    views = models.ManyToManyField(VideoView, related_name='history', blank=True)
     public = False
     
     def __str__(self):
         return "My History"  
     
     def video_count(self):
-        return self.videos.count()
-    
-    def public_video_count(self):
-        return self.videos.filter(private = False).count()
+        return self.views.count()
     

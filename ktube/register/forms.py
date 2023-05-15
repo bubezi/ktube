@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from phonenumber_field.formfields import PhoneNumberField
-from tube.models import GENDERS, Viewer, Channel, Watchlater, LikedVideos, DisLikedVideos, SavedPlaylists, Subscriptions
+from tube.models import GENDERS, Viewer, Channel, Watchlater, LikedVideos, DisLikedVideos, SavedPlaylists, Subscriptions, History
 
 
 
@@ -80,6 +80,11 @@ class UserSignUpForm(UserCreationForm, WatchlaterForm, ViewerForm):
         except Subscriptions.DoesNotExist:
             subscriptions = Subscriptions(viewer=viewer)
             
+        try:
+            history = History.objects.get(viewer=viewer)
+        except History.DoesNotExist:
+            history = History(viewer=viewer)
+            
         viewer.username = self.cleaned_data['username']
         viewer.email = self.cleaned_data['email']
         viewer.phone = self.cleaned_data['phone']
@@ -94,6 +99,7 @@ class UserSignUpForm(UserCreationForm, WatchlaterForm, ViewerForm):
             liked_videos.save()
             disliked_videos.save()
             subscriptions.save()
+            history.save()
 
         return user
 

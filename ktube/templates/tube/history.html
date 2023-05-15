@@ -11,17 +11,12 @@
         <div class="col-lg-12">
             {% if history.video_count == 1 %}
             <div class="row">
-                <h3>{{history}}</h3><h4 style="padding-left: 7px;">- {{history.video_count}} video</h4>
+                <h3>{{history}}</h3><h4 style="padding-left: 7px;">- {{history.video_count}} video watched</h4>
             </div>
             {% else %}
             <div class="row">
-                <h3>{{history}}</h3><h4 style="padding-left: 7px;">- {{history.video_count}} videos</h4>
+                <h3>{{history}}</h3><h4 style="padding-left: 7px;">- {{history.video_count}} videos watched</h4>
             </div>
-            {% endif %}
-            {% if history.public_video_count == 1 %}
-            <div class="row"><h4 style="padding-left: 7px;">({{history.public_video_count}} public video)</h4></div>
-            {% else %}
-            <div class="row"><h4 style="padding-left: 7px;">({{history.public_video_count}} public videos)</h4></div>
             {% endif %}
 
             
@@ -29,28 +24,31 @@
         </div>
     </div>
     <div class="row box-element">
-        {% for video in videos %}
+        {% for view in views %}
             <div class="col-lg-4">
-                <a href="/video/{{video.id}}">
-                <img class="thumbnail" src="{{video.thumbnailURL}}" alt="">
+                <a href="/video/{{view.video.id}}">
+                <img class="thumbnail" src="{{view.video.thumbnailURL}}" alt="">
                 </a>
                 <div class="box-element product">
                     <div class="row">
-                        <a href="/video/{{video.id}}">
-                            <h6 style="float: left">{{video.title}}</h6> 
-                        </a>{% if video.private %}<h6 style="padding-left: 10px;">(private)</h6>
-                            {% elif video.unlisted %}<h6 style="padding-left: 10px;">(unlisted)</h6>{% endif %}
+                        <a href="/video/{{view.video.id}}">
+                            <h6 style="float: left">{{view.video.title}}</h6> 
+                        </a>{% if view.video.private %}<h6 style="padding-left: 10px;">(private)</h6>
+                            {% elif view.video.unlisted %}<h6 style="padding-left: 10px;">(unlisted)</h6>{% endif %}
                     </div>
-                    <a href="/channel/{{video.channel.id}}">
+                    <a href="/channel/{{view.video.channel.id}}">
                         <div class="row">
-                            {% if video.channel.profile_picture %}
-                            <img src="{{video.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                            {% if view.video.channel.profile_picture %}
+                            <img src="{{view.video.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
                             {% else %}
                             <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
                             {% endif %}
-                            <h6>{{video.channel}}</h6>
+                            <h6>{{view.video.channel}}</h6>
                         </div>
                     </a>
+                    <div class="row">
+                        <h6 style="float: left">Viewed on: {{view.viewed_on}}</h6> 
+                    </div>
                 </div>
             </div>
             {% empty %}
