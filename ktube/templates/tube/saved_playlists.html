@@ -10,7 +10,7 @@
     
     <div class="row box-element" style="margin-top: 10px;">
         <div class="col-lg-12"><div class="row"><h2>Saved Playlists</h2></div></div>
-        <a href="{% url 'profile' %}"><div class="col-lg-12"><h4>{{saved_playlists.viewer.username}}</h4></div></a>
+        <a href="{% url 'profile' %}"><div class="col-lg-12"><h4>{{saved_playlists.viewer.username | title }}</h4></div></a>
     </div>
     <div class="row box-element">
         {% for playlist in playlists %}

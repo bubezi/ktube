@@ -42,7 +42,7 @@
                             {% endif %}
                         {% endif %}
                         <div class="ml-3">
-                            <h5 class="name">Username: {{ viewer.username }}</h5>
+                            <h5 class="name">Username: {{ viewer.username | title }}</h5>
                             {% if viewer.email %}
                                 <p class="mail">Email: {{ viewer.email }} </p>
                             {% endif %}

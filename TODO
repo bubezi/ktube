@@ -7,7 +7,7 @@ GOOGLE AND TODO
     The same for like and deslike buttons
 [x] google HUMANIze Tags
 [x] Add page Loader
-[x] return to last video time after sub from video redirect
+[x] *return to last video time after sub from video redirect
 [x] Drag and drop functionality
 [] How to serve videos better django
 [] UPDATE Favivons
@@ -53,7 +53,7 @@ Pre Hosting shit
     [x] include and tags
 [x] Like
 [x] Liked Videos 
-[] Add playlist(s) page
+[x] Add playlist(s) page
     [x] Watch Later ** Possibly Created after Viewer is created
     [x] Libary 
         [x] Watch Later

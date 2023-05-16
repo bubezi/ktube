@@ -20,7 +20,7 @@
             {% endif %}
 
             
-            <a href="{% url 'profile' %}"><div class="row"><h4>{{history.viewer.username}}</h4></div></a>
+            <a href="{% url 'profile' %}"><div class="row"><h4>{{history.viewer.username | title }}</h4></div></a>
         </div>
     </div>
     <div class="row box-element">
@@ -47,7 +47,7 @@
                         </div>
                     </a>
                     <div class="row">
-                        <h6 style="float: left">Viewed on: {{view.viewed_on}}</h6> 
+                        <h6 style="float: left">Viewed {{ view.viewed_on | naturaltime }}</h6> 
                     </div>
                 </div>
             </div>

@@ -25,7 +25,7 @@
             {% endif %}
 
             
-            <a href="{% url 'profile' %}"><div class="row"><h4>{{watchlater.viewer.username}}</h4></div></a>
+            <a href="{% url 'profile' %}"><div class="row"><h4>{{watchlater.viewer.username | title }}</h4></div></a>
         </div>
     </div>
     <div class="row box-element">
@@ -80,7 +80,7 @@
             {% endif %}
 
             
-            <a href="{% url 'profile' %}"><div class="row"><h4>{{liked_videos.viewer.username}}</h4></div></a>
+            <a href="{% url 'profile' %}"><div class="row"><h4>{{liked_videos.viewer.username | title }}</h4></div></a>
         </div>
     </div>
     <div class="row box-element">
@@ -130,7 +130,7 @@
             {% endif %}
 
             
-            <a href="{% url 'profile' %}"><div class="row"><h4>{{history.viewer.username}}</h4></div></a>
+            <a href="{% url 'profile' %}"><div class="row"><h4>{{history.viewer.username | title }}</h4></div></a>
         </div>
     </div>
     <div class="row box-element">
@@ -157,7 +157,7 @@
                         </div>
                     </a>
                     <div class="row">
-                        <h6 style="float: left">{{view.viewed_on}}</h6> 
+                        <h6 style="float: left">Viewed {{ view.viewed_on | naturaltime }}</h6> 
                     </div>
                 </div>
             </div>
@@ -172,7 +172,7 @@
 
     <div class="row box-element" style="margin-top: 10px;">
         <div class="col-lg-12"><div class="row"><h2>Saved Playlists</h2></div></div>
-        <a href="{% url 'profile' %}"><div class="col-lg-12"><h4>{{saved_playlists.viewer.username}}</h4></div></a>
+        <a href="{% url 'profile' %}"><div class="col-lg-12"><h4>{{saved_playlists.viewer.username | title }}</h4></div></a>
     </div>
     <div class="row">
         {% for playlist in playlists %}

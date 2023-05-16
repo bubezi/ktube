@@ -25,7 +25,7 @@
             {% endif %}
 
             
-            <a href="{% url 'profile' %}"><div class="row"><h4>{{watchlater.viewer.username}}</h4></div></a>
+            <a href="{% url 'profile' %}"><div class="row"><h4>{{watchlater.viewer.username | title }}</h4></div></a>
         </div>
     </div>
     <div class="row box-element">
