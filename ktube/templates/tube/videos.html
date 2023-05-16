@@ -55,24 +55,35 @@
                                                 {% csrf_token %}
                                                 <input type="hidden" name="playlist_id" value="{{playlist.id}}">
                                                 <input type="hidden" name="video_id" value="{{video.id}}">
-                                                <button class="btn btn-outline-secondary add-btn update-cart" type="submit" id="add-{{video.id}}-to-{{playlist.id}}-button">Add Video to {{playlist|title}}</button>
-                                                <!-- <a class="dropdown-item" type="submit" id="add-{{video.id}}-to-{{playlist.id}}-button">Add Video to {{playlist|title}}</a> -->
+                                                <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                id="add-video-{{video.id}}-to-plist-{{playlist.id}}-button" 
+                                                onclick="event.preventDefault(); handleAddToPlaylist(event, 
+                                                '{{video.id}}', '{{playlist.id}}', 
+                                                'add-video-{{video.id}}-to-plist-{{playlist.id}}-button', 
+                                                'add-video-{{video.id}}-to-plist-{{playlist.id}}-success')"
+                                                >Add Video to {{playlist|title}}</a>
                                             </form>
-                                            <p id='add-video-{{video.id}}-to-plist-{{playlist.id}}-success' style="display: none;">Added to {{playlist|title}}</p>
+                                            <p id="add-video-{{video.id}}-to-plist-{{playlist.id}}-success" 
+                                            class="dropdown-item add-btn-link update-cart" 
+                                            style="display: none;">Added to {{playlist|title}}</p>
                                             <script>
-                                                function handleAddToPlaylist(event){
+                                                function handleAddToPlaylist(event, videoId, playlistId, addButtonId, successMessageId) {
                                                     event.preventDefault();
                                                     $.ajax({
                                                         type: 'POST',
                                                         url: "{% url 'add_video_to_playlist' %}",
-                                                        data: $('#add-video-{{video.id}}-to-plist-{{playlist.id}}-form').serialize(),
-                                                        success: (response)=>{
-                                                            toggleItem("add-{{video.id}}-to-{{playlist.id}}-button",false);
-                                                            toggleItem("add-video-{{video.id}}-to-plist-{{playlist.id}}-success",true);
+                                                        data: {
+                                                            csrfmiddlewaretoken: "{{ csrf_token }}",
+                                                            video_id: videoId,
+                                                            playlist_id: playlistId
+                                                        },
+                                                        success: function(response) {
+                                                            console.log('Success: saved to playlist');
+                                                            toggleItem(addButtonId, false);
+                                                            toggleItem(successMessageId, true);
                                                         },
                                                     });
-                                                };
-                                                $('#add-video-{{video.id}}-to-plist-{{playlist.id}}-form').submit(handleAddToPlaylist);
+                                                }
                                             </script>
                                             {% endif %}
                                         {% empty %}
