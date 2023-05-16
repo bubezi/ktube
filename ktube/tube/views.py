@@ -915,6 +915,25 @@ def add_video_to_playlist(request):
         return redirect('login') 
  
 
+def remove_video_from_playlist(request):
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            try:
+                video_id = request.POST['video_id']
+                playlist_id = request.POST['playlist_id']
+                video = Video.objects.get(id=video_id)
+                playlist = Playlist.objects.get(id=playlist_id)
+                playlist.videos.remove(video)
+                print('Here i am ##\t\t\t\t\t\n\t\t\t#########')
+                return JsonResponse({'success':True})
+            except:
+                return JsonResponse({'success':False})
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login') 
+ 
+
 def all_viewers(request):
     return render(request, 'tube/ajax_test.html')
 

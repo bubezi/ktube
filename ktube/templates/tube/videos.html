@@ -49,7 +49,39 @@
                                     {% if user.is_authenticated %}
                                         {% for playlist in playlists %}
                                             {% if video in playlist.videos.all %}
-                                            <a class="dropdown-item" href="#">Remove Video from {{playlist|title}}</a>
+                                            <form id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-form">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="playlist_id" value="{{playlist.id}}">
+                                                <input type="hidden" name="video_id" value="{{video.id}}">
+                                                <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-button" 
+                                                onclick="event.preventDefault(); handleRemoveFromPlaylist(event, 
+                                                '{{video.id}}', '{{playlist.id}}', 
+                                                'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button', 
+                                                'remove-video-{{video.id}}-from-plist-{{playlist.id}}-success')"
+                                                >Remove Video from {{playlist|title}}</a>
+                                            </form>
+                                            <p id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-success" 
+                                            class="dropdown-item add-btn-link update-cart" 
+                                            style="display: none;">Removed from {{playlist|title}}</p>
+                                            <script>
+                                                function handleRemoveFromPlaylist(event, videoId, playlistId, addButtonId, successMessageId) {
+                                                    event.preventDefault();
+                                                    $.ajax({
+                                                        type: 'POST',
+                                                        url: "{% url 'remove_video_from_playlist' %}",
+                                                        data: {
+                                                            csrfmiddlewaretoken: "{{ csrf_token }}",
+                                                            video_id: videoId,
+                                                            playlist_id: playlistId
+                                                        },
+                                                        success: function(response) {
+                                                            toggleItem(addButtonId, false);
+                                                            toggleItem(successMessageId, true);
+                                                        },
+                                                    });
+                                                }
+                                            </script>
                                             {% else %}
                                             <form id="add-video-{{video.id}}-to-plist-{{playlist.id}}-form">
                                                 {% csrf_token %}
@@ -78,7 +110,6 @@
                                                             playlist_id: playlistId
                                                         },
                                                         success: function(response) {
-                                                            console.log('Success: saved to playlist');
                                                             toggleItem(addButtonId, false);
                                                             toggleItem(successMessageId, true);
                                                         },
