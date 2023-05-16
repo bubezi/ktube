@@ -1,24 +1,25 @@
 GOOGLE AND TODO
 
+[x] Chat GPT Prompt
+    I am making a django youtube clone and I need the user to add a subscriber with a button. 
+    That is, having the Viewer Model added to the channel model's subscribers ManyToManyField
+    without having to handle using a new view function.
+    The same for like and deslike buttons
 [x] google HUMANIze Tags
-[]  
-    [] If yes change the get subscribers interval accordingly
-[] Not Found: /robots.txt
+[x] Add page Loader
+[x] return to last video time after sub from video redirect
+[] Drag and drop functionality
+[] How to serve videos better django
 [] UPDATE Favivons
-[] Learn React
-[] Video.Js
+[] UPDATE Like and Dislike buttons / svg
 [] Better profile image Placeholder
+[] Not Found: /robots.txt
 [] Django video View count
 [] Does Django use websockets
-[x] Add page Loader
 [] Dynamic login redirect
-    [] Chat GPT Prompt
-        I am making a django youtube clone and I need the user to add a subscriber with a button. 
-        That is, having the Viewer Model added to the channel model's subscribers ManyToManyField
-        without having to handle using a new view function.
-        The same for like and deslike buttons
 [] Optional url additions /url/<str:pk>
-[] return to last video time after sub from video redirect
+[] Video.Js
+[] Learn React
 [] UI
     [] Make everything beautiful
     [] responsiveness 
