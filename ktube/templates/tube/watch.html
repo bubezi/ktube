@@ -461,7 +461,7 @@
             type: 'POST',
             url: "{% url 'add_view' %}",
             data: {
-                video_id: {{video.id}},
+                video_id: "{{video.id}}",
                 csrfmiddlewaretoken: "{{ csrf_token }}",
             },
             success:()=>{

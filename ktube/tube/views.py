@@ -853,25 +853,38 @@ def undislike(request):
 
 def add_view(request):
     if request.user.is_authenticated:
-        viewer = request.user.viewer
-        pk = request.POST['video_id']
-        video = Video.objects.get(id=pk)
-        view = VideoView(viewer=viewer, video=video)
-        view.save()
-        
-        try:
-            history = History.objects.get(viewer=viewer)
+        if request.method=='POST':
+            viewer = request.user.viewer
+            pk = request.POST['video_id']
+            video = Video.objects.get(id=pk)
+            view = VideoView(viewer=viewer, video=video)
+            view.save()
             
-        except:
-            history = History(viewer=viewer)
-            history.save()
-            
-        history.views.add(view)
-        video.views += 1
-        video.save()
-        return JsonResponse({'success': True})
+            try:
+                history = History.objects.get(viewer=viewer)
+                
+            except:
+                history = History(viewer=viewer)
+                history.save()
+                
+            history.views.add(view)
+            video.views += 1
+            video.save()
+            return JsonResponse({'success': True})
+        else:
+            return HttpResponse('No POST in request')
     else:
-        return redirect('login')
+        if request.method=='POST':
+            pk = request.POST['video_id']
+            video = Video.objects.get(id=pk)
+            view = VideoView(video=video)
+            view.save()
+            
+            video.views += 1
+            video.save()
+            return JsonResponse({'success': True})
+        else:
+            return HttpResponse('No POST in request')
  
  
 def all_viewers(request):
