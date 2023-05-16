@@ -8,7 +8,7 @@ GOOGLE AND TODO
 [x] google HUMANIze Tags
 [x] Add page Loader
 [x] return to last video time after sub from video redirect
-[] Drag and drop functionality
+[x] Drag and drop functionality
 [] How to serve videos better django
 [] UPDATE Favivons
 [] UPDATE Like and Dislike buttons / svg
@@ -67,6 +67,7 @@ Pre Hosting shit
     [x] Create playlist page
 [x] Fix Profile on mobile
 [x] History
+[] Drag and drop functionality
 [] Add video to playlist functionality
 [] Fix Navbar
 [] video views update
