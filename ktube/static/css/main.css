@@ -26,11 +26,8 @@ a:hover {
 .navbar {
 	display: flex;
 	position: fixed !important; /* Set the navbar to fixed position */
+	position: relative;
 	top: 0; /* Position the navbar at the top of the page */
-	height: 80px; /* Comment out when online
-	
-	******************************************************
-	*/
 	width: 100%; /* Full width */
 	justify-content: space-around;
 	z-index:1;

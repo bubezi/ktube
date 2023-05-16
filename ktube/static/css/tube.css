@@ -14,7 +14,7 @@ body{
     font-family: 'roboto', sans-serif;
 }
 
-.navbar{
+/* .navbar{
     position: fixed;
     top: 0;
     left: 0;
@@ -24,7 +24,7 @@ body{
     display: flex;
     align-items: center;
     padding: 0 2.5vw;
-}
+} */
 
 .toggle-btn{
     width: 20px;
