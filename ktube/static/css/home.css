@@ -51,6 +51,33 @@
 	color:  #5383d3;
 }
 
+.options-toggler {
+    padding: 0.25rem 0.75rem;
+    font-size: 1.25rem;
+    line-height: 1;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+  }
+  
+  .options-toggler:hover, .options-toggler:focus {
+    text-decoration: none;
+  }
+  
+  .options-toggler:not(:disabled):not(.disabled) {
+    cursor: pointer;
+  }
+  
+  .options-toggler-icon {
+    display: inline-block;
+    width: 1.5em;
+    height: 1.5em;
+    vertical-align: middle;
+    content: "";
+    background: no-repeat center center;
+    background-size: 100% 100%;
+  }
+
 @media screen and (max-width:1024px){
     .intro-page h1 {
         color: #fff;

@@ -28,6 +28,8 @@ def home_view(request):
 
             try:
                 nav_channel = Channel.objects.get(user=viewer)
+                playlists = Playlist.objects.filter(channel=nav_channel) 
+                context['playlists'] = playlists
                 context['nav_channel'] = nav_channel
                 context['channel'] = nav_channel
                 context['no_channel'] = False
@@ -36,6 +38,14 @@ def home_view(request):
                 context['no_channel'] = True
 
             except:
+                my_channels = Channel.objects.filter(user=viewer)
+                my_playlists = []
+
+                for channel in my_channels:
+                    channel_playlists = Playlist.objects.filter(channel=channel).in_bulk().values()
+                    for channel_playlist in channel_playlists:
+                        my_playlists.append(channel_playlist)
+                context['playlists']= my_playlists
                 context['many_channels'] = True
                 context['no_channel'] = False
 
@@ -886,7 +896,25 @@ def add_view(request):
         else:
             return HttpResponse('No POST in request')
  
+
+def add_video_to_playlist(request):
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            try:
+                video_id = request.POST['video_id']
+                playlist_id = request.POST['playlist_id']
+                video = Video.objects.get(id=video_id)
+                playlist = Playlist.objects.get(id=playlist_id)
+                playlist.videos.add(video)
+                return JsonResponse({'success':True})
+            except:
+                return JsonResponse({'success':False})
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login') 
  
+
 def all_viewers(request):
     return render(request, 'tube/ajax_test.html')
 

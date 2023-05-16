@@ -368,8 +368,8 @@
             url: '{% url "unsubscribe" %}',
             data: $('#unsubscribe-form').serialize(),
             success: (response)=> {
-                toggleItem('subscribe-form', true);
                 toggleItem('unsubscribe-form', false);
+                toggleItem('subscribe-form', true);
                 if (response.subscriber_count===1) {
                 $('#subscriber-count').text(response.subscriber_count + " Subscriber");
                 } else {

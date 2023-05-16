@@ -9,6 +9,7 @@ GOOGLE AND TODO
 [x] Add page Loader
 [x] *return to last video time after sub from video redirect
 [x] Drag and drop functionality
+[] Better alternative for paginator
 [] How to serve videos better django
 [] UPDATE Favivons
 [] UPDATE Like and Dislike buttons / svg
@@ -68,8 +69,9 @@ Pre Hosting shit
 [x] Fix Profile on mobile
 [x] History
 [x] Fix Navbar
+[x] Add video to playlist functionality
 [] Drag and drop functionality
-[] Add video to playlist functionality
+[] Better alternative for paginator
 [] video views update
 [] Blue link problem
 [] playlist views update

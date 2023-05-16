@@ -34,6 +34,8 @@ urlpatterns = [
     path('viewers',views_tube.all_viewers, name='viewers'),
     path('get_viewers',views_tube.get_viewers, name='get_viewers'),
     
+    path('add_video_to_playlist',views_tube.add_video_to_playlist, name='add_video_to_playlist'),
+    
     ## The following are associated with a specific channel
     path('edit_channel/<str:pk>', views_reg.edit_channel),
     path('video/<str:pk>', views_tube.watch_video),
