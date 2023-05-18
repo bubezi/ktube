@@ -14,15 +14,21 @@ urlpatterns = [
     path('bye', views_reg.bye_page, name="bye"),
     path('register', views_reg.register, name="register"),
     path('profile', views_reg.profile_page, name='profile'),
+    path('create_channel', views_reg.create_channel, name="create_channel"),
+    path('edit_channel/<str:pk>', views_reg.edit_channel),    
+    
+    
     
     path('library', views_tube.library, name="library"),
     path('watchlater', views_tube.watchlater, name="watchlater"),
     path('liked_videos', views_tube.liked_videos, name="liked_videos"),
     path('history', views_tube.history, name="history"),
     path('saved_playlists', views_tube.saved_playlists, name="saved_playlists"),
+    path('save_playlist', views_tube.save_playlist, name="save_playlist"),
+    path('unsave_playlist', views_tube.unsave_playlist, name="unsave_playlist"),
+    path('delete_playlist', views_tube.delete_playlist, name="delete_playlist"),
     
     path('subscriptions', views_tube.subscriptions, name="subscriptions"),
-    path('create_channel', views_reg.create_channel, name="create_channel"),
     path('subscribe', views_tube.subscribe, name='subscribe'), 
     path('unsubscribe', views_tube.unsubscribe, name='unsubscribe'), 
     path('like', views_tube.like, name='like'), 
@@ -37,15 +43,20 @@ urlpatterns = [
     path('add_video_to_playlist',views_tube.add_video_to_playlist, name='add_video_to_playlist'),
     path('remove_video_from_playlist',views_tube.remove_video_from_playlist, name='remove_video_from_playlist'),
     
-    ## The following are associated with a specific channel
-    path('edit_channel/<str:pk>', views_reg.edit_channel),
+    path('add_video_to_watchlater',views_tube.add_video_to_watchlater, name='add_video_to_watchlater'),
+    path('remove_video_from_watchlater',views_tube.remove_video_from_watchlater, name='remove_video_from_watchlater'),
+    
+
     path('video/<str:pk>', views_tube.watch_video),
-    path('channel/<str:pk>', views_tube.channnel_view),
-    path('playlist/<str:pk>', views_tube.playlist),
-    path('upload/<str:pk>', views_tube.upload_video),
     path('create_playlist/<str:pk>', views_tube.create_playlist),
+    path('channel/<str:pk>', views_tube.channnel_view),
+    path('upload/<str:pk>', views_tube.upload_video),
     
     path('get_subs/<str:pk>',views_tube.get_subs),
+    
+    path('playlist/<str:pk>', views_tube.playlist),
+    
+    path('get_views/<str:pk>',views_tube.get_views),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

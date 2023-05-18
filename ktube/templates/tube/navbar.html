@@ -23,7 +23,10 @@
 					<a class="dropdown-item" href="{% url 'library' %}">My Library</a>
 					<div class="dropdown-divider"></div>
 					{% if user.is_authenticated %}
-					{% if many_channels %}{% else %}
+					{% if many_channels %}
+					<a class="dropdown-item" href="{% url 'profile' %}">Your Channels</a>
+					<div class="dropdown-divider"></div>
+					{% else %}
 					{% if no_channel %}
 							<a class="dropdown-item" href="{% url 'create_channel' %}">Create Channel</a>
 							<div class="dropdown-divider"></div>
@@ -36,7 +39,7 @@
 					<a class="dropdown-item" href="{% url 'watchlater' %}">My Watchlater</a>
 					<a class="dropdown-item" href="{% url 'liked_videos' %}">My Liked Videos</a>
 					<a class="dropdown-item" href="{% url 'history' %}">My History</a>
-					<a class="dropdown-item" href="{% url 'saved_playlists' %}">My Saved Playlists</a>
+					<a class="dropdown-item" href="{% url 'saved_playlists' %}">My Playlists</a>
 					{% if user.is_authenticated and not no_channel and not many_channels %}
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="/create_playlist/{{nav_channel.id}}">Create Playlist</a>
@@ -45,7 +48,7 @@
 							<a class="dropdown-item" href="{% url 'login' %}">Create Playlist</a>
 							{% elif no_channel %}
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="{% url 'create_channel' %}">Create Playlist</a>
+							<a class="dropdown-item" href="{% url 'create_channel' %}">Create Channel to Create Playlist</a>
 					{% endif %}
 				</div>
 			</li>

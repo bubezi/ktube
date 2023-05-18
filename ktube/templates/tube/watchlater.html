@@ -7,6 +7,19 @@
 {% block title %}{{ watchlater }} {% endblock title %}
 
 {% block content %}
+<style>
+    .dropdown .btn:focus,
+    .dropdown .btn:active,
+    .dropdown .btn:not(:disabled):not(.disabled):active:focus,
+    .dropdown .btn:not(:disabled):not(.disabled).active:focus {
+        box-shadow: none !important; /* Remove box shadow when focused or active */
+        background-color: transparent !important; /* Set background color to transparent */
+        border-color: transparent !important; /* Set border color to transparent */
+    }
+</style>
+
+
+
     <div class="row box-element">
         <div class="col-lg-12">
             {% if watchlater.video_count == 1 %}
@@ -41,16 +54,164 @@
                         </a>{% if video.private %}<h6 style="padding-left: 10px;">(private)</h6>
                             {% elif video.unlisted %}<h6 style="padding-left: 10px;">(unlisted)</h6>{% endif %}
                     </div>
-                    <a href="/channel/{{video.channel.id}}">
-                        <div class="row">
-                            {% if video.channel.profile_picture %}
-                            <img src="{{video.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                    <div class="row">
+                        {% if video.channel.profile_picture %}
+                        <img src="{{video.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                        {% else %}
+                        <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                        {% endif %}
+                        <h6>{{video.channel}}</h6>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-10">
+                            {% if video.views is not 1 %}
+                                <h6 style="float: left">{{video.views | intcomma }} views</h6>
                             {% else %}
-                            <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                                <h6 style="float: left">{{video.views | intcomma }} view</h6>
                             {% endif %}
-                            <h6>{{video.channel}}</h6>
                         </div>
-                    </a>
+                        <div class="col-lg-2 col-12 text-right mt-2 mt-lg-0">
+                            <div class="video-options">
+                                <div class="dropdown">
+                                    <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                                    </button>
+                                
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                        {% if user.is_authenticated %}
+                                            {% if video in watchlater.videos.all %}
+                                            <form id="remove-video-{{video.id}}-from-watchlater-form">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="video_id" value="{{video.id}}">
+                                                <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                id="remove-video-{{video.id}}-from-watchlater-button" 
+                                                style="display: block;"
+                                                onclick="event.preventDefault(); handleRemoveFromWatchlater(event, 
+                                                '{{video.id}}', '{{playlist.id}}', 
+                                                'remove-video-{{video.id}}-from-watchlater-button', 
+                                                'add-video-{{video.id}}-to-watchlater-button')"
+                                                >Remove Video From Watchlater</a>
+                                            </form>
+    
+                                            <form id="add-video-{{video.id}}-to-watchlater-form">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="video_id" value="{{video.id}}">
+                                                <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                id="add-video-{{video.id}}-to-watchlater-button"
+                                                style="display: none;" 
+                                                onclick="event.preventDefault(); handleAddToWatchlater(event, 
+                                                '{{video.id}}', '{{playlist.id}}', 
+                                                'add-video-{{video.id}}-to-watchlater-button', 
+                                                'remove-video-{{video.id}}-from-watchlater-button')"
+                                                >Add Video to Watchlater</a>
+                                            </form>
+                                            
+                                            {% else %}
+                                            <form id="remove-video-{{video.id}}-from-watchlater-form">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="video_id" value="{{video.id}}">
+                                                <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                id="remove-video-{{video.id}}-from-watchlater-button" 
+                                                style="display: none;"
+                                                onclick="event.preventDefault(); handleRemoveFromWatchlater(event, 
+                                                '{{video.id}}', '{{playlist.id}}', 
+                                                'remove-video-{{video.id}}-from-watchlater-button', 
+                                                'add-video-{{video.id}}-to-watchlater-button')"
+                                                >Remove Video From Watchlater</a>
+                                            </form>
+    
+                                            <form id="add-video-{{video.id}}-to-watchlater-form">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="video_id" value="{{video.id}}">
+                                                <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                id="add-video-{{video.id}}-to-watchlater-button"
+                                                style="display: block;" 
+                                                onclick="event.preventDefault(); handleAddToWatchlater(event, 
+                                                '{{video.id}}', '{{playlist.id}}', 
+                                                'add-video-{{video.id}}-to-watchlater-button', 
+                                                'remove-video-{{video.id}}-from-watchlater-button')"
+                                                >Add Video to Watchlater</a>
+                                            </form>
+                                            
+                                            {% endif %}
+                                            {% for playlist in playlists %}
+                                                {% if video in playlist.videos.all %}
+                                                <form id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="playlist_id" value="{{playlist.id}}">
+                                                    <input type="hidden" name="video_id" value="{{video.id}}">
+                                                    <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                    id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-button"
+                                                    style="display: block;"
+                                                    onclick="event.preventDefault(); handleRemoveFromPlaylist(event, 
+                                                    '{{video.id}}', '{{playlist.id}}', 
+                                                    'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button', 
+                                                    'add-video-{{video.id}}-to-plist-{{playlist.id}}-button')"
+                                                    >Remove Video from {{playlist|title}}</a>
+                                                </form>
+    
+                                                <form id="add-video-{{video.id}}-to-plist-{{playlist.id}}-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="playlist_id" value="{{playlist.id}}">
+                                                    <input type="hidden" name="video_id" value="{{video.id}}">
+                                                    <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                    id="add-video-{{video.id}}-to-plist-{{playlist.id}}-button"
+                                                    style="display: none;"
+                                                    onclick="event.preventDefault(); handleAddToPlaylist(event, 
+                                                    '{{video.id}}', '{{playlist.id}}', 
+                                                    'add-video-{{video.id}}-to-plist-{{playlist.id}}-button', 
+                                                    'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button')"
+                                                    >Add Video to {{playlist|title}}</a>
+                                                </form>
+                                                
+                                                {% else %}
+                                                <form id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="playlist_id" value="{{playlist.id}}">
+                                                    <input type="hidden" name="video_id" value="{{video.id}}">
+                                                    <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                    id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-button"
+                                                    style="display: none;"
+                                                    onclick="event.preventDefault(); handleRemoveFromPlaylist(event, 
+                                                    '{{video.id}}', '{{playlist.id}}', 
+                                                    'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button', 
+                                                    'add-video-{{video.id}}-to-plist-{{playlist.id}}-button')"
+                                                    >Remove Video from {{playlist|title}}</a>
+                                                </form>
+                                                
+                                                <form id="add-video-{{video.id}}-to-plist-{{playlist.id}}-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="playlist_id" value="{{playlist.id}}">
+                                                    <input type="hidden" name="video_id" value="{{video.id}}">
+                                                    <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                    id="add-video-{{video.id}}-to-plist-{{playlist.id}}-button"
+                                                    style="display: block;"
+                                                    onclick="event.preventDefault(); handleAddToPlaylist(event, 
+                                                    '{{video.id}}', '{{playlist.id}}', 
+                                                    'add-video-{{video.id}}-to-plist-{{playlist.id}}-button', 
+                                                    'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button')"
+                                                    >Add Video to {{playlist|title}}</a>
+                                                </form>
+                                                
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if nav_channel %}
+                                                <a class="dropdown-item" href="/create_playlist/{{nav_channel.id}}">Create playlist</a>
+                                            {% elif no_channel %}
+                                                <a class="dropdown-item" href="{% url 'create_channel' %}">Create channel to create playlist</a>
+                                            {% elif many_channels %}
+                                                {% for channel in my_channels %}
+                                                    <a class="dropdown-item" href="/create_playlist/{{channel.id}}">Create playlist in {{channel}} channel</a>
+                                                {% endfor %}
+                                            {% endif %}
+                                        {% else %}
+                                            <a class="dropdown-item" target='_blank' href="{% url 'login' %}">Add to playlist</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             {% empty %}
@@ -59,4 +220,77 @@
         </div>
         {% endfor %}
     </div>
+    <script type="text/javascript" src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
+    <script>
+        function toggleItem(id, toggle) {
+            let element = document.getElementById(id);
+            element.style.display = (toggle) ? 'block' : 'none';
+        }
+
+        function handleAddToPlaylist(event, videoId, playlistId, addButtonId, successId) {
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'add_video_to_playlist' %}",
+                data: {
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    video_id: videoId,
+                    playlist_id: playlistId
+                },
+                success: function(response) {
+                    toggleItem(addButtonId, false);
+                    toggleItem(successId, true);
+                },
+            });
+        }
+
+        function handleRemoveFromPlaylist(event, videoId, playlistId, addButtonId, successId) {
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'remove_video_from_playlist' %}",
+                data: {
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    video_id: videoId,
+                    playlist_id: playlistId
+                },
+                success: function(response) {
+                    toggleItem(addButtonId, false);
+                    toggleItem(successId, true);
+                },
+            });
+        }
+        
+        function handleAddToWatchlater(event, videoId, playlistId, addButtonId, successId) {
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'add_video_to_watchlater' %}",
+                data: {
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    video_id: videoId,
+                },
+                success: function(response) {
+                    toggleItem(addButtonId, false);
+                    toggleItem(successId, true);
+                },
+            });
+        }
+        
+        function handleRemoveFromWatchlater(event, videoId, playlistId, addButtonId, successId) {
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'remove_video_from_watchlater' %}",
+                data: {
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    video_id: videoId,
+                },
+                success: function(response) {
+                    toggleItem(addButtonId, false);
+                    toggleItem(successId, true);
+                },
+            });
+        }
+    </script>
 {% endblock content %}

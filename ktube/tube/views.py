@@ -17,7 +17,7 @@ from .models import *
 
 
 def home_view(request):
-    videos = Video.objects.filter(private=False, unlisted=False)
+    videos = Video.objects.filter(private=False, unlisted=False) # type: ignore
     myFilter = VideoFilter(request.GET, queryset=videos)
     context = {'videos': videos, 'myFilter': myFilter, }
 
@@ -25,17 +25,28 @@ def home_view(request):
         try:
             viewer = request.user.viewer
             context['viewer'] = viewer
+            
+            try:
+                watchlater = Watchlater.objects.get(viewer=viewer)
+                context['watchlater'] = watchlater
+
+            except Watchlater.DoesNotExist:
+                watchlater = Watchlater(viewer=viewer)
+                watchlater.save()
+                context['watchlater'] = watchlater
 
             try:
                 nav_channel = Channel.objects.get(user=viewer)
-                playlists = Playlist.objects.filter(channel=nav_channel) 
+                playlists = Playlist.objects.filter(channel=nav_channel)  # type: ignore
                 context['playlists'] = playlists
                 context['nav_channel'] = nav_channel
                 context['channel'] = nav_channel
                 context['no_channel'] = False
+                context['many_channels'] = False
 
             except Channel.DoesNotExist:
                 context['no_channel'] = True
+                context['many_channels'] = False
 
             except:
                 my_channels = Channel.objects.filter(user=viewer)
@@ -46,6 +57,7 @@ def home_view(request):
                     for channel_playlist in channel_playlists:
                         my_playlists.append(channel_playlist)
                 context['playlists']= my_playlists
+                context['my_channels']= my_channels
                 context['many_channels'] = True
                 context['no_channel'] = False
 
@@ -96,6 +108,15 @@ def watch_video(request, pk):
             viewer = request.user.viewer
             context['viewer'] = viewer
             
+            try:
+                watchlater = Watchlater.objects.get(viewer=viewer)
+                context['watchlater'] = watchlater
+
+            except Watchlater.DoesNotExist:
+                watchlater = Watchlater(viewer=viewer)
+                watchlater.save()
+                context['watchlater'] = watchlater
+            
             if video.channel.subscribers.contains(viewer): # type: ignore
                 context['subscribed']=True
                 
@@ -117,14 +138,26 @@ def watch_video(request, pk):
                 
             try:
                 nav_channel = Channel.objects.get(user=viewer)
+                playlists = Playlist.objects.filter(channel=nav_channel) 
+                context['playlists'] = playlists
                 context['nav_channel'] = nav_channel
                 context['no_channel'] = False
+                context['many_channels'] = False
 
             except Channel.DoesNotExist:
                 context['no_channel'] = True
                 context['many_channels'] = False
 
             except:
+                my_channels = Channel.objects.filter(user=viewer)
+                my_playlists = []
+
+                for channel in my_channels:
+                    channel_playlists = Playlist.objects.filter(channel=channel).in_bulk().values()
+                    for channel_playlist in channel_playlists:
+                        my_playlists.append(channel_playlist)
+                context['playlists']= my_playlists
+                context['my_channels']= my_channels
                 context['many_channels'] = True
                 context['no_channel'] = False
 
@@ -147,17 +180,39 @@ def channnel_view(request, pk):
     playlists = Playlist.objects.filter(channel=channel, public=True) 
     context = {'channel': channel, "videos": videos, "subscriber_count": subscriber_count,
                'playlists': playlists} 
+    context['playlist_owner']=False
 
     if request.user.is_authenticated:
         try:
             viewer = request.user.viewer
             context['viewer'] = viewer
 
+            if channel.user == viewer:
+                context['playlist_owner']= True
+                
             if channel.subscribers.contains(viewer):
                 context['subscribed']=True
+                
+            try:
+                watchlater = Watchlater.objects.get(viewer=viewer)
+                
+            except Watchlater.DoesNotExist:
+                watchlater = Watchlater(viewer=viewer)
+                watchlater.save()
+            context['watchlater'] = watchlater
+                
+            try:
+                saved_playlists = SavedPlaylists.objects.get(viewer=viewer)
+            except SavedPlaylists.DoesNotExist:
+                saved_playlists = SavedPlaylists(viewer=viewer)
+                saved_playlists.save()
+            context['saved_playlists'] = saved_playlists.playlists.all()
+
 
             try:
                 nav_channel = Channel.objects.get(user=viewer)
+                playlists = Playlist.objects.filter(channel=nav_channel) 
+                context['playlists'] = playlists
                 context['nav_channel'] = nav_channel
                 context['no_channel'] = False
                 unlisted_videos = Video.objects.filter(channel=channel, unlisted=True)
@@ -173,6 +228,15 @@ def channnel_view(request, pk):
                 context['no_channel'] = True
 
             except:
+                my_channels = Channel.objects.filter(user=viewer)
+                my_playlists = []
+
+                for channel in my_channels:
+                    channel_playlists = Playlist.objects.filter(channel=channel).in_bulk().values()
+                    for channel_playlist in channel_playlists:
+                        my_playlists.append(channel_playlist)
+                context['playlists']= my_playlists
+                context['my_channels']= my_channels
                 context['many_channels'] = True
                 context['no_channel'] = False
 
@@ -183,6 +247,7 @@ def channnel_view(request, pk):
 
 def playlist(request, pk):
     context = {}
+    context['playlist_owner'] = False
     if request.user.is_authenticated:
         try:
             playlist = Playlist.objects.get(id=pk)
@@ -200,9 +265,28 @@ def playlist(request, pk):
                 
             if playlist.channel.user == viewer: # type: ignore 
                 videos=playlist.videos.all()
+                context['playlist_owner'] = True
+                
+            
+            try:
+                watchlater = Watchlater.objects.get(viewer=viewer)
+                
+            except Watchlater.DoesNotExist:
+                watchlater = Watchlater(viewer=viewer)
+                watchlater.save()
+            context['watchlater'] = watchlater
+                
+            try:
+                saved_playlists = SavedPlaylists.objects.get(viewer=viewer)
+            except SavedPlaylists.DoesNotExist:
+                saved_playlists = SavedPlaylists(viewer=viewer)
+                saved_playlists.save()
+            context['saved_playlists'] = saved_playlists.playlists.all()
 
             try:
                 nav_channel = Channel.objects.get(user=viewer)
+                playlists = Playlist.objects.filter(channel=nav_channel) 
+                context['playlists'] = playlists
                 context['nav_channel'] = nav_channel
                 context['no_channel'] = False
 
@@ -211,10 +295,20 @@ def playlist(request, pk):
                 context['no_channel'] = True
 
             except:
+                my_channels = Channel.objects.filter(user=viewer)
+                my_playlists = []
+
+                for channel in my_channels:
+                    channel_playlists = Playlist.objects.filter(channel=channel).in_bulk().values()
+                    for channel_playlist in channel_playlists:
+                        my_playlists.append(channel_playlist)
+                context['playlists']= my_playlists
+                context['my_channels']= my_channels
                 context['many_channels'] = True
                 context['no_channel'] = False
 
         except:
+            context['many_channels'] = False
             context['no_channel'] = True 
         
 
@@ -229,7 +323,7 @@ def playlist(request, pk):
             return HttpResponse('<h1>404 Not Found</h1><h4>Playlist Does Not Exist! SORRYYY</h4>')
 
         if not playlist.public:
-            return HttpResponseForbidden("<h1>Forbidden</h1><h4>Playlist is private</h4>")
+            return redirect('login')
 
         videos=playlist.videos.filter(private=False)
         context['playlist']=playlist 
@@ -255,19 +349,33 @@ def watchlater(request):
                 watchlater = Watchlater(viewer=viewer)
                 watchlater.save()
                 context['watchlater'] = watchlater
-            context['videos']=watchlater.videos.all()       
+            context['videos']=watchlater.videos.all()  
+            
+            
 
             try:
                 nav_channel = Channel.objects.get(user=viewer)
+                playlists = Playlist.objects.filter(channel=nav_channel) 
+                context['playlists'] = playlists
                 context['nav_channel'] = nav_channel
+                context['channel'] = nav_channel
                 context['no_channel'] = False
-                context['many_channels'] = False
+                context['many_channels'] = False  
 
             except Channel.DoesNotExist:
                 context['many_channels'] = False
                 context['no_channel'] = True
 
             except:
+                my_channels = Channel.objects.filter(user=viewer)
+                my_playlists = []
+
+                for channel in my_channels:
+                    channel_playlists = Playlist.objects.filter(channel=channel).in_bulk().values()
+                    for channel_playlist in channel_playlists:
+                        my_playlists.append(channel_playlist)
+                context['playlists']= my_playlists
+                context['my_channels']= my_channels
                 context['many_channels'] = True
                 context['no_channel'] = False
 
@@ -287,6 +395,15 @@ def liked_videos(request):
         try:
             viewer = request.user.viewer
             context['viewer'] = viewer
+            
+            try:
+                watchlater = Watchlater.objects.get(viewer=viewer)
+                context['watchlater'] = watchlater
+
+            except Watchlater.DoesNotExist:
+                watchlater = Watchlater(viewer=viewer)
+                watchlater.save()
+                context['watchlater'] = watchlater
 
             try:
                 liked_videos = LikedVideos.objects.get(viewer=viewer)
@@ -300,6 +417,8 @@ def liked_videos(request):
 
             try:
                 nav_channel = Channel.objects.get(user=viewer)
+                playlists = Playlist.objects.filter(channel=nav_channel) 
+                context['playlists'] = playlists
                 context['nav_channel'] = nav_channel
                 context['no_channel'] = False
                 context['many_channels'] = False
@@ -309,6 +428,15 @@ def liked_videos(request):
                 context['no_channel'] = True
 
             except:
+                my_channels = Channel.objects.filter(user=viewer)
+                my_playlists = []
+
+                for channel in my_channels:
+                    channel_playlists = Playlist.objects.filter(channel=channel).in_bulk().values()
+                    for channel_playlist in channel_playlists:
+                        my_playlists.append(channel_playlist)
+                context['playlists']= my_playlists
+                context['my_channels']= my_channels
                 context['many_channels'] = True
                 context['no_channel'] = False
 
@@ -341,7 +469,20 @@ def history(request):
             context['views']=views
 
             try:
+                watchlater = Watchlater.objects.get(viewer=viewer)
+                context['watchlater'] = watchlater
+
+            except Watchlater.DoesNotExist:
+                watchlater = Watchlater(viewer=viewer)
+                watchlater.save()
+                context['watchlater'] = watchlater
+            context['videos']=watchlater.videos.all()  
+            
+
+            try:
                 nav_channel = Channel.objects.get(user=viewer)
+                playlists = Playlist.objects.filter(channel=nav_channel) 
+                context['playlists'] = playlists
                 context['nav_channel'] = nav_channel
                 context['no_channel'] = False
                 context['many_channels'] = False
@@ -351,6 +492,15 @@ def history(request):
                 context['no_channel'] = True
 
             except:
+                my_channels = Channel.objects.filter(user=viewer)
+                my_playlists = []
+
+                for channel in my_channels:
+                    channel_playlists = Playlist.objects.filter(channel=channel).in_bulk().values()
+                    for channel_playlist in channel_playlists:
+                        my_playlists.append(channel_playlist)
+                context['playlists']= my_playlists
+                context['my_channels']= my_channels
                 context['many_channels'] = True
                 context['no_channel'] = False
 
@@ -403,11 +553,15 @@ def saved_playlists(request):
                         my_playlists.append(channel_playlist)
 
                 context['my_playlists'] =  my_playlists
+                context['my_channels'] =  my_channels
                 context['many_channels'] = True
                 context['no_channel'] = False
 
         except:
             context['no_channel'] = True        
+
+        context['playlist_owner'] = True
+
         return render(request, 'tube/saved_playlists.html', context)
 
     else:
@@ -489,10 +643,12 @@ def library(request):
                         my_playlists.append(channel_playlist)
 
                 context['my_playlists'] =  my_playlists
+                context['my_channels'] =  my_channels
                 context['many_channels'] = True
                 context['no_channel'] = False
 
         except:
+            context['no_channel'] = False
             context['no_channel'] = True      
         
         return render(request, 'tube/library.html', context)
@@ -507,6 +663,15 @@ def subscriptions(request):
         try:
             viewer = request.user.viewer
             context['viewer'] = viewer
+            
+            try:
+                watchlater = Watchlater.objects.get(viewer=viewer)
+                context['watchlater'] = watchlater
+
+            except Watchlater.DoesNotExist:
+                watchlater = Watchlater(viewer=viewer)
+                watchlater.save()
+                context['watchlater'] = watchlater
 
             try:
                 subscription = Subscriptions.objects.get(viewer=viewer)
@@ -529,7 +694,10 @@ def subscriptions(request):
 
             try:
                 nav_channel = Channel.objects.get(user=viewer)
+                playlists = Playlist.objects.filter(channel=nav_channel) 
+                context['playlists'] = playlists
                 context['nav_channel'] = nav_channel
+                context['channel'] = nav_channel
                 context['no_channel'] = False
                 context['many_channels'] = False
 
@@ -538,6 +706,15 @@ def subscriptions(request):
                 context['no_channel'] = True
 
             except:
+                my_channels = Channel.objects.filter(user=viewer)
+                my_playlists = []
+
+                for channel in my_channels:
+                    channel_playlists = Playlist.objects.filter(channel=channel).in_bulk().values()
+                    for channel_playlist in channel_playlists:
+                        my_playlists.append(channel_playlist)
+                context['playlists']= my_playlists
+                context['my_channels']= my_channels
                 context['many_channels'] = True
                 context['no_channel'] = False
 
@@ -932,7 +1109,99 @@ def remove_video_from_playlist(request):
             return HttpResponse('No POST in request')
     else:
         return redirect('login') 
+
+
+def add_video_to_watchlater(request):
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            try:
+                video_id = request.POST['video_id']
+                viewer = request.user.viewer
+                video = Video.objects.get(id=video_id)
+                watchlater = Watchlater.objects.get(viewer=viewer)
+                watchlater.videos.add(video)
+                return JsonResponse({'success':True})
+            except:
+                return JsonResponse({'success':False})
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login')  
+
+
+def remove_video_from_watchlater(request):
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            try:
+                video_id = request.POST['video_id']
+                viewer = request.user.viewer
+                video = Video.objects.get(id=video_id)
+                watchlater = Watchlater.objects.get(viewer=viewer)
+                watchlater.videos.remove(video)
+                return JsonResponse({'success':True})
+            except:
+                return JsonResponse({'success':False})
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login') 
  
+    
+def save_playlist(request):
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            try:
+                playlist_pk = request.POST['playlist_id']
+                viewer = request.user.viewer
+                saved_playlists = SavedPlaylists.objects.get(viewer=viewer)
+                playlist = Playlist.objects.get(pk=playlist_pk)
+                saved_playlists.playlists.add(playlist)
+                return JsonResponse({'success':True})
+            except:
+                return JsonResponse({'success':False})
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login')
+ 
+    
+def unsave_playlist(request):
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            try:
+                playlist_pk = request.POST['playlist_id']
+                viewer = request.user.viewer
+                saved_playlists = SavedPlaylists.objects.get(viewer=viewer)
+                playlist = Playlist.objects.get(pk=playlist_pk)
+                saved_playlists.playlists.remove(playlist)
+                return JsonResponse({'success':True})
+            except:
+                return JsonResponse({'success':False})
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login')
+    
+def delete_playlist(request):
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            viewer = request.user.viewer
+            playlist_pk = request.POST['playlist_id']
+            playlist = Playlist.objects.get(id=playlist_pk)
+            
+            if not playlist.channel.user == viewer: # type: ignore 
+                return JsonResponse({'success':False, 'message':"You Don't own this Playlist"})
+            try:
+                playlist.delete()
+                return JsonResponse({'success':True, 'message':"Playlist Deleted Successfully"})
+            except:
+                return JsonResponse({'success':False, 'message':"Deletion Failed"})
+                
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login')
+    
 
 def all_viewers(request):
     return render(request, 'tube/ajax_test.html')
@@ -947,3 +1216,8 @@ def get_subs(request, pk):
     channel = Channel.objects.get(id=pk)
     subscriber_count = channel.subscribers.count()
     return JsonResponse({"subscriber_count":subscriber_count})
+
+def get_views(request, pk):
+    video = Video.objects.get(id=pk)
+    views = video.views
+    return JsonResponse({"video_views":views})

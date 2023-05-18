@@ -12,6 +12,17 @@
     };
 </script>
 
+<style>
+    .dropdown .btn:focus,
+    .dropdown .btn:active,
+    .dropdown .btn:not(:disabled):not(.disabled):active:focus,
+    .dropdown .btn:not(:disabled):not(.disabled).active:focus {
+        box-shadow: none !important; /* Remove box shadow when focused or active */
+        background-color: transparent !important; /* Set background color to transparent */
+        border-color: transparent !important; /* Set border color to transparent */
+    }
+</style>
+
 <div class="row box-element">
     {% for video in videos %}
         <div class="col-lg-4">
@@ -41,12 +52,132 @@
                         <div class="video-options">
                             <div class="dropdown">
                                 <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                    <i class="fas fa-ellipsis-v"></i>
-                                    <!-- <span class="options-toggler-icon"></span> -->
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
                                 </button>
                             
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                     {% if user.is_authenticated %}
+                                        {% if video in watchlater.videos.all %}
+                                        <form id="remove-video-{{video.id}}-from-watchlater-form">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="video_id" value="{{video.id}}">
+                                            <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                            id="remove-video-{{video.id}}-from-watchlater-button" 
+                                            style="display: block;"
+                                            onclick="event.preventDefault(); handleRemoveFromWatchlater(event, 
+                                            '{{video.id}}', '{{playlist.id}}', 
+                                            'remove-video-{{video.id}}-from-watchlater-button', 
+                                            'add-video-{{video.id}}-to-watchlater-button')"
+                                            >Remove Video From Watchlater</a>
+                                        </form>
+                                        <script>
+                                            function handleRemoveFromWatchlater(event, videoId, playlistId, addButtonId, successId) {
+                                                event.preventDefault();
+                                                $.ajax({
+                                                    type: 'POST',
+                                                    url: "{% url 'remove_video_from_watchlater' %}",
+                                                    data: {
+                                                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                                                        video_id: videoId,
+                                                    },
+                                                    success: function(response) {
+                                                        toggleItem(addButtonId, false);
+                                                        toggleItem(successId, true);
+                                                    },
+                                                });
+                                            }
+                                        </script>
+
+                                        <form id="add-video-{{video.id}}-to-watchlater-form">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="video_id" value="{{video.id}}">
+                                            <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                            id="add-video-{{video.id}}-to-watchlater-button"
+                                            style="display: none;" 
+                                            onclick="event.preventDefault(); handleAddToWatchlater(event, 
+                                            '{{video.id}}', '{{playlist.id}}', 
+                                            'add-video-{{video.id}}-to-watchlater-button', 
+                                            'remove-video-{{video.id}}-from-watchlater-button')"
+                                            >Add Video to Watchlater</a>
+                                        </form>
+                                        <script>
+                                            function handleAddToWatchlater(event, videoId, playlistId, addButtonId, successId) {
+                                                event.preventDefault();
+                                                $.ajax({
+                                                    type: 'POST',
+                                                    url: "{% url 'add_video_to_watchlater' %}",
+                                                    data: {
+                                                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                                                        video_id: videoId,
+                                                    },
+                                                    success: function(response) {
+                                                        toggleItem(addButtonId, false);
+                                                        toggleItem(successId, true);
+                                                    },
+                                                });
+                                            }
+                                        </script>
+                                        {% else %}
+                                        <form id="remove-video-{{video.id}}-from-watchlater-form">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="video_id" value="{{video.id}}">
+                                            <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                            id="remove-video-{{video.id}}-from-watchlater-button" 
+                                            style="display: none;"
+                                            onclick="event.preventDefault(); handleRemoveFromWatchlater(event, 
+                                            '{{video.id}}', '{{playlist.id}}', 
+                                            'remove-video-{{video.id}}-from-watchlater-button', 
+                                            'add-video-{{video.id}}-to-watchlater-button')"
+                                            >Remove Video From Watchlater</a>
+                                        </form>
+                                        <script>
+                                            function handleRemoveFromWatchlater(event, videoId, playlistId, addButtonId, successId) {
+                                                event.preventDefault();
+                                                $.ajax({
+                                                    type: 'POST',
+                                                    url: "{% url 'remove_video_from_watchlater' %}",
+                                                    data: {
+                                                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                                                        video_id: videoId,
+                                                    },
+                                                    success: function(response) {
+                                                        toggleItem(addButtonId, false);
+                                                        toggleItem(successId, true);
+                                                    },
+                                                });
+                                            }
+                                        </script>
+
+                                        <form id="add-video-{{video.id}}-to-watchlater-form">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="video_id" value="{{video.id}}">
+                                            <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                            id="add-video-{{video.id}}-to-watchlater-button"
+                                            style="display: block;" 
+                                            onclick="event.preventDefault(); handleAddToWatchlater(event, 
+                                            '{{video.id}}', '{{playlist.id}}', 
+                                            'add-video-{{video.id}}-to-watchlater-button', 
+                                            'remove-video-{{video.id}}-from-watchlater-button')"
+                                            >Add Video to Watchlater</a>
+                                        </form>
+                                        <script>
+                                            function handleAddToWatchlater(event, videoId, playlistId, addButtonId, successId) {
+                                                event.preventDefault();
+                                                $.ajax({
+                                                    type: 'POST',
+                                                    url: "{% url 'add_video_to_watchlater' %}",
+                                                    data: {
+                                                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                                                        video_id: videoId,
+                                                    },
+                                                    success: function(response) {
+                                                        toggleItem(addButtonId, false);
+                                                        toggleItem(successId, true);
+                                                    },
+                                                });
+                                            }
+                                        </script>
+                                        {% endif %}
                                         {% for playlist in playlists %}
                                             {% if video in playlist.videos.all %}
                                             <form id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-form">
@@ -54,18 +185,17 @@
                                                 <input type="hidden" name="playlist_id" value="{{playlist.id}}">
                                                 <input type="hidden" name="video_id" value="{{video.id}}">
                                                 <a href="#" class="dropdown-item add-btn-link update-cart" 
-                                                id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-button" 
+                                                id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-button"
+                                                style="display: block;"
                                                 onclick="event.preventDefault(); handleRemoveFromPlaylist(event, 
                                                 '{{video.id}}', '{{playlist.id}}', 
                                                 'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button', 
-                                                'remove-video-{{video.id}}-from-plist-{{playlist.id}}-success')"
+                                                'add-video-{{video.id}}-to-plist-{{playlist.id}}-button')"
                                                 >Remove Video from {{playlist|title}}</a>
                                             </form>
-                                            <p id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-success" 
-                                            class="dropdown-item add-btn-link update-cart" 
-                                            style="display: none;">Removed from {{playlist|title}}</p>
+                                            
                                             <script>
-                                                function handleRemoveFromPlaylist(event, videoId, playlistId, addButtonId, successMessageId) {
+                                                function handleRemoveFromPlaylist(event, videoId, playlistId, addButtonId, successId) {
                                                     event.preventDefault();
                                                     $.ajax({
                                                         type: 'POST',
@@ -77,29 +207,28 @@
                                                         },
                                                         success: function(response) {
                                                             toggleItem(addButtonId, false);
-                                                            toggleItem(successMessageId, true);
+                                                            toggleItem(successId, true);
                                                         },
                                                     });
                                                 }
                                             </script>
-                                            {% else %}
+
                                             <form id="add-video-{{video.id}}-to-plist-{{playlist.id}}-form">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="playlist_id" value="{{playlist.id}}">
                                                 <input type="hidden" name="video_id" value="{{video.id}}">
                                                 <a href="#" class="dropdown-item add-btn-link update-cart" 
-                                                id="add-video-{{video.id}}-to-plist-{{playlist.id}}-button" 
+                                                id="add-video-{{video.id}}-to-plist-{{playlist.id}}-button"
+                                                style="display: none;"
                                                 onclick="event.preventDefault(); handleAddToPlaylist(event, 
                                                 '{{video.id}}', '{{playlist.id}}', 
                                                 'add-video-{{video.id}}-to-plist-{{playlist.id}}-button', 
-                                                'add-video-{{video.id}}-to-plist-{{playlist.id}}-success')"
+                                                'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button')"
                                                 >Add Video to {{playlist|title}}</a>
                                             </form>
-                                            <p id="add-video-{{video.id}}-to-plist-{{playlist.id}}-success" 
-                                            class="dropdown-item add-btn-link update-cart" 
-                                            style="display: none;">Added to {{playlist|title}}</p>
+                                            
                                             <script>
-                                                function handleAddToPlaylist(event, videoId, playlistId, addButtonId, successMessageId) {
+                                                function handleAddToPlaylist(event, videoId, playlistId, addButtonId, successId) {
                                                     event.preventDefault();
                                                     $.ajax({
                                                         type: 'POST',
@@ -111,17 +240,88 @@
                                                         },
                                                         success: function(response) {
                                                             toggleItem(addButtonId, false);
-                                                            toggleItem(successMessageId, true);
+                                                            toggleItem(successId, true);
+                                                        },
+                                                    });
+                                                }
+                                            </script>
+                                            {% else %}
+                                            <form id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-form">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="playlist_id" value="{{playlist.id}}">
+                                                <input type="hidden" name="video_id" value="{{video.id}}">
+                                                <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-button"
+                                                style="display: none;"
+                                                onclick="event.preventDefault(); handleRemoveFromPlaylist(event, 
+                                                '{{video.id}}', '{{playlist.id}}', 
+                                                'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button', 
+                                                'add-video-{{video.id}}-to-plist-{{playlist.id}}-button')"
+                                                >Remove Video from {{playlist|title}}</a>
+                                            </form>
+                                            
+                                            <script>
+                                                function handleRemoveFromPlaylist(event, videoId, playlistId, addButtonId, successId) {
+                                                    event.preventDefault();
+                                                    $.ajax({
+                                                        type: 'POST',
+                                                        url: "{% url 'remove_video_from_playlist' %}",
+                                                        data: {
+                                                            csrfmiddlewaretoken: "{{ csrf_token }}",
+                                                            video_id: videoId,
+                                                            playlist_id: playlistId
+                                                        },
+                                                        success: function(response) {
+                                                            toggleItem(addButtonId, false);
+                                                            toggleItem(successId, true);
+                                                        },
+                                                    });
+                                                }
+                                            </script>
+
+                                            <form id="add-video-{{video.id}}-to-plist-{{playlist.id}}-form">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="playlist_id" value="{{playlist.id}}">
+                                                <input type="hidden" name="video_id" value="{{video.id}}">
+                                                <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                id="add-video-{{video.id}}-to-plist-{{playlist.id}}-button"
+                                                style="display: block;"
+                                                onclick="event.preventDefault(); handleAddToPlaylist(event, 
+                                                '{{video.id}}', '{{playlist.id}}', 
+                                                'add-video-{{video.id}}-to-plist-{{playlist.id}}-button', 
+                                                'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button')"
+                                                >Add Video to {{playlist|title}}</a>
+                                            </form>
+                                            
+                                            <script>
+                                                function handleAddToPlaylist(event, videoId, playlistId, addButtonId, successId) {
+                                                    event.preventDefault();
+                                                    $.ajax({
+                                                        type: 'POST',
+                                                        url: "{% url 'add_video_to_playlist' %}",
+                                                        data: {
+                                                            csrfmiddlewaretoken: "{{ csrf_token }}",
+                                                            video_id: videoId,
+                                                            playlist_id: playlistId
+                                                        },
+                                                        success: function(response) {
+                                                            toggleItem(addButtonId, false);
+                                                            toggleItem(successId, true);
                                                         },
                                                     });
                                                 }
                                             </script>
                                             {% endif %}
-                                        {% empty %}
-                                            {% if nav_channel %}
-                                                <a class="dropdown-item" href="/create_playlist/{{nav_channel.id}}">Create playlist</a>
-                                            {% endif %}
                                         {% endfor %}
+                                        {% if nav_channel %}
+                                            <a class="dropdown-item" href="/create_playlist/{{nav_channel.id}}">Create playlist</a>
+                                        {% elif no_channel %}
+                                            <a class="dropdown-item" href="{% url 'create_channel' %}">Create channel to create playlist</a>
+                                        {% elif many_channels %}
+                                            {% for channel in my_channels %}
+                                                <a class="dropdown-item" href="/create_playlist/{{channel.id}}">Create playlist in {{channel}} channel</a>
+                                            {% endfor %}
+                                        {% endif %}
                                     {% else %}
                                         <a class="dropdown-item" target='_blank' href="{% url 'login' %}">Add to playlist</a>
                                     {% endif %}

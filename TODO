@@ -43,16 +43,22 @@ Pre Hosting shit
 [x] Add DP
 [x] Profile Page
 [x] fix Change Channel details form
-[x] Privacy
-    [x] USER should Not be able to change other USER's details outside admin panel
-    [x] USER should Not be able to create other USER'S channel
-    [x] Private & Unlisted Videos
-    [x] Public playlists
 [x] Sub
 [x] Organise Templates and views
     [x] Script and css declarations
     [x] include and tags
 [x] Like
+[x] add upload pages
+    [x] Video Upload
+    [x] add signup page
+    [x] Create playlist page
+[x] Fix Navbar
+[x] Privacy
+    [x] USER should Not be able to change other USER's details outside admin panel
+    [x] USER should Not be able to create other USER'S channel
+    [x] Private & Unlisted Videos
+    [x] Public playlists
+[x] History
 [x] Liked Videos 
 [x] Add playlist(s) page
     [x] Watch Later ** Possibly Created after Viewer is created
@@ -62,33 +68,49 @@ Pre Hosting shit
         [x] Liked Videos
         [x] History
     [x] Subscriptions
-[x] add upload pages
-    [x] Video Upload
-    [x] add signup page
-    [x] Create playlist page
-[x] Fix Profile on mobile
-[x] History
-[x] Fix Navbar
-[x] Add video to playlist functionality
-[x] Remove video from playlist functionality
+[] playlist functionality
+    [x] Add video to Watchlater functionality
+    [x] Add video to playlist functionality
+    [x] Remove video from playlist functionality
+    [x] Remove video from Watchlater functionality
+    [x] Add add and/or remove to
+        [x] Playlist page (More of remove)
+        [x] Channel page
+        [x] Liked videos page and on library page
+        [x] Watch page
+        [x] Subscriptions page
+        [x] Watchlater page and on library page
+        [x] History page and on library page
+        [x] Library page (More of remove)
+    [] Save and Delete playlist functionality
+        [x] Playlist page
+        [x] Channel page
+        [x] Saved Playlists page (remove)
+        [] Library page
+    [] ABILITY for USERS to delete playlists
+    [] playlist views update
+    [] PLAY ALL BUTTON FOR Playlists
+[] Fix Profile on mobile
+[] ABILITY for USERS to delete models
 [] Drag and drop functionality
 [] Internal Mini player functionality
 [] Better alternative for paginator
-[] video views update
+[] video views and view-count update
 [] Blue link problem
-[] playlist views update
 [] Get video length
 [] Change like and dislike buttons
 [] Return to specific page after subscribe login redirect
 [] FIX comments
-[] PLAY ALL BUTTON FOR Playlists
 [] COVER PHOTO FOR CHANNELS
 [] Utilize the {% empty %} tag in for loop TAGS
 [] Personalise password_change_view.html and password_reset_view.html pages
-[] ABILITY for USERS to delete models
 [] ABILITY TO tag individuals in comments
 [] video SHORTCUTS
 [] ABILITY TO transfer channel to another viewer
+[] Custom JavaScript Features
+    [] Alert
+    [] Confirm
+    [] FIND MORE
 [] Edit Check Errors Function and make a loop function from a conditional one
 [] Compress Js code and all code or some shit
 [] Ajax all forms
@@ -122,48 +144,3 @@ Pre Hosting shit
 
 
 ############################################################
-Username:allowme
-Password:1q2w3enininiw
-
-
-
-
-Sure, here is a complete list of all the tags and filters provided by the "humanize" app in Django:
-
-**Filters:**
-
-1. `apnumber`: Converts a number to its corresponding English ordinal word, such as "1st", "2nd", "3rd", etc.
-2. `intcomma`: Adds commas to an integer for readability, such as "1,000".
-3. `intword`: Converts an integer to a word-based representation, such as "one thousand" for 1000.
-4. `naturalday`: Converts a date to a human-readable format like "today", "tomorrow", or "yesterday".
-5. `naturaltime`: Converts a datetime to a human-readable format like "now", "1 minute ago", or "3 days, 2 hours from now".
-6. `ordinal`: Converts a number to its corresponding English ordinal word, such as "1st", "2nd", "3rd", etc.
-7. `filesizeformat`: Converts a file size to a human-readable format like "13.37 MB" or "1.21 GB".
-8. `date`: Formats a date according to a given format string.
-9. `time`: Formats a time according to a given format string.
-
-**Tags:**
-
-1. `apnumber`: Same as the `apnumber` filter.
-2. `intcomma`: Same as the `intcomma` filter.
-3. `intword`: Same as the `intword` filter.
-4. `naturalday`: Same as the `naturalday` filter.
-5. `naturaltime`: Same as the `naturaltime` filter.
-6. `ordinal`: Same as the `ordinal` filter.
-7. `filesizeformat`: Same as the `filesizeformat` filter.
-8. `date`: Same as the `date` filter.
-9. `time`: Same as the `time` filter.
-
-To use any of these tags or filters, you need to include the "humanize" app in your Django project's settings.py file and load it in your template using the `{% load humanize %}` tag. For example, to use the `naturalday` filter to display a date in a human-readable format, you can use:
-
-```
-{{ some_date|naturalday }}
-```
-
-Or you can use the `naturalday` tag in a block like this:
-
-```
-{% load humanize %}
-{% naturalday some_date as humanized_date %}
-{{ humanized_date }}
-```

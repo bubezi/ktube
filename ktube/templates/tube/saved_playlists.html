@@ -4,7 +4,7 @@
 {% load humanize %}
 {% load crispy_forms_tags %}
 
-{% block title %}{{ history }} {% endblock title %}
+{% block title %}{{ saved_playlists }} {% endblock title %}
 
 {% block content %}
     
@@ -47,11 +47,78 @@
                     {% endif %}
                     <h5>{{playlist.channel}}</h5>
                 </div>
-                {% if playlist.views == 1 %}<div class="row">
-                    <h6>{{playlist.views}} view</h6>
-                </div>{% else %}<div class="row">
-                    <h6>{{playlist.views}} views</h6>
-                </div>{% endif %}
+                <div class="row">
+                    <div class="col-lg-10">
+                        {% if playlist.views == 1 %}
+                        <h5 style="float: left">{{playlist.views}} View</h5>
+                        {% else %}
+                        <h5 style="float: left">{{playlist.views}} Views</h5>
+                        {% endif %}
+                    </div>
+            
+                    <div class="col-lg-2 col-12 text-right mt-2 mt-lg-0">
+                        <div class="video-options">
+                            <div class="dropdown">
+                                <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                    {% if user.is_authenticated %}
+                                        {% if playlist in saved_playlists.playlists.all %}
+                                            <form id="save-playlist-form">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="playlist_id" value="{{ playlist.id }}">
+                                                <a class="dropdown-item" href="#" id="save-playlist-button" 
+                                                    style="display: none;" onclick="event.preventDefault(); 
+                                                    handleSavePlaylist(event, '{{ playlist.id }}', 
+                                                    'save-playlist-button', 'unsave-playlist-button');"
+                                                    >Save Playlist</a>
+                                            </form>
+                                            <form id="unsave-playlist-form">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="playlist_id" value="{{ playlist_id }}">
+                                                <a class="dropdown-item" href="#" id="unsave-playlist-button" 
+                                                    style="display: block;" onclick="event.preventDefault(); 
+                                                    handleUnSavePlaylist(event, '{{ playlist.id }}', 
+                                                    'save-playlist-button', 'unsave-playlist-button');"
+                                                    >Unsave Playlist</a>
+                                            </form>
+                                        {% else %}
+                                            <form id="save-playlist-form">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="playlist_id" value="{{ playlist.id }}">
+                                                <a class="dropdown-item" href="#" id="save-playlist-button" 
+                                                    style="display: block;" onclick="event.preventDefault(); 
+                                                    handleSavePlaylist(event, '{{ playlist.id }}', 
+                                                    'save-playlist-button', 'unsave-playlist-button');"
+                                                    >Save Playlist</a>
+                                            </form>
+                                            <form id="unsave-playlist-form">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="playlist_id" value="{{ playlist_id }}">
+                                                <a class="dropdown-item" href="#" id="unsave-playlist-button" 
+                                                style="display: none;" onclick="event.preventDefault(); 
+                                                handleUnSavePlaylist(event, '{{ playlist.id }}', 
+                                                'save-playlist-button', 'unsave-playlist-button');"
+                                                >Unsave Playlist</a>
+                                            </form>
+                                        {% endif %}
+                                        {% if playlist_owner %}
+                                        <form>
+                                            {% csrf_token %}
+                                            <input type="hidden" name="playlist_id" value="{{ playlist.id }}">
+                                            <a class="dropdown-item" href="#" onclick="event.preventDefault(); confirmDeletePlaylist(event, '{{ playlist.id }}')"
+                                                >Delete Playlist</a>
+                                        </form>
+                                        {% endif %}
+                                    {% else %}
+                                        <a class="dropdown-item" target='_blank' href="{% url 'login' %}">Save playlist</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         {% empty %}
@@ -62,7 +129,26 @@
     </div>
 
     <div class="row box-element" style="margin-top: 10px;">
-        <div class="col-lg-12"><div class="row"><h2>My Playlists</h2></div></div>
+        <div class="col-lg-12">
+            <div class="row">
+                <h2>My Playlists</h2>
+                {% if not many_channels and not no_channel %}
+                <a href="/create_playlist/{{nav_channel.id}}"><button 
+                    class="btn btn-success"
+                    style="margin-left:40px;">Create Playlist</button></a>
+                    {% elif no_channel %}
+                    <a href="{% url 'create_channel' %}"><button 
+                        class="btn btn-success"
+                        style="margin-left:40px;">Create Channel then Playlist</button></a>
+                    {% else %}
+                    {% for channel in my_channels %}
+                    <a href="/create_playlist/{{channel.id}}"><button 
+                        class="btn btn-success"
+                        style="margin-left:40px;">Create Playlist in {{ channel }}</button></a>
+                    {% endfor %}
+                    {% endif %}
+            </div>
+        </div>
     </div>
     <div class="row box-element">
         {% for playlist in my_playlists %}
@@ -99,11 +185,60 @@
                     {% endif %}
                     <h5>{{playlist.channel}}</h5>
                 </div>
-                {% if playlist.views == 1 %}<div class="row">
-                    <h6>{{playlist.views}} view</h6>
-                </div>{% else %}<div class="row">
-                    <h6>{{playlist.views}} views</h6>
-                </div>{% endif %}
+                <div class="row">
+                    <div class="col-lg-10">
+                        {% if playlist.views == 1 %}
+                        <h5 style="float: left">{{playlist.views}} View</h5>
+                        {% else %}
+                        <h5 style="float: left">{{playlist.views}} Views</h5>
+                        {% endif %}
+                    </div>
+            
+                    <div class="col-lg-2 col-12 text-right mt-2 mt-lg-0">
+                        <div class="video-options">
+                            <div class="dropdown">
+                                <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                    {% if user.is_authenticated %}
+                                        {% if playlist in saved_playlists.playlists.all %}
+                                        {% else %}
+                                            <form id="save-playlist-form">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="playlist_id" value="{{ playlist.id }}">
+                                                <a class="dropdown-item" href="#" id="save-playlist-button" 
+                                                    style="display: block;" onclick="event.preventDefault(); 
+                                                    handleSavePlaylist(event, '{{ playlist.id }}', 
+                                                    'save-playlist-button', 'unsave-playlist-button');"
+                                                    >Save Playlist</a>
+                                            </form>
+                                            <form id="unsave-playlist-form">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="playlist_id" value="{{ playlist_id }}">
+                                                <a class="dropdown-item" href="#" id="unsave-playlist-button" 
+                                                style="display: none;" onclick="event.preventDefault(); 
+                                                handleUnSavePlaylist(event, '{{ playlist.id }}', 
+                                                'save-playlist-button', 'unsave-playlist-button');"
+                                                >Unsave Playlist</a>
+                                            </form>
+                                        {% endif %}
+                                        {% if playlist_owner %}
+                                        <form>
+                                            {% csrf_token %}
+                                            <input type="hidden" name="playlist_id" value="{{ playlist.id }}">
+                                            <a class="dropdown-item" href="#" onclick="event.preventDefault(); confirmDeletePlaylist(event, '{{ playlist.id }}')"
+                                                >Delete Playlist</a>
+                                        </form>
+                                        {% endif %}
+                                    {% else %}
+                                        <a class="dropdown-item" target='_blank' href="{% url 'login' %}">Save playlist</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         {% empty %}
@@ -113,4 +248,72 @@
         {% endfor %}
     </div>
 
+
+    <script type="text/javascript" src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
+    <script>
+        function toggleItem(id, toggle) {
+            let element = document.getElementById(id);
+            element.style.display = (toggle) ? 'block' : 'none';
+        }
+        
+        function handleSavePlaylist(event, playlistId, saveButtonId, unSaveButtonId) {
+            console.log("handleSavePlaylist function called");
+            event.preventDefault(); 
+            $.ajax({
+                type: 'POST',
+                url: '{% url "save_playlist" %}',
+                data: {
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    playlist_id: playlistId,
+                },
+                success: (response)=> {
+                    toggleItem(saveButtonId, false);
+                    toggleItem(unSaveButtonId, true);
+                    setTimeout(() =>{window.location.reload();}, 5);
+                },
+            });
+        }
+    
+        function handleUnSavePlaylist(event, playlistId, saveButtonId, unSaveButtonId) {
+            console.log("handleUnSavePlaylist function called");
+            event.preventDefault(); 
+            $.ajax({
+                type: 'POST',
+                url: '{% url "unsave_playlist" %}',
+                data: {
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    playlist_id: playlistId,
+                },
+                success: (response)=> {
+                    toggleItem(unSaveButtonId, false);
+                    toggleItem(saveButtonId, true);
+                },
+            });
+        }
+
+        function confirmDeletePlaylist(event, playlistId){
+            event.preventDefault()
+            var result = confirm("Are you sure you want to delete this Playlist?");
+            if (result){
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "delete_playlist" %}',
+                    data: {
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        playlist_id: playlistId,
+                    },
+                    success: (response)=>{
+                        alert(response.message);
+                        setTimeout(() =>{window.location.reload();}, 500);
+
+                    },
+                    error: (response)=>{
+                        alert(response.message)
+                    },
+                });
+            }else{
+                alert('Deletion Canceled!');
+            }  
+        }
+    </script>
 {% endblock content %}

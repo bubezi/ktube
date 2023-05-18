@@ -176,6 +176,15 @@ a:hover {
     margin-right: 10px;
 }
 
+.dropdown .btn:focus,
+.dropdown .btn:active,
+.dropdown .btn:not(:disabled):not(.disabled):active:focus,
+.dropdown .btn:not(:disabled):not(.disabled).active:focus {
+	box-shadow: none !important; /* Remove box shadow when focused or active */
+	background-color: transparent !important; /* Set background color to transparent */
+	border-color: transparent !important; /* Set border color to transparent */
+}
+
 .scroll-left {
 	height: 50px;
 	overflow: hidden;
