@@ -60,6 +60,8 @@ Pre Hosting shit
     [x] Public playlists
 [x] History
 [x] Liked Videos 
+[x] Fix Correct box element places
+[x] Fix Channel page with multiple playlists
 [x] Add playlist(s) page
     [x] Watch Later ** Possibly Created after Viewer is created
     [x] Libary 
@@ -68,6 +70,24 @@ Pre Hosting shit
         [x] Liked Videos
         [x] History
     [x] Subscriptions
+
+
+[] Ability to Comment
+[] Ability to reply to Comments
+[] ABILITY for USERS to delete models
+    [x] Playlist
+    [] Video
+    [] Channel
+    [] Viewer (USER - unmark active status)
+    [] Comment
+    [] Comment Reply
+[] ABILITY for USERS to edit models
+    [] Playlist
+    [] Video
+    [] Channel
+    [] Viewer (USER - unmark active status)
+    [] Comment
+    [] Comment Reply
 [] playlist functionality
     [x] Add video to Watchlater functionality
     [x] Add video to playlist functionality
@@ -88,16 +108,14 @@ Pre Hosting shit
         [x] Channel page
         [x] Saved Playlists page (remove)
         [x] Library page
-    [x] Fix Correct box element places
-    [x] Fix Channel page with multiple playlists
-    [] playlist views update
+    [] Playlist views update
+    [] PLaylist in Watch Page
     [] PLAY ALL BUTTON FOR Playlists
-[] Fix Profile on mobile
-[] ABILITY for USERS to delete models
-[] Drag and drop functionality
 [] Internal Mini player functionality
 [] Better alternative for paginator
 [] video views and view-count update
+[] Fix Profile on mobile
+[] Drag and drop functionality
 [] Blue link problem
 [] Get video length
 [] Change like and dislike buttons
