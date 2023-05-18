@@ -41,7 +41,7 @@
             <a href="{% url 'profile' %}"><div class="row"><h4>{{liked_videos.viewer.username | title }}</h4></div></a>
         </div>
     </div>
-    <div class="row box-element">
+    <div class="row">
         {% for video in videos %}
             <div class="col-lg-4">
                 <a href="/video/{{video.id}}">
@@ -212,8 +212,8 @@
                 </div>
             </div>
             {% empty %}
-        <div class="col-lg-12 box-element">
-                <h4>Empty</h4>
+        <div class="col-lg-12">
+                <h4>You haven't liked any videos Yet</h4>
         </div>
         {% endfor %}
     </div>

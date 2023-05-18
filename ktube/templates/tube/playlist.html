@@ -126,7 +126,7 @@
             </div>
         </div>
     </div>
-    <div class="row box-element">
+    <div class="row">
         {% for video in videos %}
             <div class="col-lg-4">
                 <a href="/video/{{video.id}}">
@@ -305,11 +305,13 @@
                 </div>
             </div>
             {% empty %}
-        <div class="col-lg-12 box-element">
+        <div class="col-lg-12">
                 <h4>Empty Playlist</h4>
         </div>
         {% endfor %}
     </div>
+
+    <hr style="padding-top: 3px;">
 
     <script type="text/javascript" src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
     <script>

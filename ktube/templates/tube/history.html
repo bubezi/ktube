@@ -35,7 +35,7 @@
             <a href="{% url 'profile' %}"><div class="row"><h4>{{history.viewer.username | title }}</h4></div></a>
         </div>
     </div>
-    <div class="row box-element">
+    <div class="row">
         {% for view in views %}
             <div class="col-lg-4">
                 <a href="/video/{{view.video.id}}">
@@ -214,8 +214,8 @@
                 </div>
             </div>
             {% empty %}
-        <div class="col-lg-12 box-element">
-                <h4>Empty</h4>
+        <div class="col-lg-12">
+                <h4>You haven't Watched any Videos Yet</h4>
         </div>
         {% endfor %}
     </div>

@@ -82,12 +82,14 @@ Pre Hosting shit
         [x] Watchlater page and on library page
         [x] History page and on library page
         [x] Library page (More of remove)
-    [] Save and Delete playlist functionality
+    [x] ABILITY for USERS to delete playlists
+    [x] Save and Delete playlist functionality
         [x] Playlist page
         [x] Channel page
         [x] Saved Playlists page (remove)
         [x] Library page
-    [] ABILITY for USERS to delete playlists
+    [x] Fix Correct box element places
+    [] Fix Channel page with multiple playlists
     [] playlist views update
     [] PLAY ALL BUTTON FOR Playlists
 [] Fix Profile on mobile
