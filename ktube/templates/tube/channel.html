@@ -280,7 +280,8 @@
                 </div>
             {% endif %}
     </div>
-    <div class="row box-element">
+
+    <div class="row">
         {% for playlist in playlists %}
         <div class="col-lg-4 box-element">
             <div style="padding-left: 10px;">
@@ -394,19 +395,7 @@
         </div>
         {% endfor %}
     </div>
-
-    <hr style="padding-top: 3px;">
-    <div class="row">
-        {% if channel.about %}
-        <div class="row"><div class="col-lg-12"><h2>About</h2></div>
-        <div class="col-lg-12"><p>{{channel.about}}</p></div></div>
-        {% endif %}
-        {% if channel.website_official %}
-        <div class="row"><div class="col-lg-12"><h2>Official Website</h2></div></div>
-        <div class="row"><div class="col-lg-12"><a href="{{channel.website_official}}"><p>{{channel.website_official}}</p></a></div></div>
-        {% endif %}
     </div>
-
     {% if viewer == channel.user %}
     <div class="row box-element">
         <h2>Unlisted videos</h2>
@@ -612,6 +601,23 @@
         {% endfor %}
     </div>
     {% endif %}
+    
+    <div class="row">
+        <div class="col-lg-12 box-element">
+            <div class="col-lg-12" style="text-align: center;">
+                {% if channel.about %}
+                <div class="row"><div class="col-lg-12"><h2>About</h2></div>
+                <div class="col-lg-12"><p>{{channel.about}}</p></div></div>
+                {% endif %}
+            </div>
+            <div class="col-lg-12" style="text-align: center;">
+                {% if channel.website_official %}
+                <div class="row"><div class="col-lg-12"><h2>Official Website</h2></div></div>
+                <div class="row"><div class="col-lg-12"><a href="{{channel.website_official}}"><p>{{channel.website_official}}</p></a></div></div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 
 <!-- Jquery and Ajax -->    
 <script type="text/javascript" src="{% static 'js/jquery-3.7.0.min.js' %}"></script>

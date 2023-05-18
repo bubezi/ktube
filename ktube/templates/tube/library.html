@@ -42,7 +42,7 @@
             <a href="{% url 'profile' %}"><div class="row"><h4>{{watchlater.viewer.username | title }}</h4></div></a>
         </div>
     </div>
-    <div class="row box-element">
+    <div class="row">
         {% for video in watchlater_videos %}
             <div class="col-lg-4">
                 <a href="/video/{{video.id}}">
@@ -245,7 +245,7 @@
             <a href="{% url 'profile' %}"><div class="row"><h4>{{liked_videos.viewer.username | title }}</h4></div></a>
         </div>
     </div>
-    <div class="row box-element">
+    <div class="row">
         {% for video in liked_videos_videos %}
             <div class="col-lg-4">
                 <a href="/video/{{video.id}}">
@@ -437,7 +437,7 @@
             <a href="{% url 'profile' %}"><div class="row"><h4>{{history.viewer.username | title }}</h4></div></a>
         </div>
     </div>
-    <div class="row box-element">
+    <div class="row">
         {% for view in history_views %}
             <div class="col-lg-4">
                 <a href="/video/{{view.video.id}}">
@@ -671,7 +671,7 @@
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                     {% if user.is_authenticated %}
-                                        {% if playlist in saved_playlists %}
+                                        {% if playlist in saved_playlists.playlists.all %}
                                             <form id="save-playlist-form">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="playlist_id" value="{{ playlist.id }}">
@@ -741,7 +741,7 @@
     <div class="row box-element" style="margin-top: 10px;">
         <div class="col-lg-12"><div class="row"><h2>My Playlists</h2></div></div>
     </div>
-    <div class="row box-element">
+    <div class="row">
         {% for playlist in my_playlists %}
         <div class="col-lg-4 box-element">
             <div style="padding-left: 10px;">
@@ -792,7 +792,7 @@
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                     {% if user.is_authenticated %}
-                                        {% if playlist in saved_playlists %}
+                                        {% if playlist in saved_playlists.playlists.all %}
                                             <form id="save-playlist-form">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="playlist_id" value="{{ playlist.id }}">
