@@ -19,7 +19,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="row">
-                        <a href="/playlist/{{playlist.id}}">
+                        <a href="{% url 'playlist' playlist.id %}">
                             <h4>{{playlist.name}}</h4>
                         </a>
                         </div>
@@ -133,7 +133,7 @@
             <div class="row">
                 <h2>My Playlists</h2>
                 {% if not many_channels and not no_channel %}
-                <a href="/create_playlist/{{nav_channel.id}}"><button 
+                <a href="{% url 'create_playlist' nav_channel.id %}"><button 
                     class="btn btn-success"
                     style="margin-left:40px;">Create Playlist</button></a>
                     {% elif no_channel %}
@@ -142,7 +142,7 @@
                         style="margin-left:40px;">Create Channel then Playlist</button></a>
                     {% else %}
                     {% for channel in my_channels %}
-                    <a href="/create_playlist/{{channel.id}}"><button 
+                    <a href="{% url 'create_playlist' channel.id %}"><button 
                         class="btn btn-success"
                         style="margin-left:40px;">Create Playlist in {{ channel }}</button></a>
                     {% endfor %}
@@ -157,7 +157,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="row">
-                        <a href="/playlist/{{playlist.id}}">
+                        <a href="{% url 'playlist' playlist.id %}">
                             <h4>{{playlist.name}}</h4>
                         </a>
                         </div>

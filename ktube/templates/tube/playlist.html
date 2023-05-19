@@ -50,7 +50,7 @@
             {% endif %}
 
             
-            <a href="/channel/{{playlist.channel.id}}"><div class="row"><h4>{{playlist.channel.name}}</h4></div></a>
+            <a href="{% url 'channel' playlist.channel.id %}"><div class="row"><h4>{{playlist.channel.name}}</h4></div></a>
             
             <div class="row">
                 <div class="col-lg-10">
@@ -129,17 +129,17 @@
     <div class="row">
         {% for video in videos %}
             <div class="col-lg-4">
-                <a href="/video/{{video.id}}">
+                <a href="{% url 'video' video.id %}">
                 <img class="thumbnail" src="{{video.thumbnailURL}}" alt="">
                 </a>
                 <div class="box-element product">
                     <div class="row">
-                        <a href="/video/{{video.id}}">
+                        <a href="{% url 'video' video.id %}">
                             <h6 style="float: left">{{video.title}}</h6> 
                         </a>{% if video.private %}<h6 style="padding-left: 10px;">(private)</h6>
                             {% elif video.unlisted %}<h6 style="padding-left: 10px;">(unlisted)</h6>{% endif %}
                     </div>
-                    <a href="/channel/{{video.channel.id}}">
+                    <a href="{% url 'channel' video.channel.id %}">
                         <div class="row">
                             {% if video.channel.profile_picture %}
                             <img src="{{video.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
@@ -286,12 +286,12 @@
                                                 {% endif %}
                                             {% endfor %}
                                             {% if nav_channel %}
-                                                <a class="dropdown-item" href="/create_playlist/{{nav_channel.id}}">Create playlist</a>
+                                                <a class="dropdown-item" href="{% url 'create_playlist' nav_channel.id %}">Create playlist</a>
                                             {% elif no_channel %}
                                                 <a class="dropdown-item" href="{% url 'create_channel' %}">Create channel to create playlist</a>
                                             {% elif many_channels %}
                                                 {% for channel in my_channels %}
-                                                    <a class="dropdown-item" href="/create_playlist/{{channel.id}}">Create playlist in {{channel}} channel</a>
+                                                    <a class="dropdown-item" href="{% url 'create_playlist' channel.id %}">Create playlist in {{channel}} channel</a>
                                                 {% endfor %}
                                             {% endif %}
                                         {% else %}

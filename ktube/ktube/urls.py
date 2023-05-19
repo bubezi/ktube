@@ -15,7 +15,7 @@ urlpatterns = [
     path('register', views_reg.register, name="register"),
     path('profile', views_reg.profile_page, name='profile'),
     path('create_channel', views_reg.create_channel, name="create_channel"),
-    path('edit_channel/<str:pk>', views_reg.edit_channel),    
+    path('edit_channel/<str:pk>', views_reg.edit_channel, name="edit_channel"),    
     
     
     
@@ -53,16 +53,16 @@ urlpatterns = [
     path('remove_video_from_watchlater',views_tube.remove_video_from_watchlater, name='remove_video_from_watchlater'),
     
 
-    path('video/<str:pk>', views_tube.watch_video),
-    path('create_playlist/<str:pk>', views_tube.create_playlist),
-    path('channel/<str:pk>', views_tube.channnel_view),
-    path('upload/<str:pk>', views_tube.upload_video),
+    path('video/<str:pk>', views_tube.watch_video, name="video"),
+    path('create_playlist/<str:pk>', views_tube.create_playlist, name="create_playlist"),
+    path('channel/<str:pk>', views_tube.channnel_view, name="channel"),
+    path('upload/<str:pk>', views_tube.upload_video, name="upload"),
     
-    path('get_subs/<str:pk>',views_tube.get_subs),
+    path('get_subs/<str:pk>',views_tube.get_subs, name="get_subs"),
     
-    path('playlist/<str:pk>', views_tube.playlist),
+    path('playlist/<str:pk>', views_tube.playlist, name="playlist"),
     
-    path('get_views/<str:pk>',views_tube.get_views),
+    path('get_views/<str:pk>',views_tube.get_views, name="get_views"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

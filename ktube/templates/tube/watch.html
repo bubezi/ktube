@@ -43,7 +43,7 @@
                 {% else %}
                 <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 30px; height: 30px;">
                 {% endif %}
-                <a href="/channel/{{video.channel.id}}">
+                <a href="{% url 'channel' video.channel.id %}">
                     <h6 style="font-size: 20px;"><strong>{{video.channel}}</strong></h6>
                 </a>
                 <h5 style="padding-left: 10px;">-</h5>
@@ -56,7 +56,7 @@
             {% if user.is_authenticated %}
             <div class="row">
                 {% if viewer == video.channel.user %}
-                    <div class="row"><h6><a href="/edit_channel/{{video.channel.id}}"><button 
+                    <div class="row"><h6><a href="{% url 'edit_channel' video.channel.id %}"><button 
                         class="btn btn-outline-secondary add-btn update-cart"
                         style="margin-left:40px;">Edit Channel</button></a></h6></div>                
                 {% else %}
@@ -237,12 +237,12 @@
                                             {% endif %}
                                         {% endfor %}
                                         {% if nav_channel %}
-                                            <a class="dropdown-item" href="/create_playlist/{{nav_channel.id}}">Create playlist</a>
+                                            <a class="dropdown-item" href="{% url 'create_playlist' nav_channel.id %}">Create playlist</a>
                                         {% elif no_channel %}
                                             <a class="dropdown-item" href="{% url 'create_channel' %}">Create channel to create playlist</a>
                                         {% elif many_channels %}
                                             {% for channel in my_channels %}
-                                                <a class="dropdown-item" href="/create_playlist/{{channel.id}}">Create playlist in {{channel}} channel</a>
+                                                <a class="dropdown-item" href="{% url 'create_playlist' channel.id %}">Create playlist in {{channel}} channel</a>
                                             {% endfor %}
                                         {% endif %}
                                     {% else %}
@@ -436,7 +436,7 @@
                         {% else %}
                         <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
                         {% endif %}
-                        <a href="/channel/{{comment.channel.id}}"><p><strong>{{comment.channel}}</strong></p></a>
+                        <a href="{% url 'channel' comment.channel.id %}"><p><strong>{{comment.channel}}</strong></p></a>
                     </div>
                     <div class="row description">
                         <p>{{comment}}</p>
@@ -553,7 +553,7 @@
                                 {% else %}
                                 <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
                                 {% endif %}
-                                <p><strong><a href="/channel/{{reply.channel.id}}">{{reply.channel}}</a></strong> replied to <strong><a href="/channel/{{comment.channel.id}}">{{comment.channel}}</a></strong></p>
+                                <p><strong><a href="{% url 'channel' reply.channel.id %}">{{reply.channel}}</a></strong> replied to <strong><a href="{% url 'channel' comment.channel.id %}">{{comment.channel}}</a></strong></p>
                             </div>
                             <div class="row description">
                                 <p>{{reply}}</p>
@@ -599,7 +599,7 @@
                                 {% else %}
                                 <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
                                 {% endif %}
-                                <p><strong><a href="/channel/{{reply.channel.id}}">{{reply.channel}}</a></strong> replied to <strong><a href="/channel/{{comment.channel.id}}">{{comment.channel}}</a></strong></p>
+                                <p><strong><a href="{% url 'channel' reply.channel.id %}">{{reply.channel}}</a></strong> replied to <strong><a href="{% url 'channel' comment.channel.id %}">{{comment.channel}}</a></strong></p>
                             </div>
                             <div class="row description">
                                 <p>{{reply}}</p>
@@ -645,7 +645,7 @@
                         {% else %}
                         <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
                         {% endif %}
-                        <a href="/channel/{{comment.channel.id}}"><p><strong>{{comment.channel}}</strong></p></a>
+                        <a href="{% url 'channel' comment.channel.id %}"><p><strong>{{comment.channel}}</strong></p></a>
                     </div>
                     <div class="row description">
                         <p>{{comment}}</p>
@@ -762,7 +762,7 @@
                                 {% else %}
                                 <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
                                 {% endif %}
-                                <p><strong><a href="/channel/{{reply.channel.id}}">{{reply.channel}}</a></strong> replied to <strong><a href="/channel/{{comment.channel.id}}">{{comment.channel}}</a></strong></p>
+                                <p><strong><a href="{% url 'channel' reply.channel.id %}">{{reply.channel}}</a></strong> replied to <strong><a href="{% url 'channel' comment.channel.id %}">{{comment.channel}}</a></strong></p>
                             </div>
                             <div class="row description">
                                 <p>{{reply}}</p>
@@ -808,7 +808,7 @@
                                 {% else %}
                                 <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
                                 {% endif %}
-                                <p><strong><a href="/channel/{{reply.channel.id}}">{{reply.channel}}</a></strong> replied to <strong><a href="/channel/{{comment.channel.id}}">{{comment.channel}}</a></strong></p>
+                                <p><strong><a href="{% url 'channel' reply.channel.id %}">{{reply.channel}}</a></strong> replied to <strong><a href="{% url 'channel' comment.channel.id %}">{{comment.channel}}</a></strong></p>
                             </div>
                             <div class="row description">
                                 <p>{{reply}}</p>
@@ -1152,7 +1152,7 @@
         function fetchVideoViews() {
             $.ajax({
               type: 'GET',
-              url: "/get_views/{{video.id}}",
+              url: "{% url 'get_views' video.id %}",
               success: (response) => {
                 if (response.video_views === 1) {
                   $('#video-views-count').text(response.video_views + " View");
@@ -1169,7 +1169,7 @@
         function fetchSubscriberCount() {
             $.ajax({
               type: 'GET',
-              url: "/get_subs/{{video.channel.id}}",
+              url: "{% url 'get_subs' video.channel.id %}",
               success: (response) => {
                 if (response.subscriber_count === 1) {
                   $('#subscriber-count').text(response.subscriber_count + " Subscriber");

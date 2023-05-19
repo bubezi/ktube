@@ -26,16 +26,16 @@
 <div class="row">
     {% for video in videos %}
         <div class="col-lg-4">
-            <a href="/video/{{video.id}}">
+            <a href="{% url 'video' video.id %}">
             <img class="thumbnail" src="{{video.thumbnailURL}}" alt="">
             </a>
             <div class="box-element product">
                 <div class="row">
-                    <a href="/video/{{video.id}}">
+                    <a href="{% url 'video' video.id %}">
                         <h6 style="float: left">{{video.title}}</h6>
                     </a>
                 </div>
-                <a href="/channel/{{video.channel.id}}">
+                <a href="{% url 'channel' video.channel.id %}">
                     <div class="row">
                         <h6>{{video.channel}}</h6>
                     </div>
@@ -314,12 +314,12 @@
                                             {% endif %}
                                         {% endfor %}
                                         {% if nav_channel %}
-                                            <a class="dropdown-item" href="/create_playlist/{{nav_channel.id}}">Create playlist</a>
+                                            <a class="dropdown-item" href="{% url 'create_playlist' nav_channel.id %}">Create playlist</a>
                                         {% elif no_channel %}
                                             <a class="dropdown-item" href="{% url 'create_channel' %}">Create channel to create playlist</a>
                                         {% elif many_channels %}
                                             {% for channel in my_channels %}
-                                                <a class="dropdown-item" href="/create_playlist/{{channel.id}}">Create playlist in {{channel}} channel</a>
+                                                <a class="dropdown-item" href="{% url 'create_playlist' channel.id %}">Create playlist in {{channel}} channel</a>
                                             {% endfor %}
                                         {% endif %}
                                     {% else %}
