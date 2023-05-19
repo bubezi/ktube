@@ -248,6 +248,9 @@
                                                     <a class="dropdown-item" href="/create_playlist/{{channel.id}}">Create playlist in {{channel}} channel</a>
                                                 {% endfor %}
                                             {% endif %}
+                                            {% if viewer == channel.user %}
+                                                <a class="dropdown-item" onclick="event.preventDefault(); confirmDeleteVideo(event, '{{video.id}}');"><h6 style="color: red;">Delete Video</h6></a>
+                                            {% endif %}
                                         {% else %}
                                             <a class="dropdown-item" target='_blank' href="{% url 'login' %}">Add to playlist</a>
                                         {% endif %}
@@ -378,7 +381,7 @@
                                             {% csrf_token %}
                                             <input type="hidden" name="playlist_id" value="{{ playlist.id }}">
                                             <a class="dropdown-item" href="#" onclick="event.preventDefault(); confirmDeletePlaylist(event, '{{ playlist.id }}')"
-                                                >Delete Playlist</a>
+                                                ><h6 style="color: red;">Delete Playlist</h6></a>
                                         </form>
                                         {% endif %}
                                     {% else %}
@@ -587,7 +590,7 @@
                                             {% csrf_token %}
                                             <input type="hidden" name="playlist_id" value="{{ playlist.id }}">
                                             <a class="dropdown-item" href="#" onclick="event.preventDefault(); confirmDeletePlaylist(event, '{{ playlist.id }}')"
-                                                >Delete Playlist</a>
+                                                ><h6 style="color: red;">Delete Playlist</h6></a>
                                         </form>
                                         {% endif %}
                                     {% else %}
@@ -754,6 +757,35 @@
                         alert(response.message)
                     },
                 });
+            }else{
+                alert('Deletion Canceled!');
+            }  
+        }
+
+        function confirmDeleteVideo(event, videoId){
+            event.preventDefault()
+            var result = confirm("Do you want to delete this Video?");
+            if (result){
+                var confirmation = confirm("Are you sure you want to delete this Video?");
+                if (confirmation){
+                    $.ajax({
+                        type: 'POST',
+                        url: '{% url "delete_video" %}',
+                        data: {
+                            csrfmiddlewaretoken: "{{ csrf_token }}",
+                            video_id: videoId,
+                        },
+                        success: (response)=>{
+                            alert(response.message);
+                            setTimeout(() =>{window.location.reload()}, 500);
+                        },
+                        error: (response)=>{
+                            alert(response.message)
+                        },
+                    });
+                }else{
+                        alert('Deletion Canceled!');
+                }
             }else{
                 alert('Deletion Canceled!');
             }  

@@ -1203,6 +1203,26 @@ def delete_playlist(request):
     else:
         return redirect('login')
     
+    
+def delete_video(request):
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            viewer = request.user.viewer
+            video_pk = request.POST['video_id']
+            video = Video.objects.get(id=video_pk)
+            if not video.channel.user == viewer: # type: ignore 
+                return JsonResponse({'success':False, 'message':"You Don't own this Video"})
+            try:
+                video.delete()
+                return JsonResponse({'success':True, 'message':"Video Deleted Successfully"})
+            except:
+                return JsonResponse({'success':False, 'message':"Deletion Failed"})
+                
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login')
+    
 
 def comment(request):
     if request.user.is_authenticated:

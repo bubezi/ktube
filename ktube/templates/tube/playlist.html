@@ -113,7 +113,7 @@
                                         {% csrf_token %}
                                         <input type="hidden" name="playlist_id" value="{{ playlist.id }}">
                                         <a class="dropdown-item" href="#" onclick="event.preventDefault(); confirmDeletePlaylist(event, '{{ playlist.id }}')"
-                                            >Delete Playlist</a>
+                                            ><h6 style="color: red;">Delete Playlist</h6></a>
                                     </form>
                                     {% endif %}
                                 {% else %}

@@ -2,7 +2,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import User
 from django.db import models
 
-from register.utils import period
+from .utils import period
 from django_resized import ResizedImageField
 
 GENDERS = (
@@ -199,8 +199,8 @@ class Subscriptions(models.Model):
 
 
 class VideoView(models.Model):
-    video = models.ForeignKey(Video, null=True, on_delete=models.DO_NOTHING)
-    viewer = models.ForeignKey(Viewer, null=True, on_delete=models.DO_NOTHING)
+    video = models.ForeignKey(Video, null=True, on_delete=models.CASCADE)
+    viewer = models.ForeignKey(Viewer, null=True, on_delete=models.CASCADE)
     viewed_on = models.DateTimeField(auto_now_add=True) 
     
     def __str__(self) -> str:

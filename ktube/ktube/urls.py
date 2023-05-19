@@ -26,7 +26,9 @@ urlpatterns = [
     path('saved_playlists', views_tube.saved_playlists, name="saved_playlists"),
     path('save_playlist', views_tube.save_playlist, name="save_playlist"),
     path('unsave_playlist', views_tube.unsave_playlist, name="unsave_playlist"),
+    
     path('delete_playlist', views_tube.delete_playlist, name="delete_playlist"),
+    path('delete_video', views_tube.delete_video, name="delete_video"),
     
     path('subscriptions', views_tube.subscriptions, name="subscriptions"),
     path('subscribe', views_tube.subscribe, name='subscribe'), 

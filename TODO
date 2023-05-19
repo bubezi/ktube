@@ -77,28 +77,7 @@ Pre Hosting shit
         [x] Liked Videos
         [x] History
     [x] Subscriptions
-[x] Ability to Comment
-[x] Ability to reply to Comments
-[x] Viewer Comment be on top of comments
-[x] Viewer Reply to Comment be on top of replies to comments
-
-[] Viewer Comment appear just after comment
-[] Viewer Reply appear just after reply
-[] ABILITY for USERS to delete models
-    [x] Playlist
-    [] Video
-    [] Channel
-    [] Viewer (USER - unmark active status)
-    [] Comment
-    [] Comment Reply
-[] ABILITY for USERS to edit models
-    [] Playlist
-    [] Video
-    [] Channel
-    [] Viewer (USER - unmark active status)
-    [] Comment
-    [] Comment Reply
-[] playlist functionality
+[x] playlist functionality
     [x] Add video to Watchlater functionality
     [x] Add video to playlist functionality
     [x] Remove video from playlist functionality
@@ -118,9 +97,29 @@ Pre Hosting shit
         [x] Channel page
         [x] Saved Playlists page (remove)
         [x] Library page
-    [] Playlist views update
-    [] PLaylist in Watch Page
+[x] Ability to Comment
+[x] Ability to reply to Comments
+[x] Viewer Comment be on top of comments
+[x] Viewer Reply to Comment be on top of replies to comments
+[] ABILITY for USERS to delete models
+    [x] Playlist
+    [x] Video
+    [] Channel
+    [] Comment
+    [] Comment Reply
+    [] Viewer (USER - unmark active status)
+[] ABILITY for USERS to edit models
+    [] Playlist
+    [] Video
+    [] Channel
+    [] Viewer
+    [] Comment
+    [] Comment Reply
+[] Viewer Comment appear just after comment
+[] Viewer Reply appear just after reply
+[] PLaylist in Watch Page
     [] PLAY ALL BUTTON FOR Playlists
+    [] Playlist views update
 [] Internal Mini player functionality
 [] Better alternative for paginator
 [] video views and view-count update
