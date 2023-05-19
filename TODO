@@ -79,11 +79,11 @@ Pre Hosting shit
     [x] Subscriptions
 [x] Ability to Comment
 [x] Ability to reply to Comments
+[x] Viewer Comment be on top of comments
+[x] Viewer Reply to Comment be on top of replies to comments
 
-[] Viewer Comment be on top of comments
-    [] and appear just after comment
-[] Viewer Reply to Comment be on top of replies to comments
-    [] and appear just after reply
+[] Viewer Comment appear just after comment
+[] Viewer Reply appear just after reply
 [] ABILITY for USERS to delete models
     [x] Playlist
     [] Video

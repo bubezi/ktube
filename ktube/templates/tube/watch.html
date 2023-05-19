@@ -426,7 +426,8 @@
     <div class="row"><h4 class="col-lg-12 box-element" style="margin-top: 0; margin-bottom: 0!important;">Comments</h4></div>
 
     {% if comments %}
-        {% for comment in comments%}
+        {% for comment in comments %}
+        {% if comment.channel.user == viewer %}
             <div class="row box-element">
                 <div class="col-lg-12">
                     <div class="row description">
@@ -542,6 +543,8 @@
             <!-- ###################     Comment Replies      ################# --> 
             {% for reply in comment_replies %}
                 {% if  reply.comment == comment %}
+                {% if not reply.channel.user == viewer %}
+
                     <div class="row box-element" style="margin-left: 30px;">
                         <div class="col-lg-12">
                             <div class="row description">
@@ -582,7 +585,264 @@
                         </div>
                     </div>
                 {% endif %}
+                {% endif %}
             {% endfor %}
+            {% for reply in comment_replies %}
+                {% if  reply.comment == comment %}
+                {% if not reply.channel.user == viewer %}
+
+                    <div class="row box-element" style="margin-left: 30px;">
+                        <div class="col-lg-12">
+                            <div class="row description">
+                                {% if reply.channel.profile_picture %}
+                                <img src="{{reply.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
+                                {% else %}
+                                <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
+                                {% endif %}
+                                <p><strong><a href="/channel/{{reply.channel.id}}">{{reply.channel}}</a></strong> replied to <strong><a href="/channel/{{comment.channel.id}}">{{comment.channel}}</a></strong></p>
+                            </div>
+                            <div class="row description">
+                                <p>{{reply}}</p>
+                            </div>
+                            <div class="row">
+                                {% if reply.likes is not 1 %}
+                                    <div class="">{{reply.likes | intcomma}} likes</div>
+                                {% else %}
+                                    <div class="">{{reply.likes | intcomma}} like</div>
+                                {% endif %}
+                                {% if reply.dislikes is not 1 %}
+                                    <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
+                                {% else %}
+                                    <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
+                                {% endif %}
+                            </div>
+                            {% if user.is_authenticated %}
+                                <div class="row">
+                                    <button data-product="{{video.id}}" 
+                                        data-action="like" 
+                                        class="btn btn-outline-secondary add-btn update-cart"
+                                        style="margin-left:0px;">Like</button>
+                                    <button data-product="{{video.id}}" 
+                                        data-action="dislike" 
+                                        class="btn btn-outline-secondary add-btn update-cart"
+                                        style="margin-left:20px;">Dislike</button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% endfor %}
+        {% for comment in comments %}
+        {% if not comment.channel.user == viewer %}
+            <div class="row box-element">
+                <div class="col-lg-12">
+                    <div class="row description">
+                        {% if comment.channel.profile_picture %}
+                        <img src="{{comment.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
+                        {% else %}
+                        <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
+                        {% endif %}
+                        <a href="/channel/{{comment.channel.id}}"><p><strong>{{comment.channel}}</strong></p></a>
+                    </div>
+                    <div class="row description">
+                        <p>{{comment}}</p>
+                    </div>
+                    <div class="row">
+                        {% if comment.likes is not 1 %}
+                            <div class="">{{comment.likes | intcomma}} likes</div>
+                        {% else %}
+                            <div class="">{{comment.likes | intcomma}} like</div>
+                        {% endif %}
+                        {% if comment.dislikes is not 1 %}
+                            <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{comment.dislikes | intcomma}} dislike</p></div>
+                        {% else %}
+                            <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{comment.dislikes | intcomma}} dislike</p></div>
+                        {% endif %}
+                    </div>
+                    {% if user.is_authenticated %}
+                        <div class="row">
+                            <button data-product="{{video.id}}" 
+                                data-action="like" 
+                                class="btn btn-outline-secondary add-btn update-cart"
+                                style="margin-left:0px;">Like</button>
+                            <button data-product="{{video.id}}" 
+                                data-action="dislike" 
+                                class="btn btn-outline-secondary add-btn update-cart"
+                                style="margin-left:20px;">Dislike</button>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <!-- ###################     Comment Replying      ################# --> 
+
+            {% if user.is_authenticated %}
+            {% if not many_channels %}
+            <div class="row">
+                <a onclick="toggleItem('reply-toggle-{{comment.id}}', false); 
+                                    toggleItem('reply-form-{{comment.id}}', true);"
+                            id="reply-toggle-{{comment.id}}"><h6>reply</h6></a>
+                <form id="reply-form-{{comment.id}}" style="display: none">
+                    {% csrf_token %}
+                    <div class="row">
+                        <h5><label for="reply-text-{{comment.id}}">Add Reply</label></h5>
+                        <textarea rows="3" cols="140" maxlength="500" id="reply-text-{{comment.id}}" name="reply_text"></textarea>
+                    </div>
+                    <div class="row" style="padding-left:20px; padding-top: 10px;">
+                        <button 
+                        id="reply-button-{{comment.id}}"
+                        onclick="event.preventDefault(); 
+                        handleCommentReply(
+                        event, 
+                        '{{comment.id}}', 
+                        'reply-text-{{comment.id}}', 
+                        'reply-toggle-{{comment.id}}', 
+                        'reply-form-{{comment.id}}');"
+                        class="btn btn-success">Reply</button></a> 
+                    </div>                 
+                </form>
+            </div>
+            {% else %}
+            <div class="row">
+                <a onclick="toggleItem('reply-toggle-{{comment.id}}', false); 
+                                    toggleItem('reply-form-{{comment.id}}', true);"
+                            id="reply-toggle-{{comment.id}}"><h6>reply</h6></a>
+                <form id="reply-form-{{comment.id}}" style="display: none">
+                    {% csrf_token %}
+                    <div class="row">
+                        <h5><label for="reply-text-{{comment.id}}">Add Reply</label></h5>
+                        <textarea rows="3" cols="140" maxlength="500" id="reply-text-{{comment.id}}" name="reply_text"></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <label for="channel-id-{{comment.id}}">Select channel</label>
+                            </div>
+                            <div class="row">
+                                <select name="channel_id" id="channel-id-{{comment.id}}">
+                                    {% for channel in my_channels %}
+                                    <option value="{{channel.id}}">{{channel}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-left:20px; padding-top: 10px;">
+                        <button 
+                        id="reply-button-{{comment.id}}"
+                        onclick="event.preventDefault(); 
+                        handleCommentReplyManyChannels(
+                        event, 
+                        '{{comment.id}}', 
+                        'reply-text-{{comment.id}}', 
+                        'reply-toggle-{{comment.id}}', 
+                        'reply-form-{{comment.id}}',
+                        'channel-id-{{comment.id}}');"
+                        class="btn btn-success">Reply</button></a> 
+                    </div>                 
+                </form>
+            </div>
+            {% endif %}
+            {% else %}
+            <div class="row"><a href="{% url 'login' %}" target="_blank">reply</a></div>
+            {% endif %}
+
+            <!-- ###################     Comment Replies      ################# --> 
+            {% for reply in comment_replies %}
+                {% if  reply.comment == comment %}
+                {% if reply.channel.user == viewer %}
+
+                    <div class="row box-element" style="margin-left: 30px;">
+                        <div class="col-lg-12">
+                            <div class="row description">
+                                {% if reply.channel.profile_picture %}
+                                <img src="{{reply.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
+                                {% else %}
+                                <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
+                                {% endif %}
+                                <p><strong><a href="/channel/{{reply.channel.id}}">{{reply.channel}}</a></strong> replied to <strong><a href="/channel/{{comment.channel.id}}">{{comment.channel}}</a></strong></p>
+                            </div>
+                            <div class="row description">
+                                <p>{{reply}}</p>
+                            </div>
+                            <div class="row">
+                                {% if reply.likes is not 1 %}
+                                    <div class="">{{reply.likes | intcomma}} likes</div>
+                                {% else %}
+                                    <div class="">{{reply.likes | intcomma}} like</div>
+                                {% endif %}
+                                {% if reply.dislikes is not 1 %}
+                                    <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
+                                {% else %}
+                                    <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
+                                {% endif %}
+                            </div>
+                            {% if user.is_authenticated %}
+                                <div class="row">
+                                    <button data-product="{{video.id}}" 
+                                        data-action="like" 
+                                        class="btn btn-outline-secondary add-btn update-cart"
+                                        style="margin-left:0px;">Like</button>
+                                    <button data-product="{{video.id}}" 
+                                        data-action="dislike" 
+                                        class="btn btn-outline-secondary add-btn update-cart"
+                                        style="margin-left:20px;">Dislike</button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+                {% endif %}
+            {% endfor %}
+            {% for reply in comment_replies %}
+                {% if  reply.comment == comment %}
+                {% if not reply.channel.user == viewer %}
+
+                    <div class="row box-element" style="margin-left: 30px;">
+                        <div class="col-lg-12">
+                            <div class="row description">
+                                {% if reply.channel.profile_picture %}
+                                <img src="{{reply.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
+                                {% else %}
+                                <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
+                                {% endif %}
+                                <p><strong><a href="/channel/{{reply.channel.id}}">{{reply.channel}}</a></strong> replied to <strong><a href="/channel/{{comment.channel.id}}">{{comment.channel}}</a></strong></p>
+                            </div>
+                            <div class="row description">
+                                <p>{{reply}}</p>
+                            </div>
+                            <div class="row">
+                                {% if reply.likes is not 1 %}
+                                    <div class="">{{reply.likes | intcomma}} likes</div>
+                                {% else %}
+                                    <div class="">{{reply.likes | intcomma}} like</div>
+                                {% endif %}
+                                {% if reply.dislikes is not 1 %}
+                                    <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
+                                {% else %}
+                                    <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
+                                {% endif %}
+                            </div>
+                            {% if user.is_authenticated %}
+                                <div class="row">
+                                    <button data-product="{{video.id}}" 
+                                        data-action="like" 
+                                        class="btn btn-outline-secondary add-btn update-cart"
+                                        style="margin-left:0px;">Like</button>
+                                    <button data-product="{{video.id}}" 
+                                        data-action="dislike" 
+                                        class="btn btn-outline-secondary add-btn update-cart"
+                                        style="margin-left:20px;">Dislike</button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
         {% endfor %}
                                 <!-- display pagination links -->
                         {% if comments.has_other_pages %}
