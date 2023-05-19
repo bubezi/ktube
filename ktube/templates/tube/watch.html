@@ -28,9 +28,10 @@
     </video>
 
         
-<div class="container" style="background: linear-gradient(Grey, whitesmoke)!important;">       
+<div class="container" style="background: linear-gradient(Grey, whitesmoke)!important;">    
+    <div class="row box-element"> <div class="col-lg-12">   
     <!-- ###################     Video details     ################# --> 
-    <div class="row box-element">
+    <div class="row">
         <div class="col-lg-12">
             <div class="row">
                 <h6 style="font-size: 25px; float: left"><strong>{{video.title}}</strong></h6>
@@ -252,12 +253,12 @@
                     </div>
                 </div>
             </div>
-            <div class="row"><h6 style="font-size: 18px; display: flex;">{{video.upload_period}}</h6></div>
+            <div class="row"><div class="col-lg-12"><h6 style="font-size: 18px;">Uploaded {{video.upload_period}}</h6></div></div>
         </div>
     </div>
     
 
-    <div class="row box-element">
+    <div class="row">
         <div class="col-lg-12">
 
     <!-- ##### Likes and Dislikes ###### -->
@@ -278,7 +279,7 @@
 
 
 
-    <!-- ##### Like and Dislike buttons ###### -->
+    <!--                                    ##############   Like and Dislike buttons   ##################                          -->
 
             {% if user.is_authenticated %}
                 <div class="row"> 
@@ -341,17 +342,19 @@
             <div class="row">
                 <a href="{% url 'login' %}" target="_blank">
                     <button class="btn btn-outline-secondary add-btn update-cart"
-                    style="margin-left:0px;">Like</button>
+                    style="margin-left:0px;"><i class="fa-regular fa-thumbs-up"></i></button>
                 </a>
                 <a href="{% url 'login' %}" target="_blank">
                     <button class="btn btn-outline-secondary add-btn update-cart"
-                    style="margin-left:0px;">Dislike</button>
+                    style="margin-left:0px;"><i class="fa-regular fa-thumbs-up fa-flip-vertical"></i></button>
                 </a>
             </div>
             {% endif %}
             </div>
     </div>
-    <!-- ##### Description ###### -->
+</div>
+</div>
+    <!--                                 #################    Description    ##################                                      -->
     <div class="row box-element">
         <div class="col-lg-12">
             <div class="description">
@@ -362,14 +365,67 @@
                 <div class="row"><h6 >No Description</h6></div>
                 {% endif %}
                 <hr>
-                <div class="row"><h6>Video uploaded {{video.upload_time | naturaltime }} on {{video.upload_time | naturalday }}</h6></div>
+                <div class="row"><h6>Video uploaded {{video.upload_time | naturaltime }} on {{video.upload_time }}</h6></div>
             </div>
         </div>
     </div>
+    <br>
 
-    <!-- ###################     Comments       ################# --> 
+
+
+
+    <!--                                ###################     Commenting     #################                                          --> 
+
+    {% if user.is_authenticated %}
+    {% if not many_channels %}
+    <form id="comment-form" method="post">
+        {% csrf_token %}
+        <div class="row">
+            <h5><label for="comment-text">Add Comment</label></h5>
+            <textarea rows="3" cols="140" maxlength="500" id="comment-text" name="comment_text"></textarea>
+        </div>
+        <input type="hidden" name="video_id" value="{{video.id}}">
+        <div class="row" style="padding-left:20px; padding-top: 10px;">
+            <button class="btn btn-success" type="submit">Comment</button>
+        </div>
+    </form>
+    {% else %}
+    <form id="comment-many-channels-form" method="post">
+        {% csrf_token %}
+        <div class="row">
+            <h5><label for="comment-text">Add Comment</label></h5>
+            <textarea rows="3" cols="140" maxlength="500" id="comment-text" name="comment_text"></textarea>
+        </div>
+        <input type="hidden" name="video_id" value="{{video.id}}">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <label for="channel-id">Select channel</label>
+                </div>
+                <div class="row">
+                    <select name="channel_id" id="channel-id">
+                        {% for channel in my_channels %}
+                        <option value="{{channel.id}}">{{channel}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="padding-left:20px; padding-top: 10px;">
+            <button class="btn btn-success" type="submit">Comment</button>
+        </div>
+    </form>
+    {% endif %}
+    <br>
+    {% else %}
+    <a href="{% url 'login' %}" target="_blank"><h6 class="row box-element">Login to Add Comment</h6></a>
+    {% endif %}
+    
+    <!--                                ###################     Comments      #################                                          --> 
+
+    <div class="row"><h4 class="col-lg-12 box-element" style="margin-top: 0; margin-bottom: 0!important;">Comments</h4></div>
+
     {% if comments %}
-    <div class="row"><h4 class="col-lg-12 box-element" style="margin-top: 0; margin-bottom: 0!important;"><u>Comments</u></h4></div>
         {% for comment in comments%}
             <div class="row box-element">
                 <div class="col-lg-12">
@@ -479,24 +535,50 @@
                         </div>
                         {% endif %}
     {% else %}
-        <h4>No Comments</h4>
+        <div class="row">
+            <div class="col-lg-12">
+                <h4>No Comments Yet</h4>
+            </div>
+        </div>
     {% endif %}
 </div>
 </div>
-<script type="text/javascript" src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
-
-<script type="text/javascript" src="{% static 'js/watch.js' %}"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
 
 <!-- Jquery and Ajax -->
 <script type="text/javascript" src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/watch.js' %}"></script>
+
 <script>
     function toggleItem(id, toggle) {
         let element = document.getElementById(id);
         element.style.display = (toggle) ? 'block' : 'none';
     }
+
+    function handleComment(event) {
+        event.preventDefault(); 
+        $.ajax({
+            type: 'POST',
+            url: '{% url "comment" %}',
+            data: $('#comment-form').serialize(),
+            success: (response)=> {
+                alert('Comment added!');
+            },
+        });
+    };
+    $('#comment-form').submit(handleComment);
+
+    function handleCommentManyChannel(event) {
+        event.preventDefault(); 
+        $.ajax({
+            type: 'POST',
+            url: '{% url "comment_many_channels" %}',
+            data: $('#comment-many-channels-form').serialize(),
+            success: (response)=> {
+                alert('Comment added!');
+            },
+        });
+    };
+    $('#comment-many-channels-form').submit(handleCommentManyChannel);
 
     function handleAddToPlaylist(event, videoId, playlistId, addButtonId, successId) {
         event.preventDefault();

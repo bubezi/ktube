@@ -1182,6 +1182,7 @@ def unsave_playlist(request):
     else:
         return redirect('login')
     
+    
 def delete_playlist(request):
     if request.user.is_authenticated:
         if request.method=='POST':
@@ -1203,8 +1204,81 @@ def delete_playlist(request):
         return redirect('login')
     
 
+def comment(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            try:
+                viewer = request.user.viewer
+                video_id = request.POST['video_id']
+                comment_text = request.POST['comment_text']
+                video = Video.objects.get(id=video_id)
+                channel = Channel.objects.get(user=viewer)
+                comment = Comment(comment_text=comment_text, video=video, channel=channel)
+                comment.save()
+                return JsonResponse({'success': True})
+            except:
+                return JsonResponse({'success': False})
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login')
+    
+
+def comment_many_channels(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            try:
+                video_id = request.POST['video_id']
+                comment_text = request.POST['comment_text']
+                channel_id= request.POST['channel_id']
+                video = Video.objects.get(id=video_id)
+                channel = Channel.objects.get(id=channel_id)
+                comment = Comment(comment_text=comment_text, video=video, channel=channel)
+                comment.save()
+                return JsonResponse({'success': True})
+            except:
+                return JsonResponse({'success': False})
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login')
+
+
+def reply_comment(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            pass
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login')
+
+
+
+def reply_comment_many_channels(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            pass
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login')
+
+
 def all_viewers(request):
-    return render(request, 'tube/ajax_test.html')
+    if request.user.is_authenticated:
+        return render(request, 'tube/ajax_test.html')
+    else:
+        return redirect('login')
+    
+    
+##############################################################################################
+#############################                                   ##############################
+#############################                                   ##############################
+#############################         AJAX GET FUNCTIONS        ##############################
+#############################                                   ##############################
+#############################                                   ##############################
+##############################################################################################
 
 
 def get_viewers(request):
@@ -1216,6 +1290,7 @@ def get_subs(request, pk):
     channel = Channel.objects.get(id=pk)
     subscriber_count = channel.subscribers.count()
     return JsonResponse({"subscriber_count":subscriber_count})
+
 
 def get_views(request, pk):
     video = Video.objects.get(id=pk)

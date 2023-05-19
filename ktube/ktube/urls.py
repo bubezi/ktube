@@ -36,6 +36,10 @@ urlpatterns = [
     path('unlike', views_tube.unlike, name='unlike'), 
     path('undislike', views_tube.undislike, name='undislike'), 
     path('add_view', views_tube.add_view, name='add_view'), 
+    path('comment', views_tube.comment, name='comment'), 
+    path('reply_comment', views_tube.reply_comment, name='reply_comment'), 
+    path('comment_many_channels', views_tube.comment_many_channels, name='comment_many_channels'), 
+    path('reply_comment_many_channels', views_tube.reply_comment_many_channels, name='reply_comment_many_channels'), 
     
     path('viewers',views_tube.all_viewers, name='viewers'),
     path('get_viewers',views_tube.get_viewers, name='get_viewers'),
