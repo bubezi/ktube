@@ -1247,7 +1247,17 @@ def comment_many_channels(request):
 def reply_comment(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            pass
+            try:
+                viewer= request.user.viewer
+                comment_id = request.POST['comment_id']
+                reply_text = request.POST['reply_text']
+                comment = Comment.objects.get(id=comment_id)
+                channel = Channel.objects.get(user=viewer)
+                comment_reply = CommentReply(comment=comment, reply=reply_text, channel=channel)
+                comment_reply.save()
+                return JsonResponse({'success': True})
+            except:
+                return JsonResponse({'success': False})
         else:
             return HttpResponse('No POST in request')
     else:
@@ -1258,7 +1268,17 @@ def reply_comment(request):
 def reply_comment_many_channels(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
-            pass
+            try:
+                channel_id = request.POST['channel_id']
+                comment_id = request.POST['comment_id']
+                reply_text = request.POST['reply_text']
+                channel = Channel.objects.get(id=channel_id)
+                comment = Comment.objects.get(id=comment_id)
+                comment_reply = CommentReply(comment=comment, reply=reply_text, channel=channel)
+                comment_reply.save()
+                return JsonResponse({'success': True})
+            except:
+                return JsonResponse({'success': False})
         else:
             return HttpResponse('No POST in request')
     else:

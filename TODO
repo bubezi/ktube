@@ -77,12 +77,13 @@ Pre Hosting shit
         [x] Liked Videos
         [x] History
     [x] Subscriptions
+[x] Ability to Comment
+[x] Ability to reply to Comments
 
-
-[] Ability to Comment
 [] Viewer Comment be on top of comments
-[] Ability to reply to Comments
+    [] and appear just after comment
 [] Viewer Reply to Comment be on top of replies to comments
+    [] and appear just after reply
 [] ABILITY for USERS to delete models
     [x] Playlist
     [] Video
@@ -144,6 +145,18 @@ Pre Hosting shit
         [] RWA
 [] ABILITY TO transfer channel to another viewer
 [] Migrate Js from HTML to JS files
+    [] remove playlistId and other unused arguments from 
+        [] handleRemoveFromWatchlater and 
+        [] other Functions
+            [] channel.html
+            [] history.html
+            [] library.html
+            [] liked_videos.html
+            [] playlist.html
+            [] subscriptions.html
+            [] videos.html
+            [] watch.html
+            [] watchlater.html
     [] channel.html
     [] history.html
     [] library.html

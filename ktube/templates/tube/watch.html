@@ -466,6 +466,78 @@
                     {% endif %}
                 </div>
             </div>
+            <!-- ###################     Comment Replying      ################# --> 
+
+            {% if user.is_authenticated %}
+            {% if not many_channels %}
+            <div class="row">
+                <a onclick="toggleItem('reply-toggle-{{comment.id}}', false); 
+                                    toggleItem('reply-form-{{comment.id}}', true);"
+                            id="reply-toggle-{{comment.id}}"><h6>reply</h6></a>
+                <form id="reply-form-{{comment.id}}" style="display: none">
+                    {% csrf_token %}
+                    <div class="row">
+                        <h5><label for="reply-text-{{comment.id}}">Add Reply</label></h5>
+                        <textarea rows="3" cols="140" maxlength="500" id="reply-text-{{comment.id}}" name="reply_text"></textarea>
+                    </div>
+                    <div class="row" style="padding-left:20px; padding-top: 10px;">
+                        <button 
+                        id="reply-button-{{comment.id}}"
+                        onclick="event.preventDefault(); 
+                        handleCommentReply(
+                        event, 
+                        '{{comment.id}}', 
+                        'reply-text-{{comment.id}}', 
+                        'reply-toggle-{{comment.id}}', 
+                        'reply-form-{{comment.id}}');"
+                        class="btn btn-success">Reply</button></a> 
+                    </div>                 
+                </form>
+            </div>
+            {% else %}
+            <div class="row">
+                <a onclick="toggleItem('reply-toggle-{{comment.id}}', false); 
+                                    toggleItem('reply-form-{{comment.id}}', true);"
+                            id="reply-toggle-{{comment.id}}"><h6>reply</h6></a>
+                <form id="reply-form-{{comment.id}}" style="display: none">
+                    {% csrf_token %}
+                    <div class="row">
+                        <h5><label for="reply-text-{{comment.id}}">Add Reply</label></h5>
+                        <textarea rows="3" cols="140" maxlength="500" id="reply-text-{{comment.id}}" name="reply_text"></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <label for="channel-id-{{comment.id}}">Select channel</label>
+                            </div>
+                            <div class="row">
+                                <select name="channel_id" id="channel-id-{{comment.id}}">
+                                    {% for channel in my_channels %}
+                                    <option value="{{channel.id}}">{{channel}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-left:20px; padding-top: 10px;">
+                        <button 
+                        id="reply-button-{{comment.id}}"
+                        onclick="event.preventDefault(); 
+                        handleCommentReplyManyChannels(
+                        event, 
+                        '{{comment.id}}', 
+                        'reply-text-{{comment.id}}', 
+                        'reply-toggle-{{comment.id}}', 
+                        'reply-form-{{comment.id}}',
+                        'channel-id-{{comment.id}}');"
+                        class="btn btn-success">Reply</button></a> 
+                    </div>                 
+                </form>
+            </div>
+            {% endif %}
+            {% else %}
+            <div class="row"><a href="{% url 'login' %}" target="_blank">reply</a></div>
+            {% endif %}
 
             <!-- ###################     Comment Replies      ################# --> 
             {% for reply in comment_replies %}
@@ -579,6 +651,46 @@
         });
     };
     $('#comment-many-channels-form').submit(handleCommentManyChannel);
+
+    function handleCommentReply(event, commentId, replyTextId, replyToggleId, replyFormId) {
+        event.preventDefault();
+        HashReplyTextId = '#' + replyTextId
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'reply_comment' %}",
+            data: {
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+                comment_id: commentId,
+                reply_text: $(HashReplyTextId).val(),
+            },
+            success: function(response) {
+                toggleItem(replyToggleId, true);
+                toggleItem(replyFormId, false);
+                alert('Reply Added!')
+            },
+        });
+    }
+
+    function handleCommentReplyManyChannels(event, commentId, replyTextId, replyToggleId, replyFormId, channelId) {
+        event.preventDefault();
+        HashReplyTextId = '#' + replyTextId
+        HashChannelId = '#' + channelId
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'reply_comment_many_channels' %}",
+            data: {
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+                comment_id: commentId,
+                reply_text: $(HashReplyTextId).val(),
+                channel_id: $(HashChannelId).val(),
+            },
+            success: function(response) {
+                toggleItem(replyToggleId, true);
+                toggleItem(replyFormId, false);
+                alert('Reply Added!')
+            },
+        });
+    }
 
     function handleAddToPlaylist(event, videoId, playlistId, addButtonId, successId) {
         event.preventDefault();
