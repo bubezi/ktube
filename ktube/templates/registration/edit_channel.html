@@ -11,6 +11,25 @@
             <p>{{ errors }}</p>
         </div>
     {% endif %}
+
+    <style>
+        .delete .btn-success {
+            color: #fff;
+            background-color: #a72828;
+            border-color: #e21111;
+          }
+          
+          .delete .btn-success:hover {
+            color: #fff;
+            background-color: #460606;
+            border-color: #7e1e1e;
+          }
+          
+          .delete .btn-success:focus, .btn-success.focus {
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
+          }
+          
+    </style>
     <div class="container d-flex justify-content-center mt-5" style="width: 350px !important; margin-top: 0 !important;">
 
         <div class="card" style="width: 350px !important; height: 750px;">
@@ -49,12 +68,58 @@
                 <form  method="POST" class="form-group" style="text-align: center; margin: auto" id="my-form4" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form4|crispy }}
-                    <button data-action="my-form4" type="submit" class="btn btn-success">Update Website</button>
+                    <button data-action="my-form4" class="btn btn-success">Update Website</button>
                 </form>
             </div>
         </div>
     </div>
+    
+    <div class="delete">
+        <div class="row">
+            <button class="btn btn-success"
+            style="text-align: center; margin: auto; margin-top:25px;"
+            onclick="event.preventDefault(); deleteChannel(event, '{{channel.id}}');" id="delete-button">Delete Channel</button>
+        </div>
+    </div>
 
+    <script type="text/javascript" src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
+    <script>
+        function deleteChannel (event, channelId) {
+            event.preventDefault();
+            var result = confirm('Do You Want to Delete this Channel?');
+            if (result) {
+                var confirmation = confirm('Are you Sure You Want to Delete this Channel?');
+                if (confirmation) {
+                    var final = confirm('This Decision is Final');
+                    if (final) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '{% url "delete_channel" %}',
+                            data: {
+                                csrfmiddlewaretoken: "{{ csrf_token }}",
+                                channel_id: channelId,
+                            },
+                            success: (response)=>{
+                                alert(response.message);
+                                setTimeout(() =>{window.location.href='/'}, 500);
+                            },
+                            error: (response)=>{
+                                alert(response.message)
+                            },
+                        });
+                    }else{
+                        alert('Deletion Canceled!');
+                    }
+    
+                }else{
+                    alert('Deletion Canceled!');
+                }
+
+            }else{
+                alert('Deletion Canceled!');
+            }
+        }
+    </script>
 
 
 {% endblock content %}

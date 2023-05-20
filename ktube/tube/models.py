@@ -121,7 +121,7 @@ class Video(models.Model):
 class Comment(models.Model):
     comment_text = models.TextField(max_length=500, null=True)
     video = models.ForeignKey(Video, null=True, on_delete=models.CASCADE)
-    channel = models.ForeignKey(Channel, null=True, on_delete=models.DO_NOTHING)
+    channel = models.ForeignKey(Channel, null=True, on_delete=models.CASCADE)
     likes = models.PositiveBigIntegerField(default=0)
     dislikes = models.PositiveBigIntegerField(default=0)
     commmented_on = models.DateTimeField(auto_now_add=True)
@@ -136,7 +136,7 @@ class Comment(models.Model):
 class CommentReply(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     reply = models.TextField(max_length=500, null=True)
-    channel = models.ForeignKey(Channel, null=True, on_delete=models.DO_NOTHING)
+    channel = models.ForeignKey(Channel, null=True, on_delete=models.CASCADE)
     likes = models.PositiveBigIntegerField(default=0)
     dislikes = models.PositiveBigIntegerField(default=0)
     replied_on = models.DateTimeField(auto_now_add=True)

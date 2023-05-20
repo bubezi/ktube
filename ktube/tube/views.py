@@ -1387,6 +1387,26 @@ def delete_video(request):
     else:
         return redirect('login')
     
+    
+def delete_channel(request):
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            viewer = request.user.viewer
+            channel_pk = request.POST['channel_id']
+            channel = Channel.objects.get(id=channel_pk)
+            if not channel.user == viewer: # type: ignore 
+                return JsonResponse({'success':False, 'message':"You Don't own this Channel"})
+            try:
+                channel.delete()
+                return JsonResponse({'success':True, 'message':"Channel Deleted Successfully"})
+            except:
+                return JsonResponse({'success':False, 'message':"Deletion Failed"})
+                
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login')
+    
 
 def comment(request):
     if request.user.is_authenticated:

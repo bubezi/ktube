@@ -1,53 +1,3 @@
-GOOGLE AND TODO
-
-[] Fieldset
-
-[x] Chat GPT Prompt
-    I am making a django youtube clone and I need the user to add a subscriber with a button. 
-    That is, having the Viewer Model added to the channel model's subscribers ManyToManyField
-    without having to handle using a new view function.
-    The same for like and deslike buttons
-[x] google HUMANIze Tags
-[x] Add page Loader
-[x] *return to last video time after sub from video redirect
-[x] Drag and drop functionality
-[] Better alternative for paginator
-[] How to serve videos better django
-[] UPDATE Favivons
-[] UPDATE Like and Dislike buttons / svg
-[] Better profile image Placeholder
-[] Not Found: /robots.txt
-[] Django video View count
-[] Does Django use websockets
-[] Dynamic login redirect
-[] Optional url additions /url/<str:pk>
-[] Video.Js
-[] Learn React
-[] UI
-    [] Make everything beautiful
-    [] responsiveness 
-        [] Google Chrome Lighthouse (target 100%)
-            [x] How to convert images to WebP and AVIF from PNG or JPEG
-            [] Types for video upload
-        [] RWA
-    [] Possibly with react
-[] Google Authentication
-########################################################################################
-[] PROBLEMS
-    [x] / THE URL problem
-    [] GET data from video
-
-##############################################################################
-Pre Hosting shit
-    [] Your browser does not support the video tag
-    [] python manage.py check ****
-        [] python manage.py check --deploy
-        [] ****
-    [] python manage.py collectstatic
-    [] email configuration
-    [] Google Authentication (Firebase)
-
-##############################################################
 [x] Utilize the {% empty %} tag in for loop TAGS
 [x] Add DP
 [x] Profile Page
@@ -104,13 +54,13 @@ Pre Hosting shit
 [x] Viewer Comment be on top of comments
 [x] Viewer Reply to Comment be on top of replies to comments
 [x] PLaylist in Watch Page init
-[] PLaylist in Watch Page
+[x] PLaylist in Watch Page
     [x] PLAY ALL BUTTON FOR Playlists
-    [] Playlist views update
+    [x] Playlist views update
 [] ABILITY for USERS to delete models
     [x] Playlist
     [x] Video
-    [] Channel
+    [x] Channel
     [] Comment
     [] Comment Reply
     [] Viewer (USER - unmark active status)
@@ -206,3 +156,51 @@ Pre Hosting shit
 
 
 ############################################################
+GOOGLE AND TODO
+
+[] Fieldset
+
+[x] Chat GPT Prompt
+    I am making a django youtube clone and I need the user to add a subscriber with a button. 
+    That is, having the Viewer Model added to the channel model's subscribers ManyToManyField
+    without having to handle using a new view function.
+    The same for like and deslike buttons
+[x] google HUMANIze Tags
+[x] Add page Loader
+[x] *return to last video time after sub from video redirect
+[x] Drag and drop functionality
+[] Better alternative for paginator
+[] How to serve videos better django
+[] UPDATE Favivons
+[] UPDATE Like and Dislike buttons / svg
+[] Better profile image Placeholder
+[] Not Found: /robots.txt
+[] Django video View count
+[] Does Django use websockets
+[] Dynamic login redirect
+[] Optional url additions /url/<str:pk>
+[] Video.Js
+[] Learn React
+[] UI
+    [] Make everything beautiful
+    [] responsiveness 
+        [] Google Chrome Lighthouse (target 100%)
+            [x] How to convert images to WebP and AVIF from PNG or JPEG
+            [] Types for video upload
+        [] RWA
+    [] Possibly with react
+[] Google Authentication
+########################################################################################
+[] PROBLEMS
+    [x] / THE URL problem
+    [] GET data from video
+
+##############################################################################
+Pre Hosting shit
+    [] Your browser does not support the video tag
+    [] python manage.py check ****
+        [] python manage.py check --deploy
+        [] ****
+    [] python manage.py collectstatic
+    [] email configuration
+    [] Google Authentication (Firebase)
