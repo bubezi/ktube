@@ -11,6 +11,26 @@
             <p>{{ errors }}</p>
         </div>
     {% endif %}
+
+    <style>
+        .delete .btn-success {
+            color: #fff;
+            background-color: #a72828;
+            border-color: #e21111;
+          }
+          
+          .delete .btn-success:hover {
+            color: #fff;
+            background-color: #460606;
+            border-color: #7e1e1e;
+          }
+          
+          .delete .btn-success:focus, .btn-success.focus {
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
+          }
+          
+    </style>
+    
     <div>  
         <h1 class="text-center">Profile</h1>
     </div>
@@ -150,10 +170,56 @@
         {% endif %}
         </div>
     </div>
+        
+    <div class="delete">
+        <div class="row">
+            <button class="btn btn-success"
+            style="text-align: center; margin: auto; margin-top:25px;"
+            onclick="event.preventDefault(); deleteAccount(event, '{{viewer.id}}');" id="delete-button">Delete Account</button>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
     <script>
         function toggleItem(id, toggle) {
             let element = document.getElementById(id);
             element.style.display = (toggle) ? 'block' : 'none';
+        }
+        
+        function deleteAccount (event, accountId) {
+            event.preventDefault();
+            var result = confirm('Do You Want to Delete this Account?');
+            if (result) {
+                var confirmation = confirm('Are you Sure You Want to Delete this Account?');
+                if (confirmation) {
+                    var final = confirm('WARNING! You are about to delete this Account');
+                    if (final) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '{% url "delete_account" %}',
+                            data: {
+                                csrfmiddlewaretoken: "{{ csrf_token }}",
+                                account_id: accountId,
+                            },
+                            success: (response)=>{
+                                alert(response.message);
+                                setTimeout(() =>{window.location.href='/accounts/logout'}, 500);
+                            },
+                            error: (response)=>{
+                                alert(response.message)
+                            },
+                        });
+                    }else{
+                        alert('Deletion Canceled!');
+                    }
+    
+                }else{
+                    alert('Deletion Canceled!');
+                }
+
+            }else{
+                alert('Deletion Canceled!');
+            }
         }
     </script>
 {% endblock content %}

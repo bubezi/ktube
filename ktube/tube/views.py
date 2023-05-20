@@ -53,7 +53,7 @@ def home_view(request):
                 my_playlists = []
 
                 for channel in my_channels:
-                    channel_playlists = Playlist.objects.filter(channel=channel).in_bulk().values()
+                    channel_playlists = Playlist.objects.filter(channel=channel).in_bulk().values() # type: ignore
                     for channel_playlist in channel_playlists:
                         my_playlists.append(channel_playlist)
                 context['playlists']= my_playlists
@@ -340,7 +340,10 @@ def channnel_view(request, pk):
 
     except Channel.DoesNotExist:
         return HttpResponse('<h1>404 Not Found</h1><h4>Channel Does Not Exist! SORRYYY</h4>')  
-
+    
+    if not channel.channel_active:
+        return HttpResponse('<h1>404 Not Found</h1><h4>Channel Does Not Exist! SORRYYY</h4>')  
+        
     videos = Video.objects.filter(channel=channel, unlisted=False, private=False)
     subscriber_count = channel.subscribers.count()
     playlists = Playlist.objects.filter(channel=channel, public=True) 
@@ -1441,6 +1444,33 @@ def delete_comment(request):
             try:
                 comment.delete()
                 return JsonResponse({'success':True, 'message':"Comment Deleted Successfully"})
+            except:
+                return JsonResponse({'success':False, 'message':"Deletion Failed"})
+                
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login')
+    
+    
+def delete_account(request):
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            try:
+                user = request.user
+                viewer = user.viewer
+                channnels = Channel.objects.filter(user=viewer)
+                
+                for channel in channnels:
+                    channel.channel_active = False
+                    channel_videos = channel.video_set.in_bulk().values() # type: ignore
+                    for video in channel_videos:
+                        video.private = True
+                        video.save()
+                    channel.save()
+                user.is_active = False
+                user.save()
+                return JsonResponse({'success':True, 'message':"Account Deleted Successfully"})
             except:
                 return JsonResponse({'success':False, 'message':"Deletion Failed"})
                 

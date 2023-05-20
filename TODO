@@ -21,6 +21,7 @@
 [x] Liked Videos 
 [x] Fix Correct box element places
 [x] Fix Channel page with multiple playlists
+[x] video views and view-count update
 [x] Add playlist(s) page
     [x] Watch Later ** Possibly Created after Viewer is created
     [x] Libary 
@@ -57,13 +58,13 @@
 [x] PLaylist in Watch Page
     [x] PLAY ALL BUTTON FOR Playlists
     [x] Playlist views update
-[] ABILITY for USERS to delete models
+[x] ABILITY for USERS to delete models
     [x] Playlist
     [x] Video
     [x] Channel
     [x] Comment
     [x] Comment Reply
-    [] Viewer (USER - unmark active status)
+    [x] Viewer (USER - unmark active status)
 [] ABILITY for USERS to edit models
     [] Playlist
     [] Video
@@ -75,7 +76,6 @@
 [] Viewer Reply appear just after reply
 [] Internal Mini player functionality
 [] Better alternative for paginator
-[] video views and view-count update
 [] PREVENT USER ABILITY TO WATCH VIDEO MULTILPLE TIMES TO INCREASE VIEW COUNT *************
 [] Fix Profile on mobile
 [] Drag and drop functionality

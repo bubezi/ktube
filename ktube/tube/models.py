@@ -37,6 +37,7 @@ class Channel(models.Model):
     about = models.CharField(max_length=300, null=True, blank=True)
     subscribers = models.ManyToManyField(Viewer, related_name="Subscribed_viewers", blank=True)
     website_official = models.URLField(max_length=150, null=True, blank=True)
+    channel_active = models.BooleanField(default=True)
     
     def __str__(self):
         return self.name
