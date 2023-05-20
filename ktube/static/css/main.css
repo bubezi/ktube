@@ -51,6 +51,15 @@ a:hover {
 	border-radius: 4px;
 	padding: 10px;
 }
+.box-element-playlist{
+	box-shadow:hsl(0, 0%, 80%) 0 0 16px;
+	background-color: #b4b7bb;
+	border-radius: 4px;
+	padding: 10px;
+	max-height: 250px;
+	overflow-y:scroll;
+	scroll-behavior: auto;
+}
 
 #form1.label {
 	content: " ";

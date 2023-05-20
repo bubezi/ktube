@@ -20,7 +20,7 @@
     
     </style>
 
-<div class="row">
+<div class="row" style="align-items:flex-start;">
 <div class="col-lg-9">
         <!-- ##################     Video Player        #############-->
         <video
@@ -30,9 +30,27 @@
             class="video" id="currentVideo" src="{{video.videoURL}}">
             Your browser does not support the video
         </video>
+        {% if playlist_videos %}
+        <div class="row box-element" style="padding-left: 40px;">
+                {% if video_previous_exists %}
+                    <a href="/watch_playlist/{{playlist_id}}/{{video_previous}}">
+                        <button class="btn btn-outline-secondary">Previous</button>
+                    </a>
+                {% else %}
+                    <button disabled="disabled" class="btn btn-outline-secondary">Previous</button>
+                {% endif %}  
+                {% if video_next %}
+                    <a href="/watch_playlist/{{playlist_id}}/{{video_next}}">
+                        <button class="btn btn-outline-secondary">Next</button>
+                    </a>
+                {% else %}
+                    <button disabled="disabled" class="btn btn-outline-secondary">Next</button>
+                {% endif %}    
+        </div>      
+        {% endif %}        
 
         <div class="container" style="background: linear-gradient(Grey, whitesmoke)!important;">    
-            <div class="row box-element"> <div class="col-lg-12">   
+            <div class="row box-element"><div class="col-lg-12">   
             <!-- ###################     Video details     ################# --> 
             <div class="row">
                 <div class="col-lg-12">
@@ -67,27 +85,27 @@
                                 <form id="subscribe-form" method="POST" style="display: block;">
                                     {% csrf_token %}
                                     <input type="hidden" name="channel_id" value="{{video.channel.id}}">
-                                    <button class="btn btn-outline-secondary add-btn update-cart"
-                                    style="margin-left:50px;" type="submit" id="subscribe-button">Subscribe</button>
+                                    <button class="btn btn-success"
+                                    style="margin-left:40px;" type="submit" id="subscribe-button">Subscribe</button>
                                 </form>
                                 <form id="unsubscribe-form" method="POST" style="display: none;">
                                     {% csrf_token %}
                                     <input type="hidden" name="channel_id" value="{{video.channel.id}}">
                                     <button class="btn btn-outline-secondary add-btn update-cart"
-                                    style="margin-left: 50px;"  type="submit" id="unsubscribe-button">Unsubscribe</button>
+                                    style="margin-left: 40px;"  type="submit" id="unsubscribe-button">Unsubscribe</button>
                                 </form> 
                             {% else %}
                                 <form id="subscribe-form" method="POST" style="display: none;">
                                     {% csrf_token %}
                                     <input type="hidden" name="channel_id" value="{{video.channel.id}}">
-                                    <button class="btn btn-outline-secondary add-btn update-cart"
-                                    style="margin-left:50px;" type="submit" id="subscribe-button">Subscribe</button>
+                                    <button class="btn btn-success"
+                                    style="margin-left:40px;" type="submit" id="subscribe-button">Subscribe</button>
                                 </form>
                                 <form id="unsubscribe-form" method="POST" style="display: block;">
                                     {% csrf_token %}
                                     <input type="hidden" name="channel_id" value="{{video.channel.id}}">
                                     <button class="btn btn-outline-secondary add-btn update-cart"
-                                    style="margin-left: 50px;"  type="submit" id="unsubscribe-button">Unsubscribe</button>
+                                    style="margin-left: 40px;"  type="submit" id="unsubscribe-button">Unsubscribe</button>
                                 </form>                 
                             {% endif %}
                         {% endif %}
@@ -96,8 +114,8 @@
                     <div class="row">
                         <a href="{% url 'login' %}" target="_blank">
                             <button
-                            class="btn btn-outline-secondary add-btn update-cart"
-                            style="margin-left:50px;">Subscribe</button>
+                            class="btn btn-success"
+                            style="margin-left:40px;">Subscribe</button>
                         </a>
                     </div>
                     {% endif %}
@@ -256,7 +274,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row"><div class="col-lg-12"><h6 style="font-size: 18px;">Uploaded {{video.upload_period}}</h6></div></div>
                 </div>
             </div>
             
@@ -355,6 +372,7 @@
                     {% endif %}
                     </div>
             </div>
+            <div class="row"><div class="col-lg-12"><h6 style="font-size: 18px;">Uploaded {{video.upload_period}}</h6></div></div>
         </div>
         </div>
             <!--                                 #################    Description    ##################                                      -->
@@ -880,21 +898,18 @@
 </div>
 <div class="col-lg-3">
         {% if playlist_videos %}
-        <div class="row box-element">
+        <div class="row box-element-playlist">
             <div class="col-lg-12">
                 <h5>Playlist</h5>
             </div>
             {% for index, video in playlist_videos|enumerate_list %}
                 <div class="col-lg-12">
-                    <h4>{{index}}</h4>
-                </div>
-                <div class="col-lg-12">
-                    <a href="{% url 'video' video.id %}">
+                    {% comment %} <a href="/watch_playlist/{{playlist_id}}/{{index}}">
                     <img class="thumbnail" src="{{video.thumbnailURL}}" alt="">
-                    </a>
+                    </a> {% endcomment %}
                     <div class="box-element product">
                         <div class="row">
-                            <a href="{% url 'video' video.id %}">
+                            <a href="/watch_playlist/{{playlist_id}}/{{index}}">
                                 <h6 style="float: left">{{video.title}}</h6>
                             </a>
                         </div>
@@ -1679,6 +1694,9 @@
     
     function handleUnSubscribe(event) {
         event.preventDefault();
+        var confirmation = confirm('Are you sure you want to Unsubscribe');
+        if(confirmation){
+            
         $.ajax({
             type: 'POST',
             url: '{% url "unsubscribe" %}',
@@ -1693,6 +1711,7 @@
                 }
             },
         });
+        }
     };
     $('#unsubscribe-form').submit(handleUnSubscribe);
 

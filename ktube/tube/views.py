@@ -173,6 +173,7 @@ def watch_video(request, pk):
 
 
 def watch_playlist(request, pk, number):
+    context = {}
     try:
         playlist = Playlist.objects.get(id=pk)
 
@@ -192,13 +193,20 @@ def watch_playlist(request, pk, number):
         else:
             return HttpResponseForbidden('<h1>Forbidden</h1><h4>Playlist is private</h4>') 
         
+    
+    videos = []
+    if request.user.is_authenticated:
+        viewer = request.user.viewer
+        if playlist.channel.user == viewer: # type: ignore
+            videos_dict = playlist.videos.all()
+        else:
+            videos_dict = playlist.videos.filter(private=False)
+    else:
+        videos_dict = playlist.videos.filter(private=False)
         
         
         #### The Patient Predator
     try:
-        videos = []
-        videos_dict = playlist.videos.all()
-        
         for video in videos_dict:
             videos.append(video)
         number = int(number)
@@ -206,6 +214,19 @@ def watch_playlist(request, pk, number):
 
     except:
         return HttpResponseBadRequest('<h1>404 Not Found</h1><h3>Video Does Not Exist! SORRYYY</h3>')  
+    
+    
+    context['video_number'] = number
+    context['playlist_id'] = pk
+    context['video_previous_exists'] = False
+    
+    if number!=0:
+        context['video_previous'] = (number-1)
+        context['video_previous_exists'] = True
+    
+    if number<len(videos)-1:
+        context['video_next'] = number+1
+        
     
     if video.private:
         if request.user.is_authenticated:
@@ -220,6 +241,8 @@ def watch_playlist(request, pk, number):
         else:
             return HttpResponseForbidden('<h1>Forbidden</h1><h4>Video is private</h4>')  
 
+    context['video'] = video
+
     subscriber_count = video.channel.subscribers.count() # type: ignore
     comments = Comment.objects.filter(video=video)
     comment_replies = CommentReply.objects.all()
@@ -227,15 +250,14 @@ def watch_playlist(request, pk, number):
     paginator = Paginator(comments, 10) # 10 comments per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-
-    context = {"video": video, "comments": page_obj, "comment_replies": comment_replies,
-               "subscriber_count": subscriber_count}
     
+    context['comments'] = page_obj
+    context['comment_replies'] = comment_replies
+    context['subscriber_count'] = subscriber_count
     
     
     more_videos = Video.objects.all()
     context['more_videos'] = more_videos
-    
     
     context['playlist_videos'] = videos
     
@@ -317,7 +339,7 @@ def channnel_view(request, pk):
     subscriber_count = channel.subscribers.count()
     playlists = Playlist.objects.filter(channel=channel, public=True) 
     context = {'channel': channel, "videos": videos, "subscriber_count": subscriber_count,
-               'playlists': playlists} 
+               'public_playlists': playlists} 
     context['playlist_owner']=False
 
     if request.user.is_authenticated:

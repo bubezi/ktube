@@ -35,7 +35,7 @@
                     <form id="subscribe-form" method="POST" style="display: block;">
                         {% csrf_token %}
                         <input type="hidden" name="channel_id" value="{{channel.id}}">
-                        <button class="btn btn-outline-secondary add-btn update-cart"
+                        <button class="btn btn-success"
                         style="margin-left:50px;" type="submit" id="subscribe-button">Subscribe</button>
                     </form>
                     <form id="unsubscribe-form" method="POST" style="display: none;">
@@ -48,7 +48,7 @@
                     <form id="subscribe-form" method="POST" style="display: none;">
                         {% csrf_token %}
                         <input type="hidden" name="channel_id" value="{{channel.id}}">
-                        <button class="btn btn-outline-secondary add-btn update-cart"
+                        <button class="btn btn-success"
                         style="margin-left:50px;" type="submit" id="subscribe-button">Subscribe</button>
                     </form>
                     <form id="unsubscribe-form" method="POST" style="display: block;">
@@ -64,7 +64,7 @@
             <div class="row">
                 <a href="{% url 'login' %}" target="_blank">
                     <button
-                    class="btn btn-outline-secondary add-btn update-cart"
+                    class="btn btn-success"
                     style="margin-left:50px;">Subscribe</button>
                 </a>
             </div>
@@ -286,7 +286,7 @@
     </div>
 
     <div class="row">
-        {% for playlist in playlists %}
+        {% for playlist in public_playlists %}
         <div class="col-lg-4 box-element">
             <div style="padding-left: 10px;">
                 <div class="row">
@@ -818,6 +818,9 @@
     
     function handleUnSubscribe(event) {
         event.preventDefault();
+        var confirmation = confirm('Are you sure you want to Unsubscribe');
+        if(confirmation){
+        
         $.ajax({
             type: 'POST',
             url: '{% url "unsubscribe" %}',
@@ -837,6 +840,7 @@
                 }
             },
         });
+        }
     };
     $('#unsubscribe-form').submit(handleUnSubscribe);
 
