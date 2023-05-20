@@ -61,8 +61,8 @@
     [x] Playlist
     [x] Video
     [x] Channel
-    [] Comment
-    [] Comment Reply
+    [x] Comment
+    [x] Comment Reply
     [] Viewer (USER - unmark active status)
 [] ABILITY for USERS to edit models
     [] Playlist

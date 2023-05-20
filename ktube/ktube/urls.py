@@ -30,6 +30,8 @@ urlpatterns = [
     path('delete_playlist', views_tube.delete_playlist, name="delete_playlist"),
     path('delete_video', views_tube.delete_video, name="delete_video"),
     path('delete_channel', views_tube.delete_channel, name="delete_channel"),
+    path('delete_comment', views_tube.delete_comment, name="delete_comment"),
+    path('delete_comment_reply', views_tube.delete_comment_reply, name="delete_comment_reply"),
     
     path('subscriptions', views_tube.subscriptions, name="subscriptions"),
     path('subscribe', views_tube.subscribe, name='subscribe'), 

@@ -196,6 +196,7 @@ def watch_playlist(request, pk, number):
         else:
             return HttpResponseForbidden('<h1>Forbidden</h1><h4>Playlist is private</h4>') 
         
+    context['playlist'] = playlist
     
     videos = []
     if request.user.is_authenticated:
@@ -329,6 +330,7 @@ def watch_playlist(request, pk, number):
             context['no_channel'] = True
     
     playlist.views += 1
+    playlist.save()
     return render(request, 'tube/watch.html', context)
 
 
@@ -1407,6 +1409,46 @@ def delete_channel(request):
     else:
         return redirect('login')
     
+    
+def delete_comment_reply(request):
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            viewer = request.user.viewer
+            comment_reply_pk = request.POST['comment_reply_id']
+            comment_reply = CommentReply.objects.get(id=comment_reply_pk)
+            if not comment_reply.channel.user == viewer: # type: ignore 
+                return JsonResponse({'success':False, 'message':"You Don't own this Comment reply"})
+            try:
+                comment_reply.delete()
+                return JsonResponse({'success':True, 'message':"Comment reply Deleted Successfully"})
+            except:
+                return JsonResponse({'success':False, 'message':"Deletion Failed"})
+                
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login')
+    
+    
+def delete_comment(request):
+    if request.user.is_authenticated:
+        if request.method=='POST':
+            viewer = request.user.viewer
+            comment_pk = request.POST['comment_id']
+            comment = Comment.objects.get(id=comment_pk)
+            if not comment.channel.user == viewer: # type: ignore 
+                return JsonResponse({'success':False, 'message':"You Don't own this Comment"})
+            try:
+                comment.delete()
+                return JsonResponse({'success':True, 'message':"Comment Deleted Successfully"})
+            except:
+                return JsonResponse({'success':False, 'message':"Deletion Failed"})
+                
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login')
+    
 
 def comment(request):
     if request.user.is_authenticated:
@@ -1415,6 +1457,8 @@ def comment(request):
                 viewer = request.user.viewer
                 video_id = request.POST['video_id']
                 comment_text = request.POST['comment_text']
+                if len(comment_text) < 3:
+                    return JsonResponse({'success': False})
                 video = Video.objects.get(id=video_id)
                 channel = Channel.objects.get(user=viewer)
                 comment = Comment(comment_text=comment_text, video=video, channel=channel)
@@ -1434,6 +1478,8 @@ def comment_many_channels(request):
             try:
                 video_id = request.POST['video_id']
                 comment_text = request.POST['comment_text']
+                if len(comment_text) < 3:
+                    return JsonResponse({'success': False})
                 channel_id= request.POST['channel_id']
                 video = Video.objects.get(id=video_id)
                 channel = Channel.objects.get(id=channel_id)
@@ -1455,10 +1501,13 @@ def reply_comment(request):
                 viewer= request.user.viewer
                 comment_id = request.POST['comment_id']
                 reply_text = request.POST['reply_text']
+                if len(reply_text) < 3:
+                    return JsonResponse({'success': False})
                 comment = Comment.objects.get(id=comment_id)
                 channel = Channel.objects.get(user=viewer)
                 comment_reply = CommentReply(comment=comment, reply=reply_text, channel=channel)
                 comment_reply.save()
+                print(comment_reply)
                 return JsonResponse({'success': True})
             except:
                 return JsonResponse({'success': False})
@@ -1476,6 +1525,8 @@ def reply_comment_many_channels(request):
                 channel_id = request.POST['channel_id']
                 comment_id = request.POST['comment_id']
                 reply_text = request.POST['reply_text']
+                if len(reply_text) < 3:
+                    return JsonResponse({'success': False})
                 channel = Channel.objects.get(id=channel_id)
                 comment = Comment.objects.get(id=comment_id)
                 comment_reply = CommentReply(comment=comment, reply=reply_text, channel=channel)
