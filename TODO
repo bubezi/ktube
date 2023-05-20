@@ -52,8 +52,6 @@
         [x] Library page
 [x] Ability to Comment
 [x] Ability to reply to Comments
-[x] Viewer Comment be on top of comments
-[x] Viewer Reply to Comment be on top of replies to comments
 [x] PLaylist in Watch Page init
 [x] PLaylist in Watch Page
     [x] PLAY ALL BUTTON FOR Playlists
@@ -66,6 +64,7 @@
     [x] Comment
     [x] Comment Reply
     [x] Viewer (USER - unmark active status)
+[] Password before delete functionality
 [] ABILITY for USERS to edit models
     [x] Channel
     [] Playlist
@@ -73,8 +72,6 @@
     [] Viewer
     [] Comment
     [] Comment Reply
-[] Viewer Comment appear just after comment
-[] Viewer Reply appear just after reply
 [] Internal Mini player functionality
 [] Better alternative for paginator
 [] PREVENT USER ABILITY TO WATCH VIDEO MULTILPLE TIMES TO INCREASE VIEW COUNT *************
@@ -84,11 +81,16 @@
 [] Get video length
 [] Change like and dislike buttons
 [] Return to specific page after subscribe login redirect
-[] FIX comments
-[] COVER PHOTO FOR CHANNELS
 [] Personalise password_change_view.html and password_reset_view.html pages
-[] ABILITY TO tag individuals in comments
 [] video SHORTCUTS
+[] COVER PHOTO FOR CHANNELS
+[] Viewer Comment appear just after comment
+[] Viewer Reply appear just after reply
+[] Viewer Comment be on top of comments
+[] Viewer Reply to Comment be on top of replies to comments
+[] ABILITY TO tag individuals in comments
+[] ABILITY TO transfer channel to another viewer
+[] FIX comments
 [] UI
     [] Make everything beautiful
     [] responsiveness 
@@ -96,7 +98,6 @@
             [x] How to convert images to WebP and AVIF from PNG or JPEG
             [] Types for video upload
         [] RWA
-[] ABILITY TO transfer channel to another viewer
 [] Migrate Js from HTML to JS files
     [] remove playlistId and other unused arguments from 
         [] handleRemoveFromWatchlater and 
