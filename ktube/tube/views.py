@@ -67,8 +67,9 @@ def home_view(request):
 
 
 def watch_video(request, pk):
+    context = {}
     try:
-        video = Video.objects.get(id=pk)
+        video = Video.objects.get(id=pk) # type: ignore
 
     except Video.DoesNotExist:
         return HttpResponseBadRequest('<h1>404 Not Found</h1><h3>Video Does Not Exist! SORRYYY</h3>')  
@@ -98,9 +99,11 @@ def watch_video(request, pk):
     # replies_list = []
     # for key in range(len(replies_dict)):
     #     replies_list.append(replies_dict[key+1].reply) # replies here are strings
-
-    context = {"video": video, "comments": page_obj, "comment_replies": comment_replies,
-               "subscriber_count": subscriber_count}
+     
+    context['video'] = video
+    context['comments'] = page_obj
+    context['comment_replies'] = comment_replies
+    context['subscriber_count'] = subscriber_count
     
     more_videos = Video.objects.all()
     context['more_videos'] = more_videos
@@ -325,6 +328,7 @@ def watch_playlist(request, pk, number):
             context['many_channels'] = False
             context['no_channel'] = True
     
+    playlist.views += 1
     return render(request, 'tube/watch.html', context)
 
 
