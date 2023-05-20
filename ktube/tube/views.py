@@ -1460,8 +1460,10 @@ def delete_account(request):
                 user = request.user
                 viewer = user.viewer
                 channnels = Channel.objects.filter(user=viewer)
-                viewer.subscriptions.subscriptions.clear()
-                print(viewer.subscriptions)
+                try:
+                    viewer.subscriptions.subscriptions.clear()
+                except:
+                    pass
                 for channel in channnels:
                     channel.channel_active = False
                     channel.subscribers.clear()
@@ -1471,6 +1473,12 @@ def delete_account(request):
                     for subscription in subscriptions_to_channel:
                         subscription.subscriptions.remove(channel)
                     for video in channel_videos:
+                        video_playlists = video.playlists.all()
+                        video_comments = video.comment_set.in_bulk().values()
+                        for video_playlist in video_playlists:
+                            video_playlist.videos.remove(video)
+                        for comment in video_comments:
+                            comment.delete()
                         video.private = True
                         video.save()
                     for playlist in channel_playlists:

@@ -62,7 +62,7 @@
     [x] Channel
     [x] Comment
     [x] Comment Reply
-    [] Viewer (USER - unmark active status)
+    [x] Viewer (USER - unmark active status)
     [] Password before delete functionality
         [] Channel
         [] Video
