@@ -103,6 +103,9 @@ Pre Hosting shit
 [x] Ability to reply to Comments
 [x] Viewer Comment be on top of comments
 [x] Viewer Reply to Comment be on top of replies to comments
+[] PLaylist in Watch Page
+    [] PLAY ALL BUTTON FOR Playlists
+    [] Playlist views update
 [] ABILITY for USERS to delete models
     [x] Playlist
     [x] Video
@@ -119,9 +122,6 @@ Pre Hosting shit
     [] Comment Reply
 [] Viewer Comment appear just after comment
 [] Viewer Reply appear just after reply
-[] PLaylist in Watch Page
-    [] PLAY ALL BUTTON FOR Playlists
-    [] Playlist views update
 [] Internal Mini player functionality
 [] Better alternative for paginator
 [] video views and view-count update

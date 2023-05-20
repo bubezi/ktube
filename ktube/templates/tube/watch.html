@@ -2,6 +2,7 @@
 {% load static %}
 {% load humanize %}
 {% load crispy_forms_tags %}
+{% load enumerate_tags %}
 
     {% block title %}{{video.title}} {% endblock title %}
     {% block bigbody %}
@@ -16,863 +17,1502 @@
         background-color: transparent !important; /* Set background color to transparent */
         border-color: transparent !important; /* Set border color to transparent */
     }
+    
     </style>
 
-    <!-- ##################     Video Player        #############-->
+<div class="row">
+<div class="col-lg-9">
+        <!-- ##################     Video Player        #############-->
         <video
 
-        controls
-        autoplay="true" 
-        class="video" id="currentVideo" src="{{video.videoURL}}">
-        Your browser does not support the video
-    </video>
+            controls
+            autoplay="true" 
+            class="video" id="currentVideo" src="{{video.videoURL}}">
+            Your browser does not support the video
+        </video>
 
-        
-<div class="container" style="background: linear-gradient(Grey, whitesmoke)!important;">    
-    <div class="row box-element"> <div class="col-lg-12">   
-    <!-- ###################     Video details     ################# --> 
-    <div class="row">
-        <div class="col-lg-12">
+        <div class="container" style="background: linear-gradient(Grey, whitesmoke)!important;">    
+            <div class="row box-element"> <div class="col-lg-12">   
+            <!-- ###################     Video details     ################# --> 
             <div class="row">
-                <h6 style="font-size: 25px; float: left"><strong>{{video.title}}</strong></h6>
-                {% if video.private %}<h6 style="padding-left: 10px;">(private)</h6>
-                {% elif video.unlisted %}<h6 style="padding-left: 10px;">(unlisted)</h6>{% endif %}
-            </div><div class="row">
-                {% if video.channel.profile_picture %}
-                <img src="{{video.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 30px; height: 30px;">
-                {% else %}
-                <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 30px; height: 30px;">
-                {% endif %}
-                <a href="{% url 'channel' video.channel.id %}">
-                    <h6 style="font-size: 20px;"><strong>{{video.channel}}</strong></h6>
-                </a>
-                <h5 style="padding-left: 10px;">-</h5>
-                {% if subscriber_count == 1 %}<h5 id='subscriber-count' style="padding-left: 10px;">{{ subscriber_count }} Subscriber</h5>{% else %}
-                <h5 id='subscriber-count' style="padding-left: 10px;">{{ subscriber_count }} Subscribers</h5>
-                {% endif %}
-            </div>
+                <div class="col-lg-12">
+                    <div class="row">
+                        <h6 style="font-size: 25px; float: left"><strong>{{video.title}}</strong></h6>
+                        {% if video.private %}<h6 style="padding-left: 10px;">(private)</h6>
+                        {% elif video.unlisted %}<h6 style="padding-left: 10px;">(unlisted)</h6>{% endif %}
+                    </div><div class="row">
+                        {% if video.channel.profile_picture %}
+                        <img src="{{video.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 30px; height: 30px;">
+                        {% else %}
+                        <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 30px; height: 30px;">
+                        {% endif %}
+                        <a href="{% url 'channel' video.channel.id %}">
+                            <h6 style="font-size: 20px;"><strong>{{video.channel}}</strong></h6>
+                        </a>
+                        <h5 style="padding-left: 10px;">-</h5>
+                        {% if subscriber_count == 1 %}<h5 id='subscriber-count' style="padding-left: 10px;">{{ subscriber_count }} Subscriber</h5>{% else %}
+                        <h5 id='subscriber-count' style="padding-left: 10px;">{{ subscriber_count }} Subscribers</h5>
+                        {% endif %}
+                    </div>
 
-    <!-- ####################         Subscribe Button FUNCTIONALITY     #########################-->
-            {% if user.is_authenticated %}
-            <div class="row">
-                {% if viewer == video.channel.user %}
-                    <div class="row"><h6><a href="{% url 'edit_channel' video.channel.id %}"><button 
-                        class="btn btn-outline-secondary add-btn update-cart"
-                        style="margin-left:40px;">Edit Channel</button></a></h6></div>                
-                {% else %}
-                    {% if not subscribed %}
-                        <form id="subscribe-form" method="POST" style="display: block;">
-                            {% csrf_token %}
-                            <input type="hidden" name="channel_id" value="{{video.channel.id}}">
-                            <button class="btn btn-outline-secondary add-btn update-cart"
-                            style="margin-left:50px;" type="submit" id="subscribe-button">Subscribe</button>
-                        </form>
-                        <form id="unsubscribe-form" method="POST" style="display: none;">
-                            {% csrf_token %}
-                            <input type="hidden" name="channel_id" value="{{video.channel.id}}">
-                            <button class="btn btn-outline-secondary add-btn update-cart"
-                            style="margin-left: 50px;"  type="submit" id="unsubscribe-button">Unsubscribe</button>
-                        </form> 
+            <!-- ####################         Subscribe Button FUNCTIONALITY     #########################-->
+                    {% if user.is_authenticated %}
+                    <div class="row">
+                        {% if viewer == video.channel.user %}
+                            <div class="row"><h6><a href="{% url 'edit_channel' video.channel.id %}"><button 
+                                class="btn btn-outline-secondary add-btn update-cart"
+                                style="margin-left:40px;">Edit Channel</button></a></h6></div>                
+                        {% else %}
+                            {% if not subscribed %}
+                                <form id="subscribe-form" method="POST" style="display: block;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="channel_id" value="{{video.channel.id}}">
+                                    <button class="btn btn-outline-secondary add-btn update-cart"
+                                    style="margin-left:50px;" type="submit" id="subscribe-button">Subscribe</button>
+                                </form>
+                                <form id="unsubscribe-form" method="POST" style="display: none;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="channel_id" value="{{video.channel.id}}">
+                                    <button class="btn btn-outline-secondary add-btn update-cart"
+                                    style="margin-left: 50px;"  type="submit" id="unsubscribe-button">Unsubscribe</button>
+                                </form> 
+                            {% else %}
+                                <form id="subscribe-form" method="POST" style="display: none;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="channel_id" value="{{video.channel.id}}">
+                                    <button class="btn btn-outline-secondary add-btn update-cart"
+                                    style="margin-left:50px;" type="submit" id="subscribe-button">Subscribe</button>
+                                </form>
+                                <form id="unsubscribe-form" method="POST" style="display: block;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="channel_id" value="{{video.channel.id}}">
+                                    <button class="btn btn-outline-secondary add-btn update-cart"
+                                    style="margin-left: 50px;"  type="submit" id="unsubscribe-button">Unsubscribe</button>
+                                </form>                 
+                            {% endif %}
+                        {% endif %}
+                    </div>
                     {% else %}
-                        <form id="subscribe-form" method="POST" style="display: none;">
-                            {% csrf_token %}
-                            <input type="hidden" name="channel_id" value="{{video.channel.id}}">
-                            <button class="btn btn-outline-secondary add-btn update-cart"
-                            style="margin-left:50px;" type="submit" id="subscribe-button">Subscribe</button>
-                        </form>
-                        <form id="unsubscribe-form" method="POST" style="display: block;">
-                            {% csrf_token %}
-                            <input type="hidden" name="channel_id" value="{{video.channel.id}}">
-                            <button class="btn btn-outline-secondary add-btn update-cart"
-                            style="margin-left: 50px;"  type="submit" id="unsubscribe-button">Unsubscribe</button>
-                        </form>                 
+                    <div class="row">
+                        <a href="{% url 'login' %}" target="_blank">
+                            <button
+                            class="btn btn-outline-secondary add-btn update-cart"
+                            style="margin-left:50px;">Subscribe</button>
+                        </a>
+                    </div>
                     {% endif %}
-                {% endif %}
-            </div>
-            {% else %}
-            <div class="row">
-                <a href="{% url 'login' %}" target="_blank">
-                    <button
-                    class="btn btn-outline-secondary add-btn update-cart"
-                    style="margin-left:50px;">Subscribe</button>
-                </a>
-            </div>
-            {% endif %}
 
 
 
 
-            <!-- #############          Views        ##############-->
-            <div class="row">
-                <div class="col-lg-10">
-                    {% if video.views is not 1 %}
-                        <h6 style="font-size: 18px; float: left"><strong id="video-views-count"> {{video.views | intcomma }} views</strong></h6>
-                    {% else %}
-                        <h6 style="font-size: 18px; float: left"><strong id="video-views-count"> {{video.views | intcomma }} view</strong></h6>
-                    {% endif %}
-                </div>
-                
-                <div class="col-lg-2 col-12 text-right mt-2 mt-lg-0">
-                    <div class="video-options">
-                        <div class="dropdown">
-                            <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                <i class="fa-solid fa-ellipsis-vertical"></i>
-                            </button>
+                    <!-- #############          Views        ##############-->
+                    <div class="row">
+                        <div class="col-lg-10">
+                            {% if video.views is not 1 %}
+                                <h6 style="font-size: 18px; float: left"><strong id="video-views-count"> {{video.views | intcomma }} views</strong></h6>
+                            {% else %}
+                                <h6 style="font-size: 18px; float: left"><strong id="video-views-count"> {{video.views | intcomma }} view</strong></h6>
+                            {% endif %}
+                        </div>
                         
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                {% if user.is_authenticated %}
-                                        {% if video in watchlater.videos.all %}
-                                        <form id="remove-video-{{video.id}}-from-watchlater-form">
-                                            {% csrf_token %}
-                                            <input type="hidden" name="video_id" value="{{video.id}}">
-                                            <a href="#" class="dropdown-item add-btn-link update-cart" 
-                                            id="remove-video-{{video.id}}-from-watchlater-button" 
-                                            style="display: block;"
-                                            onclick="event.preventDefault(); handleRemoveFromWatchlater(event, 
-                                            '{{video.id}}', '{{playlist.id}}', 
-                                            'remove-video-{{video.id}}-from-watchlater-button', 
-                                            'add-video-{{video.id}}-to-watchlater-button')"
-                                            >Remove Video From Watchlater</a>
-                                        </form>
+                        <div class="col-lg-2 col-12 text-right mt-2 mt-lg-0">
+                            <div class="video-options">
+                                <div class="dropdown">
+                                    <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                                    </button>
+                                
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                        {% if user.is_authenticated %}
+                                                {% if video in watchlater.videos.all %}
+                                                <form id="remove-video-{{video.id}}-from-watchlater-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="video_id" value="{{video.id}}">
+                                                    <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                    id="remove-video-{{video.id}}-from-watchlater-button" 
+                                                    style="display: block;"
+                                                    onclick="event.preventDefault(); handleRemoveFromWatchlater(event, 
+                                                    '{{video.id}}', '{{playlist.id}}', 
+                                                    'remove-video-{{video.id}}-from-watchlater-button', 
+                                                    'add-video-{{video.id}}-to-watchlater-button')"
+                                                    >Remove Video From Watchlater</a>
+                                                </form>
 
-                                        <form id="add-video-{{video.id}}-to-watchlater-form">
-                                            {% csrf_token %}
-                                            <input type="hidden" name="video_id" value="{{video.id}}">
-                                            <a href="#" class="dropdown-item add-btn-link update-cart" 
-                                            id="add-video-{{video.id}}-to-watchlater-button"
-                                            style="display: none;" 
-                                            onclick="event.preventDefault(); handleAddToWatchlater(event, 
-                                            '{{video.id}}', '{{playlist.id}}', 
-                                            'add-video-{{video.id}}-to-watchlater-button', 
-                                            'remove-video-{{video.id}}-from-watchlater-button')"
-                                            >Add Video to Watchlater</a>
-                                        </form>
-                                        
-                                        {% else %}
-                                        <form id="remove-video-{{video.id}}-from-watchlater-form">
-                                            {% csrf_token %}
-                                            <input type="hidden" name="video_id" value="{{video.id}}">
-                                            <a href="#" class="dropdown-item add-btn-link update-cart" 
-                                            id="remove-video-{{video.id}}-from-watchlater-button" 
-                                            style="display: none;"
-                                            onclick="event.preventDefault(); handleRemoveFromWatchlater(event, 
-                                            '{{video.id}}', '{{playlist.id}}', 
-                                            'remove-video-{{video.id}}-from-watchlater-button', 
-                                            'add-video-{{video.id}}-to-watchlater-button')"
-                                            >Remove Video From Watchlater</a>
-                                        </form>
-                                        
-                                        <form id="add-video-{{video.id}}-to-watchlater-form">
-                                            {% csrf_token %}
-                                            <input type="hidden" name="video_id" value="{{video.id}}">
-                                            <a href="#" class="dropdown-item add-btn-link update-cart" 
-                                            id="add-video-{{video.id}}-to-watchlater-button"
-                                            style="display: block;" 
-                                            onclick="event.preventDefault(); handleAddToWatchlater(event, 
-                                            '{{video.id}}', '{{playlist.id}}', 
-                                            'add-video-{{video.id}}-to-watchlater-button', 
-                                            'remove-video-{{video.id}}-from-watchlater-button')"
-                                            >Add Video to Watchlater</a>
-                                        </form>
-                                        
-                                        {% endif %}
-                                        {% for playlist in playlists %}
-                                            {% if video in playlist.videos.all %}
-                                            <form id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-form">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="playlist_id" value="{{playlist.id}}">
-                                                <input type="hidden" name="video_id" value="{{video.id}}">
-                                                <a href="#" class="dropdown-item add-btn-link update-cart" 
-                                                id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-button"
-                                                style="display: block;"
-                                                onclick="event.preventDefault(); handleRemoveFromPlaylist(event, 
-                                                '{{video.id}}', '{{playlist.id}}', 
-                                                'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button', 
-                                                'add-video-{{video.id}}-to-plist-{{playlist.id}}-button')"
-                                                >Remove Video from {{playlist|title}}</a>
-                                            </form>
-                                            
-                                            <form id="add-video-{{video.id}}-to-plist-{{playlist.id}}-form">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="playlist_id" value="{{playlist.id}}">
-                                                <input type="hidden" name="video_id" value="{{video.id}}">
-                                                <a href="#" class="dropdown-item add-btn-link update-cart" 
-                                                id="add-video-{{video.id}}-to-plist-{{playlist.id}}-button"
-                                                style="display: none;"
-                                                onclick="event.preventDefault(); handleAddToPlaylist(event, 
-                                                '{{video.id}}', '{{playlist.id}}', 
-                                                'add-video-{{video.id}}-to-plist-{{playlist.id}}-button', 
-                                                'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button')"
-                                                >Add Video to {{playlist|title}}</a>
-                                            </form>
-                                            
+                                                <form id="add-video-{{video.id}}-to-watchlater-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="video_id" value="{{video.id}}">
+                                                    <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                    id="add-video-{{video.id}}-to-watchlater-button"
+                                                    style="display: none;" 
+                                                    onclick="event.preventDefault(); handleAddToWatchlater(event, 
+                                                    '{{video.id}}', '{{playlist.id}}', 
+                                                    'add-video-{{video.id}}-to-watchlater-button', 
+                                                    'remove-video-{{video.id}}-from-watchlater-button')"
+                                                    >Add Video to Watchlater</a>
+                                                </form>
+                                                
+                                                {% else %}
+                                                <form id="remove-video-{{video.id}}-from-watchlater-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="video_id" value="{{video.id}}">
+                                                    <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                    id="remove-video-{{video.id}}-from-watchlater-button" 
+                                                    style="display: none;"
+                                                    onclick="event.preventDefault(); handleRemoveFromWatchlater(event, 
+                                                    '{{video.id}}', '{{playlist.id}}', 
+                                                    'remove-video-{{video.id}}-from-watchlater-button', 
+                                                    'add-video-{{video.id}}-to-watchlater-button')"
+                                                    >Remove Video From Watchlater</a>
+                                                </form>
+                                                
+                                                <form id="add-video-{{video.id}}-to-watchlater-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="video_id" value="{{video.id}}">
+                                                    <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                    id="add-video-{{video.id}}-to-watchlater-button"
+                                                    style="display: block;" 
+                                                    onclick="event.preventDefault(); handleAddToWatchlater(event, 
+                                                    '{{video.id}}', '{{playlist.id}}', 
+                                                    'add-video-{{video.id}}-to-watchlater-button', 
+                                                    'remove-video-{{video.id}}-from-watchlater-button')"
+                                                    >Add Video to Watchlater</a>
+                                                </form>
+                                                
+                                                {% endif %}
+                                                {% for playlist in playlists %}
+                                                    {% if video in playlist.videos.all %}
+                                                    <form id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-form">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="playlist_id" value="{{playlist.id}}">
+                                                        <input type="hidden" name="video_id" value="{{video.id}}">
+                                                        <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                        id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-button"
+                                                        style="display: block;"
+                                                        onclick="event.preventDefault(); handleRemoveFromPlaylist(event, 
+                                                        '{{video.id}}', '{{playlist.id}}', 
+                                                        'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button', 
+                                                        'add-video-{{video.id}}-to-plist-{{playlist.id}}-button')"
+                                                        >Remove Video from {{playlist|title}}</a>
+                                                    </form>
+                                                    
+                                                    <form id="add-video-{{video.id}}-to-plist-{{playlist.id}}-form">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="playlist_id" value="{{playlist.id}}">
+                                                        <input type="hidden" name="video_id" value="{{video.id}}">
+                                                        <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                        id="add-video-{{video.id}}-to-plist-{{playlist.id}}-button"
+                                                        style="display: none;"
+                                                        onclick="event.preventDefault(); handleAddToPlaylist(event, 
+                                                        '{{video.id}}', '{{playlist.id}}', 
+                                                        'add-video-{{video.id}}-to-plist-{{playlist.id}}-button', 
+                                                        'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button')"
+                                                        >Add Video to {{playlist|title}}</a>
+                                                    </form>
+                                                    
+                                                    {% else %}
+                                                    <form id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-form">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="playlist_id" value="{{playlist.id}}">
+                                                        <input type="hidden" name="video_id" value="{{video.id}}">
+                                                        <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                        id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-button"
+                                                        style="display: none;"
+                                                        onclick="event.preventDefault(); handleRemoveFromPlaylist(event, 
+                                                        '{{video.id}}', '{{playlist.id}}', 
+                                                        'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button', 
+                                                        'add-video-{{video.id}}-to-plist-{{playlist.id}}-button')"
+                                                        >Remove Video from {{playlist|title}}</a>
+                                                    </form>
+
+                                                    <form id="add-video-{{video.id}}-to-plist-{{playlist.id}}-form">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="playlist_id" value="{{playlist.id}}">
+                                                        <input type="hidden" name="video_id" value="{{video.id}}">
+                                                        <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                        id="add-video-{{video.id}}-to-plist-{{playlist.id}}-button"
+                                                        style="display: block;"
+                                                        onclick="event.preventDefault(); handleAddToPlaylist(event, 
+                                                        '{{video.id}}', '{{playlist.id}}', 
+                                                        'add-video-{{video.id}}-to-plist-{{playlist.id}}-button', 
+                                                        'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button')"
+                                                        >Add Video to {{playlist|title}}</a>
+                                                    </form>
+                                                    {% endif %}
+                                                {% endfor %}
+                                                {% if nav_channel %}
+                                                    <a class="dropdown-item" href="{% url 'create_playlist' nav_channel.id %}">Create playlist</a>
+                                                {% elif no_channel %}
+                                                    <a class="dropdown-item" href="{% url 'create_channel' %}">Create channel to create playlist</a>
+                                                {% elif many_channels %}
+                                                    {% for channel in my_channels %}
+                                                        <a class="dropdown-item" href="{% url 'create_playlist' channel.id %}">Create playlist in {{channel}} channel</a>
+                                                    {% endfor %}
+                                                {% endif %}
                                             {% else %}
-                                            <form id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-form">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="playlist_id" value="{{playlist.id}}">
-                                                <input type="hidden" name="video_id" value="{{video.id}}">
-                                                <a href="#" class="dropdown-item add-btn-link update-cart" 
-                                                id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-button"
-                                                style="display: none;"
-                                                onclick="event.preventDefault(); handleRemoveFromPlaylist(event, 
-                                                '{{video.id}}', '{{playlist.id}}', 
-                                                'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button', 
-                                                'add-video-{{video.id}}-to-plist-{{playlist.id}}-button')"
-                                                >Remove Video from {{playlist|title}}</a>
-                                            </form>
-
-                                            <form id="add-video-{{video.id}}-to-plist-{{playlist.id}}-form">
-                                                {% csrf_token %}
-                                                <input type="hidden" name="playlist_id" value="{{playlist.id}}">
-                                                <input type="hidden" name="video_id" value="{{video.id}}">
-                                                <a href="#" class="dropdown-item add-btn-link update-cart" 
-                                                id="add-video-{{video.id}}-to-plist-{{playlist.id}}-button"
-                                                style="display: block;"
-                                                onclick="event.preventDefault(); handleAddToPlaylist(event, 
-                                                '{{video.id}}', '{{playlist.id}}', 
-                                                'add-video-{{video.id}}-to-plist-{{playlist.id}}-button', 
-                                                'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button')"
-                                                >Add Video to {{playlist|title}}</a>
-                                            </form>
+                                                <a class="dropdown-item" target='_blank' href="{% url 'login' %}">Add to playlist</a>
                                             {% endif %}
-                                        {% endfor %}
-                                        {% if nav_channel %}
-                                            <a class="dropdown-item" href="{% url 'create_playlist' nav_channel.id %}">Create playlist</a>
-                                        {% elif no_channel %}
-                                            <a class="dropdown-item" href="{% url 'create_channel' %}">Create channel to create playlist</a>
-                                        {% elif many_channels %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row"><div class="col-lg-12"><h6 style="font-size: 18px;">Uploaded {{video.upload_period}}</h6></div></div>
+                </div>
+            </div>
+            
+
+            <div class="row">
+                <div class="col-lg-12">
+
+            <!-- ##### Likes and Dislikes ###### -->
+
+                    <div class="row">
+                        {% if video.likes is not 1 %}
+                            <h6 id="likes-count" style="font-size: 18px; float: left"><strong id="likes-count">{{video.likes | intcomma}} likes</strong></h6>
+                        {% else %}
+                            <h6 id="likes-count" style="font-size: 18px; float: left"><strong id="likes-count">{{video.likes | intcomma}} like</strong></h6> 
+                        {% endif %}
+                        {% if video.dislikes is not 1 %}
+                            <h6 id="dislikes-count" style="font-size: 18px; margin-left:5px; float: left"><strong id="likes-count">{{video.dislikes | intcomma}} Dislikes</strong></h6>
+                        {% else %}
+                            <h6 id="dislikes-count" style="font-size: 18px; margin-left:5px; float: left"><strong id="likes-count">{{video.dislikes | intcomma}} Dislike</strong></h6>
+                        {% endif %}
+                    </div>
+
+
+
+
+            <!--                                    ##############   Like and Dislike buttons   ##################                          -->
+
+                    {% if user.is_authenticated %}
+                        <div class="row"> 
+                            {% if liked %}
+                            <form id="unlike-form" method="POST" style="display: block;">
+                                {% csrf_token %}
+                                <input type="hidden" name="video_id" value="{{video.id}}">
+                                <button class="btn btn-outline-secondary add-btn update-cart"
+                                style="margin-left:0px;" type="submit" id="unlike-button"><i class="fa-solid fa-thumbs-up"></i></button>
+                            </form>
+                            <form id="like-form" method="POST" style="display: none;">
+                                {% csrf_token %}
+                                <input type="hidden" name="video_id" value="{{video.id}}">
+                                <button class="btn btn-outline-secondary add-btn update-cart"
+                                style="margin-left:0px;" type="submit" id="like-button"><i class="fa-regular fa-thumbs-up"></i></button>
+                            </form>
+                            {% else %}
+                            <form id="unlike-form" method="POST" style="display: none;">
+                                {% csrf_token %}
+                                <input type="hidden" name="video_id" value="{{video.id}}">
+                                <button class="btn btn-outline-secondary add-btn update-cart"
+                                style="margin-left:0px;" type="submit" id="unlike-button"><i class="fa-solid fa-thumbs-up"></i></button>
+                            </form>
+                            <form id="like-form" method="POST" style="display: block;">
+                                {% csrf_token %}
+                                <input type="hidden" name="video_id" value="{{video.id}}">
+                                <button class="btn btn-outline-secondary add-btn update-cart"
+                                style="margin-left:0px;" type="submit" id="like-button"><i class="fa-regular fa-thumbs-up"></i></button>
+                            </form>
+                            {% endif %}
+                            {% if disliked %}
+                            <form id="undislike-form" method="POST" style="display: block;">
+                                {% csrf_token %}
+                                <input type="hidden" name="video_id" value="{{video.id}}">
+                                <button class="btn btn-outline-secondary add-btn update-cart"
+                                style="margin-left:0px;" type="submit" id="undislike-button"><i class="fa-solid fa-thumbs-down"></i></button>
+                            </form>
+                            <form id="dislike-form" method="POST" style="display: none;">
+                                {% csrf_token %}
+                                <input type="hidden" name="video_id" value="{{video.id}}">
+                                <button class="btn btn-outline-secondary add-btn update-cart"
+                                style="margin-left:0px;" type="submit" id="dislike-button"><i class="fa-regular fa-thumbs-up fa-flip-vertical"></i></button>
+                            </form>
+                            {% else %}
+                            <form id="undislike-form" method="POST" style="display: none;">
+                                {% csrf_token %}
+                                <input type="hidden" name="video_id" value="{{video.id}}">
+                                <button class="btn btn-outline-secondary add-btn update-cart"
+                                style="margin-left:0px;" type="submit" id="undislike-button"><i class="fa-solid fa-thumbs-down"></i></button>
+                            </form>
+                            <form id="dislike-form" method="POST" style="display: block;">
+                                {% csrf_token %}
+                                <input type="hidden" name="video_id" value="{{video.id}}">
+                                <button class="btn btn-outline-secondary add-btn update-cart"
+                                style="margin-left:0px;" type="submit" id="dislike-button"><i class="fa-regular fa-thumbs-up fa-flip-vertical"></i></button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                    <div class="row">
+                        <a href="{% url 'login' %}" target="_blank">
+                            <button class="btn btn-outline-secondary add-btn update-cart"
+                            style="margin-left:0px;"><i class="fa-regular fa-thumbs-up"></i></button>
+                        </a>
+                        <a href="{% url 'login' %}" target="_blank">
+                            <button class="btn btn-outline-secondary add-btn update-cart"
+                            style="margin-left:0px;"><i class="fa-regular fa-thumbs-up fa-flip-vertical"></i></button>
+                        </a>
+                    </div>
+                    {% endif %}
+                    </div>
+            </div>
+        </div>
+        </div>
+            <!--                                 #################    Description    ##################                                      -->
+            <div class="row box-element">
+                <div class="col-lg-12">
+                    <div class="description">
+                        <h4><u>Description</u></h4>
+                        {% if video.description %}
+                        <div class="row"><h6 >{{video.description}}</h6></div>
+                        {% else %}
+                        <div class="row"><h6 >No Description</h6></div>
+                        {% endif %}
+                        <hr>
+                        <div class="row"><h6>Video uploaded {{video.upload_time | naturaltime }} on {{video.upload_time }}</h6></div>
+                    </div>
+                </div>
+            </div>
+            <br>
+
+
+
+
+            <!--                                ###################     Commenting     #################                                          --> 
+
+            {% if user.is_authenticated %}
+            {% if not many_channels %}
+            <form id="comment-form" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <h5><label for="comment-text">Add Comment</label></h5>
+                    <textarea rows="3" cols="140" maxlength="500" id="comment-text" name="comment_text"></textarea>
+                </div>
+                <input type="hidden" name="video_id" value="{{video.id}}">
+                <div class="row" style="padding-left:20px; padding-top: 10px;">
+                    <button class="btn btn-success" type="submit">Comment</button>
+                </div>
+            </form>
+            {% else %}
+            <form id="comment-many-channels-form" method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <h5><label for="comment-text">Add Comment</label></h5>
+                    <textarea rows="3" cols="140" maxlength="500" id="comment-text" name="comment_text"></textarea>
+                </div>
+                <input type="hidden" name="video_id" value="{{video.id}}">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <label for="channel-id">Select channel</label>
+                        </div>
+                        <div class="row">
+                            <select name="channel_id" id="channel-id">
+                                {% for channel in my_channels %}
+                                <option value="{{channel.id}}">{{channel}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="padding-left:20px; padding-top: 10px;">
+                    <button class="btn btn-success" type="submit">Comment</button>
+                </div>
+            </form>
+            {% endif %}
+            <br>
+            {% else %}
+            <a href="{% url 'login' %}" target="_blank"><h6 class="row box-element">Login to Add Comment</h6></a>
+            {% endif %}
+            
+            <!--                                ###################     Comments      #################                                          --> 
+
+            <div class="row"><h4 class="col-lg-12 box-element" style="margin-top: 0; margin-bottom: 0!important;">Comments</h4></div>
+
+            {% if comments %}
+                {% for comment in comments %}
+                {% if comment.channel.user == viewer %}
+                    <div class="row box-element">
+                        <div class="col-lg-12">
+                            <div class="row description">
+                                {% if comment.channel.profile_picture %}
+                                <img src="{{comment.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
+                                {% else %}
+                                <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
+                                {% endif %}
+                                <a href="{% url 'channel' comment.channel.id %}"><p><strong>{{comment.channel}}</strong></p></a>
+                            </div>
+                            <div class="row description">
+                                <p>{{comment}}</p>
+                            </div>
+                            <div class="row">
+                                {% if comment.likes is not 1 %}
+                                    <div class="">{{comment.likes | intcomma}} likes</div>
+                                {% else %}
+                                    <div class="">{{comment.likes | intcomma}} like</div>
+                                {% endif %}
+                                {% if comment.dislikes is not 1 %}
+                                    <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{comment.dislikes | intcomma}} dislike</p></div>
+                                {% else %}
+                                    <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{comment.dislikes | intcomma}} dislike</p></div>
+                                {% endif %}
+                            </div>
+                            {% if user.is_authenticated %}
+                                <div class="row">
+                                    <button data-product="{{video.id}}" 
+                                        data-action="like" 
+                                        class="btn btn-outline-secondary add-btn update-cart"
+                                        style="margin-left:0px;">Like</button>
+                                    <button data-product="{{video.id}}" 
+                                        data-action="dislike" 
+                                        class="btn btn-outline-secondary add-btn update-cart"
+                                        style="margin-left:20px;">Dislike</button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!-- ###################     Comment Replying      ################# --> 
+
+                    {% if user.is_authenticated %}
+                    {% if not many_channels %}
+                    <div class="row">
+                        <a onclick="toggleItem('reply-toggle-{{comment.id}}', false); 
+                                            toggleItem('reply-form-{{comment.id}}', true);"
+                                    id="reply-toggle-{{comment.id}}"><h6>reply</h6></a>
+                        <form id="reply-form-{{comment.id}}" style="display: none">
+                            {% csrf_token %}
+                            <div class="row">
+                                <h5><label for="reply-text-{{comment.id}}">Add Reply</label></h5>
+                                <textarea rows="3" cols="140" maxlength="500" id="reply-text-{{comment.id}}" name="reply_text"></textarea>
+                            </div>
+                            <div class="row" style="padding-left:20px; padding-top: 10px;">
+                                <button 
+                                id="reply-button-{{comment.id}}"
+                                onclick="event.preventDefault(); 
+                                handleCommentReply(
+                                event, 
+                                '{{comment.id}}', 
+                                'reply-text-{{comment.id}}', 
+                                'reply-toggle-{{comment.id}}', 
+                                'reply-form-{{comment.id}}');"
+                                class="btn btn-success">Reply</button></a> 
+                            </div>                 
+                        </form>
+                    </div>
+                    {% else %}
+                    <div class="row">
+                        <a onclick="toggleItem('reply-toggle-{{comment.id}}', false); 
+                                            toggleItem('reply-form-{{comment.id}}', true);"
+                                    id="reply-toggle-{{comment.id}}"><h6>reply</h6></a>
+                        <form id="reply-form-{{comment.id}}" style="display: none">
+                            {% csrf_token %}
+                            <div class="row">
+                                <h5><label for="reply-text-{{comment.id}}">Add Reply</label></h5>
+                                <textarea rows="3" cols="140" maxlength="500" id="reply-text-{{comment.id}}" name="reply_text"></textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <label for="channel-id-{{comment.id}}">Select channel</label>
+                                    </div>
+                                    <div class="row">
+                                        <select name="channel_id" id="channel-id-{{comment.id}}">
                                             {% for channel in my_channels %}
-                                                <a class="dropdown-item" href="{% url 'create_playlist' channel.id %}">Create playlist in {{channel}} channel</a>
+                                            <option value="{{channel.id}}">{{channel}}</option>
                                             {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-left:20px; padding-top: 10px;">
+                                <button 
+                                id="reply-button-{{comment.id}}"
+                                onclick="event.preventDefault(); 
+                                handleCommentReplyManyChannels(
+                                event, 
+                                '{{comment.id}}', 
+                                'reply-text-{{comment.id}}', 
+                                'reply-toggle-{{comment.id}}', 
+                                'reply-form-{{comment.id}}',
+                                'channel-id-{{comment.id}}');"
+                                class="btn btn-success">Reply</button></a> 
+                            </div>                 
+                        </form>
+                    </div>
+                    {% endif %}
+                    {% else %}
+                    <div class="row"><a href="{% url 'login' %}" target="_blank">reply</a></div>
+                    {% endif %}
+
+                    <!-- ###################     Comment Replies      ################# --> 
+                    {% for reply in comment_replies %}
+                        {% if  reply.comment == comment %}
+                        {% if not reply.channel.user == viewer %}
+
+                            <div class="row box-element" style="margin-left: 30px;">
+                                <div class="col-lg-12">
+                                    <div class="row description">
+                                        {% if reply.channel.profile_picture %}
+                                        <img src="{{reply.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
+                                        {% else %}
+                                        <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
                                         {% endif %}
-                                    {% else %}
-                                        <a class="dropdown-item" target='_blank' href="{% url 'login' %}">Add to playlist</a>
+                                        <p><strong><a href="{% url 'channel' reply.channel.id %}">{{reply.channel}}</a></strong> replied to <strong><a href="{% url 'channel' comment.channel.id %}">{{comment.channel}}</a></strong></p>
+                                    </div>
+                                    <div class="row description">
+                                        <p>{{reply}}</p>
+                                    </div>
+                                    <div class="row">
+                                        {% if reply.likes is not 1 %}
+                                            <div class="">{{reply.likes | intcomma}} likes</div>
+                                        {% else %}
+                                            <div class="">{{reply.likes | intcomma}} like</div>
+                                        {% endif %}
+                                        {% if reply.dislikes is not 1 %}
+                                            <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
+                                        {% else %}
+                                            <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
+                                        {% endif %}
+                                    </div>
+                                    {% if user.is_authenticated %}
+                                        <div class="row">
+                                            <button data-product="{{video.id}}" 
+                                                data-action="like" 
+                                                class="btn btn-outline-secondary add-btn update-cart"
+                                                style="margin-left:0px;">Like</button>
+                                            <button data-product="{{video.id}}" 
+                                                data-action="dislike" 
+                                                class="btn btn-outline-secondary add-btn update-cart"
+                                                style="margin-left:20px;">Dislike</button>
+                                        </div>
                                     {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    {% for reply in comment_replies %}
+                        {% if  reply.comment == comment %}
+                        {% if not reply.channel.user == viewer %}
+
+                            <div class="row box-element" style="margin-left: 30px;">
+                                <div class="col-lg-12">
+                                    <div class="row description">
+                                        {% if reply.channel.profile_picture %}
+                                        <img src="{{reply.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
+                                        {% else %}
+                                        <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
+                                        {% endif %}
+                                        <p><strong><a href="{% url 'channel' reply.channel.id %}">{{reply.channel}}</a></strong> replied to <strong><a href="{% url 'channel' comment.channel.id %}">{{comment.channel}}</a></strong></p>
+                                    </div>
+                                    <div class="row description">
+                                        <p>{{reply}}</p>
+                                    </div>
+                                    <div class="row">
+                                        {% if reply.likes is not 1 %}
+                                            <div class="">{{reply.likes | intcomma}} likes</div>
+                                        {% else %}
+                                            <div class="">{{reply.likes | intcomma}} like</div>
+                                        {% endif %}
+                                        {% if reply.dislikes is not 1 %}
+                                            <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
+                                        {% else %}
+                                            <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
+                                        {% endif %}
+                                    </div>
+                                    {% if user.is_authenticated %}
+                                        <div class="row">
+                                            <button data-product="{{video.id}}" 
+                                                data-action="like" 
+                                                class="btn btn-outline-secondary add-btn update-cart"
+                                                style="margin-left:0px;">Like</button>
+                                            <button data-product="{{video.id}}" 
+                                                data-action="dislike" 
+                                                class="btn btn-outline-secondary add-btn update-cart"
+                                                style="margin-left:20px;">Dislike</button>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {% endfor %}
+                {% for comment in comments %}
+                {% if not comment.channel.user == viewer %}
+                    <div class="row box-element">
+                        <div class="col-lg-12">
+                            <div class="row description">
+                                {% if comment.channel.profile_picture %}
+                                <img src="{{comment.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
+                                {% else %}
+                                <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
+                                {% endif %}
+                                <a href="{% url 'channel' comment.channel.id %}"><p><strong>{{comment.channel}}</strong></p></a>
+                            </div>
+                            <div class="row description">
+                                <p>{{comment}}</p>
+                            </div>
+                            <div class="row">
+                                {% if comment.likes is not 1 %}
+                                    <div class="">{{comment.likes | intcomma}} likes</div>
+                                {% else %}
+                                    <div class="">{{comment.likes | intcomma}} like</div>
+                                {% endif %}
+                                {% if comment.dislikes is not 1 %}
+                                    <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{comment.dislikes | intcomma}} dislike</p></div>
+                                {% else %}
+                                    <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{comment.dislikes | intcomma}} dislike</p></div>
+                                {% endif %}
+                            </div>
+                            {% if user.is_authenticated %}
+                                <div class="row">
+                                    <button data-product="{{video.id}}" 
+                                        data-action="like" 
+                                        class="btn btn-outline-secondary add-btn update-cart"
+                                        style="margin-left:0px;">Like</button>
+                                    <button data-product="{{video.id}}" 
+                                        data-action="dislike" 
+                                        class="btn btn-outline-secondary add-btn update-cart"
+                                        style="margin-left:20px;">Dislike</button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!-- ###################     Comment Replying      ################# --> 
+
+                    {% if user.is_authenticated %}
+                    {% if not many_channels %}
+                    <div class="row">
+                        <a onclick="toggleItem('reply-toggle-{{comment.id}}', false); 
+                                            toggleItem('reply-form-{{comment.id}}', true);"
+                                    id="reply-toggle-{{comment.id}}"><h6>reply</h6></a>
+                        <form id="reply-form-{{comment.id}}" style="display: none">
+                            {% csrf_token %}
+                            <div class="row">
+                                <h5><label for="reply-text-{{comment.id}}">Add Reply</label></h5>
+                                <textarea rows="3" cols="140" maxlength="500" id="reply-text-{{comment.id}}" name="reply_text"></textarea>
+                            </div>
+                            <div class="row" style="padding-left:20px; padding-top: 10px;">
+                                <button 
+                                id="reply-button-{{comment.id}}"
+                                onclick="event.preventDefault(); 
+                                handleCommentReply(
+                                event, 
+                                '{{comment.id}}', 
+                                'reply-text-{{comment.id}}', 
+                                'reply-toggle-{{comment.id}}', 
+                                'reply-form-{{comment.id}}');"
+                                class="btn btn-success">Reply</button></a> 
+                            </div>                 
+                        </form>
+                    </div>
+                    {% else %}
+                    <div class="row">
+                        <a onclick="toggleItem('reply-toggle-{{comment.id}}', false); 
+                                            toggleItem('reply-form-{{comment.id}}', true);"
+                                    id="reply-toggle-{{comment.id}}"><h6>reply</h6></a>
+                        <form id="reply-form-{{comment.id}}" style="display: none">
+                            {% csrf_token %}
+                            <div class="row">
+                                <h5><label for="reply-text-{{comment.id}}">Add Reply</label></h5>
+                                <textarea rows="3" cols="140" maxlength="500" id="reply-text-{{comment.id}}" name="reply_text"></textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <label for="channel-id-{{comment.id}}">Select channel</label>
+                                    </div>
+                                    <div class="row">
+                                        <select name="channel_id" id="channel-id-{{comment.id}}">
+                                            {% for channel in my_channels %}
+                                            <option value="{{channel.id}}">{{channel}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="padding-left:20px; padding-top: 10px;">
+                                <button 
+                                id="reply-button-{{comment.id}}"
+                                onclick="event.preventDefault(); 
+                                handleCommentReplyManyChannels(
+                                event, 
+                                '{{comment.id}}', 
+                                'reply-text-{{comment.id}}', 
+                                'reply-toggle-{{comment.id}}', 
+                                'reply-form-{{comment.id}}',
+                                'channel-id-{{comment.id}}');"
+                                class="btn btn-success">Reply</button></a> 
+                            </div>                 
+                        </form>
+                    </div>
+                    {% endif %}
+                    {% else %}
+                    <div class="row"><a href="{% url 'login' %}" target="_blank">reply</a></div>
+                    {% endif %}
+
+                    <!-- ###################     Comment Replies      ################# --> 
+                    {% for reply in comment_replies %}
+                        {% if  reply.comment == comment %}
+                        {% if reply.channel.user == viewer %}
+
+                            <div class="row box-element" style="margin-left: 30px;">
+                                <div class="col-lg-12">
+                                    <div class="row description">
+                                        {% if reply.channel.profile_picture %}
+                                        <img src="{{reply.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
+                                        {% else %}
+                                        <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
+                                        {% endif %}
+                                        <p><strong><a href="{% url 'channel' reply.channel.id %}">{{reply.channel}}</a></strong> replied to <strong><a href="{% url 'channel' comment.channel.id %}">{{comment.channel}}</a></strong></p>
+                                    </div>
+                                    <div class="row description">
+                                        <p>{{reply}}</p>
+                                    </div>
+                                    <div class="row">
+                                        {% if reply.likes is not 1 %}
+                                            <div class="">{{reply.likes | intcomma}} likes</div>
+                                        {% else %}
+                                            <div class="">{{reply.likes | intcomma}} like</div>
+                                        {% endif %}
+                                        {% if reply.dislikes is not 1 %}
+                                            <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
+                                        {% else %}
+                                            <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
+                                        {% endif %}
+                                    </div>
+                                    {% if user.is_authenticated %}
+                                        <div class="row">
+                                            <button data-product="{{video.id}}" 
+                                                data-action="like" 
+                                                class="btn btn-outline-secondary add-btn update-cart"
+                                                style="margin-left:0px;">Like</button>
+                                            <button data-product="{{video.id}}" 
+                                                data-action="dislike" 
+                                                class="btn btn-outline-secondary add-btn update-cart"
+                                                style="margin-left:20px;">Dislike</button>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    {% for reply in comment_replies %}
+                        {% if  reply.comment == comment %}
+                        {% if not reply.channel.user == viewer %}
+
+                            <div class="row box-element" style="margin-left: 30px;">
+                                <div class="col-lg-12">
+                                    <div class="row description">
+                                        {% if reply.channel.profile_picture %}
+                                        <img src="{{reply.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
+                                        {% else %}
+                                        <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
+                                        {% endif %}
+                                        <p><strong><a href="{% url 'channel' reply.channel.id %}">{{reply.channel}}</a></strong> replied to <strong><a href="{% url 'channel' comment.channel.id %}">{{comment.channel}}</a></strong></p>
+                                    </div>
+                                    <div class="row description">
+                                        <p>{{reply}}</p>
+                                    </div>
+                                    <div class="row">
+                                        {% if reply.likes is not 1 %}
+                                            <div class="">{{reply.likes | intcomma}} likes</div>
+                                        {% else %}
+                                            <div class="">{{reply.likes | intcomma}} like</div>
+                                        {% endif %}
+                                        {% if reply.dislikes is not 1 %}
+                                            <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
+                                        {% else %}
+                                            <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
+                                        {% endif %}
+                                    </div>
+                                    {% if user.is_authenticated %}
+                                        <div class="row">
+                                            <button data-product="{{video.id}}" 
+                                                data-action="like" 
+                                                class="btn btn-outline-secondary add-btn update-cart"
+                                                style="margin-left:0px;">Like</button>
+                                            <button data-product="{{video.id}}" 
+                                                data-action="dislike" 
+                                                class="btn btn-outline-secondary add-btn update-cart"
+                                                style="margin-left:20px;">Dislike</button>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                {% endfor %}
+                                        <!-- display pagination links -->
+                                {% if comments.has_other_pages %}
+                                <div class="pagination col-lg-12 box-element">
+                                    {% if comments.has_previous %}
+                                        <h5><a href="?page=1">&laquo; first</a></h5>
+                                        <h5><a href="?page={{ comments.previous_page_number }}">&lsaquo; previous</a></h5>
+                                    {% endif %}
+
+                                    {% for num in comments.paginator.page_range %}
+                                        {% if num == comments.number %}
+                                            <h5><span class="current-page">{{ num }}</span></h5>
+                                        {% elif num > comments.number|add:'-3' and num < comments.number|add:'3' %}
+                                            <h5><a href="?page={{ num }}">{{ num }}</a></h5>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if comments.has_next %}
+                                        <h5><a href="?page={{ comments.next_page_number }}">next &rsaquo;</a></h5>
+                                        <h5><a href="?page={{ comments.paginator.num_pages }}">last &raquo;</a></h5>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+            {% else %}
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h4>No Comments Yet</h4>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+</div>
+<div class="col-lg-3">
+        {% if playlist_videos %}
+        <div class="row box-element">
+            <div class="col-lg-12">
+                <h5>Playlist</h5>
+            </div>
+            {% for index, video in playlist_videos|enumerate_list %}
+                <div class="col-lg-12">
+                    <h4>{{index}}</h4>
+                </div>
+                <div class="col-lg-12">
+                    <a href="{% url 'video' video.id %}">
+                    <img class="thumbnail" src="{{video.thumbnailURL}}" alt="">
+                    </a>
+                    <div class="box-element product">
+                        <div class="row">
+                            <a href="{% url 'video' video.id %}">
+                                <h6 style="float: left">{{video.title}}</h6>
+                            </a>
+                        </div>
+                        <a href="{% url 'channel' video.channel.id %}">
+                            <div class="row">
+                                <h6>{{video.channel}}</h6>
+                            </div>
+                        </a>
+                        <div class="row">
+                            <div class="col-lg-10">
+                                {% if video.views is not 1 %}
+                                    <h6 style="float: left">{{video.views | intcomma }} views</h6>
+                                {% else %}
+                                    <h6 style="float: left">{{video.views | intcomma }} view</h6>
+                                {% endif %}
+                            </div>
+                            <div class="col-lg-2 col-12 text-right mt-2 mt-lg-0">
+                                <div class="video-options">
+                                    <div class="dropdown">
+                                        <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                            <i class="fa-solid fa-ellipsis-vertical"></i>
+                                        </button>
+                                    
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                            {% if user.is_authenticated %}
+                                                {% if video in watchlater.videos.all %}
+                                                <form id="remove-video-{{video.id}}-from-watchlater-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="video_id" value="{{video.id}}">
+                                                    <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                    id="remove-video-{{video.id}}-from-watchlater-button" 
+                                                    style="display: block;"
+                                                    onclick="event.preventDefault(); handleRemoveFromWatchlater(event, 
+                                                    '{{video.id}}', '{{playlist.id}}', 
+                                                    'remove-video-{{video.id}}-from-watchlater-button', 
+                                                    'add-video-{{video.id}}-to-watchlater-button')"
+                                                    >Remove Video From Watchlater</a>
+                                                </form>
+                                                <script>
+                                                    function handleRemoveFromWatchlater(event, videoId, playlistId, addButtonId, successId) {
+                                                        event.preventDefault();
+                                                        $.ajax({
+                                                            type: 'POST',
+                                                            url: "{% url 'remove_video_from_watchlater' %}",
+                                                            data: {
+                                                                csrfmiddlewaretoken: "{{ csrf_token }}",
+                                                                video_id: videoId,
+                                                            },
+                                                            success: function(response) {
+                                                                toggleItem(addButtonId, false);
+                                                                toggleItem(successId, true);
+                                                            },
+                                                        });
+                                                    }
+                                                </script>
+        
+                                                <form id="add-video-{{video.id}}-to-watchlater-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="video_id" value="{{video.id}}">
+                                                    <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                    id="add-video-{{video.id}}-to-watchlater-button"
+                                                    style="display: none;" 
+                                                    onclick="event.preventDefault(); handleAddToWatchlater(event, 
+                                                    '{{video.id}}', '{{playlist.id}}', 
+                                                    'add-video-{{video.id}}-to-watchlater-button', 
+                                                    'remove-video-{{video.id}}-from-watchlater-button')"
+                                                    >Add Video to Watchlater</a>
+                                                </form>
+                                                <script>
+                                                    function handleAddToWatchlater(event, videoId, playlistId, addButtonId, successId) {
+                                                        event.preventDefault();
+                                                        $.ajax({
+                                                            type: 'POST',
+                                                            url: "{% url 'add_video_to_watchlater' %}",
+                                                            data: {
+                                                                csrfmiddlewaretoken: "{{ csrf_token }}",
+                                                                video_id: videoId,
+                                                            },
+                                                            success: function(response) {
+                                                                toggleItem(addButtonId, false);
+                                                                toggleItem(successId, true);
+                                                            },
+                                                        });
+                                                    }
+                                                </script>
+                                                {% else %}
+                                                <form id="remove-video-{{video.id}}-from-watchlater-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="video_id" value="{{video.id}}">
+                                                    <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                    id="remove-video-{{video.id}}-from-watchlater-button" 
+                                                    style="display: none;"
+                                                    onclick="event.preventDefault(); handleRemoveFromWatchlater(event, 
+                                                    '{{video.id}}', '{{playlist.id}}', 
+                                                    'remove-video-{{video.id}}-from-watchlater-button', 
+                                                    'add-video-{{video.id}}-to-watchlater-button')"
+                                                    >Remove Video From Watchlater</a>
+                                                </form>
+                                                <script>
+                                                    function handleRemoveFromWatchlater(event, videoId, playlistId, addButtonId, successId) {
+                                                        event.preventDefault();
+                                                        $.ajax({
+                                                            type: 'POST',
+                                                            url: "{% url 'remove_video_from_watchlater' %}",
+                                                            data: {
+                                                                csrfmiddlewaretoken: "{{ csrf_token }}",
+                                                                video_id: videoId,
+                                                            },
+                                                            success: function(response) {
+                                                                toggleItem(addButtonId, false);
+                                                                toggleItem(successId, true);
+                                                            },
+                                                        });
+                                                    }
+                                                </script>
+        
+                                                <form id="add-video-{{video.id}}-to-watchlater-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="video_id" value="{{video.id}}">
+                                                    <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                    id="add-video-{{video.id}}-to-watchlater-button"
+                                                    style="display: block;" 
+                                                    onclick="event.preventDefault(); handleAddToWatchlater(event, 
+                                                    '{{video.id}}', '{{playlist.id}}', 
+                                                    'add-video-{{video.id}}-to-watchlater-button', 
+                                                    'remove-video-{{video.id}}-from-watchlater-button')"
+                                                    >Add Video to Watchlater</a>
+                                                </form>
+                                                <script>
+                                                    function handleAddToWatchlater(event, videoId, playlistId, addButtonId, successId) {
+                                                        event.preventDefault();
+                                                        $.ajax({
+                                                            type: 'POST',
+                                                            url: "{% url 'add_video_to_watchlater' %}",
+                                                            data: {
+                                                                csrfmiddlewaretoken: "{{ csrf_token }}",
+                                                                video_id: videoId,
+                                                            },
+                                                            success: function(response) {
+                                                                toggleItem(addButtonId, false);
+                                                                toggleItem(successId, true);
+                                                            },
+                                                        });
+                                                    }
+                                                </script>
+                                                {% endif %}
+                                                {% for playlist in playlists %}
+                                                    {% if video in playlist.videos.all %}
+                                                    <form id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-form">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="playlist_id" value="{{playlist.id}}">
+                                                        <input type="hidden" name="video_id" value="{{video.id}}">
+                                                        <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                        id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-button"
+                                                        style="display: block;"
+                                                        onclick="event.preventDefault(); handleRemoveFromPlaylist(event, 
+                                                        '{{video.id}}', '{{playlist.id}}', 
+                                                        'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button', 
+                                                        'add-video-{{video.id}}-to-plist-{{playlist.id}}-button')"
+                                                        >Remove Video from {{playlist|title}}</a>
+                                                    </form>
+                                                    
+                                                    <script>
+                                                        function handleRemoveFromPlaylist(event, videoId, playlistId, addButtonId, successId) {
+                                                            event.preventDefault();
+                                                            $.ajax({
+                                                                type: 'POST',
+                                                                url: "{% url 'remove_video_from_playlist' %}",
+                                                                data: {
+                                                                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                                                                    video_id: videoId,
+                                                                    playlist_id: playlistId
+                                                                },
+                                                                success: function(response) {
+                                                                    toggleItem(addButtonId, false);
+                                                                    toggleItem(successId, true);
+                                                                },
+                                                            });
+                                                        }
+                                                    </script>
+        
+                                                    <form id="add-video-{{video.id}}-to-plist-{{playlist.id}}-form">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="playlist_id" value="{{playlist.id}}">
+                                                        <input type="hidden" name="video_id" value="{{video.id}}">
+                                                        <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                        id="add-video-{{video.id}}-to-plist-{{playlist.id}}-button"
+                                                        style="display: none;"
+                                                        onclick="event.preventDefault(); handleAddToPlaylist(event, 
+                                                        '{{video.id}}', '{{playlist.id}}', 
+                                                        'add-video-{{video.id}}-to-plist-{{playlist.id}}-button', 
+                                                        'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button')"
+                                                        >Add Video to {{playlist|title}}</a>
+                                                    </form>
+                                                    
+                                                    <script>
+                                                        function handleAddToPlaylist(event, videoId, playlistId, addButtonId, successId) {
+                                                            event.preventDefault();
+                                                            $.ajax({
+                                                                type: 'POST',
+                                                                url: "{% url 'add_video_to_playlist' %}",
+                                                                data: {
+                                                                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                                                                    video_id: videoId,
+                                                                    playlist_id: playlistId
+                                                                },
+                                                                success: function(response) {
+                                                                    toggleItem(addButtonId, false);
+                                                                    toggleItem(successId, true);
+                                                                },
+                                                            });
+                                                        }
+                                                    </script>
+                                                    {% else %}
+                                                    <form id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-form">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="playlist_id" value="{{playlist.id}}">
+                                                        <input type="hidden" name="video_id" value="{{video.id}}">
+                                                        <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                        id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-button"
+                                                        style="display: none;"
+                                                        onclick="event.preventDefault(); handleRemoveFromPlaylist(event, 
+                                                        '{{video.id}}', '{{playlist.id}}', 
+                                                        'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button', 
+                                                        'add-video-{{video.id}}-to-plist-{{playlist.id}}-button')"
+                                                        >Remove Video from {{playlist|title}}</a>
+                                                    </form>
+                                                    
+                                                    <script>
+                                                        function handleRemoveFromPlaylist(event, videoId, playlistId, addButtonId, successId) {
+                                                            event.preventDefault();
+                                                            $.ajax({
+                                                                type: 'POST',
+                                                                url: "{% url 'remove_video_from_playlist' %}",
+                                                                data: {
+                                                                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                                                                    video_id: videoId,
+                                                                    playlist_id: playlistId
+                                                                },
+                                                                success: function(response) {
+                                                                    toggleItem(addButtonId, false);
+                                                                    toggleItem(successId, true);
+                                                                },
+                                                            });
+                                                        }
+                                                    </script>
+        
+                                                    <form id="add-video-{{video.id}}-to-plist-{{playlist.id}}-form">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="playlist_id" value="{{playlist.id}}">
+                                                        <input type="hidden" name="video_id" value="{{video.id}}">
+                                                        <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                        id="add-video-{{video.id}}-to-plist-{{playlist.id}}-button"
+                                                        style="display: block;"
+                                                        onclick="event.preventDefault(); handleAddToPlaylist(event, 
+                                                        '{{video.id}}', '{{playlist.id}}', 
+                                                        'add-video-{{video.id}}-to-plist-{{playlist.id}}-button', 
+                                                        'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button')"
+                                                        >Add Video to {{playlist|title}}</a>
+                                                    </form>
+                                                    
+                                                    <script>
+                                                        function handleAddToPlaylist(event, videoId, playlistId, addButtonId, successId) {
+                                                            event.preventDefault();
+                                                            $.ajax({
+                                                                type: 'POST',
+                                                                url: "{% url 'add_video_to_playlist' %}",
+                                                                data: {
+                                                                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                                                                    video_id: videoId,
+                                                                    playlist_id: playlistId
+                                                                },
+                                                                success: function(response) {
+                                                                    toggleItem(addButtonId, false);
+                                                                    toggleItem(successId, true);
+                                                                },
+                                                            });
+                                                        }
+                                                    </script>
+                                                    {% endif %}
+                                                {% endfor %}
+                                                {% if nav_channel %}
+                                                    <a class="dropdown-item" href="{% url 'create_playlist' nav_channel.id %}">Create playlist</a>
+                                                {% elif no_channel %}
+                                                    <a class="dropdown-item" href="{% url 'create_channel' %}">Create channel to create playlist</a>
+                                                {% elif many_channels %}
+                                                    {% for channel in my_channels %}
+                                                        <a class="dropdown-item" href="{% url 'create_playlist' channel.id %}">Create playlist in {{channel}} channel</a>
+                                                    {% endfor %}
+                                                {% endif %}
+                                            {% else %}
+                                                <a class="dropdown-item" target='_blank' href="{% url 'login' %}">Add to playlist</a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row"><div class="col-lg-12"><h6 style="font-size: 18px;">Uploaded {{video.upload_period}}</h6></div></div>
-        </div>
-    </div>
-    
-
-    <div class="row">
-        <div class="col-lg-12">
-
-    <!-- ##### Likes and Dislikes ###### -->
-
-            <div class="row">
-                {% if video.likes is not 1 %}
-                    <h6 id="likes-count" style="font-size: 18px; float: left"><strong id="likes-count">{{video.likes | intcomma}} likes</strong></h6>
-                {% else %}
-                    <h6 id="likes-count" style="font-size: 18px; float: left"><strong id="likes-count">{{video.likes | intcomma}} like</strong></h6> 
-                {% endif %}
-                {% if video.dislikes is not 1 %}
-                    <h6 id="dislikes-count" style="font-size: 18px; margin-left:5px; float: left"><strong id="likes-count">{{video.dislikes | intcomma}} Dislikes</strong></h6>
-                {% else %}
-                    <h6 id="dislikes-count" style="font-size: 18px; margin-left:5px; float: left"><strong id="likes-count">{{video.dislikes | intcomma}} Dislike</strong></h6>
-                {% endif %}
-            </div>
-
-
-
-
-    <!--                                    ##############   Like and Dislike buttons   ##################                          -->
-
-            {% if user.is_authenticated %}
-                <div class="row"> 
-                    {% if liked %}
-                    <form id="unlike-form" method="POST" style="display: block;">
-                        {% csrf_token %}
-                        <input type="hidden" name="video_id" value="{{video.id}}">
-                        <button class="btn btn-outline-secondary add-btn update-cart"
-                        style="margin-left:0px;" type="submit" id="unlike-button"><i class="fa-solid fa-thumbs-up"></i></button>
-                    </form>
-                    <form id="like-form" method="POST" style="display: none;">
-                        {% csrf_token %}
-                        <input type="hidden" name="video_id" value="{{video.id}}">
-                        <button class="btn btn-outline-secondary add-btn update-cart"
-                        style="margin-left:0px;" type="submit" id="like-button"><i class="fa-regular fa-thumbs-up"></i></button>
-                    </form>
-                    {% else %}
-                    <form id="unlike-form" method="POST" style="display: none;">
-                        {% csrf_token %}
-                        <input type="hidden" name="video_id" value="{{video.id}}">
-                        <button class="btn btn-outline-secondary add-btn update-cart"
-                        style="margin-left:0px;" type="submit" id="unlike-button"><i class="fa-solid fa-thumbs-up"></i></button>
-                    </form>
-                    <form id="like-form" method="POST" style="display: block;">
-                        {% csrf_token %}
-                        <input type="hidden" name="video_id" value="{{video.id}}">
-                        <button class="btn btn-outline-secondary add-btn update-cart"
-                        style="margin-left:0px;" type="submit" id="like-button"><i class="fa-regular fa-thumbs-up"></i></button>
-                    </form>
-                    {% endif %}
-                    {% if disliked %}
-                    <form id="undislike-form" method="POST" style="display: block;">
-                        {% csrf_token %}
-                        <input type="hidden" name="video_id" value="{{video.id}}">
-                        <button class="btn btn-outline-secondary add-btn update-cart"
-                        style="margin-left:0px;" type="submit" id="undislike-button"><i class="fa-solid fa-thumbs-down"></i></button>
-                    </form>
-                    <form id="dislike-form" method="POST" style="display: none;">
-                        {% csrf_token %}
-                        <input type="hidden" name="video_id" value="{{video.id}}">
-                        <button class="btn btn-outline-secondary add-btn update-cart"
-                        style="margin-left:0px;" type="submit" id="dislike-button"><i class="fa-regular fa-thumbs-up fa-flip-vertical"></i></button>
-                    </form>
-                    {% else %}
-                    <form id="undislike-form" method="POST" style="display: none;">
-                        {% csrf_token %}
-                        <input type="hidden" name="video_id" value="{{video.id}}">
-                        <button class="btn btn-outline-secondary add-btn update-cart"
-                        style="margin-left:0px;" type="submit" id="undislike-button"><i class="fa-solid fa-thumbs-down"></i></button>
-                    </form>
-                    <form id="dislike-form" method="POST" style="display: block;">
-                        {% csrf_token %}
-                        <input type="hidden" name="video_id" value="{{video.id}}">
-                        <button class="btn btn-outline-secondary add-btn update-cart"
-                        style="margin-left:0px;" type="submit" id="dislike-button"><i class="fa-regular fa-thumbs-up fa-flip-vertical"></i></button>
-                    </form>
-                    {% endif %}
-                </div>
-            {% else %}
-            <div class="row">
-                <a href="{% url 'login' %}" target="_blank">
-                    <button class="btn btn-outline-secondary add-btn update-cart"
-                    style="margin-left:0px;"><i class="fa-regular fa-thumbs-up"></i></button>
-                </a>
-                <a href="{% url 'login' %}" target="_blank">
-                    <button class="btn btn-outline-secondary add-btn update-cart"
-                    style="margin-left:0px;"><i class="fa-regular fa-thumbs-up fa-flip-vertical"></i></button>
-                </a>
-            </div>
-            {% endif %}
-            </div>
-    </div>
-</div>
-</div>
-    <!--                                 #################    Description    ##################                                      -->
+            {% endfor %}
+            <br>
+         </div>
+        {% endif %}
     <div class="row box-element">
         <div class="col-lg-12">
-            <div class="description">
-                <h4><u>Description</u></h4>
-                {% if video.description %}
-                <div class="row"><h6 >{{video.description}}</h6></div>
-                {% else %}
-                <div class="row"><h6 >No Description</h6></div>
-                {% endif %}
-                <hr>
-                <div class="row"><h6>Video uploaded {{video.upload_time | naturaltime }} on {{video.upload_time }}</h6></div>
-            </div>
+            <h5>More Videos</h5>
         </div>
-    </div>
-    <br>
-
-
-
-
-    <!--                                ###################     Commenting     #################                                          --> 
-
-    {% if user.is_authenticated %}
-    {% if not many_channels %}
-    <form id="comment-form" method="post">
-        {% csrf_token %}
-        <div class="row">
-            <h5><label for="comment-text">Add Comment</label></h5>
-            <textarea rows="3" cols="140" maxlength="500" id="comment-text" name="comment_text"></textarea>
-        </div>
-        <input type="hidden" name="video_id" value="{{video.id}}">
-        <div class="row" style="padding-left:20px; padding-top: 10px;">
-            <button class="btn btn-success" type="submit">Comment</button>
-        </div>
-    </form>
-    {% else %}
-    <form id="comment-many-channels-form" method="post">
-        {% csrf_token %}
-        <div class="row">
-            <h5><label for="comment-text">Add Comment</label></h5>
-            <textarea rows="3" cols="140" maxlength="500" id="comment-text" name="comment_text"></textarea>
-        </div>
-        <input type="hidden" name="video_id" value="{{video.id}}">
-        <div class="row">
+        {% for video in more_videos %}
             <div class="col-lg-12">
-                <div class="row">
-                    <label for="channel-id">Select channel</label>
-                </div>
-                <div class="row">
-                    <select name="channel_id" id="channel-id">
-                        {% for channel in my_channels %}
-                        <option value="{{channel.id}}">{{channel}}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="row" style="padding-left:20px; padding-top: 10px;">
-            <button class="btn btn-success" type="submit">Comment</button>
-        </div>
-    </form>
-    {% endif %}
-    <br>
-    {% else %}
-    <a href="{% url 'login' %}" target="_blank"><h6 class="row box-element">Login to Add Comment</h6></a>
-    {% endif %}
+                <a href="{% url 'video' video.id %}">
+                <img class="thumbnail" src="{{video.thumbnailURL}}" alt="">
+                </a>
+                <div class="box-element product">
+                    <div class="row">
+                        <a href="{% url 'video' video.id %}">
+                            <h6 style="float: left">{{video.title}}</h6>
+                        </a>
+                    </div>
+                    <a href="{% url 'channel' video.channel.id %}">
+                        <div class="row">
+                            <h6>{{video.channel}}</h6>
+                        </div>
+                    </a>
+                    <div class="row">
+                        <div class="col-lg-10">
+                            {% if video.views is not 1 %}
+                                <h6 style="float: left">{{video.views | intcomma }} views</h6>
+                            {% else %}
+                                <h6 style="float: left">{{video.views | intcomma }} view</h6>
+                            {% endif %}
+                        </div>
+                        <div class="col-lg-2 col-12 text-right mt-2 mt-lg-0">
+                            <div class="video-options">
+                                <div class="dropdown">
+                                    <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        <i class="fa-solid fa-ellipsis-vertical"></i>
+                                    </button>
+                                
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                        {% if user.is_authenticated %}
+                                            {% if video in watchlater.videos.all %}
+                                            <form id="remove-video-{{video.id}}-from-watchlater-form">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="video_id" value="{{video.id}}">
+                                                <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                id="remove-video-{{video.id}}-from-watchlater-button" 
+                                                style="display: block;"
+                                                onclick="event.preventDefault(); handleRemoveFromWatchlater(event, 
+                                                '{{video.id}}', '{{playlist.id}}', 
+                                                'remove-video-{{video.id}}-from-watchlater-button', 
+                                                'add-video-{{video.id}}-to-watchlater-button')"
+                                                >Remove Video From Watchlater</a>
+                                            </form>
+                                            <script>
+                                                function handleRemoveFromWatchlater(event, videoId, playlistId, addButtonId, successId) {
+                                                    event.preventDefault();
+                                                    $.ajax({
+                                                        type: 'POST',
+                                                        url: "{% url 'remove_video_from_watchlater' %}",
+                                                        data: {
+                                                            csrfmiddlewaretoken: "{{ csrf_token }}",
+                                                            video_id: videoId,
+                                                        },
+                                                        success: function(response) {
+                                                            toggleItem(addButtonId, false);
+                                                            toggleItem(successId, true);
+                                                        },
+                                                    });
+                                                }
+                                            </script>
     
-    <!--                                ###################     Comments      #################                                          --> 
-
-    <div class="row"><h4 class="col-lg-12 box-element" style="margin-top: 0; margin-bottom: 0!important;">Comments</h4></div>
-
-    {% if comments %}
-        {% for comment in comments %}
-        {% if comment.channel.user == viewer %}
-            <div class="row box-element">
-                <div class="col-lg-12">
-                    <div class="row description">
-                        {% if comment.channel.profile_picture %}
-                        <img src="{{comment.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
-                        {% else %}
-                        <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
-                        {% endif %}
-                        <a href="{% url 'channel' comment.channel.id %}"><p><strong>{{comment.channel}}</strong></p></a>
-                    </div>
-                    <div class="row description">
-                        <p>{{comment}}</p>
-                    </div>
-                    <div class="row">
-                        {% if comment.likes is not 1 %}
-                            <div class="">{{comment.likes | intcomma}} likes</div>
-                        {% else %}
-                            <div class="">{{comment.likes | intcomma}} like</div>
-                        {% endif %}
-                        {% if comment.dislikes is not 1 %}
-                            <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{comment.dislikes | intcomma}} dislike</p></div>
-                        {% else %}
-                            <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{comment.dislikes | intcomma}} dislike</p></div>
-                        {% endif %}
-                    </div>
-                    {% if user.is_authenticated %}
-                        <div class="row">
-                            <button data-product="{{video.id}}" 
-                                data-action="like" 
-                                class="btn btn-outline-secondary add-btn update-cart"
-                                style="margin-left:0px;">Like</button>
-                            <button data-product="{{video.id}}" 
-                                data-action="dislike" 
-                                class="btn btn-outline-secondary add-btn update-cart"
-                                style="margin-left:20px;">Dislike</button>
+                                            <form id="add-video-{{video.id}}-to-watchlater-form">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="video_id" value="{{video.id}}">
+                                                <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                id="add-video-{{video.id}}-to-watchlater-button"
+                                                style="display: none;" 
+                                                onclick="event.preventDefault(); handleAddToWatchlater(event, 
+                                                '{{video.id}}', '{{playlist.id}}', 
+                                                'add-video-{{video.id}}-to-watchlater-button', 
+                                                'remove-video-{{video.id}}-from-watchlater-button')"
+                                                >Add Video to Watchlater</a>
+                                            </form>
+                                            <script>
+                                                function handleAddToWatchlater(event, videoId, playlistId, addButtonId, successId) {
+                                                    event.preventDefault();
+                                                    $.ajax({
+                                                        type: 'POST',
+                                                        url: "{% url 'add_video_to_watchlater' %}",
+                                                        data: {
+                                                            csrfmiddlewaretoken: "{{ csrf_token }}",
+                                                            video_id: videoId,
+                                                        },
+                                                        success: function(response) {
+                                                            toggleItem(addButtonId, false);
+                                                            toggleItem(successId, true);
+                                                        },
+                                                    });
+                                                }
+                                            </script>
+                                            {% else %}
+                                            <form id="remove-video-{{video.id}}-from-watchlater-form">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="video_id" value="{{video.id}}">
+                                                <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                id="remove-video-{{video.id}}-from-watchlater-button" 
+                                                style="display: none;"
+                                                onclick="event.preventDefault(); handleRemoveFromWatchlater(event, 
+                                                '{{video.id}}', '{{playlist.id}}', 
+                                                'remove-video-{{video.id}}-from-watchlater-button', 
+                                                'add-video-{{video.id}}-to-watchlater-button')"
+                                                >Remove Video From Watchlater</a>
+                                            </form>
+                                            <script>
+                                                function handleRemoveFromWatchlater(event, videoId, playlistId, addButtonId, successId) {
+                                                    event.preventDefault();
+                                                    $.ajax({
+                                                        type: 'POST',
+                                                        url: "{% url 'remove_video_from_watchlater' %}",
+                                                        data: {
+                                                            csrfmiddlewaretoken: "{{ csrf_token }}",
+                                                            video_id: videoId,
+                                                        },
+                                                        success: function(response) {
+                                                            toggleItem(addButtonId, false);
+                                                            toggleItem(successId, true);
+                                                        },
+                                                    });
+                                                }
+                                            </script>
+    
+                                            <form id="add-video-{{video.id}}-to-watchlater-form">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="video_id" value="{{video.id}}">
+                                                <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                id="add-video-{{video.id}}-to-watchlater-button"
+                                                style="display: block;" 
+                                                onclick="event.preventDefault(); handleAddToWatchlater(event, 
+                                                '{{video.id}}', '{{playlist.id}}', 
+                                                'add-video-{{video.id}}-to-watchlater-button', 
+                                                'remove-video-{{video.id}}-from-watchlater-button')"
+                                                >Add Video to Watchlater</a>
+                                            </form>
+                                            <script>
+                                                function handleAddToWatchlater(event, videoId, playlistId, addButtonId, successId) {
+                                                    event.preventDefault();
+                                                    $.ajax({
+                                                        type: 'POST',
+                                                        url: "{% url 'add_video_to_watchlater' %}",
+                                                        data: {
+                                                            csrfmiddlewaretoken: "{{ csrf_token }}",
+                                                            video_id: videoId,
+                                                        },
+                                                        success: function(response) {
+                                                            toggleItem(addButtonId, false);
+                                                            toggleItem(successId, true);
+                                                        },
+                                                    });
+                                                }
+                                            </script>
+                                            {% endif %}
+                                            {% for playlist in playlists %}
+                                                {% if video in playlist.videos.all %}
+                                                <form id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="playlist_id" value="{{playlist.id}}">
+                                                    <input type="hidden" name="video_id" value="{{video.id}}">
+                                                    <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                    id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-button"
+                                                    style="display: block;"
+                                                    onclick="event.preventDefault(); handleRemoveFromPlaylist(event, 
+                                                    '{{video.id}}', '{{playlist.id}}', 
+                                                    'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button', 
+                                                    'add-video-{{video.id}}-to-plist-{{playlist.id}}-button')"
+                                                    >Remove Video from {{playlist|title}}</a>
+                                                </form>
+                                                
+                                                <script>
+                                                    function handleRemoveFromPlaylist(event, videoId, playlistId, addButtonId, successId) {
+                                                        event.preventDefault();
+                                                        $.ajax({
+                                                            type: 'POST',
+                                                            url: "{% url 'remove_video_from_playlist' %}",
+                                                            data: {
+                                                                csrfmiddlewaretoken: "{{ csrf_token }}",
+                                                                video_id: videoId,
+                                                                playlist_id: playlistId
+                                                            },
+                                                            success: function(response) {
+                                                                toggleItem(addButtonId, false);
+                                                                toggleItem(successId, true);
+                                                            },
+                                                        });
+                                                    }
+                                                </script>
+    
+                                                <form id="add-video-{{video.id}}-to-plist-{{playlist.id}}-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="playlist_id" value="{{playlist.id}}">
+                                                    <input type="hidden" name="video_id" value="{{video.id}}">
+                                                    <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                    id="add-video-{{video.id}}-to-plist-{{playlist.id}}-button"
+                                                    style="display: none;"
+                                                    onclick="event.preventDefault(); handleAddToPlaylist(event, 
+                                                    '{{video.id}}', '{{playlist.id}}', 
+                                                    'add-video-{{video.id}}-to-plist-{{playlist.id}}-button', 
+                                                    'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button')"
+                                                    >Add Video to {{playlist|title}}</a>
+                                                </form>
+                                                
+                                                <script>
+                                                    function handleAddToPlaylist(event, videoId, playlistId, addButtonId, successId) {
+                                                        event.preventDefault();
+                                                        $.ajax({
+                                                            type: 'POST',
+                                                            url: "{% url 'add_video_to_playlist' %}",
+                                                            data: {
+                                                                csrfmiddlewaretoken: "{{ csrf_token }}",
+                                                                video_id: videoId,
+                                                                playlist_id: playlistId
+                                                            },
+                                                            success: function(response) {
+                                                                toggleItem(addButtonId, false);
+                                                                toggleItem(successId, true);
+                                                            },
+                                                        });
+                                                    }
+                                                </script>
+                                                {% else %}
+                                                <form id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="playlist_id" value="{{playlist.id}}">
+                                                    <input type="hidden" name="video_id" value="{{video.id}}">
+                                                    <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                    id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-button"
+                                                    style="display: none;"
+                                                    onclick="event.preventDefault(); handleRemoveFromPlaylist(event, 
+                                                    '{{video.id}}', '{{playlist.id}}', 
+                                                    'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button', 
+                                                    'add-video-{{video.id}}-to-plist-{{playlist.id}}-button')"
+                                                    >Remove Video from {{playlist|title}}</a>
+                                                </form>
+                                                
+                                                <script>
+                                                    function handleRemoveFromPlaylist(event, videoId, playlistId, addButtonId, successId) {
+                                                        event.preventDefault();
+                                                        $.ajax({
+                                                            type: 'POST',
+                                                            url: "{% url 'remove_video_from_playlist' %}",
+                                                            data: {
+                                                                csrfmiddlewaretoken: "{{ csrf_token }}",
+                                                                video_id: videoId,
+                                                                playlist_id: playlistId
+                                                            },
+                                                            success: function(response) {
+                                                                toggleItem(addButtonId, false);
+                                                                toggleItem(successId, true);
+                                                            },
+                                                        });
+                                                    }
+                                                </script>
+    
+                                                <form id="add-video-{{video.id}}-to-plist-{{playlist.id}}-form">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="playlist_id" value="{{playlist.id}}">
+                                                    <input type="hidden" name="video_id" value="{{video.id}}">
+                                                    <a href="#" class="dropdown-item add-btn-link update-cart" 
+                                                    id="add-video-{{video.id}}-to-plist-{{playlist.id}}-button"
+                                                    style="display: block;"
+                                                    onclick="event.preventDefault(); handleAddToPlaylist(event, 
+                                                    '{{video.id}}', '{{playlist.id}}', 
+                                                    'add-video-{{video.id}}-to-plist-{{playlist.id}}-button', 
+                                                    'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button')"
+                                                    >Add Video to {{playlist|title}}</a>
+                                                </form>
+                                                
+                                                <script>
+                                                    function handleAddToPlaylist(event, videoId, playlistId, addButtonId, successId) {
+                                                        event.preventDefault();
+                                                        $.ajax({
+                                                            type: 'POST',
+                                                            url: "{% url 'add_video_to_playlist' %}",
+                                                            data: {
+                                                                csrfmiddlewaretoken: "{{ csrf_token }}",
+                                                                video_id: videoId,
+                                                                playlist_id: playlistId
+                                                            },
+                                                            success: function(response) {
+                                                                toggleItem(addButtonId, false);
+                                                                toggleItem(successId, true);
+                                                            },
+                                                        });
+                                                    }
+                                                </script>
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if nav_channel %}
+                                                <a class="dropdown-item" href="{% url 'create_playlist' nav_channel.id %}">Create playlist</a>
+                                            {% elif no_channel %}
+                                                <a class="dropdown-item" href="{% url 'create_channel' %}">Create channel to create playlist</a>
+                                            {% elif many_channels %}
+                                                {% for channel in my_channels %}
+                                                    <a class="dropdown-item" href="{% url 'create_playlist' channel.id %}">Create playlist in {{channel}} channel</a>
+                                                {% endfor %}
+                                            {% endif %}
+                                        {% else %}
+                                            <a class="dropdown-item" target='_blank' href="{% url 'login' %}">Add to playlist</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    {% endif %}
+                    </div>
                 </div>
             </div>
-            <!-- ###################     Comment Replying      ################# --> 
-
-            {% if user.is_authenticated %}
-            {% if not many_channels %}
-            <div class="row">
-                <a onclick="toggleItem('reply-toggle-{{comment.id}}', false); 
-                                    toggleItem('reply-form-{{comment.id}}', true);"
-                            id="reply-toggle-{{comment.id}}"><h6>reply</h6></a>
-                <form id="reply-form-{{comment.id}}" style="display: none">
-                    {% csrf_token %}
-                    <div class="row">
-                        <h5><label for="reply-text-{{comment.id}}">Add Reply</label></h5>
-                        <textarea rows="3" cols="140" maxlength="500" id="reply-text-{{comment.id}}" name="reply_text"></textarea>
-                    </div>
-                    <div class="row" style="padding-left:20px; padding-top: 10px;">
-                        <button 
-                        id="reply-button-{{comment.id}}"
-                        onclick="event.preventDefault(); 
-                        handleCommentReply(
-                        event, 
-                        '{{comment.id}}', 
-                        'reply-text-{{comment.id}}', 
-                        'reply-toggle-{{comment.id}}', 
-                        'reply-form-{{comment.id}}');"
-                        class="btn btn-success">Reply</button></a> 
-                    </div>                 
-                </form>
-            </div>
-            {% else %}
-            <div class="row">
-                <a onclick="toggleItem('reply-toggle-{{comment.id}}', false); 
-                                    toggleItem('reply-form-{{comment.id}}', true);"
-                            id="reply-toggle-{{comment.id}}"><h6>reply</h6></a>
-                <form id="reply-form-{{comment.id}}" style="display: none">
-                    {% csrf_token %}
-                    <div class="row">
-                        <h5><label for="reply-text-{{comment.id}}">Add Reply</label></h5>
-                        <textarea rows="3" cols="140" maxlength="500" id="reply-text-{{comment.id}}" name="reply_text"></textarea>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="row">
-                                <label for="channel-id-{{comment.id}}">Select channel</label>
-                            </div>
-                            <div class="row">
-                                <select name="channel_id" id="channel-id-{{comment.id}}">
-                                    {% for channel in my_channels %}
-                                    <option value="{{channel.id}}">{{channel}}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" style="padding-left:20px; padding-top: 10px;">
-                        <button 
-                        id="reply-button-{{comment.id}}"
-                        onclick="event.preventDefault(); 
-                        handleCommentReplyManyChannels(
-                        event, 
-                        '{{comment.id}}', 
-                        'reply-text-{{comment.id}}', 
-                        'reply-toggle-{{comment.id}}', 
-                        'reply-form-{{comment.id}}',
-                        'channel-id-{{comment.id}}');"
-                        class="btn btn-success">Reply</button></a> 
-                    </div>                 
-                </form>
-            </div>
-            {% endif %}
-            {% else %}
-            <div class="row"><a href="{% url 'login' %}" target="_blank">reply</a></div>
-            {% endif %}
-
-            <!-- ###################     Comment Replies      ################# --> 
-            {% for reply in comment_replies %}
-                {% if  reply.comment == comment %}
-                {% if not reply.channel.user == viewer %}
-
-                    <div class="row box-element" style="margin-left: 30px;">
-                        <div class="col-lg-12">
-                            <div class="row description">
-                                {% if reply.channel.profile_picture %}
-                                <img src="{{reply.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
-                                {% else %}
-                                <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
-                                {% endif %}
-                                <p><strong><a href="{% url 'channel' reply.channel.id %}">{{reply.channel}}</a></strong> replied to <strong><a href="{% url 'channel' comment.channel.id %}">{{comment.channel}}</a></strong></p>
-                            </div>
-                            <div class="row description">
-                                <p>{{reply}}</p>
-                            </div>
-                            <div class="row">
-                                {% if reply.likes is not 1 %}
-                                    <div class="">{{reply.likes | intcomma}} likes</div>
-                                {% else %}
-                                    <div class="">{{reply.likes | intcomma}} like</div>
-                                {% endif %}
-                                {% if reply.dislikes is not 1 %}
-                                    <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
-                                {% else %}
-                                    <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
-                                {% endif %}
-                            </div>
-                            {% if user.is_authenticated %}
-                                <div class="row">
-                                    <button data-product="{{video.id}}" 
-                                        data-action="like" 
-                                        class="btn btn-outline-secondary add-btn update-cart"
-                                        style="margin-left:0px;">Like</button>
-                                    <button data-product="{{video.id}}" 
-                                        data-action="dislike" 
-                                        class="btn btn-outline-secondary add-btn update-cart"
-                                        style="margin-left:20px;">Dislike</button>
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% endif %}
-                {% endif %}
-            {% endfor %}
-            {% for reply in comment_replies %}
-                {% if  reply.comment == comment %}
-                {% if not reply.channel.user == viewer %}
-
-                    <div class="row box-element" style="margin-left: 30px;">
-                        <div class="col-lg-12">
-                            <div class="row description">
-                                {% if reply.channel.profile_picture %}
-                                <img src="{{reply.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
-                                {% else %}
-                                <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
-                                {% endif %}
-                                <p><strong><a href="{% url 'channel' reply.channel.id %}">{{reply.channel}}</a></strong> replied to <strong><a href="{% url 'channel' comment.channel.id %}">{{comment.channel}}</a></strong></p>
-                            </div>
-                            <div class="row description">
-                                <p>{{reply}}</p>
-                            </div>
-                            <div class="row">
-                                {% if reply.likes is not 1 %}
-                                    <div class="">{{reply.likes | intcomma}} likes</div>
-                                {% else %}
-                                    <div class="">{{reply.likes | intcomma}} like</div>
-                                {% endif %}
-                                {% if reply.dislikes is not 1 %}
-                                    <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
-                                {% else %}
-                                    <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
-                                {% endif %}
-                            </div>
-                            {% if user.is_authenticated %}
-                                <div class="row">
-                                    <button data-product="{{video.id}}" 
-                                        data-action="like" 
-                                        class="btn btn-outline-secondary add-btn update-cart"
-                                        style="margin-left:0px;">Like</button>
-                                    <button data-product="{{video.id}}" 
-                                        data-action="dislike" 
-                                        class="btn btn-outline-secondary add-btn update-cart"
-                                        style="margin-left:20px;">Dislike</button>
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% endif %}
-                {% endif %}
-            {% endfor %}
-        {% endif %}
         {% endfor %}
-        {% for comment in comments %}
-        {% if not comment.channel.user == viewer %}
-            <div class="row box-element">
-                <div class="col-lg-12">
-                    <div class="row description">
-                        {% if comment.channel.profile_picture %}
-                        <img src="{{comment.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
-                        {% else %}
-                        <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
-                        {% endif %}
-                        <a href="{% url 'channel' comment.channel.id %}"><p><strong>{{comment.channel}}</strong></p></a>
-                    </div>
-                    <div class="row description">
-                        <p>{{comment}}</p>
-                    </div>
-                    <div class="row">
-                        {% if comment.likes is not 1 %}
-                            <div class="">{{comment.likes | intcomma}} likes</div>
-                        {% else %}
-                            <div class="">{{comment.likes | intcomma}} like</div>
-                        {% endif %}
-                        {% if comment.dislikes is not 1 %}
-                            <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{comment.dislikes | intcomma}} dislike</p></div>
-                        {% else %}
-                            <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{comment.dislikes | intcomma}} dislike</p></div>
-                        {% endif %}
-                    </div>
-                    {% if user.is_authenticated %}
-                        <div class="row">
-                            <button data-product="{{video.id}}" 
-                                data-action="like" 
-                                class="btn btn-outline-secondary add-btn update-cart"
-                                style="margin-left:0px;">Like</button>
-                            <button data-product="{{video.id}}" 
-                                data-action="dislike" 
-                                class="btn btn-outline-secondary add-btn update-cart"
-                                style="margin-left:20px;">Dislike</button>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-            <!-- ###################     Comment Replying      ################# --> 
-
-            {% if user.is_authenticated %}
-            {% if not many_channels %}
-            <div class="row">
-                <a onclick="toggleItem('reply-toggle-{{comment.id}}', false); 
-                                    toggleItem('reply-form-{{comment.id}}', true);"
-                            id="reply-toggle-{{comment.id}}"><h6>reply</h6></a>
-                <form id="reply-form-{{comment.id}}" style="display: none">
-                    {% csrf_token %}
-                    <div class="row">
-                        <h5><label for="reply-text-{{comment.id}}">Add Reply</label></h5>
-                        <textarea rows="3" cols="140" maxlength="500" id="reply-text-{{comment.id}}" name="reply_text"></textarea>
-                    </div>
-                    <div class="row" style="padding-left:20px; padding-top: 10px;">
-                        <button 
-                        id="reply-button-{{comment.id}}"
-                        onclick="event.preventDefault(); 
-                        handleCommentReply(
-                        event, 
-                        '{{comment.id}}', 
-                        'reply-text-{{comment.id}}', 
-                        'reply-toggle-{{comment.id}}', 
-                        'reply-form-{{comment.id}}');"
-                        class="btn btn-success">Reply</button></a> 
-                    </div>                 
-                </form>
-            </div>
-            {% else %}
-            <div class="row">
-                <a onclick="toggleItem('reply-toggle-{{comment.id}}', false); 
-                                    toggleItem('reply-form-{{comment.id}}', true);"
-                            id="reply-toggle-{{comment.id}}"><h6>reply</h6></a>
-                <form id="reply-form-{{comment.id}}" style="display: none">
-                    {% csrf_token %}
-                    <div class="row">
-                        <h5><label for="reply-text-{{comment.id}}">Add Reply</label></h5>
-                        <textarea rows="3" cols="140" maxlength="500" id="reply-text-{{comment.id}}" name="reply_text"></textarea>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="row">
-                                <label for="channel-id-{{comment.id}}">Select channel</label>
-                            </div>
-                            <div class="row">
-                                <select name="channel_id" id="channel-id-{{comment.id}}">
-                                    {% for channel in my_channels %}
-                                    <option value="{{channel.id}}">{{channel}}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" style="padding-left:20px; padding-top: 10px;">
-                        <button 
-                        id="reply-button-{{comment.id}}"
-                        onclick="event.preventDefault(); 
-                        handleCommentReplyManyChannels(
-                        event, 
-                        '{{comment.id}}', 
-                        'reply-text-{{comment.id}}', 
-                        'reply-toggle-{{comment.id}}', 
-                        'reply-form-{{comment.id}}',
-                        'channel-id-{{comment.id}}');"
-                        class="btn btn-success">Reply</button></a> 
-                    </div>                 
-                </form>
-            </div>
-            {% endif %}
-            {% else %}
-            <div class="row"><a href="{% url 'login' %}" target="_blank">reply</a></div>
-            {% endif %}
-
-            <!-- ###################     Comment Replies      ################# --> 
-            {% for reply in comment_replies %}
-                {% if  reply.comment == comment %}
-                {% if reply.channel.user == viewer %}
-
-                    <div class="row box-element" style="margin-left: 30px;">
-                        <div class="col-lg-12">
-                            <div class="row description">
-                                {% if reply.channel.profile_picture %}
-                                <img src="{{reply.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
-                                {% else %}
-                                <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
-                                {% endif %}
-                                <p><strong><a href="{% url 'channel' reply.channel.id %}">{{reply.channel}}</a></strong> replied to <strong><a href="{% url 'channel' comment.channel.id %}">{{comment.channel}}</a></strong></p>
-                            </div>
-                            <div class="row description">
-                                <p>{{reply}}</p>
-                            </div>
-                            <div class="row">
-                                {% if reply.likes is not 1 %}
-                                    <div class="">{{reply.likes | intcomma}} likes</div>
-                                {% else %}
-                                    <div class="">{{reply.likes | intcomma}} like</div>
-                                {% endif %}
-                                {% if reply.dislikes is not 1 %}
-                                    <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
-                                {% else %}
-                                    <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
-                                {% endif %}
-                            </div>
-                            {% if user.is_authenticated %}
-                                <div class="row">
-                                    <button data-product="{{video.id}}" 
-                                        data-action="like" 
-                                        class="btn btn-outline-secondary add-btn update-cart"
-                                        style="margin-left:0px;">Like</button>
-                                    <button data-product="{{video.id}}" 
-                                        data-action="dislike" 
-                                        class="btn btn-outline-secondary add-btn update-cart"
-                                        style="margin-left:20px;">Dislike</button>
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% endif %}
-                {% endif %}
-            {% endfor %}
-            {% for reply in comment_replies %}
-                {% if  reply.comment == comment %}
-                {% if not reply.channel.user == viewer %}
-
-                    <div class="row box-element" style="margin-left: 30px;">
-                        <div class="col-lg-12">
-                            <div class="row description">
-                                {% if reply.channel.profile_picture %}
-                                <img src="{{reply.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
-                                {% else %}
-                                <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 25px; height: 25px;">
-                                {% endif %}
-                                <p><strong><a href="{% url 'channel' reply.channel.id %}">{{reply.channel}}</a></strong> replied to <strong><a href="{% url 'channel' comment.channel.id %}">{{comment.channel}}</a></strong></p>
-                            </div>
-                            <div class="row description">
-                                <p>{{reply}}</p>
-                            </div>
-                            <div class="row">
-                                {% if reply.likes is not 1 %}
-                                    <div class="">{{reply.likes | intcomma}} likes</div>
-                                {% else %}
-                                    <div class="">{{reply.likes | intcomma}} like</div>
-                                {% endif %}
-                                {% if reply.dislikes is not 1 %}
-                                    <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
-                                {% else %}
-                                    <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
-                                {% endif %}
-                            </div>
-                            {% if user.is_authenticated %}
-                                <div class="row">
-                                    <button data-product="{{video.id}}" 
-                                        data-action="like" 
-                                        class="btn btn-outline-secondary add-btn update-cart"
-                                        style="margin-left:0px;">Like</button>
-                                    <button data-product="{{video.id}}" 
-                                        data-action="dislike" 
-                                        class="btn btn-outline-secondary add-btn update-cart"
-                                        style="margin-left:20px;">Dislike</button>
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% endif %}
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-        {% endfor %}
-                                <!-- display pagination links -->
-                        {% if comments.has_other_pages %}
-                        <div class="pagination col-lg-12 box-element">
-                            {% if comments.has_previous %}
-                                <h5><a href="?page=1">&laquo; first</a></h5>
-                                <h5><a href="?page={{ comments.previous_page_number }}">&lsaquo; previous</a></h5>
-                            {% endif %}
-
-                            {% for num in comments.paginator.page_range %}
-                                {% if num == comments.number %}
-                                    <h5><span class="current-page">{{ num }}</span></h5>
-                                {% elif num > comments.number|add:'-3' and num < comments.number|add:'3' %}
-                                    <h5><a href="?page={{ num }}">{{ num }}</a></h5>
-                                {% endif %}
-                            {% endfor %}
-
-                            {% if comments.has_next %}
-                                <h5><a href="?page={{ comments.next_page_number }}">next &rsaquo;</a></h5>
-                                <h5><a href="?page={{ comments.paginator.num_pages }}">last &raquo;</a></h5>
-                            {% endif %}
-                        </div>
-                        {% endif %}
-    {% else %}
-        <div class="row">
-            <div class="col-lg-12">
-                <h4>No Comments Yet</h4>
-            </div>
-        </div>
-    {% endif %}
+     </div>
 </div>
 </div>
 

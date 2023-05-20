@@ -61,6 +61,7 @@ urlpatterns = [
     path('get_subs/<str:pk>',views_tube.get_subs, name="get_subs"),
     
     path('playlist/<str:pk>', views_tube.playlist, name="playlist"),
+    path('watch_playlist/<str:pk>/<str:number>', views_tube.watch_playlist, name="watch_playlist"),
     
     path('get_views/<str:pk>',views_tube.get_views, name="get_views"),
 ]

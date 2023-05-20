@@ -102,6 +102,9 @@ def watch_video(request, pk):
     context = {"video": video, "comments": page_obj, "comment_replies": comment_replies,
                "subscriber_count": subscriber_count}
     
+    more_videos = Video.objects.all()
+    context['more_videos'] = more_videos
+    
                 
     if request.user.is_authenticated:
         try:
@@ -169,7 +172,7 @@ def watch_video(request, pk):
 
 
 
-def watch_playlist(request, pk):
+def watch_playlist(request, pk, number):
     try:
         playlist = Playlist.objects.get(id=pk)
 
@@ -194,17 +197,12 @@ def watch_playlist(request, pk):
         #### The Patient Predator
     try:
         videos = []
-        videos_dict = playlist.videos.in_bulk().values()
+        videos_dict = playlist.videos.all()
         
         for video in videos_dict:
             videos.append(video)
-        
-        video = videos[0]
-                
-      # channel_playlists = Playlist.objects.filter(channel=channel).in_bulk().values()
-      # for channel_playlist in channel_playlists:
-      #     my_playlists.append(channel_playlist)
-
+        number = int(number)
+        video = videos[number]
 
     except:
         return HttpResponseBadRequest('<h1>404 Not Found</h1><h3>Video Does Not Exist! SORRYYY</h3>')  
@@ -229,16 +227,20 @@ def watch_playlist(request, pk):
     paginator = Paginator(comments, 10) # 10 comments per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    
-    # replies_dict = comment_replies.in_bulk()
-    # replies_list = []
-    # for key in range(len(replies_dict)):
-    #     replies_list.append(replies_dict[key+1].reply) # replies here are strings
 
     context = {"video": video, "comments": page_obj, "comment_replies": comment_replies,
                "subscriber_count": subscriber_count}
     
-    context['videos'] = videos
+    
+    
+    more_videos = Video.objects.all()
+    context['more_videos'] = more_videos
+    
+    
+    context['playlist_videos'] = videos
+    
+    
+    
     if request.user.is_authenticated:
         try:
             viewer = request.user.viewer
