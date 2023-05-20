@@ -75,8 +75,6 @@
     [] Comment
     [] Comment Reply
 [] Like and Dislike Comments
-[] Internal Mini player functionality
-[] Better alternative for paginator
 [] PREVENT USER ABILITY TO WATCH VIDEO MULTILPLE TIMES TO INCREASE VIEW COUNT *************
 [] Create logic
     [x] Channel
@@ -184,6 +182,9 @@ video streaming in Django:
     https://simpleisbetterthancomplex.com/tutorial/2018/02/03/how-to-stream-video-on-demand-with-django.html
 
 
+[] Internal Mini player functionality
+[] Add to Que
+[] Better alternative for paginator
 [] Fix Profile on mobile
 [] Drag and drop functionality
 [] Blue link problem
