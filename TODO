@@ -56,17 +56,17 @@
 [x] PLaylist in Watch Page
     [x] PLAY ALL BUTTON FOR Playlists
     [x] Playlist views update
-[x] ABILITY for USERS to delete models
+[] ABILITY for USERS to delete models
     [x] Playlist
     [x] Video
     [x] Channel
     [x] Comment
     [x] Comment Reply
-    [x] Viewer (USER - unmark active status)
-[] Password before delete functionality
-    [] Channel
-    [] Video
     [] Viewer (USER - unmark active status)
+    [] Password before delete functionality
+        [] Channel
+        [] Video
+        [] Viewer (USER - unmark active status)
 [] ABILITY for USERS to edit models
     [x] Channel
     [] Playlist
