@@ -168,6 +168,142 @@ def watch_video(request, pk):
     return render(request, 'tube/watch.html', context)
 
 
+
+def watch_playlist(request, pk):
+    try:
+        playlist = Playlist.objects.get(id=pk)
+
+    except Playlist.DoesNotExist:
+        return HttpResponseBadRequest('<h1>404 Not Found</h1><h3>Playlist Does Not Exist! SORRYYY</h3>')  
+    
+    if not playlist.public:
+        if request.user.is_authenticated:
+            try:
+                viewer = request.user.viewer
+                if not playlist.channel.user == viewer: # type: ignore
+                    return HttpResponseForbidden('<h1>Forbidden</h1><h4>Playlist is private</h4>')
+
+            except:
+                return HttpResponseForbidden('<h1>Forbidden</h1><h4>Playlist is private</h4>')
+
+        else:
+            return HttpResponseForbidden('<h1>Forbidden</h1><h4>Playlist is private</h4>') 
+        
+        
+        
+        #### The Patient Predator
+    try:
+        videos = []
+        videos_dict = playlist.videos.in_bulk().values()
+        
+        for video in videos_dict:
+            videos.append(video)
+        
+        video = videos[0]
+                
+      # channel_playlists = Playlist.objects.filter(channel=channel).in_bulk().values()
+      # for channel_playlist in channel_playlists:
+      #     my_playlists.append(channel_playlist)
+
+
+    except:
+        return HttpResponseBadRequest('<h1>404 Not Found</h1><h3>Video Does Not Exist! SORRYYY</h3>')  
+    
+    if video.private:
+        if request.user.is_authenticated:
+            try:
+                viewer = request.user.viewer
+                if not video.channel.user == viewer: # type: ignore
+                    return HttpResponseForbidden('<h1>Forbidden</h1><h4>Video is private</h4>')
+
+            except:
+                return HttpResponseForbidden('<h1>Forbidden</h1><h4>Video is private</h4>')
+
+        else:
+            return HttpResponseForbidden('<h1>Forbidden</h1><h4>Video is private</h4>')  
+
+    subscriber_count = video.channel.subscribers.count() # type: ignore
+    comments = Comment.objects.filter(video=video)
+    comment_replies = CommentReply.objects.all()
+    
+    paginator = Paginator(comments, 10) # 10 comments per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    # replies_dict = comment_replies.in_bulk()
+    # replies_list = []
+    # for key in range(len(replies_dict)):
+    #     replies_list.append(replies_dict[key+1].reply) # replies here are strings
+
+    context = {"video": video, "comments": page_obj, "comment_replies": comment_replies,
+               "subscriber_count": subscriber_count}
+    
+    context['videos'] = videos
+    if request.user.is_authenticated:
+        try:
+            viewer = request.user.viewer
+            context['viewer'] = viewer
+            
+            try:
+                watchlater = Watchlater.objects.get(viewer=viewer)
+                context['watchlater'] = watchlater
+
+            except Watchlater.DoesNotExist:
+                watchlater = Watchlater(viewer=viewer)
+                watchlater.save()
+                context['watchlater'] = watchlater
+            
+            if video.channel.subscribers.contains(viewer): # type: ignore
+                context['subscribed']=True
+                
+            try:
+                likes = LikedVideos.objects.get(viewer=viewer)
+                dislikes = DisLikedVideos.objects.get(viewer=viewer)
+  
+            except:
+                likes = LikedVideos(viewer=viewer)
+                dislikes = DisLikedVideos(viewer=viewer)
+                likes.save()
+                dislikes.save()
+                
+            if likes.videos.contains(video):
+                context['liked'] = True
+
+            if dislikes.videos.contains(video):
+                context['disliked'] = True
+                
+            try:
+                nav_channel = Channel.objects.get(user=viewer)
+                playlists = Playlist.objects.filter(channel=nav_channel) 
+                context['playlists'] = playlists
+                context['nav_channel'] = nav_channel
+                context['no_channel'] = False
+                context['many_channels'] = False
+
+            except Channel.DoesNotExist:
+                context['no_channel'] = True
+                context['many_channels'] = False
+
+            except:
+                my_channels = Channel.objects.filter(user=viewer)
+                my_playlists = []
+
+                for channel in my_channels:
+                    channel_playlists = Playlist.objects.filter(channel=channel).in_bulk().values()
+                    for channel_playlist in channel_playlists:
+                        my_playlists.append(channel_playlist)
+                context['playlists']= my_playlists
+                context['my_channels']= my_channels
+                context['many_channels'] = True
+                context['no_channel'] = False
+
+        except:
+            context['many_channels'] = False
+            context['no_channel'] = True
+    
+    return render(request, 'tube/watch.html', context)
+
+
 def channnel_view(request, pk):
     try:    
         channel = Channel.objects.get(id=pk)
