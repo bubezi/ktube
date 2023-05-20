@@ -1460,16 +1460,27 @@ def delete_account(request):
                 user = request.user
                 viewer = user.viewer
                 channnels = Channel.objects.filter(user=viewer)
-                
+                viewer.subscriptions.subscriptions.clear()
+                print(viewer.subscriptions)
                 for channel in channnels:
                     channel.channel_active = False
+                    channel.subscribers.clear()
                     channel_videos = channel.video_set.in_bulk().values() # type: ignore
+                    channel_playlists = channel.playlist_set.in_bulk().values() # type: ignore
+                    subscriptions_to_channel = channel.subscriptions.in_bulk().values() # type: ignore
+                    for subscription in subscriptions_to_channel:
+                        subscription.subscriptions.remove(channel)
                     for video in channel_videos:
                         video.private = True
                         video.save()
+                    for playlist in channel_playlists:
+                        playlist.delete()
                     channel.save()
                 user.is_active = False
                 user.save()
+                
+                #### or comment the above block and comment out the following
+                # user.delete()
                 return JsonResponse({'success':True, 'message':"Account Deleted Successfully"})
             except:
                 return JsonResponse({'success':False, 'message':"Deletion Failed"})
