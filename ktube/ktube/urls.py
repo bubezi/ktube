@@ -33,7 +33,12 @@ urlpatterns = [
     path('delete_comment', views_tube.delete_comment, name="delete_comment"),
     path('delete_comment_reply', views_tube.delete_comment_reply, name="delete_comment_reply"),
     
+    
+    path('authenticate_action', views_tube.authenticate_action, name="authenticate_action"),
+    
+    
     path('delete_account', views_tube.delete_account, name="delete_account"),
+    
     
     path('subscriptions', views_tube.subscriptions, name="subscriptions"),
     path('subscribe', views_tube.subscribe, name='subscribe'), 

@@ -1270,7 +1270,6 @@ def remove_video_from_playlist(request):
                 video = Video.objects.get(id=video_id)
                 playlist = Playlist.objects.get(id=playlist_id)
                 playlist.videos.remove(video)
-                print('Here i am ##\t\t\t\t\t\n\t\t\t#########')
                 return JsonResponse({'success':True})
             except:
                 return JsonResponse({'success':False})
@@ -1556,7 +1555,6 @@ def reply_comment(request):
                 channel = Channel.objects.get(user=viewer)
                 comment_reply = CommentReply(comment=comment, reply=reply_text, channel=channel)
                 comment_reply.save()
-                print(comment_reply)
                 return JsonResponse({'success': True})
             except:
                 return JsonResponse({'success': False})
@@ -1589,11 +1587,33 @@ def reply_comment_many_channels(request):
         return redirect('login')
 
 
+from django.contrib.auth import authenticate
+
+
+def authenticate_action(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            user = request.user
+            username = user.username
+            password = request.POST['password']
+            user = authenticate(username=username, password=password)
+            if user:
+                return JsonResponse({'success':True})
+            else:
+                return JsonResponse({'success':False, 'message':"Wrong Password"})
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login')
+
+
 def all_viewers(request):
     if request.user.is_authenticated:
         return render(request, 'tube/ajax_test.html')
     else:
         return redirect('login')
+    
+    
     
     
 ##############################################################################################

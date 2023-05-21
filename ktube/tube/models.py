@@ -35,7 +35,7 @@ class Channel(models.Model):
     name = models.CharField(max_length=150, null=True, unique=True)
     profile_picture = ResizedImageField(quality=50, force_format="WEBP", null=True, blank=True)
     about = models.CharField(max_length=300, null=True, blank=True)
-    subscribers = models.ManyToManyField(Viewer, related_name="Subscribed_viewers", blank=True)
+    subscribers = models.ManyToManyField(Viewer, related_name="Subscribed_viewers", blank=True) # type: ignore
     website_official = models.URLField(max_length=150, null=True, blank=True)
     channel_active = models.BooleanField(default=True)
     

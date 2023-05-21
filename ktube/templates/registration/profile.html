@@ -170,12 +170,24 @@
         {% endif %}
         </div>
     </div>
-        
+    
     <div class="delete">
         <div class="row">
             <button class="btn btn-success"
             style="text-align: center; margin: auto; margin-top:25px;"
-            onclick="event.preventDefault(); deleteAccount(event, '{{viewer.id}}');" id="delete-button">Delete Account</button>
+            onclick="event.preventDefault(); toggleItem('authenticate-form', true);" id="delete-button">Delete Account</button>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-12"
+        style="text-align: center; margin: auto; margin-top:25px;">
+            <form id="authenticate-form" style="display: none;">
+                <label for="password-auth">Enter Your Password</label>
+                <input type="password" name="password" id="password-auth">
+                <button class="btn btn-success" onclick="event.preventDefault(); 
+                authenticateAction(event, 'password-auth', '{{viewer.id}}')";>Submit</button>
+            </form>
         </div>
     </div>
 
@@ -184,6 +196,30 @@
         function toggleItem(id, toggle) {
             let element = document.getElementById(id);
             element.style.display = (toggle) ? 'block' : 'none';
+        }
+
+        function authenticateAction (event, passwordId, accountId) {
+            event.preventDefault();
+            passwordIdh = '#' + passwordId
+            $.ajax({
+                type:'POST',
+                url: "{% url 'authenticate_action' %}",
+                data: {
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    password: $(passwordIdh).val(),
+                    
+                },
+                success:(response)=>{
+                    if (response.success){
+                        deleteAccount(event, accountId);
+                    }else{
+                        alert(response.message);
+                    }
+                },
+                error:(response)=>{
+                    alert(response.message);
+                },
+            });
         }
         
         function deleteAccount (event, accountId) {
@@ -202,8 +238,12 @@
                                 account_id: accountId,
                             },
                             success: (response)=>{
-                                alert(response.message);
-                                setTimeout(() =>{window.location.href='/accounts/logout'}, 500);
+                                if (response.success){
+                                    alert(response.message);
+                                    setTimeout(() =>{window.location.href='/accounts/logout'}, 500);
+                                }else{
+                                    alert(response.message)
+                                }
                             },
                             error: (response)=>{
                                 alert(response.message)

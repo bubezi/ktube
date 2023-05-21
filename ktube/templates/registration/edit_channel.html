@@ -79,12 +79,51 @@
         <div class="row">
             <button class="btn btn-success"
             style="text-align: center; margin: auto; margin-top:25px;"
-            onclick="event.preventDefault(); deleteChannel(event, '{{channel.id}}');" id="delete-button">Delete Channel</button>
+            onclick="event.preventDefault(); toggleItem('authenticate-form', true);" id="delete-button">Delete Channel</button>
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg-12">
+        <form id="authenticate-form" style="display: none;">
+            <label for="password">Enter Your Password</label>
+            <input type="password" name="password" id="password">
+            <button class="btn btn-success" onclick="event.preventDefault(); 
+            authenticateAction(event, 'password', '{{channel.id}}')";>Submit</button>
+        </form>
+        </div>
+    </div>
+    
 
     <script type="text/javascript" src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
     <script>
+        function toggleItem(id, toggle) {
+            let element = document.getElementById(id);
+            element.style.display = (toggle) ? 'block' : 'none';
+        }
+
+        function authenticateAction (event, passwordId, channelId) {
+            event.preventDefault();
+            passwordIdh = '#' + passwordId
+            $.ajax({
+                type:'POST',
+                url: "{% url 'authenticate_action' %}",
+                data: {
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    password: $(passwordIdh).val(),
+                    
+                },
+                success:(response)=>{
+                    if (response.success){
+                        deleteChannel(event, channelId);
+                    }else{
+                        alert(response.message);
+                    };
+                },
+                error:(response)=>{
+                    alert(response.message);
+                },
+            });
+        }
         function deleteChannel (event, channelId) {
             event.preventDefault();
             var result = confirm('Do You Want to Delete this Channel?');
@@ -101,25 +140,18 @@
                                 channel_id: channelId,
                             },
                             success: (response)=>{
-                                alert(response.message);
-                                setTimeout(() =>{window.location.href='/'}, 500);
+                                if (response.success){
+                                    alert(response.message);
+                                    setTimeout(() =>{window.location.href='/'}, 500);
+                                }else{
+                                    alert(response.message)
+                                };
                             },
                             error: (response)=>{
                                 alert(response.message)
                             },
-                        });
-                    }else{
-                        alert('Deletion Canceled!');
-                    }
-    
-                }else{
-                    alert('Deletion Canceled!');
-                }
-
-            }else{
-                alert('Deletion Canceled!');
+                        });}else{alert('Deletion Canceled!');};}else{alert('Deletion Canceled!');};}else{alert('Deletion Canceled!');};
             }
-        }
     </script>
 
 
