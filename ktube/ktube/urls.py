@@ -33,8 +33,11 @@ urlpatterns = [
     path('delete_comment', views_tube.delete_comment, name="delete_comment"),
     path('delete_comment_reply', views_tube.delete_comment_reply, name="delete_comment_reply"),
     
-    path('edit_playlist_view/<str:pk>', views_tube.edit_playlist_view, name="edit_playlist_view"),
+    path('edit_playlist_v/<str:pk>', views_tube.edit_playlist_view, name="edit_playlist_view"),
     path('edit_playlist', views_tube.edit_playlist, name="edit_playlist"),
+    
+    path('edit_video_v/<str:pk>', views_tube.edit_video_view, name="edit_video_view"),
+    path('edit_video', views_tube.edit_video, name="edit_video"),
     
     path('authenticate_action', views_tube.authenticate_action, name="authenticate_action"),
     

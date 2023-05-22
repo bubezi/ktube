@@ -2,7 +2,7 @@
 {% load crispy_forms_filters %}
 {% load static %}
 
-{% block title %}{{channel.name}} | Change Channel Details {% endblock title%}
+{% block title %}{{playlist.name}} | Change Playlist Details {% endblock title%}
 
 {% block content %}
 
@@ -32,7 +32,7 @@
     </style>
     
 
-        <div class="row">
+        <div class="row box-element">
                 {% if playlist.public %}
                 <div class="col-lg-12">
                 <form>
@@ -49,8 +49,15 @@
                     </div>
                     <div class="row">
                     <div class="col-lg-12">
-                            <label for="playlist-public" id="playlist-public-label">Playlist is Public Unclick to Change</label>
-                            <input type="checkbox" name="playlist_public" id="playlist-public" checked>
+                            <label for="playlist-public" id="playlist-public-label">Playlist is Public select to Change</label>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <select name="playlist_public" id="playlist-public">
+                                        <option value="true">Public</option>
+                                        <option value="false">Private</option>
+                                    </select>
+                                </div>
+                            </div>
                     </div>
                     </div>
                     <div class="row">
@@ -75,8 +82,15 @@
                     </div>
                     <div class="row">
                     <div class="col-lg-12">
-                            <label for="playlist-public-2" id="playlist-public-2-label">Playlist is Private Click to change</label>
-                            <input type="checkbox" name="playlist_public-2" id="playlist-public-2">
+                        <label for="playlist-public-2" id="playlist-public-2-label">Playlist is Pivate select to Change</label>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <select name="playlist_public-2" id="playlist-public-2">
+                                    <option value="false">Private</option>
+                                    <option value="true">Public</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                     </div>
                     <div class="row">
@@ -143,8 +157,6 @@
             event.preventDefault();
             playlistNameIdHash = '#' + playlistNameId;
             playlistPublicIdHash = '#' + playlistPublicId;
-            public = $(playlistPublicIdHash);
-            public = public[0].checked
             $.ajax({
                 type: 'POST',
                 url: '{% url "edit_playlist" %}',
@@ -152,7 +164,7 @@
                     csrfmiddlewaretoken: "{{ csrf_token }}",
                     playlist_id: playlistId,
                     playlist_name: $(playlistNameIdHash).val(),
-                    playlist_public: public,
+                    playlist_public: $(playlistPublicIdHash).val(),
                 },
                 success: (response)=>{
                     if (response.success){

@@ -1007,6 +1007,9 @@ def edit_playlist_view(request, pk):
             playlist = Playlist.objects.get(id=pk)
         except Playlist.DoesNotExist:
             return HttpResponseBadRequest('<h1>404 Not Found</h1><h3>Playlist Does Not Exist! SORRYYY</h3>')
+        viewer = request.user.viewer
+        if not viewer == playlist.channel.user:
+            return JsonResponse({'success': False, 'message': "You don't own this Playlist"})
         context['playlist'] = playlist
                 
         try:
@@ -1034,6 +1037,47 @@ def edit_playlist_view(request, pk):
             context['many_channels'] = True
             context['no_channel'] = False
         return render(request, 'tube/edit_playlist.html', context)
+    else:
+        return redirect('login')
+    
+    
+def edit_video_view(request, pk):
+    if request.user.is_authenticated:
+        viewer = request.user.viewer
+        context = {}
+        try:
+            video = Video.objects.get(id=pk) # type: ignore
+        except Video.DoesNotExist: # type: ignore
+            return HttpResponseBadRequest('<h1>404 Not Found</h1><h3>Video Does Not Exist! SORRYYY</h3>')
+        if not viewer == video.channel.user: # type: ignore
+            return JsonResponse({'success': False, 'message': "You don't own this Video"})
+        context['video'] = video
+                
+        try:
+            nav_channel = Channel.objects.get(user=viewer)
+            playlists = Playlist.objects.filter(channel=nav_channel) 
+            context['playlists'] = playlists
+            context['nav_channel'] = nav_channel
+            context['no_channel'] = False
+            context['many_channels'] = False
+
+        except Channel.DoesNotExist:
+            context['no_channel'] = True
+            context['many_channels'] = False
+
+        except:
+            my_channels = Channel.objects.filter(user=viewer)
+            my_playlists = []
+
+            for channel in my_channels:
+                channel_playlists = Playlist.objects.filter(channel=channel).in_bulk().values()
+                for channel_playlist in channel_playlists:
+                    my_playlists.append(channel_playlist)
+            context['playlists']= my_playlists
+            context['my_channels']= my_channels
+            context['many_channels'] = True
+            context['no_channel'] = False
+        return render(request, 'tube/edit_video.html', context)
     else:
         return redirect('login')
     
@@ -1083,6 +1127,81 @@ def edit_playlist(request):
             return HttpResponse('No POST in request')
     else:
         return redirect('login')
+
+
+def edit_video(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            pk = request.POST['video_id']
+            try:
+                video = Video.objects.get(id=pk)
+            except Video.DoesNotExist:
+                return JsonResponse({'success': False, 'message': "Video Does Not Exist"})
+            viewer = request.user.viewer
+            if not viewer == video.channel.user: # type: ignore
+                return JsonResponse({'success': False, 'message': "You don't own this Video"})
+            print(request.POST)
+            try:
+                if not request.POST['video_title'] == "":
+                    video_title = request.POST['video_title']
+                else:
+                    video_title = video.title
+                try:
+                    if request.POST['video_private'] == 'true':
+                        video_private = True
+                    else:
+                        video_private = False
+                except:
+                    video_private = video.private
+                try:
+                    if request.POST['video_unlisted'] == 'true':
+                        video_unlisted = True
+                    else:
+                        video_unlisted = False
+                except:
+                    video_unlisted = video.unlisted
+                if not request.POST['video_thumbnail'] == "":
+                    video_thumbnail = request.POST['video_thumbnail']
+                else:
+                    video_thumbnail = video.thumbnail
+                if not request.POST['video_description'] == "":
+                    video_description = request.POST['video_description']
+                else:
+                    video_description = video.description
+                video.title = video_title
+                video.private = video_private
+                video.unlisted = video_unlisted
+                video.thumbnail = video_thumbnail
+                video.description = video_description
+                video.save()
+                return JsonResponse({'success': True, 'message': "Saved"})
+            except:
+                return JsonResponse({'success': False, 'message': "ERROR saving data"})
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login')
+
+
+# def edit_video(request):
+#     if request.user.is_authenticated:
+#         if request.method == 'POST':
+#             pk = request.POST['video_id']
+#             try:
+#                 video = Video.objects.get(id=pk)
+#             except Video.DoesNotExist:
+#                 return JsonResponse({'success': False, 'message': "Video Does Not Exist"})
+#             viewer = request.user.viewer
+#             if not viewer == video.channel.user: # type: ignore
+#                 return JsonResponse({'success': False, 'message': "You don't own this Video"})
+#             try:
+#                 return JsonResponse({'success': True, 'message': "Saved"})
+#             except:
+#                 return JsonResponse({'success': False, 'message': "ERROR saving data"})
+#         else:
+#             return HttpResponse('No POST in request')
+#     else:
+#         return redirect('login')
 
 
 def subscribe(request):

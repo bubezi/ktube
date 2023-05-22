@@ -249,7 +249,7 @@
                                                 {% endfor %}
                                             {% endif %}
                                             {% if viewer == channel.user %}
-                                                <a class="dropdown-item" onclick="event.preventDefault(); confirmDeleteVideo(event, '{{video.id}}');"><h6 style="color: red;">Delete Video</h6></a>
+                                                <a class="dropdown-item" href="{% url 'edit_video_view' video.id %}"><h6 style="color: red;">Edit Video</h6></a>
                                             {% endif %}
                                         {% else %}
                                             <a class="dropdown-item" target='_blank' href="{% url 'login' %}">Add to playlist</a>
@@ -377,12 +377,8 @@
                                             </form>
                                         {% endif %}
                                         {% if playlist_owner %}
-                                        <form>
-                                            {% csrf_token %}
-                                            <input type="hidden" name="playlist_id" value="{{ playlist.id }}">
-                                            <a class="dropdown-item" href="#" onclick="event.preventDefault(); confirmDeletePlaylist(event, '{{ playlist.id }}')"
-                                                ><h6 style="color: red;">Delete Playlist</h6></a>
-                                        </form>
+                                            <a class="dropdown-item" href="{% url 'edit_playlist_view' playlist.id %}"
+                                                ><h6 style="color: red;">Edit Playlist</h6></a>
                                         {% endif %}
                                     {% else %}
                                         <a class="dropdown-item" target='_blank' href="{% url 'login' %}">Save playlist</a>
@@ -586,12 +582,8 @@
                                             </form>
                                         {% endif %}
                                         {% if playlist_owner %}
-                                        <form>
-                                            {% csrf_token %}
-                                            <input type="hidden" name="playlist_id" value="{{ playlist.id }}">
-                                            <a class="dropdown-item" href="#" onclick="event.preventDefault(); confirmDeletePlaylist(event, '{{ playlist.id }}')"
-                                                ><h6 style="color: red;">Delete Playlist</h6></a>
-                                        </form>
+                                            <a class="dropdown-item" href="{% url 'edit_playlist_view' playlist.id %}"
+                                                ><h6 style="color: red;">Edit Playlist</h6></a>
                                         {% endif %}
                                     {% else %}
                                         <a class="dropdown-item" target='_blank' href="{% url 'login' %}">Save playlist</a>

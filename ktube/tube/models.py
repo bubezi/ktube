@@ -72,8 +72,20 @@ class Video(models.Model):
         return self.video.url
     
     @property
+    def videoFilename(self):
+        from ktube.settings import MEDIA_URL
+        start = len(MEDIA_URL)
+        return str(self.videoURL)[start:]
+    
+    @property
     def thumbnailURL(self):
         return self.thumbnail.url
+    
+    @property
+    def thumbnailFilename(self):
+        from ktube.settings import MEDIA_URL
+        start = len(MEDIA_URL)
+        return str(self.thumbnailURL)[start:]
     
     def upload_period(self):
         return period(self.upload_time)   
