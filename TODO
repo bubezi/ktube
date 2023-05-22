@@ -75,13 +75,13 @@
         [x] Change Public status
         [x] Change Videos
         [] Drag to rearange
-    [] Video
-        [] Change Title
+    [x] Video
+        [x] Change Title
         [] Change Video
-        [] Change Thumbnail
-        [] Change Description
-        [] Change private
-        [] Change unlisted
+        [x] Change Thumbnail
+        [x] Change Description
+        [x] Change private
+        [x] Change unlisted
     [] Viewer
     [] Comment
     [] Comment Reply
