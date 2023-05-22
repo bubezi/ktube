@@ -71,11 +71,17 @@
 [] ABILITY for USERS to edit models
     [x] Channel
     [] Playlist
-        [] Change name
-        [] Change Public status
+        [x] Change name
+        [x] Change Public status
         [x] Change Videos
         [] Drag to rearange
     [] Video
+        [] Change Title
+        [] Change Video
+        [] Change Thumbnail
+        [] Change Description
+        [] Change private
+        [] Change unlisted
     [] Viewer
     [] Comment
     [] Comment Reply
