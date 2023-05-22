@@ -50,7 +50,7 @@
             {% endif %}
 
             
-            <a href="{% url 'channel' playlist.channel.id %}"><div class="row"><h4>{{playlist.channel.name}}</h4></div></a>
+            <div class="row"><a href="{% url 'channel' playlist.channel.id %}"><h4>{{playlist.channel.name}}</h4></a></div>
             
             <div class="row">
                 <div class="col-lg-10">
@@ -109,12 +109,7 @@
                                         </form>
                                     {% endif %}
                                     {% if playlist_owner %}
-                                    <form>
-                                        {% csrf_token %}
-                                        <input type="hidden" name="playlist_id" value="{{ playlist.id }}">
-                                        <a class="dropdown-item" href="#" onclick="event.preventDefault(); confirmDeletePlaylist(event, '{{ playlist.id }}')"
-                                            ><h6 style="color: red;">Delete Playlist</h6></a>
-                                    </form>
+                                        <a class="dropdown-item" href="{% url 'edit_playlist_view' playlist.id %}"><h6>Edit Playlist</h6></a>
                                     {% endif %}
                                 {% else %}
                                     <a class="dropdown-item" target='_blank' href="{% url 'login' %}">Save playlist</a>
@@ -125,7 +120,8 @@
                 </div>
             </div>
             <div class="row">
-                <a href="/watch_playlist/{{playlist.id}}/0">
+                <a href="{% url 'watch_playlist' playlist.id 0 %}">
+                    {% comment %} <a href="/watch_playlist/{{playlist.id}}/0"> {% endcomment %}
                     <button class="btn btn-success">Play</button>
                 </a>
             </div>
@@ -424,7 +420,7 @@
             });
         }
 
-        function confirmDeletePlaylist(event, playlistId){
+        {% comment %} function confirmDeletePlaylist(event, playlistId){
             event.preventDefault()
             var result = confirm("Are you sure you want to delete this Playlist?");
             if (result){
@@ -447,6 +443,6 @@
             }else{
                 alert('Deletion Canceled!');
             }  
-        }
+        } {% endcomment %}
     </script>
 {% endblock content %}

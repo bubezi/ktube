@@ -688,7 +688,7 @@
         {% if playlist_videos %}
         <div class="row box-element-playlist">
             <div class="col-lg-12">
-                <h5>{{playlist}}</h5>
+               <a href="{% url 'playlist' playlist.id %}"><h5>{{playlist}}</h5></a>
             </div>
             {% for index, video in playlist_videos|enumerate_list %}
                 <div class="col-lg-12">

@@ -144,7 +144,7 @@ def watch_video(request, pk):
                 
             try:
                 nav_channel = Channel.objects.get(user=viewer)
-                playlists = Playlist.objects.filter(channel=nav_channel) 
+                playlists = Playlist.objects.filter(channel=nav_channel)  # type: ignore
                 context['playlists'] = playlists
                 context['nav_channel'] = nav_channel
                 context['no_channel'] = False
@@ -999,6 +999,45 @@ def create_playlist(request, pk):
         return redirect('login')
     
     
+def edit_playlist_view(request, pk):
+    if request.user.is_authenticated:
+        viewer = request.user.viewer
+        context = {}
+        try:
+            playlist = Playlist.objects.get(id=pk)
+        except Playlist.DoesNotExist:
+            return HttpResponseBadRequest('<h1>404 Not Found</h1><h3>Playlist Does Not Exist! SORRYYY</h3>')
+        context['playlist'] = playlist
+                
+        try:
+            nav_channel = Channel.objects.get(user=viewer)
+            playlists = Playlist.objects.filter(channel=nav_channel) 
+            context['playlists'] = playlists
+            context['nav_channel'] = nav_channel
+            context['no_channel'] = False
+            context['many_channels'] = False
+
+        except Channel.DoesNotExist:
+            context['no_channel'] = True
+            context['many_channels'] = False
+
+        except:
+            my_channels = Channel.objects.filter(user=viewer)
+            my_playlists = []
+
+            for channel in my_channels:
+                channel_playlists = Playlist.objects.filter(channel=channel).in_bulk().values()
+                for channel_playlist in channel_playlists:
+                    my_playlists.append(channel_playlist)
+            context['playlists']= my_playlists
+            context['my_channels']= my_channels
+            context['many_channels'] = True
+            context['no_channel'] = False
+        return render(request, 'tube/edit_playlist.html', context)
+    else:
+        return redirect('login')
+    
+    
 ##############################################################################################
 #############################                                   ##############################
 #############################                                   ##############################
@@ -1006,6 +1045,44 @@ def create_playlist(request, pk):
 #############################                                   ##############################
 #############################                                   ##############################
 ##############################################################################################
+
+
+def edit_playlist(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            pk = request.POST['playlist_id']
+            try:
+                playlist = Playlist.objects.get(id=pk)
+            except Playlist.DoesNotExist:
+                return JsonResponse({'success': False, 'message': "Playlist Does Not Exist"})
+            viewer = request.user.viewer
+            if not viewer == playlist.channel.user:
+                return JsonResponse({'success': False, 'message': "You don't own this Playlist"})
+            try:
+                try:
+                    name = request.POST['playlist_name']
+                    if name =="":
+                        name = playlist.name
+                except:
+                    name = playlist.name
+                try:
+                    public = request.POST['playlist_public']
+                    if public=="true":
+                        public = True
+                    else:
+                        public = False
+                except:
+                    public = playlist.public
+                playlist.name = name
+                playlist.public = public
+                playlist.save()
+                return JsonResponse({'success': True, 'message': "Saved", 'name': playlist.name, 'public': playlist.public})
+            except:
+                return JsonResponse({'success': False, 'message': "ERROR saving data"})
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login')
 
 
 def subscribe(request):

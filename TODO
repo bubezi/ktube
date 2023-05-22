@@ -67,9 +67,14 @@
         [x] Channel
         [x] Viewer (USER - unmark active status)
         [] Video
+            [] Prompt in browser for input JavaScript
 [] ABILITY for USERS to edit models
     [x] Channel
     [] Playlist
+        [] Change name
+        [] Change Public status
+        [x] Change Videos
+        [] Drag to rearange
     [] Video
     [] Viewer
     [] Comment
