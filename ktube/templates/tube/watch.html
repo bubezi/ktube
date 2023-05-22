@@ -33,14 +33,14 @@
         {% if playlist_videos %}
         <div class="row box-element" style="padding-left: 40px;">
                 {% if video_previous_exists %}
-                    <a href="/watch_playlist/{{playlist_id}}/{{video_previous}}">
+                    <a href="{% url 'watch_playlist' playlist_id video_previous %}">
                         <button class="btn btn-outline-secondary">Prev</button>
                     </a>
                 {% else %}
                     <button disabled="disabled" class="btn btn-outline-secondary">Prev</button>
                 {% endif %}  
                 {% if video_next %}
-                    <a href="/watch_playlist/{{playlist_id}}/{{video_next}}">
+                    <a href="{% url 'watch_playlist' playlist_id video_next %}">
                         <button class="btn btn-outline-secondary">Next</button>
                     </a>
                 {% else %}
@@ -690,15 +690,15 @@
             <div class="col-lg-12">
                <a href="{% url 'playlist' playlist.id %}"><h5>{{playlist}}</h5></a>
             </div>
-            {% for index, video in playlist_videos|enumerate_list %}
+            {% for position, index, video in playlist_videos|enumerate_list %}
                 <div class="col-lg-12">
-                    {% comment %} <a href="/watch_playlist/{{playlist_id}}/{{index}}">
+                    {% comment %} <a href="{% url 'watch_playlist' playlist_id index %}">
                     <img class="thumbnail" src="{{video.thumbnailURL}}" alt="">
                     </a> {% endcomment %}
                     <div class="box-element product">
                         <div class="row">
-                            <a href="/watch_playlist/{{playlist_id}}/{{index}}">
-                                <h6 style="float: left">{{video.title}}</h6>
+                            <a href="{% url 'watch_playlist' playlist_id index %}">
+                                <h6 style="float: left">{{position}} : {{video.title}}</h6>
                             </a>
                         </div>
                         <a href="{% url 'channel' video.channel.id %}">
