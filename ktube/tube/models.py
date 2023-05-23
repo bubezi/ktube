@@ -164,7 +164,7 @@ class CommentReply(models.Model):
 class Playlist(models.Model):
     name = models.CharField(max_length=150, blank=False, null=False, default="Playlist")
     channel = models.ForeignKey(Channel, on_delete=models.CASCADE)
-    videos = models.ManyToManyField(Video, related_name='playlists', blank=True)
+    videos = models.ManyToManyField(Video, related_name='playlists', blank=True) # type: ignore
     views = models.PositiveBigIntegerField(default=0)
     public = models.BooleanField(default=False)
     created_on = models.DateTimeField(auto_now_add=True)
@@ -270,4 +270,24 @@ class History(models.Model):
     
     def video_count(self):
         return self.views.count()
+    
+    
+class LikedComments(models.Model):
+    viewer = models.OneToOneField(Viewer, null=True, on_delete=models.CASCADE)
+    comments = models.ManyToManyField(Comment, related_name='liked_comments', blank=True)
+    
+    
+class DisLikedComments(models.Model):
+    viewer = models.OneToOneField(Viewer, null=True, on_delete=models.CASCADE)
+    comments = models.ManyToManyField(Comment, related_name='disliked_comments', blank=True)
+    
+    
+class LikedCommentsReplies(models.Model):
+    viewer = models.OneToOneField(Viewer, null=True, on_delete=models.CASCADE)
+    comment_replies = models.ManyToManyField(CommentReply, related_name='liked_comment_replies', blank=True)
+    
+    
+class DisLikedCommentsReplies(models.Model):
+    viewer = models.OneToOneField(Viewer, null=True, on_delete=models.CASCADE)
+    comment_replies = models.ManyToManyField(CommentReply, related_name='disliked_comment_replies', blank=True)
     

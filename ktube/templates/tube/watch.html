@@ -447,7 +447,7 @@
             <div class="row"><h4 class="col-lg-12 box-element" style="margin-top: 0; margin-bottom: 0!important;">Comments</h4></div>
 
             {% if comments %}
-                <div class="col-lg-12" style="max-height: 2000px; overflow-y:scroll; scroll-behavior: auto;">
+                <div class="col-lg-12" style="max-height: 1000px; overflow-y:scroll; scroll-behavior: auto; overflow-x: hidden;">
                 {% for comment in comments %}
                     <div class="row box-element">
                         <div class="col-lg-12">
@@ -462,29 +462,29 @@
                             <div class="row description">
                                 <p>{{comment}}</p>
                             </div>
-                            <div class="row">
+                            {% comment %} <div class="row">
                                 {% if comment.likes is not 1 %}
-                                    <div class="">{{comment.likes | intcomma}} likes</div>
+                                    <div class="" id="comment-like-count-{{comment.id}}">{{comment.likes | intcomma}} likes</div>
                                 {% else %}
-                                    <div class="">{{comment.likes | intcomma}} like</div>
+                                    <div class="" id="comment-like-count-{{comment.id}}">{{comment.likes | intcomma}} like</div>
                                 {% endif %}
                                 {% if comment.dislikes is not 1 %}
-                                    <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{comment.dislikes | intcomma}} dislike</p></div>
+                                    <div class="" id="comment-dislike-count-{{comment.id}}"><p style="padding-left: 10px; margin-bottom: 0px;">{{comment.dislikes | intcomma}} dislikes</p></div>
                                 {% else %}
-                                    <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{comment.dislikes | intcomma}} dislike</p></div>
+                                    <div class="" id="comment-dislike-count-{{comment.id}}"><p style="padding-left: 10px; margin-bottom: 0px;">{{comment.dislikes | intcomma}} dislike</p></div>
                                 {% endif %}
-                            </div>
+                            </div> {% endcomment %}
                             {% if user.is_authenticated %}
-                                <div class="row">
-                                    <button data-product="{{video.id}}" 
-                                        data-action="like" 
+                                {% comment %} <div class="row">
+                                    <button
+                                        onclick="event.preventDefault(); handleLikeComment(event, '{{comment.id}}', 'comment-like-count-{{comment.id}}');"
                                         class="btn btn-outline-secondary add-btn update-cart"
                                         style="margin-left:0px;">Like</button>
-                                    <button data-product="{{video.id}}" 
-                                        data-action="dislike" 
+                                    <button
+                                        onclick="event.preventDefault(); handleDisLikeComment(event, '{{comment.id}}', 'comment-dislike-count-{{comment.id}}');"
                                         class="btn btn-outline-secondary add-btn update-cart"
                                         style="margin-left:20px;">Dislike</button>
-                                </div>
+                                </div> {% endcomment %}
                                 
                             {% if comment.channel.user == viewer %}
                             <div class="row">
@@ -508,8 +508,8 @@
                     <!-- ###################     Comment Replying      ################# --> 
 
                     {% if user.is_authenticated %}
+                    <div class="row" style="padding-left: 20px;">
                     {% if not many_channels %}
-                    <div class="row">
                         <a onclick="toggleItem('reply-toggle-{{comment.id}}', false); 
                                             toggleItem('reply-form-{{comment.id}}', true);"
                                     id="reply-toggle-{{comment.id}}"><h6>reply</h6></a>
@@ -517,7 +517,7 @@
                             {% csrf_token %}
                             <div class="row">
                                 <h5><label for="reply-text-{{comment.id}}">Add Reply</label></h5>
-                                <textarea rows="3" cols="140" maxlength="500" id="reply-text-{{comment.id}}" name="reply_text"></textarea>
+                                <textarea rows="3" cols="100" maxlength="500" id="reply-text-{{comment.id}}" name="reply_text"></textarea>
                             </div>
                             <div class="row" style="padding-left:20px; padding-top: 10px;">
                                 <button 
@@ -532,9 +532,7 @@
                                 class="btn btn-success">Reply</button></a> 
                             </div>                 
                         </form>
-                    </div>
                     {% else %}
-                    <div class="row">
                         <a onclick="toggleItem('reply-toggle-{{comment.id}}', false); 
                                             toggleItem('reply-form-{{comment.id}}', true);"
                                     id="reply-toggle-{{comment.id}}"><h6>reply</h6></a>
@@ -542,7 +540,7 @@
                             {% csrf_token %}
                             <div class="row">
                                 <h5><label for="reply-text-{{comment.id}}">Add Reply</label></h5>
-                                <textarea rows="3" cols="140" maxlength="500" id="reply-text-{{comment.id}}" name="reply_text"></textarea>
+                                <textarea rows="3" cols="100" maxlength="500" id="reply-text-{{comment.id}}" name="reply_text"></textarea>
                             </div>
                             <div class="row">
                                 <div class="col-lg-12">
@@ -572,8 +570,8 @@
                                 class="btn btn-success">Reply</button></a> 
                             </div>                 
                         </form>
+                        {% endif %}
                     </div>
-                    {% endif %}
                     {% else %}
                     <div class="row"><a href="{% url 'login' %}" target="_blank">reply</a></div>
                     {% endif %}
@@ -596,7 +594,7 @@
                                     <div class="row description">
                                         <p>{{reply}}</p>
                                     </div>
-                                    <div class="row">
+                                    {% comment %} <div class="row">
                                         {% if reply.likes is not 1 %}
                                             <div class="">{{reply.likes | intcomma}} likes</div>
                                         {% else %}
@@ -607,9 +605,9 @@
                                         {% else %}
                                             <div class=""><p style="padding-left: 10px; margin-bottom: 0px;">{{reply.dislikes | intcomma}} dislike</p></div>
                                         {% endif %}
-                                    </div>
+                                    </div> {% endcomment %}
                                     {% if user.is_authenticated %}
-                                        <div class="row">
+                                        {% comment %} <div class="row">
                                             <button data-product="{{video.id}}" 
                                                 data-action="like" 
                                                 class="btn btn-outline-secondary add-btn update-cart"
@@ -618,7 +616,7 @@
                                                 data-action="dislike" 
                                                 class="btn btn-outline-secondary add-btn update-cart"
                                                 style="margin-left:20px;">Dislike</button>
-                                        </div>
+                                        </div> {% endcomment %}
                                 
                                         {% if reply.channel.user == viewer %}
                                         <div class="row">
@@ -1042,6 +1040,65 @@
         let element = document.getElementById(id);
         element.style.display = (toggle) ? 'block' : 'none';
     }
+{% comment %} 
+    function handleLikeComment(event, commentId, commentLikeCountId) {
+        commentLikeCountIdHash = '#' + commentLikeCountId
+        event.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url:"{% url 'like_comment' %}",
+            data: {
+                comment_id: commentId,
+            },
+            success:(response)=>{
+                if(response.success){
+                    console.log('Comment Liked!');
+                    if(response.likes==1){
+                        $(commentLikeCountIdHash).val(response.likes + ' like');
+                    }else{
+                        $(commentLikeCountIdHash).val(response.likes + ' likes');
+                    }
+                }else{
+                    alert(response.message);
+                };
+            },
+            error:(response)=>{
+                if(!response.success){
+                    alert(response.message);
+                };
+            },
+        });
+    }
+
+    function handleDisLikeComment(event, commentId, commentDisLikeCountId) {
+        commentDisLikeCountIdHash = '#' + commentDisLikeCountId
+        event.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url:"{% url 'dislike_comment' %}",
+            data: {
+                comment_id: commentId,
+            },
+            success:(response)=>{
+                if(response.success){
+                    console.log('Comment Disliked!');
+                    if(response.dislikes==1){
+                        $(commentDisLikeCountIdHash).val(response.dislikes + ' dislike');
+                    }else{
+                        $(commentDisLikeCountIdHash).val(response.dislikes + ' dislikes');
+                    }
+                }else{
+                    alert(response.message);
+                };
+            },
+            error:(response)=>{
+                if(!response.success){
+                    alert(response.message);
+                };
+            },
+        });
+    } {% endcomment %}
+
 
     function handleComment(event) {
         event.preventDefault(); 

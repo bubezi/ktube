@@ -58,6 +58,9 @@ urlpatterns = [
     path('comment_many_channels', views_tube.comment_many_channels, name='comment_many_channels'), 
     path('reply_comment_many_channels', views_tube.reply_comment_many_channels, name='reply_comment_many_channels'), 
     
+    path('like_comment', views_tube.like_comment, name='like_comment'), 
+    path('dislike_comment', views_tube.dislike_comment, name='dislike_comment'), 
+    
     path('viewers',views_tube.all_viewers, name='viewers'),
     path('get_viewers',views_tube.get_viewers, name='get_viewers'),
     

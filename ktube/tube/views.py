@@ -91,7 +91,7 @@ def watch_video(request, pk):
     comments = Comment.objects.filter(video=video)
     comment_replies = CommentReply.objects.all()
     
-    paginator = Paginator(comments, 10) # 10 comments per page
+    paginator = Paginator(comments, 20) # 20 comments per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
@@ -1802,6 +1802,62 @@ def authenticate_action(request):
     else:
         return redirect('login')
 
+
+def like_comment(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            viewer = request.user.viewer
+            comment_id = request.POST['comment_id']
+            try:
+                comment = Comment.objects.get(id=comment_id)
+            except Comment.DoesNotExist:
+                return JsonResponse({'success': False, 'message': "Comment Does not Exist"})
+            try:
+                liked_comments = LikedComments.objects.get(viewer=viewer)
+            except:
+                liked_comments = LikedComments(viewer=viewer)
+                liked_comments.save()
+            
+            if liked_comments.comments.contains(viewer):
+                return JsonResponse({'success':False, 'message':'Comment already liked'})
+            
+            liked_comments.comments.add(comment)
+            comment.likes += 1
+            comment.save()
+            return JsonResponse({'success':True, 'likes': comment.likes}) 
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login')
+
+
+def dislike_comment(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            viewer = request.user.viewer
+            comment_id = request.POST['comment_id']
+            try:
+                comment = Comment.objects.get(id=comment_id)
+            except Comment.DoesNotExist:
+                return JsonResponse({'success': False, 'message': "Comment Does not Exist"})
+            try:
+                disliked_comments = DisLikedComments.objects.get(viewer=viewer)
+            except:
+                disliked_comments = DisLikedComments(viewer=viewer)
+                disliked_comments.save()
+            
+            if disliked_comments.comments.contains(viewer):
+                return JsonResponse({'success':False, 'message':'Comment already disliked'})
+            
+            disliked_comments.comments.add(comment)
+            comment.dislikes += 1
+            comment.save()
+            return JsonResponse({'success':True, 'dislikes': comment.dislikes}) 
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login')
+    
 
 def all_viewers(request):
     if request.user.is_authenticated:
