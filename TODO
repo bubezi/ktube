@@ -1,3 +1,11 @@
+KEY 
+    [] To do
+    [x] Done
+    [*] Will not do, for now
+
+
+
+
 [x] Utilize the {% empty %} tag in for loop TAGS
 [x] Add DP
 [x] Profile Page
@@ -68,7 +76,7 @@
         [x] Viewer (USER - unmark active status)
         [] Video
             [] Prompt in browser for input JavaScript
-[] ABILITY for USERS to edit models
+[x] ABILITY for USERS to edit models
     [x] Channel
     [] Playlist
         [x] Change name
@@ -77,14 +85,14 @@
         [] Drag to rearange
     [x] Video
         [x] Change Title
-        [] Change Video
+        [*] Change Video
         [x] Change Thumbnail
         [x] Change Description
         [x] Change private
         [x] Change unlisted
-    [] Viewer
-    [] Comment
-    [] Comment Reply
+    [*] Viewer
+    [*] Comment
+    [*] Comment Reply
 [] Like and Dislike Comments
 [] PREVENT USER ABILITY TO WATCH VIDEO MULTILPLE TIMES TO INCREASE VIEW COUNT *************
 [] Create logic
@@ -97,7 +105,12 @@
     [] ACC SHOUD ONLY LIKE, dislike & SUB ONCE
     [] Seaking
 
+[] UPDATE Favivons
+[] Not Found: /robots.txt
+
 [] Check out NODE JS FOR STREAMING
+[] Learn React
+
 
 ############################################################
 GOOGLE AND TODO
@@ -115,16 +128,13 @@ GOOGLE AND TODO
 [x] Drag and drop functionality
 [] Better alternative for paginator
 [] How to serve videos better django
-[] UPDATE Favivons
 [] UPDATE Like and Dislike buttons / svg
 [] Better profile image Placeholder
-[] Not Found: /robots.txt
 [] Django video View count
 [] Does Django use websockets
 [] Dynamic login redirect
 [] Optional url additions /url/<str:pk>
 [] Video.Js
-[] Learn React
 [] UI
     [] Make everything beautiful
     [] responsiveness 
@@ -149,6 +159,8 @@ Pre Hosting shit
     [] email configuration
     [] Google Authentication (Firebase)
 ##############################################################################
+
+[] Decorate Python Code
 
 [] To enable video streaming in your Django site, you can follow these general steps:
     [] 1. Store the video files in a directory on your 
@@ -220,18 +232,6 @@ video streaming in Django:
             [] Types for video upload
         [] RWA
 [] Migrate Js from HTML to JS files
-    [] remove playlistId and other unused arguments from 
-        [] handleRemoveFromWatchlater and 
-        [] other Functions
-            [] channel.html
-            [] history.html
-            [] library.html
-            [] liked_videos.html
-            [] playlist.html
-            [] subscriptions.html
-            [] videos.html
-            [] watch.html
-            [] watchlater.html
     [] channel.html
     [] history.html
     [] library.html
@@ -242,6 +242,18 @@ video streaming in Django:
     [] videos.html
     [] watch.html
     [] watchlater.html
+[] remove playlistId and other unused arguments from 
+    [] handleRemoveFromWatchlater and 
+    [] other Functions
+        [] channel.html
+        [] history.html
+        [] library.html
+        [] liked_videos.html
+        [] playlist.html
+        [] subscriptions.html
+        [] videos.html
+        [] watch.html
+        [] watchlater.html
 [] Custom JavaScript Features
     [] Alert
     [] Confirm
@@ -249,3 +261,5 @@ video streaming in Django:
 [] Edit Check Errors Function and make a loop function from a conditional one
 [] Compress Js code and all code or some shit
 [] Ajax all forms
+
+[] Learn Squel and Bash
