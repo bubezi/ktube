@@ -6,7 +6,15 @@ from django.urls import path, include
 from tube import views as views_tube
 from register import views as views_reg
 
+from django.views.generic import TemplateView
+
 urlpatterns = [
+    # Other URL patterns...
+]
+
+urlpatterns = [
+    path('robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
+    
     path('', views_tube.home_view, name='home'),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
@@ -70,6 +78,8 @@ urlpatterns = [
     path('add_video_to_watchlater',views_tube.add_video_to_watchlater, name='add_video_to_watchlater'),
     path('remove_video_from_watchlater',views_tube.remove_video_from_watchlater, name='remove_video_from_watchlater'),
     
+    path('search',views_tube.search_results_view, name='search'),
+    path('my_channels',views_tube.my_channels_page, name='my_channels'),
 
     path('video/<str:pk>', views_tube.watch_video, name="video"),
     path('create_playlist/<str:pk>', views_tube.create_playlist, name="create_playlist"),

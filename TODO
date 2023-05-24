@@ -98,11 +98,10 @@
 [*] Like and Dislike Comments
 [x] PREVENT USER ABILITY TO WATCH VIDEO MULTILPLE TIMES TO INCREASE VIEW COUNT *************
     [x] Currently 5 minutes
-[] Search functionality
-[] Create my Channels page
+[x] Search functionality
+[x] Create my Channels page
 
-[] UPDATE Favivons
-[] Not Found: /robots.txt
+[x] UPDATE Favivons
 
 ######
 
@@ -119,7 +118,9 @@
         [] Opencv (and/or) [] NodeJs 
     [] ACC SHOUD ONLY LIKE, dislike & SUB ONCE
     [] Seaking
-
+[] Manage recurring Ajax get functions
+[x] robots.txt => https://ordinarycoders.com/blog/article/robots-text-file-django
+[] Create dynamic sitemap => https://ordinarycoders.com/blog/article/django-sitemap
 ######
 
 # GOOGLE AND TODO

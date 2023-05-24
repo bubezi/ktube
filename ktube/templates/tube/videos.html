@@ -4,13 +4,6 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<script type="text/javascript" src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
-<script>
-    function toggleItem(id, toggle) {
-        let element = document.getElementById(id);
-        element.style.display = (toggle) ? 'block' : 'none';
-    };
-</script>
 
 <style>
     .dropdown .btn:focus,
@@ -35,11 +28,11 @@
                         <h6 style="float: left">{{video.title}}</h6>
                     </a>
                 </div>
-                <a href="{% url 'channel' video.channel.id %}">
-                    <div class="row">
+                <div class="row">
+                        <a href="{% url 'channel' video.channel.id %}">
                         <h6>{{video.channel}}</h6>
-                    </div>
-                </a>
+                        </a>
+                </div>
                 <div class="row">
                     <div class="col-lg-10">
                         {% if video.views is not 1 %}
@@ -70,23 +63,6 @@
                                             'add-video-{{video.id}}-to-watchlater-button')"
                                             >Remove Video From Watchlater</a>
                                         </form>
-                                        <script>
-                                            function handleRemoveFromWatchlater(event, videoId, playlistId, addButtonId, successId) {
-                                                event.preventDefault();
-                                                $.ajax({
-                                                    type: 'POST',
-                                                    url: "{% url 'remove_video_from_watchlater' %}",
-                                                    data: {
-                                                        csrfmiddlewaretoken: "{{ csrf_token }}",
-                                                        video_id: videoId,
-                                                    },
-                                                    success: function(response) {
-                                                        toggleItem(addButtonId, false);
-                                                        toggleItem(successId, true);
-                                                    },
-                                                });
-                                            }
-                                        </script>
 
                                         <form id="add-video-{{video.id}}-to-watchlater-form">
                                             {% csrf_token %}
@@ -100,23 +76,6 @@
                                             'remove-video-{{video.id}}-from-watchlater-button')"
                                             >Add Video to Watchlater</a>
                                         </form>
-                                        <script>
-                                            function handleAddToWatchlater(event, videoId, playlistId, addButtonId, successId) {
-                                                event.preventDefault();
-                                                $.ajax({
-                                                    type: 'POST',
-                                                    url: "{% url 'add_video_to_watchlater' %}",
-                                                    data: {
-                                                        csrfmiddlewaretoken: "{{ csrf_token }}",
-                                                        video_id: videoId,
-                                                    },
-                                                    success: function(response) {
-                                                        toggleItem(addButtonId, false);
-                                                        toggleItem(successId, true);
-                                                    },
-                                                });
-                                            }
-                                        </script>
                                         {% else %}
                                         <form id="remove-video-{{video.id}}-from-watchlater-form">
                                             {% csrf_token %}
@@ -130,23 +89,7 @@
                                             'add-video-{{video.id}}-to-watchlater-button')"
                                             >Remove Video From Watchlater</a>
                                         </form>
-                                        <script>
-                                            function handleRemoveFromWatchlater(event, videoId, playlistId, addButtonId, successId) {
-                                                event.preventDefault();
-                                                $.ajax({
-                                                    type: 'POST',
-                                                    url: "{% url 'remove_video_from_watchlater' %}",
-                                                    data: {
-                                                        csrfmiddlewaretoken: "{{ csrf_token }}",
-                                                        video_id: videoId,
-                                                    },
-                                                    success: function(response) {
-                                                        toggleItem(addButtonId, false);
-                                                        toggleItem(successId, true);
-                                                    },
-                                                });
-                                            }
-                                        </script>
+                                        
 
                                         <form id="add-video-{{video.id}}-to-watchlater-form">
                                             {% csrf_token %}
@@ -160,23 +103,7 @@
                                             'remove-video-{{video.id}}-from-watchlater-button')"
                                             >Add Video to Watchlater</a>
                                         </form>
-                                        <script>
-                                            function handleAddToWatchlater(event, videoId, playlistId, addButtonId, successId) {
-                                                event.preventDefault();
-                                                $.ajax({
-                                                    type: 'POST',
-                                                    url: "{% url 'add_video_to_watchlater' %}",
-                                                    data: {
-                                                        csrfmiddlewaretoken: "{{ csrf_token }}",
-                                                        video_id: videoId,
-                                                    },
-                                                    success: function(response) {
-                                                        toggleItem(addButtonId, false);
-                                                        toggleItem(successId, true);
-                                                    },
-                                                });
-                                            }
-                                        </script>
+                                        
                                         {% endif %}
                                         {% for playlist in playlists %}
                                             {% if video in playlist.videos.all %}
@@ -193,25 +120,6 @@
                                                 'add-video-{{video.id}}-to-plist-{{playlist.id}}-button')"
                                                 >Remove Video from {{playlist|title}}</a>
                                             </form>
-                                            
-                                            <script>
-                                                function handleRemoveFromPlaylist(event, videoId, playlistId, addButtonId, successId) {
-                                                    event.preventDefault();
-                                                    $.ajax({
-                                                        type: 'POST',
-                                                        url: "{% url 'remove_video_from_playlist' %}",
-                                                        data: {
-                                                            csrfmiddlewaretoken: "{{ csrf_token }}",
-                                                            video_id: videoId,
-                                                            playlist_id: playlistId
-                                                        },
-                                                        success: function(response) {
-                                                            toggleItem(addButtonId, false);
-                                                            toggleItem(successId, true);
-                                                        },
-                                                    });
-                                                }
-                                            </script>
 
                                             <form id="add-video-{{video.id}}-to-plist-{{playlist.id}}-form">
                                                 {% csrf_token %}
@@ -226,25 +134,6 @@
                                                 'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button')"
                                                 >Add Video to {{playlist|title}}</a>
                                             </form>
-                                            
-                                            <script>
-                                                function handleAddToPlaylist(event, videoId, playlistId, addButtonId, successId) {
-                                                    event.preventDefault();
-                                                    $.ajax({
-                                                        type: 'POST',
-                                                        url: "{% url 'add_video_to_playlist' %}",
-                                                        data: {
-                                                            csrfmiddlewaretoken: "{{ csrf_token }}",
-                                                            video_id: videoId,
-                                                            playlist_id: playlistId
-                                                        },
-                                                        success: function(response) {
-                                                            toggleItem(addButtonId, false);
-                                                            toggleItem(successId, true);
-                                                        },
-                                                    });
-                                                }
-                                            </script>
                                             {% else %}
                                             <form id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-form">
                                                 {% csrf_token %}
@@ -259,25 +148,6 @@
                                                 'add-video-{{video.id}}-to-plist-{{playlist.id}}-button')"
                                                 >Remove Video from {{playlist|title}}</a>
                                             </form>
-                                            
-                                            <script>
-                                                function handleRemoveFromPlaylist(event, videoId, playlistId, addButtonId, successId) {
-                                                    event.preventDefault();
-                                                    $.ajax({
-                                                        type: 'POST',
-                                                        url: "{% url 'remove_video_from_playlist' %}",
-                                                        data: {
-                                                            csrfmiddlewaretoken: "{{ csrf_token }}",
-                                                            video_id: videoId,
-                                                            playlist_id: playlistId
-                                                        },
-                                                        success: function(response) {
-                                                            toggleItem(addButtonId, false);
-                                                            toggleItem(successId, true);
-                                                        },
-                                                    });
-                                                }
-                                            </script>
 
                                             <form id="add-video-{{video.id}}-to-plist-{{playlist.id}}-form">
                                                 {% csrf_token %}
@@ -293,24 +163,6 @@
                                                 >Add Video to {{playlist|title}}</a>
                                             </form>
                                             
-                                            <script>
-                                                function handleAddToPlaylist(event, videoId, playlistId, addButtonId, successId) {
-                                                    event.preventDefault();
-                                                    $.ajax({
-                                                        type: 'POST',
-                                                        url: "{% url 'add_video_to_playlist' %}",
-                                                        data: {
-                                                            csrfmiddlewaretoken: "{{ csrf_token }}",
-                                                            video_id: videoId,
-                                                            playlist_id: playlistId
-                                                        },
-                                                        success: function(response) {
-                                                            toggleItem(addButtonId, false);
-                                                            toggleItem(successId, true);
-                                                        },
-                                                    });
-                                                }
-                                            </script>
                                             {% endif %}
                                         {% endfor %}
                                         {% if nav_channel %}
@@ -334,6 +186,79 @@
         </div>
     {% endfor %}
  </div>
+ <script type="text/javascript" src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
+ <script>
+    function toggleItem(id, toggle) {
+         let element = document.getElementById(id);
+         element.style.display = (toggle) ? 'block' : 'none';
+    }
+     
+    function handleAddToPlaylist(event, videoId, playlistId, addButtonId, successId) {
+        event.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'add_video_to_playlist' %}",
+            data: {
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+                video_id: videoId,
+                playlist_id: playlistId
+            },
+            success: function(response) {
+                toggleItem(addButtonId, false);
+                toggleItem(successId, true);
+            },
+        });
+    }
+
+    function handleRemoveFromPlaylist(event, videoId, playlistId, addButtonId, successId) {
+        event.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'remove_video_from_playlist' %}",
+            data: {
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+                video_id: videoId,
+                playlist_id: playlistId
+            },
+            success: function(response) {
+                toggleItem(addButtonId, false);
+                toggleItem(successId, true);
+            },
+        });
+    }
+    
+    function handleAddToWatchlater(event, videoId, playlistId, addButtonId, successId) {
+        event.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'add_video_to_watchlater' %}",
+            data: {
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+                video_id: videoId,
+            },
+            success: function(response) {
+                toggleItem(addButtonId, false);
+                toggleItem(successId, true);
+            },
+        });
+    }
+    
+    function handleRemoveFromWatchlater(event, videoId, playlistId, addButtonId, successId) {
+        event.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'remove_video_from_watchlater' %}",
+            data: {
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+                video_id: videoId,
+            },
+            success: function(response) {
+                toggleItem(addButtonId, false);
+                toggleItem(successId, true);
+            },
+        });
+    }
+ </script>
 
 {% endblock content %}
 

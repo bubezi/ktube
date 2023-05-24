@@ -26,11 +26,23 @@
 ###################################################################################
 
 
-
-
 ###################################################################################
 
+Exception Type:	FieldError
+Exception Value:	
+Unsupported lookup 'similar' for CharField or join on the field not permitted.
 
+Exception Type:	FieldError
+Exception Value:	
+Unsupported lookup 'trigram_similar' for CharField or join on the field not permitted.
+
+Exception Type:	FieldError
+Exception Value:	
+Unsupported lookup 'lower' for CharField or join on the field not permitted.
+
+Exception Type:	FieldError
+Exception Value:	
+Unsupported lookup 'unaccent' for CharField or join on the field not permitted.
 
 
 ###################################################################################

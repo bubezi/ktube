@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /ktube/templates/registration
+Disallow: /secret-page/

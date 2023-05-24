@@ -17,9 +17,12 @@ from .models import *
 
 
 def home_view(request):
+    context = {}
     videos = Video.objects.filter(private=False, unlisted=False) # type: ignore
-    myFilter = VideoFilter(request.GET, queryset=videos)
-    context = {'videos': videos, 'myFilter': myFilter, }
+    # myFilter = VideoFilter(request.GET, queryset=videos)
+    # context['myFilter'] = myFilter
+    context['videos'] = videos 
+    context['title'] = "Home " 
 
     if request.user.is_authenticated:
         try:
@@ -64,6 +67,74 @@ def home_view(request):
         except:
             context['no_channel'] = True       
     return render(request, 'tube/home.html', context)
+
+
+def search_results_view(request):
+    if request.method == 'POST':
+        context = {}
+        query = request.POST['searched']
+        query = str(query)
+
+        try:
+            videos = Video.objects.filter(title__unaccent__lower__trigram_similar=query, private=False, unlisted=False) # type: ignore
+        except:
+            videos = Video.objects.filter(title__contains=query, private=False, unlisted=False) # type: ignore
+        
+            
+        # name__unaccent__lower__trigram_similar
+        # name__unaccent__icontains
+        # name__contains
+        # myFilter = VideoFilter(request.GET, queryset=videos)
+        # context['myFilter'] = myFilter
+        context['videos'] = videos 
+        context['query'] = query
+        context['title'] = f"{query} " 
+
+        if request.user.is_authenticated:
+            try:
+                viewer = request.user.viewer
+                context['viewer'] = viewer
+                
+                try:
+                    watchlater = Watchlater.objects.get(viewer=viewer)
+                    context['watchlater'] = watchlater
+
+                except Watchlater.DoesNotExist:
+                    watchlater = Watchlater(viewer=viewer)
+                    watchlater.save()
+                    context['watchlater'] = watchlater
+
+                try:
+                    nav_channel = Channel.objects.get(user=viewer)
+                    playlists = Playlist.objects.filter(channel=nav_channel)  # type: ignore
+                    context['playlists'] = playlists
+                    context['nav_channel'] = nav_channel
+                    context['channel'] = nav_channel
+                    context['no_channel'] = False
+                    context['many_channels'] = False
+
+                except Channel.DoesNotExist:
+                    context['no_channel'] = True
+                    context['many_channels'] = False
+
+                except:
+                    my_channels = Channel.objects.filter(user=viewer)
+                    my_playlists = []
+
+                    for channel in my_channels:
+                        channel_playlists = Playlist.objects.filter(channel=channel).in_bulk().values() # type: ignore
+                        for channel_playlist in channel_playlists:
+                            my_playlists.append(channel_playlist)
+                    context['playlists']= my_playlists
+                    context['my_channels']= my_channels
+                    context['many_channels'] = True
+                    context['no_channel'] = False
+
+            except:
+                context['no_channel'] = True
+        return render(request, 'tube/search.html', context)
+    else:
+        return HttpResponse("No POST in request")      
 
 
 def watch_video(request, pk):
@@ -1078,6 +1149,36 @@ def edit_video_view(request, pk):
             context['many_channels'] = True
             context['no_channel'] = False
         return render(request, 'tube/edit_video.html', context)
+    else:
+        return redirect('login')
+
+
+def my_channels_page(request):        
+    if request.user.is_authenticated:
+        viewer = request.user.viewer
+        try:
+            watchlater = Watchlater.objects.get(viewer=viewer)
+        except Watchlater.DoesNotExist:
+            watchlater = Watchlater(viewer=viewer)
+            watchlater.save()
+        context={'viewer': viewer, 'many_channels': False, "watchlater" : watchlater}
+        try:
+            channel = Channel.objects.get(user=viewer)
+            context['channel']=channel
+            context['nav_channel']=channel
+            context['many_channels'] = False
+            context['no_channel'] = False
+        except Channel.DoesNotExist:
+            context['many_channels'] = False
+            context['no_channel'] = True
+        except:
+            context['many_channels'] = True
+            context['no_channel'] = False
+            
+        if context['many_channels']:
+            my_channels = Channel.objects.filter(user=viewer)
+            context['my_channels'] = my_channels
+        return render(request, "tube/my_channels.html", context)
     else:
         return redirect('login')
     
