@@ -1,20 +1,31 @@
 from django.utils import timezone
     
 def period(time_upload):
-    """Takes in a time object and calculates the time in the smallest units (From minutes to Years) AND returns the difference 
-    of the smallest unit of time."""
+    """Takes in a datetime object and calculates the difference the time 
+    difference between now and the datetime object in all units 
+    (From Seconds to Years) AND returns the difference 
+    of the smallest unit of time.
+
+    Args:
+        time_upload (datetime): a datetime object
+
+    Returns:
+        str: the difference of the smallest unit of time
+    """
+    
     now = timezone.now()
-    seconds = now.second -time_upload.second
-    minutes = now.minute -time_upload.minute
+    seconds = now.second - time_upload.second
+    minutes = now.minute - time_upload.minute
     hours = now.hour - time_upload.hour 
     days = now.day - time_upload.day
     months = now.month - time_upload.month
     years = now.year - time_upload.year
-    if now.year==time_upload.year:
-        if now.month==time_upload.month:
-            if now.day==time_upload.day:
-                if now.hour==time_upload.hour:
-                    if now.minute == time_upload.minute:
+    
+    if years==0:
+        if months==0:
+            if days==0:
+                if hours==0:
+                    if minutes==0:
                         if not seconds == 1:
                             return f'{seconds} seconds ago'
                         else:
@@ -44,3 +55,24 @@ def period(time_upload):
             return f'{years} years ago'
         else:
             return f'{years} year ago'
+        
+
+def view_valid(view, INVALID_MINUTES=30):
+    """Returns True if the view is more than INVALID_MINUTES
+
+    Args:
+        view (tube.models.VideoView): An object of the model VideoView in the app tube
+        INVALID_MINUTES (int, optional): The number of minutes in which a view is invalid. Defaults to 30.
+
+    Returns:
+        Bool: Returns a wether the view is valid or not
+    """
+    then = view.viewed_on
+    now = timezone.now()
+    
+    diff = now - then
+    if diff.total_seconds() > (INVALID_MINUTES * 60):
+        return True
+    else:
+        return False
+    

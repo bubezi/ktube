@@ -1,11 +1,13 @@
-KEY 
+######
+
+# KEY
     [] To do
     [x] Done
     [*] Will not do, for now
 
+######
 
-
-
+# TODO
 [x] Utilize the {% empty %} tag in for loop TAGS
 [x] Add DP
 [x] Profile Page
@@ -64,25 +66,25 @@ KEY
 [x] PLaylist in Watch Page
     [x] PLAY ALL BUTTON FOR Playlists
     [x] Playlist views update
-[] ABILITY for USERS to delete models
+[x] ABILITY for USERS to delete models
     [x] Playlist
     [x] Video
     [x] Channel
     [x] Comment
     [x] Comment Reply
     [x] Viewer (USER - unmark active status)
-    [] Password before delete functionality
+    [x] Password before delete functionality
         [x] Channel
         [x] Viewer (USER - unmark active status)
-        [] Video
-            [] Prompt in browser for input JavaScript
-[x] ABILITY for USERS to edit models
+        [*] Video
+            [*] Prompt in browser for input JavaScript
+[] ABILITY for USERS to edit models
     [x] Channel
     [] Playlist
         [x] Change name
         [x] Change Public status
         [x] Change Videos
-        [] Drag to rearange
+        [] Drag to rearange ****************************************************
     [x] Video
         [x] Change Title
         [*] Change Video
@@ -93,8 +95,21 @@ KEY
     [*] Viewer
     [*] Comment
     [*] Comment Reply
-[] Like and Dislike Comments
-[] PREVENT USER ABILITY TO WATCH VIDEO MULTILPLE TIMES TO INCREASE VIEW COUNT *************
+[*] Like and Dislike Comments
+[x] PREVENT USER ABILITY TO WATCH VIDEO MULTILPLE TIMES TO INCREASE VIEW COUNT *************
+    [x] Currently 5 minutes
+[] Search functionality
+[] Create my Channels page
+
+[] UPDATE Favivons
+[] Not Found: /robots.txt
+
+######
+
+# PHASE 2
+[] Check out NODE JS FOR STREAMING
+[] Learn React
+[] Timezone management
 [] Create logic
     [x] Channel
     [x] comments
@@ -105,15 +120,9 @@ KEY
     [] ACC SHOUD ONLY LIKE, dislike & SUB ONCE
     [] Seaking
 
-[] UPDATE Favivons
-[] Not Found: /robots.txt
+######
 
-[] Check out NODE JS FOR STREAMING
-[] Learn React
-
-
-############################################################
-GOOGLE AND TODO
+# GOOGLE AND TODO
 
 [] Fieldset
 
@@ -144,23 +153,10 @@ GOOGLE AND TODO
         [] RWA
     [] Possibly with react
 [] Google Authentication
-########################################################################################
-[] PROBLEMS
-    [x] / THE URL problem
-    [] GET data from video
 
-##############################################################################
-Pre Hosting shit
-    [] Your browser does not support the video tag
-    [] python manage.py check ****
-        [] python manage.py check --deploy
-        [] ****
-    [] python manage.py collectstatic
-    [] email configuration
-    [] Google Authentication (Firebase)
-##############################################################################
+######
 
-[] Decorate Python Code
+# Phase 3
 
 [] To enable video streaming in your Django site, you can follow these general steps:
     [] 1. Store the video files in a directory on your 
@@ -204,6 +200,8 @@ video streaming in Django:
     streaming in Django using Nginx and Video.js: 
     https://simpleisbetterthancomplex.com/tutorial/2018/02/03/how-to-stream-video-on-demand-with-django.html
 
+
+[] Decorate Python Code
 
 [] Internal Mini player functionality
 [] Add to Que
@@ -263,3 +261,20 @@ video streaming in Django:
 [] Ajax all forms
 
 [] Learn Squel and Bash
+
+######
+
+# [] PROBLEMS
+    [x] / THE URL problem
+    [] GET data from video
+
+######
+
+# Pre Hosting shit
+    [] Your browser does not support the video tag
+    [] python manage.py check ****
+        [] python manage.py check --deploy
+        [] ****
+    [] python manage.py collectstatic
+    [] email configuration
+    [] Google Authentication (Firebase)

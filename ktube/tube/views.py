@@ -72,7 +72,7 @@ def watch_video(request, pk):
         video = Video.objects.get(id=pk) # type: ignore
 
     except Video.DoesNotExist:
-        return HttpResponseBadRequest('<h1>404 Not Found</h1><h3>Video Does Not Exist! SORRYYY</h3>')  
+        return HttpResponseBadRequest('<h1>404 Not Found</h1><h3>Video Does Not Exist! SORRYYY</h3>')   # type: ignore
     
     if video.private:
         if request.user.is_authenticated:
@@ -1140,7 +1140,6 @@ def edit_video(request):
             viewer = request.user.viewer
             if not viewer == video.channel.user: # type: ignore
                 return JsonResponse({'success': False, 'message': "You don't own this Video"})
-            print(request.POST)
             try:
                 if not request.POST['video_title'] == "":
                     video_title = request.POST['video_title']
@@ -1404,6 +1403,12 @@ def undislike(request):
     
 
 def add_view(request):
+    from .utils import view_valid
+    
+    
+    INVALID_MINUTES = 5
+    
+    
     if request.user.is_authenticated:
         if request.method=='POST':
             viewer = request.user.viewer
@@ -1420,8 +1425,21 @@ def add_view(request):
                 history.save()
                 
             history.views.add(view)
-            video.views += 1
-            video.save()
+            
+            # The python approach, lie there and wait
+            previous_view = 0
+            previous_views = video.videoview_set.order_by('viewed_on').filter(viewer=viewer).reverse().in_bulk().values() # type: ignore
+            if len(previous_views)>1:
+                for index, v in enumerate(previous_views):
+                    previous_view = v
+                    if index == 1:
+                        break
+                if view_valid(previous_view, INVALID_MINUTES):   
+                    video.views += 1
+                    video.save()
+            else:
+                video.views += 1
+                video.save()
             return JsonResponse({'success': True})
         else:
             return HttpResponse('No POST in request')
@@ -1431,9 +1449,22 @@ def add_view(request):
             video = Video.objects.get(id=pk)
             view = VideoView(video=video)
             view.save()
-            
-            video.views += 1
             video.save()
+            
+            previous_view=0
+            previous_views = video.videoview_set.order_by('viewed_on').filter(viewer=viewer).reverse().in_bulk().values() # type: ignore
+            if len(previous_views)>1:
+                for index, v in enumerate(previous_views):
+                    previous_view = v
+                    if index == 1:
+                        break
+                    
+                if view_valid(previous_view, INVALID_MINUTES): 
+                    video.views += 1
+                    video.save()
+            else:
+                video.views += 1
+                video.save()
             return JsonResponse({'success': True})
         else:
             return HttpResponse('No POST in request')

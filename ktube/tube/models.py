@@ -163,7 +163,7 @@ class CommentReply(models.Model):
 
 class Playlist(models.Model):
     name = models.CharField(max_length=150, blank=False, null=False, default="Playlist")
-    channel = models.ForeignKey(Channel, on_delete=models.CASCADE)
+    channel = models.ForeignKey(Channel, on_delete=models.CASCADE) # type: ignore
     videos = models.ManyToManyField(Video, related_name='playlists', blank=True) # type: ignore
     views = models.PositiveBigIntegerField(default=0)
     public = models.BooleanField(default=False)
