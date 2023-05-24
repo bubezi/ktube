@@ -41,9 +41,9 @@
                 </div>
                 <div class="row">
                     {% if playlist.channel.profile_picture %}
-                    <img src="{{playlist.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                    <img src="{{playlist.channel.profilePictureURL}}" class="channel-icon" alt="Channel Profile picture" style="width: 20px; height: 20px;">
                     {% else %}
-                    <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                    <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="Channel Profile picture" style="width: 20px; height: 20px;">
                     {% endif %}
                     <h5>{{playlist.channel}}</h5>
                 </div>
@@ -175,9 +175,9 @@
                 </div>
                 <div class="row">
                     {% if playlist.channel.profile_picture %}
-                    <img src="{{playlist.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                    <img src="{{playlist.channel.profilePictureURL}}" class="channel-icon" alt="Channel Profile picture" style="width: 20px; height: 20px;">
                     {% else %}
-                    <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                    <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="Channel Profile picture" style="width: 20px; height: 20px;">
                     {% endif %}
                     <h5>{{playlist.channel}}</h5>
                 </div>
@@ -193,10 +193,10 @@
                     <div class="col-lg-2 col-12 text-right mt-2 mt-lg-0">
                         <div class="video-options">
                             <div class="dropdown">
-                                <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <button class="btn" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     <i class="fa-solid fa-ellipsis-vertical"></i>
                                 </button>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton1">
                                     {% if user.is_authenticated %}
                                         {% if playlist in saved_playlists.playlists.all %}
                                         {% else %}

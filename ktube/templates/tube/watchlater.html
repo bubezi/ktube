@@ -45,7 +45,7 @@
         {% for video in videos %}
             <div class="col-lg-4">
                 <a href="{% url 'video' video.id %}">
-                <img class="thumbnail" src="{{video.thumbnailURL}}" alt="">
+                <img class="thumbnail" src="{{video.thumbnailURL}}" alt="Video Thumbnail">
                 </a>
                 <div class="box-element product">
                     <div class="row">
@@ -56,9 +56,9 @@
                     </div>
                     <div class="row">
                         {% if video.channel.profile_picture %}
-                        <img src="{{video.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                        <img src="{{video.channel.profilePictureURL}}" class="channel-icon" alt="Channel Profile Picture" style="width: 20px; height: 20px;">
                         {% else %}
-                        <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                        <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="Channel Profile Picture" style="width: 20px; height: 20px;">
                         {% endif %}
                         <h6>{{video.channel}}</h6>
                     </div>

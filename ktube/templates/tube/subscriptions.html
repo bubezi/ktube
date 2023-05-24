@@ -25,12 +25,12 @@
         {% if channel.profile_picture %}
             <img src="{{channel.profilePictureURL}}" 
             class="channel-icon" 
-            alt="" 
+            alt="Channel Profile picture" 
             style="width: 40px; height: 40px;">
         {% else %}
             <img src="{% static 'images/placeholder.png' %}" 
             class="channel-icon" 
-            alt="" 
+            alt="Channel Profile picture" 
             style="width: 40px; height: 40px;">
         {% endif %}
         <a href="{% url 'channel' channel.id %}"><h4>{{channel.name}}</h4></a>
@@ -49,7 +49,7 @@
     {% for video in videos %}
     <div class="col-lg-4">
         <a href="{% url 'video' video.id %}">
-        <img class="thumbnail" src="{{video.thumbnailURL}}" alt="">
+        <img class="thumbnail" src="{{video.thumbnailURL}}" alt="Video Thumbnail">
         </a>
         <div class="box-element product">
             <div class="row">

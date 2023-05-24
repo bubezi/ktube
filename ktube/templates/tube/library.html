@@ -46,7 +46,7 @@
         {% for video in watchlater_videos %}
             <div class="col-lg-4">
                 <a href="{% url 'video' video.id %}">
-                <img class="thumbnail" src="{{video.thumbnailURL}}" alt="">
+                <img class="thumbnail" src="{{video.thumbnailURL}}" alt="Video Thumbnail">
                 </a>
                 <div class="box-element product">
                     <div class="row">
@@ -57,9 +57,9 @@
                     </div>
                         <div class="row">
                             {% if video.channel.profile_picture %}
-                            <img src="{{video.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                            <img src="{{video.channel.profilePictureURL}}" class="channel-icon" alt="Channel Profile picture" style="width: 20px; height: 20px;">
                             {% else %}
-                            <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                            <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="Channel Profile picture" style="width: 20px; height: 20px;">
                             {% endif %}
                             <h6>{{video.channel}}</h6>
                         </div>
@@ -269,11 +269,11 @@
                         <div class="col-lg-2 col-12 text-right mt-2 mt-lg-0">
                             <div class="video-options">
                                 <div class="dropdown">
-                                    <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <button class="btn" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                         <i class="fa-solid fa-ellipsis-vertical"></i>
                                     </button>
                                 
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton1">
                                         {% if user.is_authenticated %}
                                             {% if video in watchlater.videos.all %}
                                             <form id="remove-video-{{video.id}}-from-watchlater-form">
@@ -441,7 +441,7 @@
         {% for view in history_views %}
             <div class="col-lg-4">
                 <a href="{% url 'video' view.video.id %}}">
-                <img class="thumbnail" src="{{view.video.thumbnailURL}}" alt="">
+                <img class="thumbnail" src="{{view.video.thumbnailURL}}" alt="Video thumbnail">
                 </a>
                 <div class="box-element product">
                     <div class="row">
@@ -452,9 +452,9 @@
                     </div>
                         <div class="row">
                             {% if view.video.channel.profile_picture %}
-                            <img src="{{view.video.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                            <img src="{{view.video.channel.profilePictureURL}}" class="channel-icon" alt="Channel Profile picture" style="width: 20px; height: 20px;">
                             {% else %}
-                            <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                            <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="Channel Profile picture" style="width: 20px; height: 20px;">
                             {% endif %}
                             <h6>{{view.video.channel}}</h6>
                         </div>
@@ -472,11 +472,11 @@
                         <div class="col-lg-2 col-12 text-right mt-2 mt-lg-0">
                             <div class="video-options">
                                 <div class="dropdown">
-                                    <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    <button class="btn" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                         <i class="fa-solid fa-ellipsis-vertical"></i>
                                     </button>
                                 
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton2">
                                         {% if user.is_authenticated %}
                                             {% if view.video in watchlater.videos.all %}
                                             <form id="remove-video-{{view.video.id}}-from-watchlater-form">
@@ -649,9 +649,9 @@
                 </div>
                 <div class="row">
                     {% if playlist.channel.profile_picture %}
-                    <img src="{{playlist.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                    <img src="{{playlist.channel.profilePictureURL}}" class="channel-icon" alt="Channel Profile picture" style="width: 20px; height: 20px;">
                     {% else %}
-                    <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                    <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="Channel Profile picture" style="width: 20px; height: 20px;">
                     {% endif %}
                     <h5>{{playlist.channel}}</h5>
                 </div><div class="row">
@@ -666,10 +666,10 @@
                     <div class="col-lg-2 col-12 text-right mt-2 mt-lg-0">
                         <div class="video-options">
                             <div class="dropdown">
-                                <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <button class="btn" type="button" id="dropdownMenuButton3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     <i class="fa-solid fa-ellipsis-vertical"></i>
                                 </button>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton3">
                                     {% if user.is_authenticated %}
                                         {% if playlist in saved_playlists.playlists.all %}
                                             <form id="save-playlist-form">
@@ -766,9 +766,9 @@
                 </div>
                 <div class="row">
                     {% if playlist.channel.profile_picture %}
-                    <img src="{{playlist.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                    <img src="{{playlist.channel.profilePictureURL}}" class="channel-icon" alt="Channel Profile picture" style="width: 20px; height: 20px;">
                     {% else %}
-                    <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                    <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="Channel Profile picture" style="width: 20px; height: 20px;">
                     {% endif %}
                     <h5>{{playlist.channel}}</h5>
                 </div><div class="row">
@@ -783,10 +783,10 @@
                     <div class="col-lg-2 col-12 text-right mt-2 mt-lg-0">
                         <div class="video-options">
                             <div class="dropdown">
-                                <button class="btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <button class="btn" type="button" id="dropdownMenuButton4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                     <i class="fa-solid fa-ellipsis-vertical"></i>
                                 </button>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton4">
                                     {% if user.is_authenticated %}
                                         {% if playlist in saved_playlists.playlists.all %}
                                             <form id="save-playlist-form">

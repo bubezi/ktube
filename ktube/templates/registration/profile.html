@@ -42,18 +42,18 @@
                     <div class="top-container">
                         {% if no_channel or many_channels %}
                             <img src="{% static 'images/placeholder.png' %}" 
-                            class="img-fluid profile-image" alt="" 
+                            class="img-fluid profile-image" alt="Profile picture" 
                             style="width: 70px; height: 70px;">
                         {% else %}
                             {% if channel.profile_picture %}
                                 <img src="{{channel.profilePictureURL}}" 
                                 class="channel-icon img-fluid profile-image" 
-                                alt="" 
+                                alt="Profile picture" 
                                 style="width: 70px; height: 70px; margin-right:0;">
                             {% else %}
                                 <img src="{% static 'images/placeholder.png' %}" 
                                 class="img-fluid profile-image" 
-                                alt="" 
+                                alt="Profile picture" 
                                 style="width: 70px; height: 70px;">
                             {% endif %}
                         {% endif %}
@@ -126,12 +126,12 @@
                     {% if my_channel.profile_picture %}
                         <img src="{{my_channel.profilePictureURL}}" 
                         class="channel-icon" 
-                        alt="" 
+                        alt="Channel Profile picture" 
                         style="width: 40px; height: 40px;">
                     {% else %}
                         <img src="{% static 'images/placeholder.png' %}" 
                         class="channel-icon" 
-                        alt="" 
+                        alt="Channel Profile picture" 
                         style="width: 40px; height: 40px;">
                     {% endif %}
                     <a href="{% url 'channel' my_channel.id %}"><h4>{{my_channel.name}}</h4></a>
@@ -151,12 +151,12 @@
                     {% if channel.profile_picture %}
                         <img src="{{channel.profilePictureURL}}" 
                         class="channel-icon" 
-                        alt="" 
+                        alt="Channel Profile picture" 
                         style="width: 40px; height: 40px;">
                     {% else %}
                         <img src="{% static 'images/placeholder.png' %}" 
                         class="channel-icon" 
-                        alt="" 
+                        alt="Channel Profile picture" 
                         style="width: 40px; height: 40px;">
                     {% endif %}
                     <a href="{% url 'channel' channel.id %}"><h4>{{channel.name}}</h4></a>

@@ -44,9 +44,9 @@
             </div>
             <div class="row" style="display: block;">
                 {% if channel.profile_picture %}
-                    <img src="{{channel.profilePictureURL}}" class="channel-icon img-fluid profile-image" alt="" style="width: 70px; height: 70px; margin-right:0;">
+                    <img src="{{channel.profilePictureURL}}" class="channel-icon img-fluid profile-image" alt="Channel Profile picture" style="width: 70px; height: 70px; margin-right:0;">
                 {% else %}
-                    <img src="{% static 'images/placeholder.png' %}" class="img-fluid profile-image" alt="" style="width: 70px; height: 70px;">
+                    <img src="{% static 'images/placeholder.png' %}" class="img-fluid profile-image" alt="Channel Profile picture" style="width: 70px; height: 70px;">
                 {% endif %}
             </div>
             <div class="row">

@@ -45,12 +45,12 @@
                     {% if my_channel.profile_picture %}
                         <img src="{{my_channel.profilePictureURL}}" 
                         class="channel-icon" 
-                        alt="" 
+                        alt="Channel Profile picture" 
                         style="width: 40px; height: 40px;">
                     {% else %}
                         <img src="{% static 'images/placeholder.png' %}" 
                         class="channel-icon" 
-                        alt="" 
+                        alt="Channel Profile picture" 
                         style="width: 40px; height: 40px;">
                     {% endif %}
                     <a href="{% url 'channel' my_channel.id %}"><h4>{{my_channel.name}}</h4></a>
@@ -70,12 +70,12 @@
                     {% if channel.profile_picture %}
                         <img src="{{channel.profilePictureURL}}" 
                         class="channel-icon" 
-                        alt="" 
+                        alt="Channel Profile picture" 
                         style="width: 40px; height: 40px;">
                     {% else %}
                         <img src="{% static 'images/placeholder.png' %}" 
                         class="channel-icon" 
-                        alt="" 
+                        alt="Channel Profile picture" 
                         style="width: 40px; height: 40px;">
                     {% endif %}
                     <a href="{% url 'channel' channel.id %}"><h4>{{channel.name}}</h4></a>

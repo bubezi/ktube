@@ -39,7 +39,7 @@
         {% for view in views %}
             <div class="col-lg-4">
                 <a href="{% url 'video' view.video.id %}">
-                <img class="thumbnail" src="{{view.video.thumbnailURL}}" alt="">
+                <img class="thumbnail" src="{{view.video.thumbnailURL}}" alt="Video Thumbnail">
                 </a>
                 <div class="box-element product">
                     <div class="row">
@@ -51,9 +51,9 @@
                     <a href="{% url 'channel' view.video.channel.id %}">
                         <div class="row">
                             {% if view.video.channel.profile_picture %}
-                            <img src="{{view.video.channel.profilePictureURL}}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                            <img src="{{view.video.channel.profilePictureURL}}" class="channel-icon" alt="Channel Profile picture" style="width: 20px; height: 20px;">
                             {% else %}
-                            <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="" style="width: 20px; height: 20px;">
+                            <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="Channel Profile picture" style="width: 20px; height: 20px;">
                             {% endif %}
                             <h6>{{view.video.channel}}</h6>
                         </div>
