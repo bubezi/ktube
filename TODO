@@ -106,8 +106,11 @@
 ######
 
 # PHASE 2
-[] Check out NODE JS FOR STREAMING
+[] Video slug
+    [] From link using video id to slug
+[] Video costs something
 [] Learn React
+[] Check out NODE JS FOR STREAMING
 [] Timezone management
 [] Create logic
     [x] Channel

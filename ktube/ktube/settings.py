@@ -15,14 +15,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
 
+ALLOWED_HOSTS = ['ktube.pythonanywhere.com']
+ALLOWED_HOSTS += ['192.168.87.137', '127.0.0.1']
+
+
 
 ######################## COMMENT THIS OUT DURING DEVELOPMENT AND TESTING AND UNCOMMENT THE ONE BELOW IT ###########################################
 
-
-ALLOWED_HOSTS = ['ktube.pythonanywhere.com']
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# DEBUG = False
 
 # # Database
 # # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -47,9 +48,8 @@ DEBUG = False
 ######################## COMMENT THIS OUT WHEN DEPLOYING TO PRODUCTION AND UNCOMMENT THE ONE ABOVE IT ###############################################
 
 
-# ALLOWED_HOSTS = ['192.168.87.137', '127.0.0.1']
 
-# DEBUG = True
+DEBUG = True
 
 
 # Database
