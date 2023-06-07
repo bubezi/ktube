@@ -140,7 +140,7 @@ def search_results_view(request):
 def watch_video(request, pk):
     context = {}
     try:
-        video = Video.objects.get(id=pk) # type: ignore
+        video = Video.objects.get(slug=pk) # type: ignore
 
     except Video.DoesNotExist:
         return HttpResponseBadRequest('<h1>404 Not Found</h1><h3>Video Does Not Exist! SORRYYY</h3>')   # type: ignore
@@ -1117,7 +1117,7 @@ def edit_video_view(request, pk):
         viewer = request.user.viewer
         context = {}
         try:
-            video = Video.objects.get(id=pk) # type: ignore
+            video = Video.objects.get(slug=pk) # type: ignore
         except Video.DoesNotExist: # type: ignore
             return HttpResponseBadRequest('<h1>404 Not Found</h1><h3>Video Does Not Exist! SORRYYY</h3>')
         if not viewer == video.channel.user: # type: ignore
@@ -1235,7 +1235,7 @@ def edit_video(request):
         if request.method == 'POST':
             pk = request.POST['video_id']
             try:
-                video = Video.objects.get(id=pk)
+                video = Video.objects.get(slug=pk)
             except Video.DoesNotExist:
                 return JsonResponse({'success': False, 'message': "Video Does Not Exist"})
             viewer = request.user.viewer
@@ -1288,7 +1288,7 @@ def edit_video(request):
 #         if request.method == 'POST':
 #             pk = request.POST['video_id']
 #             try:
-#                 video = Video.objects.get(id=pk)
+#                 video = Video.objects.get(slug=pk)
 #             except Video.DoesNotExist:
 #                 return JsonResponse({'success': False, 'message': "Video Does Not Exist"})
 #             viewer = request.user.viewer
@@ -1375,7 +1375,7 @@ def like(request):
         if request.method=='POST':
             try:
                 pk = request.POST['video_id']
-                video = Video.objects.get(id=pk)
+                video = Video.objects.get(slug=pk)
                 viewer = request.user.viewer
                 try:
                     liked_videos = LikedVideos.objects.get(viewer=viewer)
@@ -1408,7 +1408,7 @@ def unlike(request):
         if request.method=='POST':
             try:
                 pk = request.POST['video_id']
-                video = Video.objects.get(id=pk)
+                video = Video.objects.get(slug=pk)
                 viewer = request.user.viewer
                 try:
                     liked_videos = LikedVideos.objects.get(viewer=viewer)
@@ -1441,7 +1441,7 @@ def dislike(request):
         if request.method=='POST':
             try:
                 pk = request.POST['video_id']
-                video = Video.objects.get(id=pk)
+                video = Video.objects.get(slug=pk)
                 viewer = request.user.viewer
 
                 try:
@@ -1474,7 +1474,7 @@ def undislike(request):
         if request.method=='POST':
             try:
                 pk = request.POST['video_id']
-                video = Video.objects.get(id=pk)
+                video = Video.objects.get(slug=pk)
                 viewer = request.user.viewer
 
                 try:
@@ -1514,7 +1514,7 @@ def add_view(request):
         if request.method=='POST':
             viewer = request.user.viewer
             pk = request.POST['video_id']
-            video = Video.objects.get(id=pk)
+            video = Video.objects.get(slug=pk)
             view = VideoView(viewer=viewer, video=video)
             view.save()
             
@@ -1547,7 +1547,7 @@ def add_view(request):
     else:
         if request.method=='POST':
             pk = request.POST['video_id']
-            video = Video.objects.get(id=pk)
+            video = Video.objects.get(slug=pk)
             view = VideoView(video=video)
             view.save()
             video.save()
@@ -1577,7 +1577,7 @@ def add_video_to_playlist(request):
             try:
                 video_id = request.POST['video_id']
                 playlist_id = request.POST['playlist_id']
-                video = Video.objects.get(id=video_id)
+                video = Video.objects.get(slug=video_id)
                 playlist = Playlist.objects.get(id=playlist_id)
                 playlist.videos.add(video)
                 return JsonResponse({'success':True})
@@ -1595,7 +1595,7 @@ def remove_video_from_playlist(request):
             try:
                 video_id = request.POST['video_id']
                 playlist_id = request.POST['playlist_id']
-                video = Video.objects.get(id=video_id)
+                video = Video.objects.get(slug=video_id)
                 playlist = Playlist.objects.get(id=playlist_id)
                 playlist.videos.remove(video)
                 return JsonResponse({'success':True})
@@ -1613,7 +1613,7 @@ def add_video_to_watchlater(request):
             try:
                 video_id = request.POST['video_id']
                 viewer = request.user.viewer
-                video = Video.objects.get(id=video_id)
+                video = Video.objects.get(slug=video_id)
                 watchlater = Watchlater.objects.get(viewer=viewer)
                 watchlater.videos.add(video)
                 return JsonResponse({'success':True})
@@ -1631,7 +1631,7 @@ def remove_video_from_watchlater(request):
             try:
                 video_id = request.POST['video_id']
                 viewer = request.user.viewer
-                video = Video.objects.get(id=video_id)
+                video = Video.objects.get(slug=video_id)
                 watchlater = Watchlater.objects.get(viewer=viewer)
                 watchlater.videos.remove(video)
                 return JsonResponse({'success':True})
@@ -1705,7 +1705,7 @@ def delete_video(request):
         if request.method=='POST':
             viewer = request.user.viewer
             video_pk = request.POST['video_id']
-            video = Video.objects.get(id=video_pk)
+            video = Video.objects.get(slug=video_pk)
             if not video.channel.user == viewer: # type: ignore 
                 return JsonResponse({'success':False, 'message':"You Don't own this Video"})
             try:
@@ -1835,7 +1835,7 @@ def comment(request):
                 comment_text = request.POST['comment_text']
                 if len(comment_text) < 3:
                     return JsonResponse({'success': False})
-                video = Video.objects.get(id=video_id)
+                video = Video.objects.get(slug=video_id)
                 channel = Channel.objects.get(user=viewer)
                 comment = Comment(comment_text=comment_text, video=video, channel=channel)
                 comment.save()
@@ -1857,7 +1857,7 @@ def comment_many_channels(request):
                 if len(comment_text) < 3:
                     return JsonResponse({'success': False})
                 channel_id= request.POST['channel_id']
-                video = Video.objects.get(id=video_id)
+                video = Video.objects.get(slug=video_id)
                 channel = Channel.objects.get(id=channel_id)
                 comment = Comment(comment_text=comment_text, video=video, channel=channel)
                 comment.save()
@@ -2021,6 +2021,6 @@ def get_subs(request, pk):
 
 
 def get_views(request, pk):
-    video = Video.objects.get(id=pk)
+    video = Video.objects.get(slug=pk)
     views = video.views
     return JsonResponse({"video_views":views})

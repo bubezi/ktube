@@ -44,12 +44,12 @@
     <div class="row">
         {% for video in videos %}
             <div class="col-lg-4">
-                <a href="{% url 'video' video.id %}">
+                <a href="{% url 'video' video.slug %}">
                 <img class="thumbnail" src="{{video.thumbnailURL}}" alt="Video Thumbnail">
                 </a>
                 <div class="box-element product">
                     <div class="row">
-                        <a href="{% url 'video' video.id %}">
+                        <a href="{% url 'video' video.slug %}">
                             <h6 style="float: left">{{video.title}}</h6> 
                         </a>{% if video.private %}<h6 style="padding-left: 10px;">(private)</h6>
                             {% elif video.unlisted %}<h6 style="padding-left: 10px;">(unlisted)</h6>{% endif %}
@@ -80,116 +80,116 @@
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                                         {% if user.is_authenticated %}
                                             {% if video in watchlater.videos.all %}
-                                            <form id="remove-video-{{video.id}}-from-watchlater-form">
+                                            <form id="remove-video-{{video.slug}}-from-watchlater-form">
                                                 {% csrf_token %}
-                                                <input type="hidden" name="video_id" value="{{video.id}}">
+                                                <input type="hidden" name="video_id" value="{{video.slug}}">
                                                 <a href="#" class="dropdown-item add-btn-link update-cart" 
-                                                id="remove-video-{{video.id}}-from-watchlater-button" 
+                                                id="remove-video-{{video.slug}}-from-watchlater-button" 
                                                 style="display: block;"
                                                 onclick="event.preventDefault(); handleRemoveFromWatchlater(event, 
-                                                '{{video.id}}', '{{playlist.id}}', 
-                                                'remove-video-{{video.id}}-from-watchlater-button', 
-                                                'add-video-{{video.id}}-to-watchlater-button')"
+                                                '{{video.slug}}', '{{playlist.id}}', 
+                                                'remove-video-{{video.slug}}-from-watchlater-button', 
+                                                'add-video-{{video.slug}}-to-watchlater-button')"
                                                 >Remove Video From Watchlater</a>
                                             </form>
     
-                                            <form id="add-video-{{video.id}}-to-watchlater-form">
+                                            <form id="add-video-{{video.slug}}-to-watchlater-form">
                                                 {% csrf_token %}
-                                                <input type="hidden" name="video_id" value="{{video.id}}">
+                                                <input type="hidden" name="video_id" value="{{video.slug}}">
                                                 <a href="#" class="dropdown-item add-btn-link update-cart" 
-                                                id="add-video-{{video.id}}-to-watchlater-button"
+                                                id="add-video-{{video.slug}}-to-watchlater-button"
                                                 style="display: none;" 
                                                 onclick="event.preventDefault(); handleAddToWatchlater(event, 
-                                                '{{video.id}}', '{{playlist.id}}', 
-                                                'add-video-{{video.id}}-to-watchlater-button', 
-                                                'remove-video-{{video.id}}-from-watchlater-button')"
+                                                '{{video.slug}}', '{{playlist.id}}', 
+                                                'add-video-{{video.slug}}-to-watchlater-button', 
+                                                'remove-video-{{video.slug}}-from-watchlater-button')"
                                                 >Add Video to Watchlater</a>
                                             </form>
                                             
                                             {% else %}
-                                            <form id="remove-video-{{video.id}}-from-watchlater-form">
+                                            <form id="remove-video-{{video.slug}}-from-watchlater-form">
                                                 {% csrf_token %}
-                                                <input type="hidden" name="video_id" value="{{video.id}}">
+                                                <input type="hidden" name="video_id" value="{{video.slug}}">
                                                 <a href="#" class="dropdown-item add-btn-link update-cart" 
-                                                id="remove-video-{{video.id}}-from-watchlater-button" 
+                                                id="remove-video-{{video.slug}}-from-watchlater-button" 
                                                 style="display: none;"
                                                 onclick="event.preventDefault(); handleRemoveFromWatchlater(event, 
-                                                '{{video.id}}', '{{playlist.id}}', 
-                                                'remove-video-{{video.id}}-from-watchlater-button', 
-                                                'add-video-{{video.id}}-to-watchlater-button')"
+                                                '{{video.slug}}', '{{playlist.id}}', 
+                                                'remove-video-{{video.slug}}-from-watchlater-button', 
+                                                'add-video-{{video.slug}}-to-watchlater-button')"
                                                 >Remove Video From Watchlater</a>
                                             </form>
     
-                                            <form id="add-video-{{video.id}}-to-watchlater-form">
+                                            <form id="add-video-{{video.slug}}-to-watchlater-form">
                                                 {% csrf_token %}
-                                                <input type="hidden" name="video_id" value="{{video.id}}">
+                                                <input type="hidden" name="video_id" value="{{video.slug}}">
                                                 <a href="#" class="dropdown-item add-btn-link update-cart" 
-                                                id="add-video-{{video.id}}-to-watchlater-button"
+                                                id="add-video-{{video.slug}}-to-watchlater-button"
                                                 style="display: block;" 
                                                 onclick="event.preventDefault(); handleAddToWatchlater(event, 
-                                                '{{video.id}}', '{{playlist.id}}', 
-                                                'add-video-{{video.id}}-to-watchlater-button', 
-                                                'remove-video-{{video.id}}-from-watchlater-button')"
+                                                '{{video.slug}}', '{{playlist.id}}', 
+                                                'add-video-{{video.slug}}-to-watchlater-button', 
+                                                'remove-video-{{video.slug}}-from-watchlater-button')"
                                                 >Add Video to Watchlater</a>
                                             </form>
                                             
                                             {% endif %}
                                             {% for playlist in playlists %}
                                                 {% if video in playlist.videos.all %}
-                                                <form id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-form">
+                                                <form id="remove-video-{{video.slug}}-from-plist-{{playlist.id}}-form">
                                                     {% csrf_token %}
                                                     <input type="hidden" name="playlist_id" value="{{playlist.id}}">
-                                                    <input type="hidden" name="video_id" value="{{video.id}}">
+                                                    <input type="hidden" name="video_id" value="{{video.slug}}">
                                                     <a href="#" class="dropdown-item add-btn-link update-cart" 
-                                                    id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-button"
+                                                    id="remove-video-{{video.slug}}-from-plist-{{playlist.id}}-button"
                                                     style="display: block;"
                                                     onclick="event.preventDefault(); handleRemoveFromPlaylist(event, 
-                                                    '{{video.id}}', '{{playlist.id}}', 
-                                                    'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button', 
-                                                    'add-video-{{video.id}}-to-plist-{{playlist.id}}-button')"
+                                                    '{{video.slug}}', '{{playlist.id}}', 
+                                                    'remove-video-{{video.slug}}-from-plist-{{playlist.id}}-button', 
+                                                    'add-video-{{video.slug}}-to-plist-{{playlist.id}}-button')"
                                                     >Remove Video from {{playlist|title}}</a>
                                                 </form>
     
-                                                <form id="add-video-{{video.id}}-to-plist-{{playlist.id}}-form">
+                                                <form id="add-video-{{video.slug}}-to-plist-{{playlist.id}}-form">
                                                     {% csrf_token %}
                                                     <input type="hidden" name="playlist_id" value="{{playlist.id}}">
-                                                    <input type="hidden" name="video_id" value="{{video.id}}">
+                                                    <input type="hidden" name="video_id" value="{{video.slug}}">
                                                     <a href="#" class="dropdown-item add-btn-link update-cart" 
-                                                    id="add-video-{{video.id}}-to-plist-{{playlist.id}}-button"
+                                                    id="add-video-{{video.slug}}-to-plist-{{playlist.id}}-button"
                                                     style="display: none;"
                                                     onclick="event.preventDefault(); handleAddToPlaylist(event, 
-                                                    '{{video.id}}', '{{playlist.id}}', 
-                                                    'add-video-{{video.id}}-to-plist-{{playlist.id}}-button', 
-                                                    'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button')"
+                                                    '{{video.slug}}', '{{playlist.id}}', 
+                                                    'add-video-{{video.slug}}-to-plist-{{playlist.id}}-button', 
+                                                    'remove-video-{{video.slug}}-from-plist-{{playlist.id}}-button')"
                                                     >Add Video to {{playlist|title}}</a>
                                                 </form>
                                                 
                                                 {% else %}
-                                                <form id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-form">
+                                                <form id="remove-video-{{video.slug}}-from-plist-{{playlist.id}}-form">
                                                     {% csrf_token %}
                                                     <input type="hidden" name="playlist_id" value="{{playlist.id}}">
-                                                    <input type="hidden" name="video_id" value="{{video.id}}">
+                                                    <input type="hidden" name="video_id" value="{{video.slug}}">
                                                     <a href="#" class="dropdown-item add-btn-link update-cart" 
-                                                    id="remove-video-{{video.id}}-from-plist-{{playlist.id}}-button"
+                                                    id="remove-video-{{video.slug}}-from-plist-{{playlist.id}}-button"
                                                     style="display: none;"
                                                     onclick="event.preventDefault(); handleRemoveFromPlaylist(event, 
-                                                    '{{video.id}}', '{{playlist.id}}', 
-                                                    'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button', 
-                                                    'add-video-{{video.id}}-to-plist-{{playlist.id}}-button')"
+                                                    '{{video.slug}}', '{{playlist.id}}', 
+                                                    'remove-video-{{video.slug}}-from-plist-{{playlist.id}}-button', 
+                                                    'add-video-{{video.slug}}-to-plist-{{playlist.id}}-button')"
                                                     >Remove Video from {{playlist|title}}</a>
                                                 </form>
                                                 
-                                                <form id="add-video-{{video.id}}-to-plist-{{playlist.id}}-form">
+                                                <form id="add-video-{{video.slug}}-to-plist-{{playlist.id}}-form">
                                                     {% csrf_token %}
                                                     <input type="hidden" name="playlist_id" value="{{playlist.id}}">
-                                                    <input type="hidden" name="video_id" value="{{video.id}}">
+                                                    <input type="hidden" name="video_id" value="{{video.slug}}">
                                                     <a href="#" class="dropdown-item add-btn-link update-cart" 
-                                                    id="add-video-{{video.id}}-to-plist-{{playlist.id}}-button"
+                                                    id="add-video-{{video.slug}}-to-plist-{{playlist.id}}-button"
                                                     style="display: block;"
                                                     onclick="event.preventDefault(); handleAddToPlaylist(event, 
-                                                    '{{video.id}}', '{{playlist.id}}', 
-                                                    'add-video-{{video.id}}-to-plist-{{playlist.id}}-button', 
-                                                    'remove-video-{{video.id}}-from-plist-{{playlist.id}}-button')"
+                                                    '{{video.slug}}', '{{playlist.id}}', 
+                                                    'add-video-{{video.slug}}-to-plist-{{playlist.id}}-button', 
+                                                    'remove-video-{{video.slug}}-from-plist-{{playlist.id}}-button')"
                                                     >Add Video to {{playlist|title}}</a>
                                                 </form>
                                                 

@@ -1,6 +1,9 @@
 from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils.crypto import get_random_string
+from ktube.settings import MEDIA_URL
+
 
 from .utils import period
 from django_resized import ResizedImageField
@@ -48,7 +51,7 @@ class Channel(models.Model):
     
     def public_video_count(self):
         return self.video_set.filter(private=False, unlisted=False).count()  # type: ignore
-           
+          
     
 class Video(models.Model):
     title = models.CharField(max_length=150, blank=False, null=True)
@@ -62,7 +65,8 @@ class Video(models.Model):
     likes = models.PositiveBigIntegerField(default=0)
     dislikes = models.PositiveBigIntegerField(default=0)
     views = models.PositiveBigIntegerField(default=0)
-    path = models.URLField(max_length=150, null=True, blank=True, unique=True)
+    slug = models.SlugField(max_length=300, null=False, default='some-string', unique=True)
+    path = models.URLField(max_length=450, null=True, blank=True, unique=True)
     
     def __str__(self):
         return self.title
@@ -73,7 +77,6 @@ class Video(models.Model):
     
     @property
     def videoFilename(self):
-        from ktube.settings import MEDIA_URL
         start = len(MEDIA_URL)
         return str(self.videoURL)[start:]
     
@@ -83,52 +86,17 @@ class Video(models.Model):
     
     @property
     def thumbnailFilename(self):
-        from ktube.settings import MEDIA_URL
         start = len(MEDIA_URL)
         return str(self.thumbnailURL)[start:]
     
     def upload_period(self):
         return period(self.upload_time)   
     
-    
-# In Django ORM, a slug is a short, URL-friendly representation of a text field. 
-# It is commonly used to generate human-readable and search engine-friendly URLs.
-
-# A slug is typically derived from a text field, such as a title or name, 
-# by converting it to a format that can be safely used in a URL. It removes 
-# special characters, converts spaces to hyphens or underscores, and ensures
-# that the resulting string consists of lowercase letters, numbers, and hyphens/underscores only.
-
-# The slug field in Django ORM is often used as an additional field in a 
-# model to store the slug value for a particular object. It is used to generate 
-# clean and meaningful URLs for the objects in your application.
-
-# Django provides a built-in SlugField that you can use in your models. 
-# Here's an example of how you can define a slug field in a model:
-
-# python
-# Copy code
-# from django.db import models
-
-# class MyModel(models.Model):
-#     title = models.CharField(max_length=100)
-#     slug = models.SlugField(max_length=100, unique=True)
-
-#     def save(self, *args, **kwargs):
-#         # Generate the slug from the title before saving
-#         self.slug = self.title.replace(" ", "-").lower()
-#         super().save(*args, **kwargs)
-# In this example, the slug field is defined as a SlugField with a maximum 
-# length of 100 characters. The unique=True parameter ensures that each 
-# object has a unique slug.
-
-# The save() method of the model is overridden to automatically generate 
-# the slug based on the title field before saving the object. In this case, 
-# the spaces are replaced with hyphens, and the string is converted to lowercase.
-
-# By using a slug field, you can create URLs that are more user-friendly 
-# and SEO-friendly, improving the readability and accessibility of your 
-# application's URLs. 
+    def save(self, *args, **kwargs):
+        # Generate the slug from the title before saving
+        RANDOM_STRING_CHARS = "abcdefghijklmnopqrstuvwxyz"
+        self.slug = 'video-' + self.title.replace(" ", "-").lower() + '-' + get_random_string(70, RANDOM_STRING_CHARS)
+        super().save(*args, **kwargs) 
                             
                             
 class Comment(models.Model):

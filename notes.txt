@@ -3201,7 +3201,7 @@ Copy code
     const videoPlayer = document.getElementById('video-player');
     videoPlayer.addEventListener('timeupdate', () => {
         const timestamp = videoPlayer.currentTime;
-        const videoId = {{ video.id }};
+        const videoId = {{ video.slug }};
         $.ajax({
             url: "{% url 'log_video_view' %}",
             method: "POST",

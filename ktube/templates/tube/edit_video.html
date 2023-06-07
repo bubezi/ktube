@@ -37,7 +37,7 @@
                 {% if not video.private %}
                 {% if video.unlisted %}
                 <form enctype="multipart/form-data">
-                        <input type="hidden" name="video_id" id="video-id" value="{{video.id}}">
+                        <input type="hidden" name="video_id" id="video-id" value="{{video.slug}}">
                     <div class="row">
                     <div class="col-lg-12">
                         <label for="video-title" >Change Video Title <h6 id="video-title-label">{{video.title}}</h6> to:</label>
@@ -91,13 +91,13 @@
                     </div>
                     <div class="row">
                     <div class="col-lg-12">
-                        <button onclick="event.preventDefault(); editVideo(event, '{{video.id}}', 'video-title', 'video-private', 'video-unlisted', 'video', 'video-thumbnail', 'video-description'); " class="btn btn-success">Edit</button>
+                        <button onclick="event.preventDefault(); editVideo(event, '{{video.slug}}', 'video-title', 'video-private', 'video-unlisted', 'video', 'video-thumbnail', 'video-description'); " class="btn btn-success">Edit</button>
                     </div>
                     </div>
                 </form>
                 {% else %}
                 <form enctype="multipart/form-data">
-                        <input type="hidden" name="video_id" id="video-id" value="{{video.id}}">
+                        <input type="hidden" name="video_id" id="video-id" value="{{video.slug}}">
                     <div class="row">
                     <div class="col-lg-12">
                         <label for="video-title" >Change Video Title <h6 id="video-title-label">{{video.title}}</h6> to:</label>
@@ -151,7 +151,7 @@
                     </div>
                     <div class="row">
                     <div class="col-lg-12">
-                        <button onclick="event.preventDefault(); editVideo(event, '{{video.id}}', 'video-title', 'video-private', 'video-unlisted', 'video', 'video-thumbnail', 'video-description');" class="btn btn-success">Edit</button>
+                        <button onclick="event.preventDefault(); editVideo(event, '{{video.slug}}', 'video-title', 'video-private', 'video-unlisted', 'video', 'video-thumbnail', 'video-description');" class="btn btn-success">Edit</button>
                     </div>
                     </div>
                 </form>
@@ -159,7 +159,7 @@
                 {% else %}
                 {% if video.unlisted %}
                 <form enctype="multipart/form-data">
-                        <input type="hidden" name="video_id" id="video-id" value="{{video.id}}">
+                        <input type="hidden" name="video_id" id="video-id" value="{{video.slug}}">
                     <div class="row">
                     <div class="col-lg-12">
                         <label for="video-title" >Change Video Title <h6 id="video-title-label">{{video.title}}</h6> to:</label>
@@ -213,13 +213,13 @@
                     </div>
                     <div class="row">
                     <div class="col-lg-12">
-                        <button onclick="event.preventDefault(); editVideo(event, '{{video.id}}', 'video-title', 'video-private', 'video-unlisted', 'video', 'video-thumbnail', 'video-description');" class="btn btn-success">Edit</button>
+                        <button onclick="event.preventDefault(); editVideo(event, '{{video.slug}}', 'video-title', 'video-private', 'video-unlisted', 'video', 'video-thumbnail', 'video-description');" class="btn btn-success">Edit</button>
                     </div>
                     </div>
                 </form>
                 {% else %}
                 <form enctype="multipart/form-data">
-                        <input type="hidden" name="video_id" id="video-id" value="{{video.id}}">
+                        <input type="hidden" name="video_id" id="video-id" value="{{video.slug}}">
                     <div class="row">
                     <div class="col-lg-12">
                         <label for="video-title" >Change Video Title <h6 id="video-title-label">{{video.title}}</h6> to:</label>
@@ -273,7 +273,7 @@
                     </div>
                     <div class="row">
                     <div class="col-lg-12">
-                        <button onclick="event.preventDefault(); editVideo(event, '{{video.id}}', 'video-title', 'video-private', 'video-unlisted', 'video', 'video-thumbnail', 'video-description');" class="btn btn-success">Edit</button>
+                        <button onclick="event.preventDefault(); editVideo(event, '{{video.slug}}', 'video-title', 'video-private', 'video-unlisted', 'video', 'video-thumbnail', 'video-description');" class="btn btn-success">Edit</button>
                     </div>
                     </div>
                 </form>
@@ -295,7 +295,7 @@
             <label for="password">Enter Your Password</label>
             <input type="password" name="password" id="password">
             <button class="btn btn-success" onclick="event.preventDefault(); 
-            authenticateAction(event, 'password', '{{video.id}}')";>Submit</button>
+            authenticateAction(event, 'password', '{{video.slug}}')";>Submit</button>
         </form>
         </div>
     </div>
