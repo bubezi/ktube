@@ -57,6 +57,11 @@
                     <h6 style="float: left">{{video.title}}</h6>
                 </a>
             </div>
+            {% if video.price > 0 %}
+            <div class="row">
+                <p style="float: left; color:green;">KShs. {{ video.price | floatformat:2 | intcomma }}</p>
+            </div>
+            {% endif %}
             <a href="{% url 'channel' video.channel.id %}">
                 <div class="row">
                     <h6>{{video.channel}}</h6>

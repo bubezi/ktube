@@ -54,6 +54,11 @@
                         </a>{% if video.private %}<h6 style="padding-left: 10px;">(private)</h6>
                             {% elif video.unlisted %}<h6 style="padding-left: 10px;">(unlisted)</h6>{% endif %}
                     </div>
+                    {% if video.price > 0 %}
+                    <div class="row">
+                        <p style="float: left; color:green;">KShs. {{ video.price | floatformat:2 | intcomma }}</p>
+                    </div>
+                    {% endif %}
                     <div class="row">
                         {% if video.channel.profile_picture %}
                         <img src="{{video.channel.profilePictureURL}}" class="channel-icon" alt="Channel Profile Picture" style="width: 20px; height: 20px;">

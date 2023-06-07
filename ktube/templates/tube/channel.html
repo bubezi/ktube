@@ -95,6 +95,11 @@
                             <h4 style="float: left">{{video.title}}</h4>
                         </a>
                     </div>
+                    {% if video.price > 0 %}
+                    <div class="row">
+                        <p style="float: left; color:green;">KShs. {{ video.price | floatformat:2 | intcomma }}</p>
+                    </div>
+                    {% endif %}
                     <div class="row">
                         {% if channel.profile_picture %}
                         <img src="{{channel.profilePictureURL}}" class="channel-icon" alt="Channel Profile picture" style="width: 20px; height: 20px;">
