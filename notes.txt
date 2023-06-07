@@ -15,6 +15,36 @@
 
 ###################################################################################
 
+from decimal import Decimal
+
+PERCENTAGE_OF_REVENUE = Decimal('0.85')
+OWNER_USERNAME = 'bubezi'
+
+try:
+    video = Video.objects.get(slug=pk)
+except Video.DoesNotExist:
+    return HttpResponseBadRequest('<h1>404 Not Found</h1><h3>Video Does Not Exist! SORRYYY</h3>')
+
+if video.price > 0:
+    if request.user.is_authenticated:
+        viewer = request.user.viewer
+        if not video.channel.user == viewer:
+            if not video.paid_viewers.contains(viewer):
+                if viewer.spend(video.price):
+                    video_owner_cut = PERCENTAGE_OF_REVENUE * Decimal(video.price)
+                    owner_cut = Decimal(video.price) - video_owner_cut
+                    video.channel.user.wallet += video_owner_cut
+                    main_viewer = Viewer.objects.get(id=1)
+                    main_viewer.wallet += owner_cut
+                    video.paid_viewers.add(viewer)
+                    viewer.save()
+                    main_viewer.save()
+                    video.channel.user.save()
+                    video.save()
+                else:
+                    return redirect('deposit')
+    else:
+        return redirect('login')
 
 
 
