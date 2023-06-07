@@ -7,6 +7,10 @@ from .filters import VideoFilter
 from .models import *
 
 
+PERCENTAGE_OF_REVENUE = .85
+OWNER_USERNAME = 'bubezi'
+
+
 ##############################################################################################
 #############################                                   ##############################
 #############################                                   ##############################
@@ -158,15 +162,25 @@ def watch_video(request, pk):
         else:
             return HttpResponseForbidden('<h1>Forbidden</h1><h4>Video is private</h4>')  
     
+    
+    
+    
+    
     if video.price > 0:
         if request.user.is_authenticated:
             viewer = request.user.viewer
             if not video.channel.user == viewer:
                 if not video.paid_viewers.contains(viewer):
                     if viewer.spend(video.price):
-                        video.channel.user.wallet += video.price
+                        video_owner_cut = PERCENTAGE_OF_REVENUE * video.price
+                        video_owner_cut = float(video_owner_cut)
+                        owner_cut = float(video.price) - float(video_owner_cut)
+                        video.channel.user.wallet += video_owner_cut
+                        main_viewer = Viewer.objects.get(id=1)
+                        main_viewer.wallet += owner_cut
                         video.paid_viewers.add(viewer)
                         viewer.save()
+                        main_viewer.save()
                         video.channel.user.save()
                         video.save()
                     else:
@@ -174,6 +188,9 @@ def watch_video(request, pk):
                         return redirect('deposit')
         else:
             return redirect('login')  
+
+
+
 
 
 
@@ -335,22 +352,36 @@ def watch_playlist(request, pk, number):
         else:
             return HttpResponseForbidden('<h1>Forbidden</h1><h4>Video is private</h4>')  
 
+
+
+
     if video.price > 0:
         if request.user.is_authenticated:
             viewer = request.user.viewer
             if not video.channel.user == viewer:
                 if not video.paid_viewers.contains(viewer):
                     if viewer.spend(video.price):
-                        video.channel.user.wallet += video.price
+                        video_owner_cut = PERCENTAGE_OF_REVENUE * video.price
+                        video_owner_cut = float(video_owner_cut)
+                        owner_cut = float(video.price) - float(video_owner_cut)
+                        video.channel.user.wallet += video_owner_cut
+                        main_viewer = Viewer.objects.get(id=1)
+                        main_viewer.wallet += owner_cut
                         video.paid_viewers.add(viewer)
                         viewer.save()
+                        main_viewer.save()
                         video.channel.user.save()
                         video.save()
                     else:
                         # return HttpResponse("<h1>Deposit money please</h1><h4>Your Video's owner wishes you would support their work</h4>")
                         return redirect('deposit')
         else:
-            return redirect('login')  
+            return redirect('login') 
+
+
+
+
+
 
 
     context['video'] = video
