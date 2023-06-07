@@ -38,7 +38,8 @@
 	<link rel="stylesheet" type="text/css" href="{% static 'css/footer.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/tube.css' %}">
 
-	{% comment %} <link rel="stylesheet" type="text/css" href="{% static 'css/cdn/free-v5-font-face.min.css' %}">
+	{% comment %} 
+	<link rel="stylesheet" type="text/css" href="{% static 'css/cdn/free-v5-font-face.min.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/cdn/free.min.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/cdn/free-v4-shims.min.css' %}">
 	<link rel="stylesheet" type="text/css" href="{% static 'css/cdn/free-v4-font-face.min.css' %}">
@@ -95,6 +96,13 @@
 		window.addEventListener('load', function() {
 			document.getElementById('loader').style.display = 'none';
 		});
+
+
+		if ('serviceWorker' in navigator) {
+			window.addEventListener('load', function() {
+			navigator.serviceWorker.register('/static/service-worker.js');
+			});
+		}
 	</script>
 	
 </body>

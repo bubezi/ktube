@@ -1,4 +1,5 @@
 User-agent: *
 Disallow: /admin/
-Disallow: /ktube/templates/registration
+Disallow: /ktube/templates/registration/
+Disallow: /ktube/templates/tube/ajax_test.html
 Disallow: /secret-page/
