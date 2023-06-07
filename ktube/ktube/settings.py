@@ -23,7 +23,7 @@ ALLOWED_HOSTS += ['192.168.87.137', '127.0.0.1']
 ######################## COMMENT THIS OUT DURING DEVELOPMENT AND TESTING AND UNCOMMENT THE ONE BELOW IT ###########################################
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = False
+DEBUG = False
 
 # # Database
 # # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -49,7 +49,7 @@ ALLOWED_HOSTS += ['192.168.87.137', '127.0.0.1']
 
 
 
-DEBUG = True
+# DEBUG = True
 
 
 # Database
