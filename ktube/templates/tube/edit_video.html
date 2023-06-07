@@ -90,9 +90,17 @@
                         </div>
                     </div>
                     <div class="row">
-                    <div class="col-lg-12">
-                        <button onclick="event.preventDefault(); editVideo(event, '{{video.slug}}', 'video-title', 'video-private', 'video-unlisted', 'video', 'video-thumbnail', 'video-description'); " class="btn btn-success">Edit</button>
+                        <div class="col-lg-12">
+                            <label for="video-price">Change Price <h6 id="video-price-label">{{video.price}}</h6> to:</label>
+                            <div class="row">
+                                <input type="number" id="video-price" name="video_price"  min="0">
+                            </div>
+                        </div>
                     </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <button onclick="event.preventDefault(); editVideo(event, '{{video.slug}}', 'video-title', 'video-private', 'video-unlisted', 'video', 'video-thumbnail', 'video-description', 'video-price');" class="btn btn-success">Edit</button>
+                        </div>
                     </div>
                 </form>
                 {% else %}
@@ -150,9 +158,17 @@
                         </div>
                     </div>
                     <div class="row">
-                    <div class="col-lg-12">
-                        <button onclick="event.preventDefault(); editVideo(event, '{{video.slug}}', 'video-title', 'video-private', 'video-unlisted', 'video', 'video-thumbnail', 'video-description');" class="btn btn-success">Edit</button>
+                        <div class="col-lg-12">
+                            <label for="video-price">Change Price <h6 id="video-price-label">{{video.price}}</h6> to:</label>
+                            <div class="row">
+                                <input type="number" id="video-price" name="video_price"  min="0">
+                            </div>
+                        </div>
                     </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <button onclick="event.preventDefault(); editVideo(event, '{{video.slug}}', 'video-title', 'video-private', 'video-unlisted', 'video', 'video-thumbnail', 'video-description', 'video-price');" class="btn btn-success">Edit</button>
+                        </div>
                     </div>
                 </form>
                 {% endif %}
@@ -212,9 +228,17 @@
                         </div>
                     </div>
                     <div class="row">
-                    <div class="col-lg-12">
-                        <button onclick="event.preventDefault(); editVideo(event, '{{video.slug}}', 'video-title', 'video-private', 'video-unlisted', 'video', 'video-thumbnail', 'video-description');" class="btn btn-success">Edit</button>
+                        <div class="col-lg-12">
+                            <label for="video-price">Change Price <h6 id="video-price-label">{{video.price}}</h6> to:</label>
+                            <div class="row">
+                                <input type="number" id="video-price" name="video_price"  min="0">
+                            </div>
+                        </div>
                     </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <button onclick="event.preventDefault(); editVideo(event, '{{video.slug}}', 'video-title', 'video-private', 'video-unlisted', 'video', 'video-thumbnail', 'video-description', 'video-price');" class="btn btn-success">Edit</button>
+                        </div>
                     </div>
                 </form>
                 {% else %}
@@ -272,9 +296,17 @@
                         </div>
                     </div>
                     <div class="row">
-                    <div class="col-lg-12">
-                        <button onclick="event.preventDefault(); editVideo(event, '{{video.slug}}', 'video-title', 'video-private', 'video-unlisted', 'video', 'video-thumbnail', 'video-description');" class="btn btn-success">Edit</button>
+                        <div class="col-lg-12">
+                            <label for="video-price">Change Price <h6 id="video-price-label">{{video.price}}</h6> to:</label>
+                            <div class="row">
+                                <input type="number" id="video-price" name="video_price"  min="0">
+                            </div>
+                        </div>
                     </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <button onclick="event.preventDefault(); editVideo(event, '{{video.slug}}', 'video-title', 'video-private', 'video-unlisted', 'video', 'video-thumbnail', 'video-description', 'video-price');" class="btn btn-success">Edit</button>
+                        </div>
                     </div>
                 </form>
                 {% endif %}
@@ -332,7 +364,7 @@
             });
         }
 
-        function editVideo (event, videoId, videoTitleId, videoPrivateId, videoUnlistedId, videoFileId, videoThumbnailId, videoDescriptionId) {
+        function editVideo (event, videoId, videoTitleId, videoPrivateId, videoUnlistedId, videoFileId, videoThumbnailId, videoDescriptionId, videoPriceId) {
             event.preventDefault();
             videoTitleIdHash = '#' + videoTitleId
             videoPrivateIdHash = '#' + videoPrivateId
@@ -340,6 +372,7 @@
             videoFileIdHash = '#' + videoFileId
             videoThumbnailIdHash = '#' + videoThumbnailId
             videoDescriptionIdHash = '#' + videoDescriptionId
+            videoPriceIdHash = '#' + videoPriceId
             $.ajax({
                 type: 'POST',
                 url: '{% url "edit_video" %}',
@@ -352,6 +385,7 @@
                     video_file: $(videoFileIdHash).val(),
                     video_thumbnail: $(videoThumbnailIdHash).val(),
                     video_description: $(videoDescriptionIdHash).val(),
+                    video_price: $(videoPriceIdHash).val(),
                 },
                 success: (response)=>{
                     if (response.success){

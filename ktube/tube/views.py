@@ -1380,11 +1380,16 @@ def edit_video(request):
                     video_description = request.POST['video_description']
                 else:
                     video_description = video.description
+                if not request.POST['video_price'] == "":
+                    video_price = request.POST['video_price']
+                else:
+                    video_price = video.price
                 video.title = video_title
                 video.private = video_private
                 video.unlisted = video_unlisted
                 video.thumbnail = video_thumbnail
                 video.description = video_description
+                video.price = video_price
                 video.save()
                 return JsonResponse({'success': True, 'message': "Saved"})
             except:
