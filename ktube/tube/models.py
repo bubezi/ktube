@@ -8,6 +8,7 @@ from ktube.settings import MEDIA_URL
 from .utils import period
 from django_resized import ResizedImageField
 
+
 GENDERS = (
     ('select', 'SELECT'),
     ('male','MALE'),
@@ -25,11 +26,25 @@ class Viewer(models.Model):
     phone = PhoneNumberField(null=True, blank=False)
     gender = models.CharField(null=True, max_length=30, choices=GENDERS)
     joined = models.DateTimeField(auto_now_add=True)
-    
+    # wallet = models.PositiveBigIntegerField(default=0)
+    wallet = models.FloatField(default=0)
+
     def __str__(self):
         return self.username
+
+    def deposit(self, ammount):
+        ammount = float(ammount)
+        self.wallet += ammount
+
+    def spend(self, ammount):
+        ammount = float(ammount)
+        if self.wallet >= ammount:
+            self.wallet -= ammount
+            return True
+        else:
+            return False
     
-    def age (self):
+    def age(self):
         return period(self.joined)
         
 
@@ -65,8 +80,11 @@ class Video(models.Model):
     likes = models.PositiveBigIntegerField(default=0)
     dislikes = models.PositiveBigIntegerField(default=0)
     views = models.PositiveBigIntegerField(default=0)
-    slug = models.SlugField(max_length=300, null=False, default='some-string', unique=True)
+    slug = models.SlugField(max_length=300, null=False, default="some_string", unique=True)
     path = models.URLField(max_length=450, null=True, blank=True, unique=True)
+    # price = models.PositiveBigIntegerField(default=0)
+    price = models.FloatField(default=0)
+    paid_viewers = models.ManyToManyField(Viewer, related_name="paid_viewers", blank=True)
     
     def __str__(self):
         return self.title
@@ -93,9 +111,11 @@ class Video(models.Model):
         return period(self.upload_time)   
     
     def save(self, *args, **kwargs):
-        # Generate the slug from the title before saving
+        # Generate the slug from the title before
         RANDOM_STRING_CHARS = "abcdefghijklmnopqrstuvwxyz"
-        self.slug = 'video-' + self.title.replace(" ", "-").lower() + '-' + get_random_string(70, RANDOM_STRING_CHARS)
+        RANDOM_STRING_CHARS += "_"
+        if self.slug == "some_string":
+            self.slug = get_random_string(200, RANDOM_STRING_CHARS)
         super().save(*args, **kwargs) 
                             
                             

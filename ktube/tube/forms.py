@@ -5,7 +5,7 @@ class VideoForm(forms.ModelForm):
     
     class Meta:
         model = Video
-        fields = ("title", "video", "thumbnail", "description", "private", "unlisted",)
+        fields = ("title", "video", "thumbnail", "description", "private", "unlisted", "price")
         
     def save(self, channel, commit=True):
         video = super().save(commit=False)
@@ -16,6 +16,7 @@ class VideoForm(forms.ModelForm):
         video.description = self.cleaned_data['description']
         video.private = self.cleaned_data['private']
         video.unlisted = self.cleaned_data['unlisted']
+        video.price = self.cleaned_data['price']
         video.channel = channel
         
         if commit:

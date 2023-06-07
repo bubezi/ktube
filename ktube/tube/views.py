@@ -157,6 +157,25 @@ def watch_video(request, pk):
 
         else:
             return HttpResponseForbidden('<h1>Forbidden</h1><h4>Video is private</h4>')  
+    
+    if video.price > 0:
+        if request.user.is_authenticated:
+            viewer = request.user.viewer
+            if not video.channel.user == viewer:
+                if not video.paid_viewers.contains(viewer):
+                    if viewer.spend(video.price):
+                        video.channel.user.wallet += video.price
+                        video.paid_viewers.add(viewer)
+                        viewer.save()
+                        video.channel.user.save()
+                        video.save()
+                    else:
+                        # return HttpResponse("<h1>Deposit money please</h1><h4>Your Video's owner wishes you would support their work</h4>")
+                        return redirect('deposit')
+        else:
+            return redirect('login')  
+
+
 
     subscriber_count = video.channel.subscribers.count() # type: ignore
     comments = Comment.objects.filter(video=video)
@@ -315,6 +334,24 @@ def watch_playlist(request, pk, number):
 
         else:
             return HttpResponseForbidden('<h1>Forbidden</h1><h4>Video is private</h4>')  
+
+    if video.price > 0:
+        if request.user.is_authenticated:
+            viewer = request.user.viewer
+            if not video.channel.user == viewer:
+                if not video.paid_viewers.contains(viewer):
+                    if viewer.spend(video.price):
+                        video.channel.user.wallet += video.price
+                        video.paid_viewers.add(viewer)
+                        viewer.save()
+                        video.channel.user.save()
+                        video.save()
+                    else:
+                        # return HttpResponse("<h1>Deposit money please</h1><h4>Your Video's owner wishes you would support their work</h4>")
+                        return redirect('deposit')
+        else:
+            return redirect('login')  
+
 
     context['video'] = video
 
@@ -1181,6 +1218,32 @@ def my_channels_page(request):
         return render(request, "tube/my_channels.html", context)
     else:
         return redirect('login')
+
+
+def deposit_view(request):
+    context = {}
+    if request.user.is_authenticated:
+        viewer = request.user.viewer
+        context['viewer'] = viewer
+        try:
+            channel = Channel.objects.get(user=viewer)
+            context['channel']=channel
+            context['nav_channel']=channel
+            context['many_channels'] = False
+            context['no_channel'] = False
+        except Channel.DoesNotExist:
+            context['many_channels'] = False
+            context['no_channel'] = True
+        except:
+            context['many_channels'] = True
+            context['no_channel'] = False
+            
+        if context['many_channels']:
+            my_channels = Channel.objects.filter(user=viewer)
+            context['my_channels'] = my_channels
+        return render(request, "tube/deposit.html", context)
+    else:
+        return redirect('login')
     
     
 ##############################################################################################
@@ -1190,6 +1253,24 @@ def my_channels_page(request):
 #############################                                   ##############################
 #############################                                   ##############################
 ##############################################################################################
+
+
+def deposit_funds(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            try:
+                ammount = request.POST['ammount']
+                viewer = request.user.viewer
+                viewer.wallet += float(ammount)
+                viewer.save()
+
+                return JsonResponse({'success': True, 'message': 'Deposit Successfull'})
+            except:
+                return JsonResponse({'success': False, 'message': 'Error Depositing'})
+        else:
+            return HttpResponse('No POST in request')
+    else:
+        return redirect('login')
 
 
 def edit_playlist(request):

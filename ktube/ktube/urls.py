@@ -9,15 +9,13 @@ from register import views as views_reg
 from django.views.generic import TemplateView
 
 urlpatterns = [
-    # Other URL patterns...
-]
-
-urlpatterns = [
     path('robots.txt', TemplateView.as_view(template_name='robots.txt', content_type='text/plain')),
     
     path('', views_tube.home_view, name='home'),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
+
+
     
     path('bye', views_reg.bye_page, name="bye"),
     path('register', views_reg.register, name="register"),
@@ -25,6 +23,8 @@ urlpatterns = [
     path('create_channel', views_reg.create_channel, name="create_channel"),
     path('edit_channel/<str:pk>', views_reg.edit_channel, name="edit_channel"),    
     
+    path('deposit', views_tube.deposit_view, name="deposit"),
+    path('deposit_funds', views_tube.deposit_funds, name="deposit_funds"),
     
     
     path('library', views_tube.library, name="library"),

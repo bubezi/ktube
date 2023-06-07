@@ -1,0 +1,51 @@
+{% extends 'tube/base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+
+{% block title %}Deposit {% endblock title %}
+
+{% block content %}
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <h4>Balance:</h4><h5 style="padding-left: 5px; margin-bottom: 0px !important;">{{ viewer.wallet | intcomma }} KShs</h5>
+            </div>
+            <div class="row">
+                <form>
+                    <input type="number" name="ammount" id="ammount">
+                    <button class="btn btn-success" onclick="event.preventDefault(); depositFunds(event, 'ammount');">Deposit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+    <script>
+        function depositFunds(event, ammountId){
+            event.preventDefault();
+            hashAmmountId = '#' + ammountId;
+            $.ajax({
+                type:'POST',
+                url:"{% url 'deposit_funds' %}",
+                data:{
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    ammount: $(hashAmmountId).val(),
+                },
+                success: (response)=>{
+                    if(response.success){
+                        alert(response.message);
+                        window.location.reload();
+                    }else{
+                        alert(response.message);
+                    };
+                },
+            });
+
+        }
+
+    </script>
+{% endblock content %}
