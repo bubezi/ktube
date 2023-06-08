@@ -118,9 +118,10 @@
     [x] comments
     [x] likes and dislikes
     [x] Subscriptions and Playlists
+    [x] ACC SHOUD ONLY LIKE, dislike & SUB ONCE
     [] Streaming
         [] Opencv (and/or) [] NodeJs 
-    [] ACC SHOUD ONLY LIKE, dislike & SUB ONCE
+    [] Get metadata from video 
     [] Seaking
     [] Resume capability
     [] Pictures (For events and shit)
@@ -129,6 +130,7 @@
 [] PWA
     [] Add bootstrap.bundle.js
     [] Use tools like ngrok or configure SSL certificates for local testing
+    [] Lighthouse 100% mobile
 
 [] Learn React
 [] Copyright DETECTION AND REGISTERING FUNCTIONALITY
