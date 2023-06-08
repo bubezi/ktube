@@ -4,11 +4,12 @@ from django.core.paginator import Paginator
 from .forms import VideoForm, PlaylistForm
 from register.utils import check_errors
 from .filters import VideoFilter
+from decimal import Decimal
 from .models import *
 
 
-PERCENTAGE_OF_REVENUE = .85
-OWNER_USERNAME = 'bubezi'
+PERCENTAGE_OF_REVENUE = Decimal('0.85')
+COMPANY_USERNAME = 'bubezi'
 
 
 ##############################################################################################
@@ -172,12 +173,11 @@ def watch_video(request, pk):
             if not video.channel.user == viewer:
                 if not video.paid_viewers.contains(viewer):
                     if viewer.spend(video.price):
-                        video_owner_cut = PERCENTAGE_OF_REVENUE * video.price
-                        video_owner_cut = float(video_owner_cut)
-                        owner_cut = float(video.price) - float(video_owner_cut)
-                        video.channel.user.wallet += video_owner_cut
-                        main_viewer = Viewer.objects.get(id=1)
-                        main_viewer.wallet += owner_cut
+                        video_owner_cut = PERCENTAGE_OF_REVENUE * Decimal(video.price)
+                        company_cut = Decimal(video.price) - video_owner_cut
+                        video.channel.user.wallet += float(video_owner_cut)
+                        main_viewer = Viewer.objects.get(username=COMPANY_USERNAME)
+                        main_viewer.wallet += float(company_cut)
                         video.paid_viewers.add(viewer)
                         viewer.save()
                         main_viewer.save()
@@ -354,19 +354,17 @@ def watch_playlist(request, pk, number):
 
 
 
-
     if video.price > 0:
         if request.user.is_authenticated:
             viewer = request.user.viewer
             if not video.channel.user == viewer:
                 if not video.paid_viewers.contains(viewer):
                     if viewer.spend(video.price):
-                        video_owner_cut = PERCENTAGE_OF_REVENUE * video.price
-                        video_owner_cut = float(video_owner_cut)
-                        owner_cut = float(video.price) - float(video_owner_cut)
+                        video_owner_cut = PERCENTAGE_OF_REVENUE * Decimal(video.price)
+                        company_cut = Decimal(video.price) - video_owner_cut
                         video.channel.user.wallet += video_owner_cut
-                        main_viewer = Viewer.objects.get(id=1)
-                        main_viewer.wallet += owner_cut
+                        main_viewer = Viewer.objects.get(username=COMPANY_USERNAME)
+                        main_viewer.wallet += company_cut
                         video.paid_viewers.add(viewer)
                         viewer.save()
                         main_viewer.save()
@@ -376,8 +374,7 @@ def watch_playlist(request, pk, number):
                         # return HttpResponse("<h1>Deposit money please</h1><h4>Your Video's owner wishes you would support their work</h4>")
                         return redirect('deposit')
         else:
-            return redirect('login') 
-
+            return redirect('login')  
 
 
 
@@ -1670,7 +1667,7 @@ def add_view(request):
             video.save()
             
             previous_view=0
-            previous_views = video.videoview_set.order_by('viewed_on').filter(viewer=viewer).reverse().in_bulk().values() # type: ignore
+            # previous_views = video.videoview_set.order_by('viewed_on').filter(viewer=viewer).reverse().in_bulk().values() # type: ignore
             if len(previous_views)>1:
                 for index, v in enumerate(previous_views):
                     previous_view = v

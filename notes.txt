@@ -32,10 +32,10 @@ if video.price > 0:
             if not video.paid_viewers.contains(viewer):
                 if viewer.spend(video.price):
                     video_owner_cut = PERCENTAGE_OF_REVENUE * Decimal(video.price)
-                    owner_cut = Decimal(video.price) - video_owner_cut
+                    company_cut = Decimal(video.price) - video_owner_cut
                     video.channel.user.wallet += video_owner_cut
                     main_viewer = Viewer.objects.get(id=1)
-                    main_viewer.wallet += owner_cut
+                    main_viewer.wallet += company_cut
                     video.paid_viewers.add(viewer)
                     viewer.save()
                     main_viewer.save()

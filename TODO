@@ -109,11 +109,15 @@
 [x] Video slug - From link using video id to slug
 [x] Video costs something
 [] Fix revenue percentage error
+[] Round off cash
+[] Log video view count after a percentage of video length
+[] History compile similar adjacent videos
 [] PWA
     [] Add bootstrap.bundle.js
     [] Use tools like ngrok or configure SSL certificates for local testing
 
 [] Learn React
+[] Copyright DETECTION AND REGISTERING FUNCTIONALITY
 [] Check out NODE JS FOR STREAMING
 [] Timezone management
 [] Create logic
@@ -125,6 +129,7 @@
         [] Opencv (and/or) [] NodeJs 
     [] ACC SHOUD ONLY LIKE, dislike & SUB ONCE
     [] Seaking
+    [] Resume capability
 [] Manage recurring Ajax get functions
 [x] robots.txt => https://ordinarycoders.com/blog/article/robots-text-file-django
 [] Create dynamic sitemap => https://ordinarycoders.com/blog/article/django-sitemap
@@ -154,6 +159,7 @@
 [] Video.Js
 [] UI
     [] Make everything beautiful
+        [] Themes
     [] responsiveness 
         [] Google Chrome Lighthouse (target 100%)
             [x] How to convert images to WebP and AVIF from PNG or JPEG
