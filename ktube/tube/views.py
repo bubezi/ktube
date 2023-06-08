@@ -165,6 +165,7 @@ def watch_video(request, pk):
     
     
     
+#### Monetisation
     
     
     if video.price > 0:
@@ -212,8 +213,15 @@ def watch_video(request, pk):
     context['comment_replies'] = comment_replies
     context['subscriber_count'] = subscriber_count
     
+
+#### Suggestion
+
     more_videos = Video.objects.all()
-    context['more_videos'] = more_videos
+    more_videos_s = []
+    for v in more_videos:
+        if not v == video:
+            more_videos_s.append(v)
+    context['more_videos'] = more_videos_s
     
                 
     if request.user.is_authenticated:
@@ -353,6 +361,7 @@ def watch_playlist(request, pk, number):
             return HttpResponseForbidden('<h1>Forbidden</h1><h4>Video is private</h4>')  
 
 
+#### Monetisation
 
     if video.price > 0:
         if request.user.is_authenticated:
@@ -395,9 +404,15 @@ def watch_playlist(request, pk, number):
     context['comment_replies'] = comment_replies
     context['subscriber_count'] = subscriber_count
     
-    
+#### Suggestion
+
+
     more_videos = Video.objects.all()
-    context['more_videos'] = more_videos
+    more_videos_s = []
+    for v in more_videos:
+        if not v == video:
+            more_videos_s.append(v)
+    context['more_videos'] = more_videos_s
     
     context['playlist_videos'] = videos
     

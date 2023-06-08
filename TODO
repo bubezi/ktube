@@ -110,6 +110,20 @@
 [x] Video costs something
 [x] Fix revenue percentage error
 [x] History compile similar adjacent videos
+[] Search filters
+[] An uploading loader (Upoading, processing)
+[] Auto Skip
+[] Create logic
+    [x] Channel
+    [x] comments
+    [x] likes and dislikes
+    [x] Subscriptions and Playlists
+    [] Streaming
+        [] Opencv (and/or) [] NodeJs 
+    [] ACC SHOUD ONLY LIKE, dislike & SUB ONCE
+    [] Seaking
+    [] Resume capability
+    [] Pictures (For events and shit)
 [] Round off cash
 [] Log video view count after a percentage of video length
 [] PWA
@@ -118,21 +132,13 @@
 
 [] Learn React
 [] Copyright DETECTION AND REGISTERING FUNCTIONALITY
+[] Recommend FUNCTIONALITY
 [] Check out NODE JS FOR STREAMING
 [] Timezone management
-[] Create logic
-    [x] Channel
-    [x] comments
-    [x] likes and dislikes
-    [x] Subscriptions and Playlists
-    [] Streaming 
-        [] Opencv (and/or) [] NodeJs 
-    [] ACC SHOUD ONLY LIKE, dislike & SUB ONCE
-    [] Seaking
-    [] Resume capability
 [] Manage recurring Ajax get functions
 [x] robots.txt => https://ordinarycoders.com/blog/article/robots-text-file-django
 [] Create dynamic sitemap => https://ordinarycoders.com/blog/article/django-sitemap
+
 ######
 
 # GOOGLE AND TODO
@@ -159,7 +165,6 @@
 [] Video.Js
 [] UI
     [] Make everything beautiful
-        [] Themes
     [] responsiveness 
         [] Google Chrome Lighthouse (target 100%)
             [x] How to convert images to WebP and AVIF from PNG or JPEG
@@ -238,6 +243,7 @@ video streaming in Django:
 [] FIX comments
 [] UI
     [] Make everything beautiful
+        [] Themes
     [] responsiveness 
         [] Google Chrome Lighthouse (target 100%)
             [x] How to convert images to WebP and AVIF from PNG or JPEG

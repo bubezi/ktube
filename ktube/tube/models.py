@@ -115,7 +115,7 @@ class Video(models.Model):
         RANDOM_STRING_CHARS = "abcdefghijklmnopqrstuvwxyz"
         RANDOM_STRING_CHARS += "_"
         if self.slug == "some_string":
-            self.slug = get_random_string(200, RANDOM_STRING_CHARS)
+            self.slug = get_random_string(70, RANDOM_STRING_CHARS)
         super().save(*args, **kwargs) 
                             
                             
