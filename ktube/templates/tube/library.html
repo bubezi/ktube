@@ -433,15 +433,15 @@
 <!-- ####################      My History     ##################### -->
      <div class="row box-element">
         <div class="col-lg-12">
-            {% comment %} {% if history.video_count == 1 %}
+            {% if history.video_count == 1 %}
             <div class="row">
-                <h3>{{history}}</h3><h4 style="padding-left: 7px;">- {{history.video_count}} video watched</h4>
+                 <h3>{{history}}</h3><h4 style="padding-left: 7px;">{% comment %}- {{history.video_count}} video watched{% endcomment %}</h4> 
             </div>
             {% else %}
             <div class="row">
-                <h3>{{history}}</h3><h4 style="padding-left: 7px;">- {{history.video_count}} videos watched</h4>
+                <h3>{{history}}</h3><h4 style="padding-left: 7px;">{% comment %}- {{history.video_count}} videos watched{% endcomment %}</h4>
             </div>
-            {% endif %} {% endcomment %}
+            {% endif %}
 
             
             <a href="{% url 'profile' %}"><div class="row"><h4>{{history.viewer.username | title }}</h4></div></a>

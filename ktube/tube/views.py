@@ -771,7 +771,15 @@ def history(request):
                 context['history'] = history
             views = history.views.order_by('viewed_on')
             views = views.reverse()
-            context['views']=views
+            new_views = []
+            for index, v in enumerate(views):
+                if index == 0:
+                    new_views.append(v)
+                else:
+                    if not new_views[-1].video == v.video:
+                        new_views.append(v)
+
+            context['views']= new_views
 
             try:
                 watchlater = Watchlater.objects.get(viewer=viewer)
@@ -904,6 +912,13 @@ def library(request):
                 context['history'] = history
                 history_views = history.views.order_by('viewed_on')
                 history_views = history_views.reverse()
+                new_views = []
+                for index, v in enumerate(history_views):
+                    if index == 0:
+                        new_views.append(v)
+                    else:
+                        if not new_views[-1].video == v.video:
+                            new_views.append(v)
 
             except History.DoesNotExist:
                 history = History(viewer=viewer)
@@ -911,6 +926,13 @@ def library(request):
                 history_views = history.views.order_by('viewed_on')
                 history_views = history_views.reverse()
                 context['history'] = history
+                new_views = []
+                for index, v in enumerate(history_views):
+                    if index == 0:
+                        new_views.append(v)
+                    else:
+                        if not new_views[-1].video == v.video:
+                            new_views.append(v)
 
             try:
                 saved_playlists = SavedPlaylists.objects.get(viewer=viewer)
@@ -921,7 +943,7 @@ def library(request):
                 saved_playlists.save()
                 context['saved_playlists'] = saved_playlists
 
-            context['history_views']=history_views
+            context['history_views']= new_views
             context['playlists']=saved_playlists.playlists.all()
             context['liked_videos_videos']=liked_videos.videos.all()
             context['watchlater_videos']=watchlater.videos.all()     

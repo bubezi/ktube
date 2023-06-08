@@ -108,10 +108,10 @@
 # PHASE 2
 [x] Video slug - From link using video id to slug
 [x] Video costs something
-[] Fix revenue percentage error
+[x] Fix revenue percentage error
+[x] History compile similar adjacent videos
 [] Round off cash
 [] Log video view count after a percentage of video length
-[] History compile similar adjacent videos
 [] PWA
     [] Add bootstrap.bundle.js
     [] Use tools like ngrok or configure SSL certificates for local testing
