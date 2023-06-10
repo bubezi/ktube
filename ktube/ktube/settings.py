@@ -18,12 +18,12 @@ SECRET_KEY = env("SECRET_KEY")
 ALLOWED_HOSTS = ['ktube.pythonanywhere.com']
 ALLOWED_HOSTS += ['192.168.87.137', '127.0.0.1']
 
-
+NODE_SERVER_URL = 'http://localhost:8000'
 
 ######################## COMMENT THIS OUT DURING DEVELOPMENT AND TESTING AND UNCOMMENT THE ONE BELOW IT ###########################################
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+# DEBUG = False
 
 # # Database
 # # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -49,7 +49,9 @@ DEBUG = False
 
 
 
-# DEBUG = True
+DEBUG = True
+
+DEBUG_PROPAGATE_EXCEPTIONS = True
 
 
 # Database
@@ -108,6 +110,7 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
 ]
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 # SITE_ID = 1
@@ -129,6 +132,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'ktube.urls'

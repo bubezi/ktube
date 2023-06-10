@@ -26,8 +26,10 @@
         <video
 
             controls
-            autoplay="true" 
-            class="video" id="currentVideo" src="{{video.videoURL}}">
+            autoplay
+            class="video" id="currentVideo">
+            <source src="{{video.videoURL}}" type="video/mp4">
+            <source src="{{video.videoURL}}" type="video/x-matroska">
             Your browser does not support the video
         </video>
         {% if playlist_videos %}

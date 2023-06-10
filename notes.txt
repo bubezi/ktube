@@ -1,11 +1,1448 @@
 ###################################################################################
 
+###################################################################################
+
+###################################################################################
+
+###################################################################################
+
+
+#user  nobody;
+worker_processes  1;
+
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+
+#pid        logs/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+    #                  '$status $body_bytes_sent "$http_referer" '
+    #                  '"$http_user_agent" "$http_x_forwarded_for"';
+
+    #access_log  logs/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    server {
+        listen       80;
+        server_name  localhost;
+
+        #charset koi8-r;
+
+        #access_log  logs/host.access.log  main;
+
+        location / {
+            root   html;
+            index  index.html index.htm;
+        }
+
+        #error_page  404              /404.html;
+
+        # redirect server error pages to the static page /50x.html
+        #
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+
+        # proxy the PHP scripts to Apache listening on 127.0.0.1:80
+        #
+        #location ~ \.php$ {
+        #    proxy_pass   http://127.0.0.1;
+        #}
+
+        # pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000
+        #
+        #location ~ \.php$ {
+        #    root           html;
+        #    fastcgi_pass   127.0.0.1:9000;
+        #    fastcgi_index  index.php;
+        #    fastcgi_param  SCRIPT_FILENAME  /scripts$fastcgi_script_name;
+        #    include        fastcgi_params;
+        #}
+
+        # deny access to .htaccess files, if Apache's document root
+        # concurs with nginx's one
+        #
+        #location ~ /\.ht {
+        #    deny  all;
+        #}
+    }
+
+
+    # another virtual host using mix of IP-, name-, and port-based configuration
+    #
+    #server {
+    #    listen       8000;
+    #    listen       somename:8080;
+    #    server_name  somename  alias  another.alias;
+
+    #    location / {
+    #        root   html;
+    #        index  index.html index.htm;
+    #    }
+    #}
+
+
+    # HTTPS server
+    #
+    #server {
+    #    listen       443 ssl;
+    #    server_name  localhost;
+
+    #    ssl_certificate      cert.pem;
+    #    ssl_certificate_key  cert.key;
+
+    #    ssl_session_cache    shared:SSL:1m;
+    #    ssl_session_timeout  5m;
+
+    #    ssl_ciphers  HIGH:!aNULL:!MD5;
+    #    ssl_prefer_server_ciphers  on;
+
+    #    location / {
+    #        root   html;
+    #        index  index.html index.htm;
+    #    }
+    #}
+
+}
+
 
 
 
 ###################################################################################
 
 
+Chat history
+New chat
+Hide sidebar
+Today
+Video Serving and Watching
+
+
+
+Add "start" script
+Import 're' Module
+Django-Node Video Streaming
+Yesterday
+Ethical RAR Hacking
+Limit Dial-up Data Usage
+Floating-Point Precision Error
+Previous 7 Days
+VS for Windows Development
+Slow download for x86_64-33_r11.zip
+Windows Email Config Error.
+Document File Opener.
+Alternative Android Emulators
+Check Chocolatey Installation.
+Invalid Git Repository Syntax
+Free Android Studio IDE
+Previous 30 Days
+Inline Critical Resources
+Loader CSS Affects Rest
+Django Robots.txt Basics.
+Unsupported 'unaccent' Lookup
+Timezone.now() not returning current time
+Live Video Streaming Integration
+Configuring Git Line Endings
+Django Multi-Argument URLs
+Delete non-empty directory.
+Add directory to PATH
+Foreign Key Constraint Failure
+Fix Git Index Error
+Video Playlist Options
+Upgrade to Plus
+NEW
+
+
+User
+Prince Bubezi
+
+User
+[09/Jun/2023 21:38:33] "GET /video/_yxles_jdfnp_sbmklbsczijckfmnnedecqlknxcpuwdbvvhmzgxypnkfodbuvfglwdzwepovofb_qvbbneyapxxpgqvmmhxiapwzcdsmhqamdzjnddycojfhgfjnfipywaa_lncipyolxeyow_bxsabhemzuzhesvpotzswwzugfqx_helgkk_vooijtftsrkvcxses HTTP/1.1" 200 105575
+Internal Server Error: /video_serve/_yxles_jdfnp_sbmklbsczijckfmnnedecqlknxcpuwdbvvhmzgxypnkfodbuvfglwdzwepovofb_qvbbneyapxxpgqvmmhxiapwzcdsmhqamdzjnddycojfhgfjnfipywaa_lncipyolxeyow_bxsabhemzuzhesvpotzswwzugfqx_helgkk_vooijtftsrkvcxses/
+Traceback (most recent call last):
+  File "C:\Users\User\Documents\code\ktube\env1\Lib\site-packages\django\core\handlers\exception.py", line 56, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Documents\code\ktube\env1\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Documents\code\ktube\env1\Lib\site-packages\django\views\decorators\clickjacking.py", line 55, in wrapped_view
+    resp = view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Documents\code\ktube\ktube\tube\views.py", line 198, in video_serve
+TypeError: 'Response' object does not support item assignment
+
+X_FRAME_OPTIONS_EXEMPT = "SAMEORIGIN"
+
+@xframe_options_exempt
+def video_serve(request, pk):
+    try:
+        video = Video.objects.get(slug=pk)
+    except Video.DoesNotExist:
+        return HttpResponseBadRequest('<h1>404 Not Found</h1><h3>Video Does Not Exist! SORRYYY</h3>')
+
+    node_server_url = settings.NODE_SERVER_URL
+    video_link = f"{node_server_url}/video/{video.video.url}"
+    response = requests.get(video_link, headers=request.headers, stream=True)
+
+    if response.status_code == 200:
+        response.raw.decode_content = True
+        video_data = response.raw.read()
+        response = HttpResponse(video_data, content_type='video/mp4/mkv')
+        response['Content-Length'] = response.tell()
+
+    # Set X-Frame-Options to SAMEORIGIN to exempt from clickjacking protection
+    response[X_FRAME_OPTIONS_EXEMPT] = True
+
+    return response
+
+
+
+def watch_video(request, pk):
+    context = {}
+    try:
+        video = Video.objects.get(slug=pk) # type: ignore
+
+    except Video.DoesNotExist:
+        return HttpResponseBadRequest('<h1>404 Not Found</h1><h3>Video Does Not Exist! SORRYYY</h3>')   # type: ignore
+    
+    if video.private:
+        if request.user.is_authenticated:
+            try:
+                viewer = request.user.viewer
+                if not video.channel.user == viewer: # type: ignore
+                    return HttpResponseForbidden('<h1>Forbidden</h1><h4>Video is private</h4>')
+
+            except:
+                return HttpResponseForbidden('<h1>Forbidden</h1><h4>Video is private</h4>')
+
+        else:
+            return HttpResponseForbidden('<h1>Forbidden</h1><h4>Video is private</h4>')  
+    
+    
+    
+#### Monetisation
+    
+    
+    if video.price > 0:
+        if request.user.is_authenticated:
+            viewer = request.user.viewer
+            if not video.channel.user == viewer:
+                if not video.paid_viewers.contains(viewer):
+                    if viewer.spend(video.price):
+                        video_owner_cut = PERCENTAGE_OF_REVENUE * Decimal(video.price)
+                        company_cut = Decimal(video.price) - video_owner_cut
+                        video.channel.user.wallet += float(video_owner_cut)
+                        main_viewer = Viewer.objects.get(username=COMPANY_USERNAME)
+                        main_viewer.wallet += float(company_cut)
+                        video.paid_viewers.add(viewer)
+                        viewer.save()
+                        main_viewer.save()
+                        video.channel.user.save()
+                        video.save()
+                    else:
+                        # return HttpResponse("<h1>Deposit money please</h1><h4>Your Video's owner wishes you would support their work</h4>")
+                        return redirect('deposit')
+        else:
+            return redirect('login')  
+
+
+
+
+
+
+    subscriber_count = video.channel.subscribers.count() # type: ignore
+    comments = Comment.objects.filter(video=video)
+    comment_replies = CommentReply.objects.all()
+    
+    paginator = Paginator(comments, 20) # 20 comments per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    # replies_dict = comment_replies.in_bulk()
+    # replies_list = []
+    # for key in range(len(replies_dict)):
+    #     replies_list.append(replies_dict[key+1].reply) # replies here are strings
+     
+    context['video'] = video
+    context['comments'] = page_obj
+    context['comment_replies'] = comment_replies
+    context['subscriber_count'] = subscriber_count
+    
+
+#### Suggestion
+
+    more_videos = Video.objects.all()
+    more_videos_s = []
+    for v in more_videos:
+        if not v == video:
+            more_videos_s.append(v)
+    context['more_videos'] = more_videos_s
+    
+                
+    if request.user.is_authenticated:
+        try:
+            viewer = request.user.viewer
+            context['viewer'] = viewer
+            
+            try:
+                watchlater = Watchlater.objects.get(viewer=viewer)
+                context['watchlater'] = watchlater
+
+            except Watchlater.DoesNotExist:
+                watchlater = Watchlater(viewer=viewer)
+                watchlater.save()
+                context['watchlater'] = watchlater
+            
+            if video.channel.subscribers.contains(viewer): # type: ignore
+                context['subscribed']=True
+                
+            try:
+                likes = LikedVideos.objects.get(viewer=viewer)
+                dislikes = DisLikedVideos.objects.get(viewer=viewer)
+  
+            except:
+                likes = LikedVideos(viewer=viewer)
+                dislikes = DisLikedVideos(viewer=viewer)
+                likes.save()
+                dislikes.save()
+                
+            if likes.videos.contains(video):
+                context['liked'] = True
+
+            if dislikes.videos.contains(video):
+                context['disliked'] = True
+                
+            try:
+                nav_channel = Channel.objects.get(user=viewer)
+                playlists = Playlist.objects.filter(channel=nav_channel)  # type: ignore
+                context['playlists'] = playlists
+                context['nav_channel'] = nav_channel
+                context['no_channel'] = False
+                context['many_channels'] = False
+
+            except Channel.DoesNotExist:
+                context['no_channel'] = True
+                context['many_channels'] = False
+
+            except:
+                my_channels = Channel.objects.filter(user=viewer)
+                my_playlists = []
+
+                for channel in my_channels:
+                    channel_playlists = Playlist.objects.filter(channel=channel).in_bulk().values()
+                    for channel_playlist in channel_playlists:
+                        my_playlists.append(channel_playlist)
+                context['playlists']= my_playlists
+                context['my_channels']= my_channels
+                context['many_channels'] = True
+                context['no_channel'] = False
+
+        except:
+            context['many_channels'] = False
+            context['no_channel'] = True
+    
+    return render(request, 'tube/watch.html', context)
+
+        <video
+
+            controls
+            autoplay="true" 
+            class="video" id="currentVideo" src="{% url 'video_serve' video.slug %}">
+            Your browser does not support the video
+        </video>
+ChatGPT
+The code you provided seems to be part of a Django web application for serving and watching videos. It includes two views: video_serve and watch_video.
+
+The video_serve view is responsible for serving the video file requested by the client. It retrieves the video object based on the provided slug, sends a request to a Node.js server to get the video data, and then constructs a response with the video data. One issue in the code is that it tries to assign a value to the X_FRAME_OPTIONS_EXEMPT attribute of the response object, which is not supported. It should be using the X-Frame-Options header instead. Here's the corrected code:
+
+python
+Copy code
+from django.views.decorators.clickjacking import xframe_options_exempt
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
+import requests
+from django.conf import settings
+
+X_FRAME_OPTIONS_EXEMPT = "SAMEORIGIN"
+
+@xframe_options_exempt
+def video_serve(request, pk):
+    try:
+        video = Video.objects.get(slug=pk)
+    except Video.DoesNotExist:
+        return HttpResponseBadRequest('<h1>404 Not Found</h1><h3>Video Does Not Exist! SORRYYY</h3>')
+
+    node_server_url = settings.NODE_SERVER_URL
+    video_link = f"{node_server_url}/video/{video.video.url}"
+    response = requests.get(video_link, headers=request.headers, stream=True)
+
+    if response.status_code == 200:
+        response.raw.decode_content = True
+        video_data = response.raw.read()
+        response = HttpResponse(video_data, content_type='video/mp4/mkv')
+        response['Content-Length'] = response.tell()
+
+    # Set X-Frame-Options to SAMEORIGIN to exempt from clickjacking protection
+    response['X-Frame-Options'] = X_FRAME_OPTIONS_EXEMPT
+
+    return response
+The watch_video view handles the logic for watching a video. It retrieves the video object based on the provided slug and performs various checks, such as checking if the video is private and if the user is authenticated and authorized to watch the video. It also includes code related to monetization and fetching additional data like comments and related videos. However, it's incomplete, as there are comments indicating that some code sections are commented out. If you have specific questions or concerns about this view, please let me know.
+
+
+
+
+
+User
+Internal Server Error: /video_serve/_yxles_jdfnp_sbmklbsczijckfmnnedecqlknxcpuwdbvvhmzgxypnkfodbuvfglwdzwepovofb_qvbbneyapxxpgqvmmhxiapwzcdsmhqamdzjnddycojfhgfjnfipywaa_lncipyolxeyow_bxsabhemzuzhesvpotzswwzugfqx_helgkk_vooijtftsrkvcxses/
+Traceback (most recent call last):
+  File "C:\Users\User\Documents\code\ktube\env1\Lib\site-packages\django\core\handlers\exception.py", line 56, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Documents\code\ktube\env1\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Documents\code\ktube\env1\Lib\site-packages\django\views\decorators\clickjacking.py", line 55, in wrapped_view
+    resp = view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Documents\code\ktube\ktube\tube\views.py", line 202, in video_serve
+    response['X-Frame-Options'] = X_FRAME_OPTIONS_EXEMPT
+    ~~~~~~~~^^^^^^^^^^^^^^^^^^^
+TypeError: 'Response' object does not support item assignment
+ChatGPT
+
+2 / 2
+
+Apologies for the confusion. It appears that the error is occurring because the response object being used in the video_serve view is of type HttpResponse, which does not support item assignment.
+
+To resolve this issue, you can create a new HttpResponse object with the video data and headers and assign the X-Frame-Options header to it. Here's the updated code:
+
+python
+Copy code
+from django.views.decorators.clickjacking import xframe_options_exempt
+from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseForbidden
+import requests
+from django.conf import settings
+
+X_FRAME_OPTIONS_EXEMPT = "SAMEORIGIN"
+
+@xframe_options_exempt
+def video_serve(request, pk):
+    try:
+        video = Video.objects.get(slug=pk)
+    except Video.DoesNotExist:
+        return HttpResponseBadRequest('<h1>404 Not Found</h1><h3>Video Does Not Exist! SORRYYY</h3>')
+
+    node_server_url = settings.NODE_SERVER_URL
+    video_link = f"{node_server_url}/video/{video.video.url}"
+    response = requests.get(video_link, headers=request.headers, stream=True)
+
+    if response.status_code == 200:
+        response.raw.decode_content = True
+        video_data = response.raw.read()
+        content_type = 'video/mp4/mkv'
+        content_length = len(video_data)
+
+        # Create a new HttpResponse object
+        new_response = HttpResponse(video_data, content_type=content_type)
+        new_response['Content-Length'] = content_length
+
+        # Set X-Frame-Options to SAMEORIGIN to exempt from clickjacking protection
+        new_response['X-Frame-Options'] = X_FRAME_OPTIONS_EXEMPT
+
+        return new_response
+
+    return HttpResponseBadRequest('<h1>404 Not Found</h1><h3>Video Data Not Available</h3>')
+By creating a new HttpResponse object, you can assign the X-Frame-Options header without encountering the TypeError.
+
+
+
+
+
+User
+Because it seems that I can't merge js and django for this functionality, is there any other way I can allow streaming and user seeking of the video
+ChatGPT
+Yes, you can allow streaming and user seeking of the video by using HTML5 video player features. Instead of fetching the video data from a Node.js server and serving it via Django, you can directly provide the video URL to the HTML5 <video> element.
+
+Here's an example of how you can modify your Django template to include the HTML5 video player:
+
+html
+Copy code
+<video controls autoplay class="video" id="currentVideo">
+    <source src="{{ video_url }}" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+In the above code, {{ video_url }} is a placeholder that should be replaced with the actual URL of the video file.
+
+By using the HTML5 video player, the browser will handle the streaming and seeking of the video. The controls provided by the <video> element, such as play/pause, volume control, and seek bar, will enable the user to interact with the video playback.
+
+You can generate the video_url dynamically in your Django view and pass it to the template. Once you have the URL of the video file, you can set it as the src attribute of the <source> element within the <video> tag.
+
+Note that you might need to ensure that your video files are accessible to the client browser by configuring your web server correctly.
+
+
+
+
+
+User
+        <video
+
+            controls
+            autoplay="true" 
+            class="video" id="currentVideo">
+            <source src="{{video.videoURL}}" type="video/mp4/mkv">
+            Your browser does not support the video
+        </video>
+ChatGPT
+The code snippet you provided looks correct. It sets up an HTML5 <video> element with controls, autoplay, and a source tag pointing to {{video.videoURL}}, which should be replaced with the actual URL of the video file.
+
+Here's the updated code snippet:
+
+html
+Copy code
+<video controls autoplay class="video" id="currentVideo">
+    <source src="{{video.videoURL}}" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+Make sure that video.videoURL in the Django template is populated with the correct URL of the video file. This URL should be accessible to the client browser so that it can stream and play the video.
+
+
+
+
+
+User
+Why can't have the type="video/mp4/mkv"
+ChatGPT
+Apologies for the confusion. The type attribute of the <source> element in the HTML5 <video> tag should specify the MIME type of the video file.
+
+For MP4 videos, you can use type="video/mp4", and for MKV videos, you can use type="video/x-matroska".
+
+Here's the updated code snippet:
+
+html
+Copy code
+<video controls autoplay class="video" id="currentVideo">
+    <source src="{{video.videoURL}}" type="video/mp4">
+    <source src="{{video.videoURL}}" type="video/x-matroska">
+    Your browser does not support the video tag.
+</video>
+In the code above, both the MP4 and MKV formats are specified as <source> elements, allowing the browser to choose the compatible format based on its capabilities. If the browser doesn't support either format, the fallback message "Your browser does not support the video tag" will be displayed.
+
+Ensure that {{video.videoURL}} is replaced with the actual URL of the video file, and make sure the URL points to a valid video file in either MP4 or MKV format.
+
+
+
+
+
+User
+The video plays but I can't seek
+ChatGPT
+If the video is playing but seeking (i.e., jumping to a specific position in the video) is not working, it could be due to a few reasons. Here are some potential solutions to enable seeking in the HTML5 video player:
+
+Ensure the video file is properly encoded: Make sure the video file is encoded correctly and has metadata that allows for seeking. Some video files may not have the necessary metadata or be encoded in a way that prevents seeking. Try encoding the video using a different encoding tool or checking the encoding settings to ensure seeking is enabled.
+
+Check the server configuration: Ensure that the server hosting the video files supports partial content requests. The server needs to respond with the appropriate "206 Partial Content" status code and accept byte range requests for seeking to work. This is necessary for the browser to fetch specific portions of the video file when seeking.
+
+Use a compatible video format: Although MP4 and MKV are popular video formats, not all browsers support seeking in these formats. To maximize compatibility, consider using the MP4 format with H.264 video codec and AAC audio codec. This combination is widely supported across different browsers and platforms.
+
+Verify the video file's metadata: Check the video file's metadata to ensure it contains the necessary information for seeking. Metadata can be inspected using tools like FFmpeg or media information utilities. Verify that the video's duration and keyframe information are correctly defined.
+
+Test in different browsers: Different browsers may have varying levels of support for seeking in HTML5 video players. Test the video player and seeking functionality in multiple browsers to identify if it's a browser-specific issue. Consider using the latest versions of popular browsers like Google Chrome, Mozilla Firefox, and Safari for better compatibility.
+
+Use a video player library: If the built-in HTML5 video player does not provide the desired seeking behavior, you can consider using a JavaScript-based video player library like Video.js or Plyr. These libraries offer additional customization and control over the video playback, including seeking functionality.
+
+By ensuring proper video encoding, server configuration, compatible formats, and testing across different browsers, you can increase the chances of seeking working correctly in your HTML5 video player.
+
+
+
+
+
+User
+Check the server configuration: Ensure that the server hosting the video files supports partial content requests. The server needs to respond with the appropriate "206 Partial Content" status code and accept byte range requests for seeking to work. This is necessary for the browser to fetch specific portions of the video file when seeking. How Do I do this, I am using the defualt django's WSGI server
+ChatGPT
+If you're using the default Django WSGI server (runserver) for development, it may not support partial content requests by default. The runserver is a simple development server and may not have all the features required for advanced video streaming and seeking.
+
+To enable seeking and partial content requests, you will need to use a production-ready web server that supports range requests. Here are a few steps you can follow to set up a production server:
+
+Choose a production server: Select a web server suitable for serving your Django application in a production environment. Popular choices include Apache HTTP Server, Nginx, and Gunicorn.
+
+Configure the web server: Install and configure the selected web server to work with Django. There are detailed instructions available for each server, specific to your operating system and configuration.
+
+For Apache HTTP Server, you can use the mod_wsgi module to integrate Django. Make sure to enable the mod_headers module to handle range requests. Configure appropriate Header directives to allow byte range requests.
+
+For Nginx, you can use the uwsgi module or the proxy_pass directive to forward requests to a WSGI server. Ensure that you configure proxy_set_header to allow range requests.
+
+For Gunicorn, it is recommended to use it behind a reverse proxy server like Nginx or Apache. Configure the reverse proxy server as mentioned above to handle range requests.
+
+Test seeking functionality: After configuring the production server, test the seeking functionality of your video player to ensure that range requests are handled correctly. You can use browser developer tools to inspect the network requests and check if the server responds with the "206 Partial Content" status code for range requests.
+
+It's important to note that serving video files and handling range requests can be resource-intensive. In a production environment, it's recommended to use specialized media servers or CDNs designed for efficient video streaming. These solutions offer better performance and scalability for serving large video files.
+
+Please consult the documentation and resources specific to the web server you choose for detailed configuration instructions.
+
+
+
+
+
+User
+can I use django-gunicorn-nginx on development?
+ChatGPT
+Yes, you can use django-gunicorn-nginx for development as well. django-gunicorn-nginx is a combination of tools that allows you to run your Django application with Gunicorn as the application server and Nginx as the reverse proxy server.
+
+Typically, django-gunicorn-nginx is used in production environments where high performance and scalability are required. However, you can also use it for development purposes if you want to mimic the production environment closely.
+
+To use django-gunicorn-nginx for development, follow these steps:
+
+Install Gunicorn and Nginx: Install Gunicorn and Nginx on your development machine. You can use package managers like pip or apt-get to install them.
+
+Set up Gunicorn: Configure Gunicorn to run your Django application. Create a Gunicorn configuration file (e.g., gunicorn.conf.py) with appropriate settings such as the number of workers, bind address, and other Gunicorn options. You can refer to the Gunicorn documentation for more details on configuring Gunicorn.
+
+Set up Nginx: Configure Nginx as a reverse proxy server to forward requests to Gunicorn. Create an Nginx configuration file (e.g., nginx.conf) with appropriate settings, including the server block, proxy settings, and static file serving configuration. You can refer to the Nginx documentation for more details on configuring Nginx.
+
+Run Gunicorn: Start Gunicorn with your Django application using the Gunicorn configuration file you created. For example, you can use the following command:
+
+r
+Copy code
+gunicorn -c gunicorn.conf.py your_project.wsgi
+Start Nginx: Start Nginx and configure it to use the Nginx configuration file you created. For example, you can use the following command:
+
+bash
+Copy code
+nginx -c /path/to/nginx.conf
+With these steps, you can run your Django application with Gunicorn as the application server and Nginx as the reverse proxy server during development. This setup allows you to test and debug your application in an environment similar to the production setup.
+
+Remember to update your Django settings to use the appropriate server and port configuration based on your nginx.conf file.
+
+Keep in mind that running Gunicorn and Nginx during development may introduce additional complexity compared to using Django's built-in development server (runserver). It's important to weigh the benefits and consider the specific requirements of your project before opting for this setup.
+
+
+
+
+
+User
+: Install Gunicorn and Nginx on your development machine.
+ChatGPT
+To install Gunicorn and Nginx on your development machine, follow the steps below:
+
+Install Gunicorn:
+
+Open a terminal or command prompt.
+If you are using pip (Python package manager), run the following command:
+Copy code
+pip install gunicorn
+This will install Gunicorn globally on your system.
+Install Nginx:
+
+Visit the Nginx download page: https://nginx.org/en/download.html
+Download the appropriate package for your operating system. For example, for Ubuntu, you can use the following command:
+arduino
+Copy code
+sudo apt-get install nginx
+Follow the installation instructions specific to your operating system.
+After completing these steps, Gunicorn and Nginx will be installed on your development machine.
+
+Note: The installation process may vary depending on your operating system. The above steps assume a Linux-based environment (e.g., Ubuntu). If you're using a different operating system, please refer to the relevant documentation or package manager for installing Gunicorn and Nginx.
+
+
+
+
+
+User
+Set up Gunicorn: Configure Gunicorn to run your Django application. Create a Gunicorn configuration file (e.g., gunicorn.conf.py) with appropriate settings such as the number of workers, bind address, and other Gunicorn options.
+ChatGPT
+To set up Gunicorn and create a Gunicorn configuration file for running your Django application, follow these steps:
+
+Create a Gunicorn configuration file:
+
+Open a text editor and create a new file. Name it gunicorn.conf.py (or any other name you prefer).
+Save the file in your Django project's directory.
+Configure Gunicorn settings:
+
+Open the gunicorn.conf.py file in your text editor.
+Add the following content to the file as a starting point:
+python
+Copy code
+import multiprocessing
+
+bind = "127.0.0.1:8000"  # Replace with the appropriate bind address for your application
+workers = multiprocessing.cpu_count() * 2 + 1  # Adjust the number of workers as per your system's configuration
+# Add other Gunicorn options as needed
+You can customize the settings based on your requirements. Here are a few common options you may want to consider:
+
+bind: Specify the IP address and port on which Gunicorn will listen for incoming requests. Replace "127.0.0.1:8000" with the appropriate address for your application.
+workers: Set the number of Gunicorn worker processes. The formula multiprocessing.cpu_count() * 2 + 1 is commonly used to calculate the number of workers based on the number of CPU cores available on your system. Adjust it according to your needs.
+You can add other Gunicorn options as required, such as timeout, accesslog, errorlog, etc. Refer to the Gunicorn documentation for a full list of available options.
+Save the configuration file.
+
+You have now created a basic Gunicorn configuration file. You can further customize the configuration based on your specific application requirements. Remember to adjust the bind address and other settings according to your Django project's setup.
+
+To run your Django application with Gunicorn using the created configuration file, open a terminal or command prompt, navigate to your project's directory, and run the following command:
+
+r
+Copy code
+gunicorn -c gunicorn.conf.py your_project.wsgi
+Replace your_project with the actual name of your Django project. This command will start Gunicorn with your Django application using the specified configuration file.
+
+Make sure your Django project is properly configured and the wsgi.py file is present in the project's directory.
+
+You can now access your Django application through Gunicorn on the specified bind address.
+
+
+
+
+
+User
+Set up Nginx: Configure Nginx as a reverse proxy server to forward requests to Gunicorn. Create an Nginx configuration file (e.g., nginx.conf) with appropriate settings, including the server block, proxy settings, and static file serving configuration
+ChatGPT
+To set up Nginx as a reverse proxy server for forwarding requests to Gunicorn and serve static files, follow these steps:
+
+Install Nginx:
+
+Install Nginx on your development machine by following the installation instructions specific to your operating system. For example, on Ubuntu, you can use the following command: sudo apt-get install nginx
+Create an Nginx configuration file:
+
+Open a text editor and create a new file. Name it nginx.conf (or any other name you prefer).
+Save the file in a location where Nginx can access it. The typical location is /etc/nginx or /usr/local/nginx/conf.
+Configure the Nginx server block:
+
+Open the nginx.conf file in your text editor.
+Add the following content to the file as a starting point:
+bash
+Copy code
+http {
+  server {
+    listen 80;  # Replace with the appropriate port number if needed
+    server_name example.com;  # Replace with your domain or IP address
+
+    location / {
+      proxy_pass http://127.0.0.1:8000;  # Replace with the Gunicorn bind address
+      proxy_set_header Host $host;
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+
+    location /static/ {
+      alias /path/to/your/static/files/;  # Replace with the path to your static files directory
+    }
+  }
+}
+Customize the configuration based on your requirements:
+
+Update listen with the appropriate port number if you want to use a port other than 80.
+Replace example.com with your domain or IP address.
+Update the proxy_pass URL to match the Gunicorn bind address configured in the previous step.
+Modify the location /static/ block to specify the correct path to your static files directory.
+Save the configuration file.
+
+Start Nginx:
+
+Open a terminal or command prompt with administrative privileges.
+Run the following command to start Nginx: nginx
+Test the setup:
+
+Ensure that your Gunicorn server is running.
+Open a web browser and visit your domain or IP address (e.g., http://example.com). You should see your Django application being served through Nginx.
+Verify that static files are being served correctly by accessing URLs like http://example.com/static/css/style.css in your browser. The static files should be loaded without any issues.
+Congratulations! You have configured Nginx as a reverse proxy server for your Django application and set up static file serving. Adjust the configuration as needed for your specific setup and requirements.
+
+
+
+
+
+User
+Use tools like ngrok or configure SSL certificates for local testing
+ChatGPT
+If you want to expose your local development environment to the internet or configure SSL certificates for local testing, you can use tools like ngrok or set up SSL certificates using self-signed certificates. Here's how you can do it:
+
+Using ngrok:
+
+Install ngrok: Visit the ngrok website (https://ngrok.com/) and follow the instructions to download and install ngrok for your operating system.
+
+Start your Django development server: Run your Django application using the python manage.py runserver command.
+
+Start ngrok: Open a terminal or command prompt and navigate to the location where ngrok is installed. Run the following command to start ngrok and expose your local Django server to the internet:
+
+yaml
+Copy code
+ngrok http 8000
+Replace 8000 with the port number where your Django development server is running.
+
+Ngrok will display a public URL that you can use to access your local Django application from anywhere on the internet. Use this URL to test your application.
+
+Configuring SSL certificates for local testing:
+
+Generate self-signed SSL certificates: You can generate self-signed SSL certificates using tools like OpenSSL. Open a terminal or command prompt and run the following commands:
+
+csharp
+Copy code
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout localhost.key -out localhost.crt
+This will generate a self-signed SSL certificate (localhost.crt) and a private key (localhost.key) valid for 365 days. Make sure to provide the required information during the certificate generation process.
+
+Configure your Django application to use SSL: Update your Django settings to enable SSL. In your settings.py file, add the following lines:
+
+python
+Copy code
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+This ensures that Django treats requests as secure when using SSL.
+
+Start your Django development server with SSL: Run the following command to start your Django development server using SSL:
+
+css
+Copy code
+python manage.py runserver_plus --cert-file localhost.crt --key-file localhost.key
+This command uses the django-sslserver package to run the server with SSL support. Make sure to install the django-sslserver package (pip install django-sslserver) if you haven't already.
+
+Access your local Django application using https://localhost:8000 or https://127.0.0.1:8000 in your web browser. Your browser may display a security warning about the self-signed certificate, but you can proceed to view your application.
+
+Remember that self-signed certificates are not trusted by default and are meant for local testing purposes only. They are not suitable for production environments.
+
+
+
+
+
+User
+
+2 / 2
+
+Can I Configure SSL certificates for local testing together with nginx and gunicorn locally
+ChatGPT
+Yes, you can configure SSL certificates for local testing with Nginx and Gunicorn. Here's how you can do it:
+
+Generate self-signed SSL certificates: Follow the steps mentioned earlier to generate self-signed SSL certificates using OpenSSL. Generate the certificate (localhost.crt) and private key (localhost.key) files.
+
+Configure Gunicorn: Update your Gunicorn configuration file (gunicorn.conf.py) to include the SSL settings. Here's an example configuration:
+
+python
+Copy code
+bind = '127.0.0.1:8000'  # Replace with your desired bind address
+workers = 3  # Number of Gunicorn worker processes
+
+# SSL settings
+certfile = '/path/to/localhost.crt'
+keyfile = '/path/to/localhost.key'
+Replace /path/to/localhost.crt and /path/to/localhost.key with the actual paths to your SSL certificate and private key files.
+
+Configure Nginx: Create an Nginx configuration file (e.g., nginx.conf) with the appropriate settings to enable SSL and forward requests to Gunicorn. Here's an example configuration:
+
+nginx
+Copy code
+server {
+    listen 443 ssl;
+    server_name localhost;
+
+    ssl_certificate /path/to/localhost.crt;
+    ssl_certificate_key /path/to/localhost.key;
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+Replace /path/to/localhost.crt and /path/to/localhost.key with the actual paths to your SSL certificate and private key files.
+
+Start Gunicorn: In your terminal or command prompt, navigate to the directory where your Gunicorn configuration file is located and run the following command to start Gunicorn:
+
+r
+Copy code
+gunicorn -c gunicorn.conf.py your_project.wsgi
+Replace your_project.wsgi with the path to your project's WSGI file.
+
+Start Nginx: Start Nginx with the specified configuration file. Run the following command in your terminal or command prompt:
+
+bash
+Copy code
+nginx -c /path/to/nginx.conf
+Replace /path/to/nginx.conf with the actual path to your Nginx configuration file.
+
+Access your local Django application using https://localhost or https://127.0.0.1 in your web browser. Nginx will handle the SSL termination and forward the requests to Gunicorn.
+
+By following these steps, you can configure SSL certificates for local testing with Nginx and Gunicorn, allowing you to access your Django application over HTTPS in your local development environment.
+
+
+
+
+
+User
+'openssl' is not recognized as an internal or external command,
+operable program or batch file.
+ChatGPT
+If you're encountering the error "'openssl' is not recognized as an internal or external command, operable program or batch file" when trying to generate SSL certificates using OpenSSL, it means that OpenSSL is not recognized as a command in your system's environment variables.
+
+To resolve this issue, you can try the following steps:
+
+Install OpenSSL: Download and install OpenSSL on your system. You can find the appropriate version for your operating system from the OpenSSL website (https://www.openssl.org/).
+
+Add OpenSSL to the system's PATH: After installing OpenSSL, you need to add it to your system's PATH environment variable. Here's how you can do it:
+
+Open the Control Panel on Windows.
+Navigate to System and Security > System.
+Click on "Advanced system settings" on the left side.
+In the System Properties window, click on the "Environment Variables" button.
+In the "System variables" section, find the "Path" variable and click on "Edit".
+Add the path to the OpenSSL binaries folder (e.g., C:\OpenSSL\bin) at the end of the "Variable value" field. Make sure to separate it from the previous path with a semicolon (;).
+Click "OK" to save the changes.
+Restart your command prompt or terminal: After adding OpenSSL to the system's PATH, close and reopen your command prompt or terminal to ensure that the changes take effect.
+
+Verify OpenSSL installation: To verify that OpenSSL is recognized as a command, open a new command prompt or terminal and run the following command:
+
+Copy code
+openssl version
+If OpenSSL is correctly installed and added to the PATH, this command should display the version information of OpenSSL.
+
+Once you have successfully installed and configured OpenSSL, you should be able to generate SSL certificates without encountering the "'openssl' is not recognized" error.
+
+
+
+
+
+
+Regenerate response
+Send a message.
+
+Free Research Preview. ChatGPT may produce inaccurate information about people, places, or facts. ChatGPT May 24 Version
+ChatGPT
+
+
+
+
+###################################################################################
+
+Chat history
+Hide sidebar
+
+
+
+User
+
+
+User
+I have  a django website that has has a video model and some of the code as follows
+
+  In models.py
+
+  class Video(models.Model):
+      title = models.CharField(max_length=150, blank=False, null=True)
+      video = models.FileField(blank=False, null=True)
+      ...
+      
+      def __str__(self):
+          return self.title
+      
+      @property
+      def videoURL(self):
+          return self.video.url    
+      ...
+
+  In views.py 
+
+  def watch_video(request, pk):
+      context = {}
+      try:
+          video = Video.objects.get(slug=pk) # type: ignore
+
+      except Video.DoesNotExist:
+          return HttpResponseBadRequest('<h1>404 Not Found</h1><h3>Video Does Not Exist! SORRYYY</h3>')   # type: ignore
+      
+      context['video'] = video
+
+      ...
+      return render(request, 'tube/watch.html', context)
+
+  In Watch.html
+
+      ...
+          <!-- ##################     Video Player        #############-->
+          <video
+
+              controls
+              autoplay="true" 
+              class="video" id="currentVideo" src="{{video.videoURL}}">
+              Your browser does not support the video
+          </video>
+      ...
+                              
+
+  Right now the video is being reuqested by the browser to the server as a whole video, thus the user at the time cannot seek anywhere else in the video apart from the beggining. I would like it to be requested using the headers in chunks and allowing the user to seek different parts of the video. How I can combine the following node and express Js code that does that with my Django project?
+
+  In index.js
+
+  const express = require("express"); // npm install --save express nodemon
+  // import express from "express"; 
+
+  const fs = require(fs);
+      
+  const app = express();
+
+  app.get(link, (req, res)=>{
+      res.sendFile(__dirname + "watch.html");
+  });
+
+  app.get(videoLink, (req, res)=>{
+      const range = req.headers.range;
+      if (!range){
+          res.status(400).send("Requires Range header");
+      }
+
+      const videoPath = VIDEOPATH;
+      const videoSize = fs.startSync(videoPath).size;
+
+      // Parse Range
+      // Example: "bytes:32324-"
+      const CHUNK_SIZE = 10 ** 6; // 1MB
+      const start = Number(range.replace(/\D/g, ""));
+      const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
+
+      const contentLength = end - start + 1;
+      const headers = {
+          "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+          "Accept-Ranges": "bytes",
+          "Content-Length": contentLength,
+          "Content-Type": "video/mp4/mkv",
+      };
+
+      res.writeHead(206, headers);
+
+      const videoStream = fs.createReadStream(videoPath, { start, end });
+
+      videoStream.pipe(res);
+
+      // Then npm start
+      //      SOMEHOW
+      //      YouTube django and React/nodeJs/express
+      
+  });
+
+  app.listen(8000, ()=>{
+      console.log("Listening on port 8000!");
+  });
+
+ChatGPT
+To achieve the functionality you described, you can use Django to handle the backend and serve the video file in chunks, and use React/Node.js/Express to handle the frontend and send the appropriate requests to Django.
+
+Here's how you can combine the code you provided into your Django project:
+
+Install the necessary dependencies for the Node.js/Express part of your project. Run the following command in your project directory:
+bash
+Copy code
+npm install express fs
+Create a new file called index.js in your project directory and add the following code:
+javascript
+Copy code
+const express = require("express");
+const fs = require("fs");
+
+const app = express();
+
+app.get(link, (req, res) => {
+  res.sendFile(__dirname + "watch.html");
+});
+
+app.get(videoLink, (req, res) => {
+  const range = req.headers.range;
+  if (!range) {
+    res.status(400).send("Requires Range header");
+  }
+
+  const videoPath = VIDEOPATH;
+  const videoSize = fs.statSync(videoPath).size;
+
+  // Parse Range
+  // Example: "bytes=32324-"
+  const CHUNK_SIZE = 10 ** 6; // 1MB
+  const start = Number(range.replace(/\D/g, ""));
+  const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
+
+  const contentLength = end - start + 1;
+  const headers = {
+    "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+    "Accept-Ranges": "bytes",
+    "Content-Length": contentLength,
+    "Content-Type": "video/mp4/mkv",
+  };
+
+  res.writeHead(206, headers);
+
+  const videoStream = fs.createReadStream(videoPath, { start, end });
+
+  videoStream.pipe(res);
+});
+
+app.listen(8000, () => {
+  console.log("Listening on port 8000!");
+});
+Replace link and videoLink with the appropriate URL paths you want to use for serving the HTML file and the video file respectively. Also, replace VIDEOPATH with the actual path to your video file.
+
+In your Django views.py, modify the watch_video function as follows:
+python
+Copy code
+import requests
+
+def watch_video(request, pk):
+    context = {}
+    try:
+        video = Video.objects.get(slug=pk)
+
+    except Video.DoesNotExist:
+        return HttpResponseBadRequest('<h1>404 Not Found</h1><h3>Video Does Not Exist! SORRYYY</h3>')
+
+    context['video'] = video
+
+    # Make a request to the Node.js/Express server to fetch the video
+    response = requests.get('http://localhost:8000/videoLink', headers=request.headers, stream=True)
+    if response.status_code == 200:
+        response.raw.decode_content = True
+        video_data = response.raw.read()
+        response = HttpResponse(video_data, content_type='video/mp4/mkv')
+        response['Content-Length'] = response.tell()
+
+    return response
+Make sure to replace videoLink in the URL with the appropriate URL path you defined in your Node.js/Express server.
+
+Update your watch.html template to point to the Django URL for the video playback:
+html
+Copy code
+<!-- ##################     Video Player        #############-->
+<video
+    controls
+    autoplay="true" 
+    class="video" id="currentVideo" src="{% url 'watch_video' video.slug %}">
+    Your browser does not support the video
+</video>
+Replace 'watch_video' with the appropriate name of your Django URL pattern for the watch_video view.
+
+Start your Django server and your Node.js/Express server. Run the following command in your project directory to start the Node.js/Express server:
+bash
+Copy code
+node index.js
+Make sure both servers are running simultaneously.
+
+With these changes, when a user accesses the watch_video view in your Django app, it will make a request to your Node.js/Express server, which will then serve the video file in chunks, allowing the user to seek different parts of the video.
+
+
+
+
+
+User
+
+2 / 2
+
+How Do I dynamically replace the link and videoLinks for different videos from the django model and the user's request
+ChatGPT
+To dynamically replace the link and videoLink in your Node.js/Express code with values from the Django model and user's request, you can modify your code as follows:
+
+In views.py:
+
+python
+Copy code
+import requests
+from django.conf import settings
+
+def watch_video(request, pk):
+    context = {}
+    try:
+        video = Video.objects.get(slug=pk)
+
+    except Video.DoesNotExist:
+        return HttpResponseBadRequest('<h1>404 Not Found</h1><h3>Video Does Not Exist! SORRYYY</h3>')
+
+    context['video'] = video
+
+    # Make a request to the Node.js/Express server to fetch the video
+    node_server_url = settings.NODE_SERVER_URL  # Get the URL of your Node.js/Express server from Django settings
+    video_link = f"{node_server_url}/video/{video.id}"  # Construct the video link with the video ID
+    response = requests.get(video_link, headers=request.headers, stream=True)
+    if response.status_code == 200:
+        response.raw.decode_content = True
+        video_data = response.raw.read()
+        response = HttpResponse(video_data, content_type='video/mp4/mkv')
+        response['Content-Length'] = response.tell()
+
+    return response
+In index.js:
+
+javascript
+Copy code
+const express = require("express");
+const fs = require("fs");
+
+const app = express();
+
+app.get("/watch", (req, res) => {
+  res.sendFile(__dirname + "watch.html");
+});
+
+app.get("/video/:id", (req, res) => {
+  const range = req.headers.range;
+  if (!range) {
+    res.status(400).send("Requires Range header");
+  }
+
+  const videoId = req.params.id;  // Get the video ID from the URL params
+  const videoPath = getVideoPath(videoId);  // Implement a function to get the video path based on the ID
+  if (!videoPath) {
+    res.status(404).send("Video not found");
+    return;
+  }
+
+  const videoSize = fs.statSync(videoPath).size;
+
+  // Parse Range
+  // Example: "bytes=32324-"
+  const CHUNK_SIZE = 10 ** 6; // 1MB
+  const start = Number(range.replace(/\D/g, ""));
+  const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
+
+  const contentLength = end - start + 1;
+  const headers = {
+    "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+    "Accept-Ranges": "bytes",
+    "Content-Length": contentLength,
+    "Content-Type": "video/mp4/mkv",
+  };
+
+  res.writeHead(206, headers);
+
+  const videoStream = fs.createReadStream(videoPath, { start, end });
+
+  videoStream.pipe(res);
+});
+
+app.listen(8000, () => {
+  console.log("Listening on port 8000!");
+});
+In your Django settings (settings.py), add the following line:
+
+python
+Copy code
+NODE_SERVER_URL = 'http://localhost:8000'  # Replace with the actual URL of your Node.js/Express server
+Make sure to replace getVideoPath(videoId) in index.js with a function that retrieves the video path based on the video ID. You can implement this function in a way that suits your application's logic, such as querying the Django model or retrieving the path from a database.
+
+With these changes, the watch_video view will dynamically construct the video link based on the video ID, and the Node.js/Express server will handle the request appropriately.
+
+
+
+
+
+User
+Is there a specific location to store the node and express code?
+ChatGPT
+There is no specific location where you have to store your Node.js/Express code. You have the flexibility to choose a directory structure that suits your project organization.
+
+However, it's common to create a separate directory for your Node.js/Express code within your Django project directory. This helps keep your project organized and separates the backend and frontend code.
+
+Here's a suggested directory structure:
+
+go
+Copy code
+your_project/
+├── your_django_app/
+│   ├── models.py
+│   ├── views.py
+│   ├── ...
+│
+├── node_server/
+│   ├── index.js
+│   ├── package.json
+│   ├── ...
+│
+└── ...
+In this structure, your Django app resides in the your_django_app directory, while your Node.js/Express code is stored in the node_server directory.
+
+You can create the node_server directory at the root level of your Django project and place your index.js and other Node.js/Express files there. Additionally, you can initialize a new Node.js project inside the node_server directory by running npm init to create a package.json file, which will help manage your Node.js dependencies.
+
+Feel free to adjust the structure based on your project's needs and preferences.
+
+
+
+
+
+
+Regenerate response
+Send a message.
+
+Free Research Preview. ChatGPT may produce inaccurate information about people, places, or facts. ChatGPT May 24 Version
+
+
+###################################################################################
+
+const express = require("express"); // npm install --save express nodemon
+// import express from "express"; 
+
+const fs = require(fs);
+
+
+function watchVideo (link, videoLink, VIDEOPATH) {
+    
+    const app = express();
+
+    app.get(link, (req, res)=>{
+        res.sendFile(__dirname + "watch.html");
+    });
+
+    app.get(videoLink, (req, res)=>{
+        const range = req.headers.range;
+        if (!range){
+            res.status(400).send("Requires Range header");
+        }
+
+        const videoPath = VIDEOPATH;
+        const videoSize = fs.startSync(videoPath).size;
+
+        // Parse Range
+        // Example: "bytes:32324-"
+        const CHUNK_SIZE = 10 ** 6; // 1MB
+        const start = Number(range.replace(/\D/g, ""));
+        const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
+
+        const contentLength = end - start + 1;
+        const headers = {
+            "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+            "Accept-Ranges": "bytes",
+            "Content-Length": contentLength,
+            "Content-Type": "video/mp4/mkv",
+        };
+
+        res.writeHead(206, headers);
+
+        const videoStream = fs.createReadStream(videoPath, { start, end });
+
+        videoStream.pipe(res);
+
+        // Then npm start
+        //      SOMEHOW
+        //      YouTube django and React/nodeJs/express
+        
+    });
+
+    app.listen(8000, ()=>{
+        console.log("Listening on port 8000!");
+    });
+}
+
+
+
+###################################################################################
+
+  I have  a django website that has has a video model and some of the code as follows
+
+  In models.py
+
+  class Video(models.Model):
+      title = models.CharField(max_length=150, blank=False, null=True)
+      video = models.FileField(blank=False, null=True)
+      ...
+      
+      def __str__(self):
+          return self.title
+      
+      @property
+      def videoURL(self):
+          return self.video.url    
+      ...
+
+  In views.py 
+
+  def watch_video(request, pk):
+      context = {}
+      try:
+          video = Video.objects.get(slug=pk) # type: ignore
+
+      except Video.DoesNotExist:
+          return HttpResponseBadRequest('<h1>404 Not Found</h1><h3>Video Does Not Exist! SORRYYY</h3>')   # type: ignore
+      
+      context['video'] = video
+
+      ...
+      return render(request, 'tube/watch.html', context)
+
+  In Watch.html
+
+      ...
+          <!-- ##################     Video Player        #############-->
+          <video
+
+              controls
+              autoplay="true" 
+              class="video" id="currentVideo" src="{{video.videoURL}}">
+              Your browser does not support the video
+          </video>
+      ...
+                              
+
+  Right now the video is being reuqested by the browser to the server as a whole video, thus the user at the time cannot seek anywhere else in the video apart from the beggining. I would like it to be requested using the headers in chunks and allowing the user to seek different parts of the video. How I can combine the following node and express Js code that does that with my Django project?
+
+  In index.js
+
+  const express = require("express"); // npm install --save express nodemon
+  // import express from "express"; 
+
+  const fs = require(fs);
+      
+  const app = express();
+
+  app.get(link, (req, res)=>{
+      res.sendFile(__dirname + "watch.html");
+  });
+
+  app.get(videoLink, (req, res)=>{
+      const range = req.headers.range;
+      if (!range){
+          res.status(400).send("Requires Range header");
+      }
+
+      const videoPath = VIDEOPATH;
+      const videoSize = fs.startSync(videoPath).size;
+
+      // Parse Range
+      // Example: "bytes:32324-"
+      const CHUNK_SIZE = 10 ** 6; // 1MB
+      const start = Number(range.replace(/\D/g, ""));
+      const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
+
+      const contentLength = end - start + 1;
+      const headers = {
+          "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+          "Accept-Ranges": "bytes",
+          "Content-Length": contentLength,
+          "Content-Type": "video/mp4/mkv",
+      };
+
+      res.writeHead(206, headers);
+
+      const videoStream = fs.createReadStream(videoPath, { start, end });
+
+      videoStream.pipe(res);
+
+      // Then npm start
+      //      SOMEHOW
+      //      YouTube django and React/nodeJs/express
+      
+  });
+
+  app.listen(8000, ()=>{
+      console.log("Listening on port 8000!");
+  });
 
 
 ###################################################################################
