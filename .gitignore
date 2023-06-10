@@ -173,3 +173,4 @@ cython_debug/
 package-lock.json
 # package.json
 pwa progress2.pdf
+ktube/logs/nginx.pid
