@@ -30,8 +30,36 @@
             class="video" id="currentVideo">
             <source src="{{video.videoURL}}" type="video/mp4">
             <source src="{{video.videoURL}}" type="video/x-matroska">
+            <source src="{{video.videoURL}}" type="video/webm">
             Your browser does not support the video
         </video>
+
+
+        {% comment %} 
+        <video
+        autoplay
+        preload="auto" 
+        class="video video-js vjs-custom-theme"
+        controls
+        id="my-video"
+        data-setup="{}"
+      >
+        <source src="{{video.videoURL}}" type="video/mp4">
+        <source src="{{video.videoURL}}" type="video/x-matroska">
+        <source src="{{video.videoURL}}" type="video/webm">
+        <p class="vjs-no-js">
+          To view this video please enable JavaScript, and consider upgrading to a
+          web browser that
+          <a href="https://videojs.com/html5-video-support/" target="_blank"
+            >supports HTML5 video</a
+          >
+        </p>
+      </video> 
+      {% endcomment %}
+
+
+
+
         {% if playlist_videos %}
         <div class="row box-element" style="padding-left: 40px;">
                 {% if video_previous_exists %}
@@ -287,14 +315,14 @@
 
                     <div class="row">
                         {% if video.likes is not 1 %}
-                            <h6 id="likes-count" style="font-size: 18px; float: left"><strong id="likes-count">{{video.likes | intcomma}} likes</strong></h6>
+                            <h6 style="font-size: 18px; float: left"><strong id="likes-count">{{video.likes | intcomma}} likes</strong></h6>
                         {% else %}
-                            <h6 id="likes-count" style="font-size: 18px; float: left"><strong id="likes-count">{{video.likes | intcomma}} like</strong></h6> 
+                            <h6 style="font-size: 18px; float: left"><strong id="likes-count">{{video.likes | intcomma}} like</strong></h6> 
                         {% endif %}
                         {% if video.dislikes is not 1 %}
-                            <h6 id="dislikes-count" style="font-size: 18px; margin-left:5px; float: left"><strong id="likes-count">{{video.dislikes | intcomma}} Dislikes</strong></h6>
+                            <h6 style="font-size: 18px; margin-left:5px; float: left"><strong id="dislikes-count">{{video.dislikes | intcomma}} Dislikes</strong></h6>
                         {% else %}
-                            <h6 id="dislikes-count" style="font-size: 18px; margin-left:5px; float: left"><strong id="likes-count">{{video.dislikes | intcomma}} Dislike</strong></h6>
+                            <h6 style="font-size: 18px; margin-left:5px; float: left"><strong id="dislikes-count">{{video.dislikes | intcomma}} Dislike</strong></h6>
                         {% endif %}
                     </div>
 
@@ -1047,12 +1075,14 @@
 <script type="text/javascript" src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'js/watch.js' %}"></script>
 
+<script type="text/javascript" src="{% static 'js\vjs.zencdn.net_8.3.0_video.min.js' %}"></script>
+
 <script>
     function toggleItem(id, toggle) {
         let element = document.getElementById(id);
         element.style.display = (toggle) ? 'block' : 'none';
     }
-{% comment %} 
+    {% comment %} 
     function handleLikeComment(event, commentId, commentLikeCountId) {
         commentLikeCountIdHash = '#' + commentLikeCountId
         event.preventDefault();

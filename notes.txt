@@ -1,8 +1,54 @@
 ###################################################################################
 
 ###################################################################################
+events {
+    worker_connections  4000;
+}
+
+http {
+    sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+
+    server {
+        listen 80;
+        server_name 127.0.0.1;
+        return 302 https://$host$request_uri;
+    }
+
+    server {
+        listen 443 ssl;
+        server_name 127.0.0.1;
+        ssl_certificate C:/Users/User/Documents/code/ktube/ktube/localhost.pem;
+        ssl_certificate_key C:/Users/User/Documents/code/ktube/ktube/localhost-key.pem;
+
+        location / {
+            proxy_pass http://127.0.0.1:8000;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        location /static/ {
+            autoindex on;
+            alias C:/Users/User/Documents/code/ktube/ktube/staticfiles/;
+        }
+
+        location /media/ {
+            autoindex on;
+            alias C:/Users/User/Documents/code/ktube/ktube/media/;
+        }
+    }
+}
 
 ###################################################################################
+
+from waitress import serve
+from ktube.wsgi import application
+
+serve(application, host='127.0.0.1', port=8000)
+
 
 ###################################################################################
 
