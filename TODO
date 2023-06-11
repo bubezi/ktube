@@ -1,5 +1,13 @@
 ######
 
+
+Disable whitenoise and ALL related settings before collectstatic command
+
+######
+######
+
+
+
 # KEY
     [] To do
     [x] Done
@@ -110,6 +118,9 @@
 [x] Video costs something
 [x] Fix revenue percentage error
 [x] History compile similar adjacent videos
+[] Change video thumbnail bug
+[] Find optimum ratio for thumbanail
+[] Check Lighthouse errors
 [] Search filters
 [] An uploading loader (Upoading, processing)
 [] Auto Skip

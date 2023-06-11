@@ -1,5 +1,27 @@
 ###################################################################################
+###################################################################################
+###################################################################################
 
+Resources are blocking the first paint of your page. 
+Consider delivering critical JS/CSS inline and deferring all non-critical JS/styles
+
+Text-based resources should be served with compression (gzip, deflate or brotli) to minimize total network bytes.
+
+Reduce unused rules from stylesheets and defer CSS not used for above-the-fold content to decrease bytes consumed by network activity
+
+Reduce unused JavaScript and defer loading scripts until they are required to decrease bytes consumed by network activity
+
+Minifying CSS files can reduce network payload sizes
+
+A long cache lifetime can speed up repeat visits to your page.
+
+Consider reducing the time spent parsing, compiling and executing JS. You may find delivering smaller JS payloads helps with this
+###################################################################################
+Does not register a service worker that controls page and start_url
+This origin has one or more service workers, however the page (http://127.0.0.1:8000/) is not in scope.
+
+
+A maskable icon ensures that the image fills the entire shape without being letterboxed when installing the app on a device
 ###################################################################################
 events {
     worker_connections  4000;
