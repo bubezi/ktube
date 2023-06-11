@@ -118,6 +118,10 @@ Disable whitenoise and ALL related settings before collectstatic command
 [x] Video costs something
 [x] Fix revenue percentage error
 [x] History compile similar adjacent videos
+[] WARNING:waitress.queue:Task queue depth is 94
+[] WARNING:waitress:total open connections reached the connection limit, no longer accepting new connections
+[] Get IP address of the view for (esp) logged out viewers
+    [] Viewing algorithm limit
 [] Change video thumbnail bug
 [] Find optimum ratio for thumbanail
 [] Check Lighthouse errors
@@ -135,6 +139,7 @@ Disable whitenoise and ALL related settings before collectstatic command
     [] Get metadata from video 
     [] Seaking
     [] Resume capability
+    [] Auto skip (Play next)
     [] Pictures (For events and shit)
 [] Round off cash
 [] Log video view count after a percentage of video length
@@ -167,12 +172,12 @@ Disable whitenoise and ALL related settings before collectstatic command
 [x] Add page Loader
 [x] *return to last video time after sub from video redirect
 [x] Drag and drop functionality
-[] Better alternative for paginator
-[] How to serve videos better django
-[x] UPDATE Like and Dislike buttons / svg
-[] Better profile image Placeholder
 [x] Django video View count
 [x] Does Django use websockets
+[x] UPDATE Like and Dislike buttons / svg
+[] Better alternative for paginator
+[] How to serve videos better django
+[] Better profile image Placeholder
 [] Dynamic login redirect
 [] Optional url additions /url/<str:pk>
 [] Video.Js
