@@ -1664,9 +1664,10 @@ def add_view(request):
     if request.user.is_authenticated:
         if request.method=='POST':
             viewer = request.user.viewer
+            viewer_ip = request.META.get('REMOTE_ADDR')
             pk = request.POST['video_id']
             video = Video.objects.get(slug=pk)
-            view = VideoView(viewer=viewer, video=video)
+            view = VideoView(viewer=viewer, video=video, viewer_ip=viewer_ip)
             view.save()
             
             try:
@@ -1698,13 +1699,14 @@ def add_view(request):
     else:
         if request.method=='POST':
             pk = request.POST['video_id']
+            viewer_ip = request.META.get('REMOTE_ADDR')
             video = Video.objects.get(slug=pk)
-            view = VideoView(video=video)
+            view = VideoView(video=video, viewer_ip=viewer_ip)
             view.save()
             video.save()
             
-            previous_view=0
-            # previous_views = video.videoview_set.order_by('viewed_on').filter(viewer=viewer).reverse().in_bulk().values() # type: ignore
+            # previous_views=[]
+            previous_views = video.videoview_set.order_by('viewed_on').filter(viewer_ip=viewer_ip).reverse().in_bulk().values() # type: ignore
             if len(previous_views)>1:
                 for index, v in enumerate(previous_views):
                     previous_view = v

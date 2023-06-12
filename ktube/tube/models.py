@@ -242,10 +242,11 @@ class Subscriptions(models.Model):
 class VideoView(models.Model):
     video = models.ForeignKey(Video, null=True, on_delete=models.CASCADE)
     viewer = models.ForeignKey(Viewer, null=True, on_delete=models.CASCADE)
+    viewer_ip = models.GenericIPAddressField(null=True, protocol="both", unpack_ipv4=False)
     viewed_on = models.DateTimeField(auto_now_add=True) 
     
     def __str__(self) -> str:
-        return 'Title : ' + str(self.video) +', watched by: '+ str(self.viewer) +', watched: '+ str(self.viewed_on)
+        return 'Title : ' + str(self.video) +', watched by: '+ str(self.viewer) +', watched: '+ str(self.viewed_on) + ', IP address: ' +str(self.viewer_ip)
 
     
 class History(models.Model):
