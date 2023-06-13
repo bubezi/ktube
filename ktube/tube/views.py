@@ -1,8 +1,11 @@
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseBadRequest, JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 from .forms import VideoForm, PlaylistForm
 from register.utils import check_errors
+from django.utils import timezone
 from .filters import VideoFilter
 from decimal import Decimal
 from .models import *
@@ -74,6 +77,8 @@ def home_view(request):
     return render(request, 'tube/home.html', context)
 
 
+from django.db.models import Q
+
 def search_results_view(request):
     if request.method == 'POST':
         context = {}
@@ -81,10 +86,21 @@ def search_results_view(request):
         query = str(query)
 
         try:
-            videos = Video.objects.filter(title__unaccent__lower__trigram_similar=query, private=False, unlisted=False) # type: ignore
+            videos = Video.objects.filter(title__unaccent__lower__trigram_similar=query, private=False, unlisted=False)
         except:
-            videos = Video.objects.filter(title__contains=query, private=False, unlisted=False) # type: ignore
+            videos = Video.objects.filter(title__contains=query, private=False, unlisted=False)
+
+        # # Get the filter parameters from the request
+        # filter_param1 = request.POST.get('filter1')
+        # filter_param2 = request.POST.get('filter2')
+
+        # if filter_param1:
+        #     videos = videos.filter(field1=filter_param1)
+
+        # if filter_param2:
+        #     videos = videos.filter(field2=filter_param2)
         
+
             
         # name__unaccent__lower__trigram_similar
         # name__unaccent__icontains
@@ -1664,9 +1680,10 @@ def add_view(request):
     if request.user.is_authenticated:
         if request.method=='POST':
             viewer = request.user.viewer
+            viewer_ip = request.META.get('REMOTE_ADDR')
             pk = request.POST['video_id']
             video = Video.objects.get(slug=pk)
-            view = VideoView(viewer=viewer, video=video)
+            view = VideoView(viewer=viewer, video=video, viewer_ip=viewer_ip)
             view.save()
             
             try:
@@ -1698,13 +1715,14 @@ def add_view(request):
     else:
         if request.method=='POST':
             pk = request.POST['video_id']
+            viewer_ip = request.META.get('REMOTE_ADDR')
             video = Video.objects.get(slug=pk)
-            view = VideoView(video=video)
+            view = VideoView(video=video, viewer_ip=viewer_ip)
             view.save()
             video.save()
             
-            previous_view=0
-            # previous_views = video.videoview_set.order_by('viewed_on').filter(viewer=viewer).reverse().in_bulk().values() # type: ignore
+            # previous_views=[]
+            previous_views = video.videoview_set.order_by('viewed_on').filter(viewer_ip=viewer_ip).reverse().in_bulk().values() # type: ignore
             if len(previous_views)>1:
                 for index, v in enumerate(previous_views):
                     previous_view = v
@@ -2175,3 +2193,33 @@ def get_views(request, pk):
     video = Video.objects.get(slug=pk)
     views = video.views
     return JsonResponse({"video_views":views})
+    
+    
+    
+##############################################################################################
+#############################                                   ##############################
+#############################                                   ##############################
+#############################        STREAMING FUNCTIONS        ##############################
+#############################                                   ##############################
+#############################                                   ##############################
+##############################################################################################
+
+
+
+@require_POST
+@csrf_exempt
+def start_stream(request):
+    stream = get_object_or_404(Stream, key=request.POST["name"])
+    if not stream.user.user.is_active:
+        return HttpResponseForbidden("Inactive user")
+    if stream.started_at:
+        return HttpResponseForbidden("Already streaming")
+    stream.started_at = timezone.now()
+    stream.save()
+    return redirect(stream.user.username)
+
+@require_POST
+@csrf_exempt
+def stop_stream(request):
+    Stream.objects.filter(key=request.POST["name"]).update(started_at=None)
+    return HttpResponse("OK")

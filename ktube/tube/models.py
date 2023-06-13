@@ -242,10 +242,11 @@ class Subscriptions(models.Model):
 class VideoView(models.Model):
     video = models.ForeignKey(Video, null=True, on_delete=models.CASCADE)
     viewer = models.ForeignKey(Viewer, null=True, on_delete=models.CASCADE)
+    viewer_ip = models.GenericIPAddressField(null=True, protocol="both", unpack_ipv4=False)
     viewed_on = models.DateTimeField(auto_now_add=True) 
     
     def __str__(self) -> str:
-        return 'Title : ' + str(self.video) +', watched by: '+ str(self.viewer) +', watched: '+ str(self.viewed_on)
+        return 'Title : ' + str(self.video) +', watched by: '+ str(self.viewer) +', watched: '+ str(self.viewed_on) + ', IP address: ' +str(self.viewer_ip)
 
     
 class History(models.Model):
@@ -278,4 +279,21 @@ class LikedCommentsReplies(models.Model):
 class DisLikedCommentsReplies(models.Model):
     viewer = models.OneToOneField(Viewer, null=True, on_delete=models.CASCADE)
     comment_replies = models.ManyToManyField(CommentReply, related_name='disliked_comment_replies', blank=True)
-    
+
+
+class Stream(models.Model):
+    user = models.ForeignKey(Viewer, on_delete=models.CASCADE)
+    key = models.CharField(max_length=32, unique=True)
+    started_at = models.DateTimeField(null=True, blank=True)
+    title = models.CharField(max_length=255, null=False, blank=False, default="LIVE Stream")
+    description = models.TextField(blank=True, null=True)
+    thumbnail = models.ImageField(blank=True, null=True)
+    PUBLIC = 'public'
+    PRIVATE = 'private'
+    VISIBILITY_CHOICES = [
+        (PUBLIC, 'Public'),
+        (PRIVATE, 'Private'),
+    ]
+    visibility = models.CharField(max_length=10, choices=VISIBILITY_CHOICES, default=PUBLIC)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)

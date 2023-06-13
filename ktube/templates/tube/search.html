@@ -8,16 +8,40 @@
 {% block title %}{{title | title }} {% endblock title %}
 
 {% block content %}
-    <div class="row">
-        {% if channel %}
-            <div class="col-lg-12 box-element">
-                <h2>Search results for: {{query | title }}</h2>
-                <!-- look for sentence case humanize tag -->
+{% comment %}
+        <div class="row">
+            <div class="col-lg-12">
+                <form method="post" action="{% url 'search_results' %}">
+                    <!-- Existing search input field -->
+                    <input type="text" name="searched" value="{{ query }}">
+                    
+                    <!-- Filter fields -->
+                    <select name="filter1">
+                        <option value="">All</option>
+                        <option value="value1">Value 1</option>
+                        <option value="value2">Value 2</option>
+                    </select>
+                    
+                    <select name="filter2">
+                        <option value="">All</option>
+                        <option value="value3">Value 3</option>
+                        <option value="value4">Value 4</option>
+                    </select>
+                    
+                    <!-- Submit button -->
+                    <button type="submit">Search</button>
+                </form>
             </div>
-        {% endif %}
+        </div>
+{% endcomment %}
+    <div class="row">
+        <div class="col-lg-12 box-element">
+            <h2>Search results for: {{query | title }}</h2>
+            <!-- look for sentence case humanize tag -->
+        </div>
     </div>
     
-    {% include 'tube/search_videos.html' %}
+    {% include 'tube/search_results.html' %}
 
 
 {% endblock content %}
