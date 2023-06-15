@@ -124,6 +124,9 @@ Disable whitenoise and ALL related settings before collectstatic command
 [] Get IP address of the view for (esp) logged out viewers
     [] Viewing algorithm limit
 [] Change video thumbnail bug
+[] Fix comments bug 
+[] Fix Photofiles with Asian characters bug
+[] Add Audio stream
 [] Find optimum ratio for thumbanail
 [] Check Lighthouse errors
 [] Search filters
@@ -152,7 +155,7 @@ Disable whitenoise and ALL related settings before collectstatic command
 [] Learn React
 [] Copyright DETECTION AND REGISTERING FUNCTIONALITY
 [] Recommend FUNCTIONALITY
-[] Check out NODE JS FOR STREAMING
+[] Check out NODE JS FOR LIVE STREAMING
 [] Timezone management
 [] Manage recurring Ajax get functions
 [x] robots.txt => https://ordinarycoders.com/blog/article/robots-text-file-django
@@ -249,7 +252,7 @@ video streaming in Django:
 [] Drag and drop functionality
 [] Blue link problem
 [] Get video length
-[] Change like and dislike buttons
+[x] Change like and dislike buttons
 [] Return to specific page after subscribe login redirect
 [] Personalise password_change_view.html and password_reset_view.html pages
 [] video SHORTCUTS
