@@ -118,6 +118,7 @@ Disable whitenoise and ALL related settings before collectstatic command
 [x] Video costs something
 [x] Fix revenue percentage error
 [x] History compile similar adjacent videos
+[] Make form not loose data input after invalid form input
 [] WARNING:waitress.queue:Task queue depth is 94
 [] WARNING:waitress:total open connections reached the connection limit, no longer accepting new connections
 [] Get IP address of the view for (esp) logged out viewers
