@@ -119,6 +119,9 @@ Disable whitenoise and ALL related settings before collectstatic command
 [x] Fix revenue percentage error
 [x] History compile similar adjacent videos
 [] Analytics
+    [] Paid viewers
+[] Tutorials
+[] Currencies in Quotations
 [] Report and feedback
 [] Internal copyright detection
 [] Autogenerate thumbnail from video
