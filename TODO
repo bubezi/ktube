@@ -122,6 +122,8 @@ Disable whitenoise and ALL related settings before collectstatic command
     [] Paid viewers
 [] Limit Video Quality 720p
 [] Tutorials
+[] Pop out, confirm transaction
+[] Trailer, mid video transaction
 [] Categories
 [] Currencies in Quotations
 [] Report and feedback
