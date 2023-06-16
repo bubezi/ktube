@@ -119,6 +119,8 @@ Disable whitenoise and ALL related settings before collectstatic command
 [x] Fix revenue percentage error
 [x] History compile similar adjacent videos
 [] Analytics
+[] Report and feedback
+[] Internal copyright detection
 [] Autogenerate thumbnail from video
 [] Fix edit video form
 [] Make form not loose data input after invalid form input
