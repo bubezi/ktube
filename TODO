@@ -3,6 +3,12 @@
 
 Disable whitenoise and ALL related settings before collectstatic command
 
+Video-on-demand
+Pay-per-view
+
+
+Kenya web experts
+
 ######
 ######
 
@@ -124,9 +130,14 @@ Disable whitenoise and ALL related settings before collectstatic command
     [] Paid viewers
 [] Limit Video Quality 720p
 [] Tutorials
+[] Background play 
+    [] Premium Videos ()
+[] Ads
+[] Local downloads (Save for offline)
 [] Pop out, confirm transaction
 [] Trailer, mid video transaction
 [] Categories
+[] Video short
 [] Shorts ****************************************************************
 [] Comment with Emoji ****************************************************************
 [] Filter Comment ****************************************************************
