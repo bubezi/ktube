@@ -120,6 +120,7 @@ Disable whitenoise and ALL related settings before collectstatic command
 [x] History compile similar adjacent videos
 [] Analytics
     [] Paid viewers
+[] Limit Video Quality 720p
 [] Tutorials
 [] Currencies in Quotations
 [] Report and feedback
