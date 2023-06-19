@@ -3,6 +3,12 @@
 
 Disable whitenoise and ALL related settings before collectstatic command
 
+Video-on-demand
+Pay-per-view
+
+
+Kenya web experts
+
 ######
 ######
 
@@ -118,11 +124,36 @@ Disable whitenoise and ALL related settings before collectstatic command
 [x] Video costs something
 [x] Fix revenue percentage error
 [x] History compile similar adjacent videos
-[] WARNING:waitress.queue:Task queue depth is 94
-[] WARNING:waitress:total open connections reached the connection limit, no longer accepting new connections
+[x] WARNING:waitress.queue:Task queue depth is 94
+[x] WARNING:waitress:total open connections reached the connection limit, no longer accepting new connections
+[] Analytics
+    [] Paid viewers
+[] Limit Video Quality 720p
+[] Tutorials
+[] Background play 
+    [] Premium Videos ()
+[] Ads
+[] Local downloads (Save for offline)
+[] Pop out, confirm transaction
+[] Trailer, mid video transaction
+[] Categories
+[] Video short
+[] Shorts ****************************************************************
+[] Comment with Emoji ****************************************************************
+[] Filter Comment ****************************************************************
+[] Disable comments ****************************************************************
+[] Currencies in Quotations
+[] Report and feedback
+[] Internal copyright detection
+[] Autogenerate thumbnail from video
+[] Fix edit video form
+[] Make form not loose data input after invalid form input
 [] Get IP address of the view for (esp) logged out viewers
     [] Viewing algorithm limit
 [] Change video thumbnail bug
+[] Fix comments bug 
+[] Fix Photofiles with Asian characters bug
+[] Add Audio stream
 [] Find optimum ratio for thumbanail
 [] Check Lighthouse errors
 [] Search filters
@@ -151,7 +182,7 @@ Disable whitenoise and ALL related settings before collectstatic command
 [] Learn React
 [] Copyright DETECTION AND REGISTERING FUNCTIONALITY
 [] Recommend FUNCTIONALITY
-[] Check out NODE JS FOR STREAMING
+[] Check out NODE JS FOR LIVE STREAMING
 [] Timezone management
 [] Manage recurring Ajax get functions
 [x] robots.txt => https://ordinarycoders.com/blog/article/robots-text-file-django
@@ -199,11 +230,11 @@ Disable whitenoise and ALL related settings before collectstatic command
     [] 1. Store the video files in a directory on your 
     server or in a cloud storage service like AWS S3 or 
     Google Cloud Storage.
-    [] 2. Use a media server like Nginx, Apache or HLS to 
+    [x] 2. Use a media server like Nginx, Apache or HLS to 
     serve the video files to clients. These media servers 
     can handle requests for video files and deliver them 
     to clients over HTTP.
-    [] 3. In your Django views, you can generate URLs to 
+    [x] 3. In your Django views, you can generate URLs to 
     the video files based on their filename or ID in your 
     database.
     [] 4. Include a video player in your HTML templates to 
@@ -214,7 +245,7 @@ Disable whitenoise and ALL related settings before collectstatic command
     that supports live streaming.
 [] Here are some additional tips and resources for implementing 
 video streaming in Django:
-    [] - Use a media server that is optimized for video streaming. 
+    [x] - Use a media server that is optimized for video streaming. 
     Nginx and Apache both have modules for serving video files over 
     HTTP, and HLS is a popular streaming protocol that can be used 
     with both servers.
@@ -240,6 +271,7 @@ video streaming in Django:
 
 [] Decorate Python Code
 
+[] You are signed in another tab, reload to update session ALERT
 [] Internal Mini player functionality
 [] Add to Que
 [] Better alternative for paginator
@@ -247,7 +279,7 @@ video streaming in Django:
 [] Drag and drop functionality
 [] Blue link problem
 [] Get video length
-[] Change like and dislike buttons
+[x] Change like and dislike buttons
 [] Return to specific page after subscribe login redirect
 [] Personalise password_change_view.html and password_reset_view.html pages
 [] video SHORTCUTS
