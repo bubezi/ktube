@@ -16,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY")
 
 ALLOWED_HOSTS = ['ktube.pythonanywhere.com']
-ALLOWED_HOSTS += ['192.168.87.137', '127.0.0.1']
+ALLOWED_HOSTS += ['192.168.87.137', '127.0.0.1', 'localhost']
 
 NODE_SERVER_URL = 'http://localhost:8000'
 
