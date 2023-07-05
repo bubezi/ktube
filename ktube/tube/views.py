@@ -214,8 +214,13 @@ def watch_video(request, pk):
     subscriber_count = video.channel.subscribers.count() # type: ignore
     comments = Comment.objects.filter(video=video)
     comment_replies = CommentReply.objects.all()
+
+    comments_list = []
+    for comment in comments:
+        comments_list.append(comment)
     
-    paginator = Paginator(comments, 20) # 20 comments per page
+    
+    paginator = Paginator(comments_list, 20) # 20 comments per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
@@ -412,7 +417,12 @@ def watch_playlist(request, pk, number):
     comments = Comment.objects.filter(video=video)
     comment_replies = CommentReply.objects.all()
     
-    paginator = Paginator(comments, 10) # 10 comments per page
+    comments_list = []
+    for comment in comments:
+        comments_list.append(comment)
+    
+    
+    paginator = Paginator(comments_list, 20) # 20 comments per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     

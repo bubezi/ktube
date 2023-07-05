@@ -1,17 +1,14 @@
 ######
 
-
 Disable whitenoise and ALL related settings before collectstatic command
 
 Video-on-demand
 Pay-per-view
 
-
 Kenya web experts
 
 ######
 ######
-
 
 
 # KEY
@@ -126,6 +123,8 @@ Kenya web experts
 [x] History compile similar adjacent videos
 [x] WARNING:waitress.queue:Task queue depth is 94
 [x] WARNING:waitress:total open connections reached the connection limit, no longer accepting new connections
+[] Autoplay
+[] Fix upload form. Esp price.
 [] Analytics
     [] Paid viewers
 [] Limit Video Quality 720p
@@ -187,6 +186,71 @@ Kenya web experts
 [] Manage recurring Ajax get functions
 [x] robots.txt => https://ordinarycoders.com/blog/article/robots-text-file-django
 [] Create dynamic sitemap => https://ordinarycoders.com/blog/article/django-sitemap
+
+
+
+[] Decorate Python Code
+
+[] You are signed in another tab, reload to update session ALERT
+[] Internal Mini player functionality
+[] Add to Que
+[] Better alternative for paginator
+[] Fix Profile on mobile
+[] Drag and drop functionality
+[] Blue link problem
+[] Get video length
+[x] Change like and dislike buttons
+[] Return to specific page after subscribe login redirect
+[] Personalise password_change_view.html and password_reset_view.html pages
+[] video SHORTCUTS
+[] COVER PHOTO FOR CHANNELS
+[] Viewer Comment appear just after comment
+[] Viewer Reply appear just after reply
+[] Viewer Comment be on top of comments
+[] Viewer Reply to Comment be on top of replies to comments
+[] ABILITY TO tag individuals in comments
+[] ABILITY TO transfer channel to another viewer
+[] FIX comments
+[] UI
+    [] Make everything beautiful
+        [] Themes
+    [] responsiveness 
+        [] Google Chrome Lighthouse (target 100%)
+            [x] How to convert images to WebP and AVIF from PNG or JPEG
+            [] Types for video upload
+        [] RWA
+[] Migrate Js from HTML to JS files
+    [] channel.html
+    [] history.html
+    [] library.html
+    [] liked_videos.html
+    [] playlist.html
+    [] saved_playlists.html
+    [] subscriptions.html
+    [] videos.html
+    [] watch.html
+    [] watchlater.html
+[] remove playlistId and other unused arguments from 
+    [] handleRemoveFromWatchlater and 
+    [] other Functions
+        [] channel.html
+        [] history.html
+        [] library.html
+        [] liked_videos.html
+        [] playlist.html
+        [] subscriptions.html
+        [] videos.html
+        [] watch.html
+        [] watchlater.html
+[] Custom JavaScript Features
+    [] Alert
+    [] Confirm
+    [] FIND MORE
+[] Edit Check Errors Function and make a loop function from a conditional one
+[] Compress Js code and all code or some shit
+[] Ajax all forms
+
+[] Learn Squel and Bash
 
 ######
 
@@ -267,70 +331,6 @@ video streaming in Django:
     [] - Here's a good tutorial that covers the basics of implementing video 
     streaming in Django using Nginx and Video.js: 
     https://simpleisbetterthancomplex.com/tutorial/2018/02/03/how-to-stream-video-on-demand-with-django.html
-
-
-[] Decorate Python Code
-
-[] You are signed in another tab, reload to update session ALERT
-[] Internal Mini player functionality
-[] Add to Que
-[] Better alternative for paginator
-[] Fix Profile on mobile
-[] Drag and drop functionality
-[] Blue link problem
-[] Get video length
-[x] Change like and dislike buttons
-[] Return to specific page after subscribe login redirect
-[] Personalise password_change_view.html and password_reset_view.html pages
-[] video SHORTCUTS
-[] COVER PHOTO FOR CHANNELS
-[] Viewer Comment appear just after comment
-[] Viewer Reply appear just after reply
-[] Viewer Comment be on top of comments
-[] Viewer Reply to Comment be on top of replies to comments
-[] ABILITY TO tag individuals in comments
-[] ABILITY TO transfer channel to another viewer
-[] FIX comments
-[] UI
-    [] Make everything beautiful
-        [] Themes
-    [] responsiveness 
-        [] Google Chrome Lighthouse (target 100%)
-            [x] How to convert images to WebP and AVIF from PNG or JPEG
-            [] Types for video upload
-        [] RWA
-[] Migrate Js from HTML to JS files
-    [] channel.html
-    [] history.html
-    [] library.html
-    [] liked_videos.html
-    [] playlist.html
-    [] saved_playlists.html
-    [] subscriptions.html
-    [] videos.html
-    [] watch.html
-    [] watchlater.html
-[] remove playlistId and other unused arguments from 
-    [] handleRemoveFromWatchlater and 
-    [] other Functions
-        [] channel.html
-        [] history.html
-        [] library.html
-        [] liked_videos.html
-        [] playlist.html
-        [] subscriptions.html
-        [] videos.html
-        [] watch.html
-        [] watchlater.html
-[] Custom JavaScript Features
-    [] Alert
-    [] Confirm
-    [] FIND MORE
-[] Edit Check Errors Function and make a loop function from a conditional one
-[] Compress Js code and all code or some shit
-[] Ajax all forms
-
-[] Learn Squel and Bash
 
 ######
 

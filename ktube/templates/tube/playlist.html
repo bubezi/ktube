@@ -139,21 +139,27 @@
                         </a>{% if video.private %}<h6 style="padding-left: 10px;">(private)</h6>
                             {% elif video.unlisted %}<h6 style="padding-left: 10px;">(unlisted)</h6>{% endif %}
                     </div>
-                    {% if video.price > 0 %}
                     <div class="row">
-                        <p style="float: left; color:green;">KShs. {{ video.price | floatformat:2 | intcomma }}</p>
-                    </div>
-                    {% endif %}
-                    <a href="{% url 'channel' video.channel.id %}">
-                        <div class="row">
-                            {% if video.channel.profile_picture %}
-                            <img src="{{video.channel.profilePictureURL}}" class="channel-icon" alt="Channel Profile picture" style="width: 20px; height: 20px;">
-                            {% else %}
-                            <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="Channel Profile picture" style="width: 20px; height: 20px;">
-                            {% endif %}
-                            <h6>{{video.channel}}</h6>
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <a href="{% url 'channel' video.channel.id %}">
+                                    {% if video.channel.profile_picture %}
+                                    <img src="{{video.channel.profilePictureURL}}" class="channel-icon" alt="Channel Profile picture" style="width: 20px; height: 20px;">
+                                    {% else %}
+                                    <img src="{% static 'images/placeholder.png' %}" class="channel-icon" alt="Channel Profile picture" style="width: 20px; height: 20px;">
+                                    {% endif %}
+                                </a>
+                                <a href="{% url 'channel' video.channel.id %}">
+                                    <h6>{{video.channel}}</h6>
+                                </a>
+                            </div>
                         </div>
-                    </a>
+                        {% if video.price > 0 %}
+                        <div class="col-lg-6 col-12 text-right mt-2 mt-lg-0">
+                            <p style="float: right; color:green; margin-bottom: 0 !important;">KShs. {{ video.price | floatformat:2 | intcomma }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
                     <div class="row">
                         <div class="col-lg-10">
                         {% if video.views is not 1 %}
