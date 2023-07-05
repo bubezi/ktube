@@ -92,6 +92,9 @@ urlpatterns = [
     path('watch_playlist/<str:pk>/<str:number>', views_tube.watch_playlist, name="watch_playlist"),
     
     path('get_views/<str:pk>',views_tube.get_views, name="get_views"),
+
+    path('go_live', views_tube.go_live, name="go_live"),
+    
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

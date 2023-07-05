@@ -2215,6 +2215,31 @@ def get_views(request, pk):
 ##############################################################################################
 
 
+def go_live(request):
+    context = {}
+    if request.user.is_authenticated:
+        viewer = request.user.viewer
+        context['viewer'] = viewer
+        try:
+            channel = Channel.objects.get(user=viewer)
+            context['channel']=channel
+            context['nav_channel']=channel
+            context['many_channels'] = False
+            context['no_channel'] = False
+        except Channel.DoesNotExist:
+            context['many_channels'] = False
+            context['no_channel'] = True
+        except:
+            context['many_channels'] = True
+            context['no_channel'] = False
+            
+        if context['many_channels']:
+            my_channels = Channel.objects.filter(user=viewer)
+            context['my_channels'] = my_channels
+        return render(request, "tube/live.html", context)
+    else:
+        return redirect('login')
+
 
 @require_POST
 @csrf_exempt

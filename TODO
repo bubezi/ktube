@@ -147,6 +147,7 @@ Kenya web experts
 [] Internal copyright detection
 [] Autogenerate thumbnail from video
 [] Fix edit video form
+[] Implement types where possible
 [] Make form not loose data input after invalid form input
 [] Get IP address of the view for (esp) logged out viewers
     [] Viewing algorithm limit

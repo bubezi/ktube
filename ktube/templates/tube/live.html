@@ -1,0 +1,36 @@
+{% extends 'tube/base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+{% load humanize %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ playlist.name }} {% endblock title %}
+
+{% block content %}
+
+<style>
+    .dropdown .btn:focus,
+    .dropdown .btn:active,
+    .dropdown .btn:not(:disabled):not(.disabled):active:focus,
+    .dropdown .btn:not(:disabled):not(.disabled).active:focus {
+        box-shadow: none !important; /* Remove box shadow when focused or active */
+        background-color: transparent !important; /* Set background color to transparent */
+        border-color: transparent !important; /* Set border color to transparent */
+    }
+</style>
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <form>
+                <a onclick="event.preventDefault(); startStream();">Start stream</a>
+                <a onclick="event.preventDefault(); stopStream();">Stop stream</a>
+            </form>
+        </div>
+    </div>
+
+    <hr style="padding-top: 3px;">
+
+    <script type="text/javascript" src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
+
+{% endblock content %}
