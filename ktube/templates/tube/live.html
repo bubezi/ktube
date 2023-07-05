@@ -22,18 +22,35 @@
 
     <div class="row">
         <div class="col-lg-12">
-            <form>
-                <input type="text" name="stream" id="stream-name">
+            <form enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-lg-12">
-                    <a onclick="event.preventDefault(); startStream(event);">Start stream</a>
+                        <label for="stream-title">Title</label>
+                        <input type="text" name="stream" id="stream-title">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label for="description">Description</label>
+                        <input type="text" name="description" id="description">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label for="thumbnail">Thumbnail</label>
+                        <input type="file" name="thumbnail" id="thumbnail">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                    <a onclick="event.preventDefault(); startStream(event);"><button class="btn btn-success">Start stream</button></a>
                     </div>
                 </div>
             </form>
             <form>
                 <div class="row">
                     <div class="col-lg-12">
-                        <a onclick="event.preventDefault(); stopStream(event);">Stop stream</a>
+                        <a onclick="event.preventDefault(); stopStream(event);"><button class="btn btn-outline-secondary add-btn update-cart">Stop stream</button></a>
                     </div>
                 </div>
             </form>
