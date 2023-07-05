@@ -14,16 +14,16 @@
         <p>{% if viewer %}Welcome {{ viewer.username | title }}.{% endif %} Website still under Development... </p>
     </div>
     {% endcomment %}
+    {% comment %}
     <div class="row">
-        {% comment %}
         {% if channel %}
         <div class="col-lg-12 box-element">
             <h2>Welcome <a href="{% url 'channel' channel.id %}">{{ viewer.username | title }}</h2>
                 <!-- look for sentence case humanize tag -->
             </div>
             {% endif %}
-        {% endcomment %}
     </div>
+    {% endcomment %}
     
     {% include 'tube/videos.html' %}
 
