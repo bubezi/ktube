@@ -15,7 +15,7 @@ server {
 
     location /static {
         autoindex on;
-        alias /home/black/Documents/code/ktube/ktube/static; ## For now, change to .../.../staticfiles later
+        alias /home/black/Documents/code/ktube/ktube/staticfiles; ## For now, change to .../.../staticfiles later
     }
 
     #location /media {

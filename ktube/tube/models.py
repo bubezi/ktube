@@ -285,7 +285,7 @@ class Stream(models.Model):
     user = models.ForeignKey(Viewer, on_delete=models.CASCADE)
     key = models.CharField(max_length=32, unique=True)
     started_at = models.DateTimeField(null=True, blank=True)
-    title = models.CharField(max_length=255, null=False, blank=False, default="LIVE Stream")
+    title = models.CharField(max_length=255, null=False, default="LIVE Stream")
     description = models.TextField(blank=True, null=True)
     thumbnail = models.ImageField(blank=True, null=True)
     PUBLIC = 'public'

@@ -94,6 +94,8 @@ urlpatterns = [
     path('get_views/<str:pk>',views_tube.get_views, name="get_views"),
 
     path('go_live', views_tube.go_live, name="go_live"),
+    path('start_stream', views_tube.start_stream, name="start_stream"),
+    path('stop_stream', views_tube.stop_stream, name="stop_stream"),
     
 ]
 

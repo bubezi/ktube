@@ -1364,6 +1364,7 @@ def deposit_funds(request):
         return redirect('login')
 
 
+@csrf_exempt
 def edit_playlist(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -1402,6 +1403,7 @@ def edit_playlist(request):
         return redirect('login')
 
 
+@csrf_exempt
 def edit_video(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -1481,6 +1483,7 @@ def edit_video(request):
 #         return redirect('login')
 
 
+@csrf_exempt
 def subscribe(request):
     if request.user.is_authenticated:
         if request.method=='POST':
@@ -1513,7 +1516,8 @@ def subscribe(request):
     else:
         return redirect('login')
  
-    
+
+@csrf_exempt   
 def unsubscribe(request):
     if request.user.is_authenticated:
         if request.method=='POST':
@@ -1546,7 +1550,8 @@ def unsubscribe(request):
     else:
         return redirect('login')
    
-    
+
+@csrf_exempt   
 def like(request):
     if request.user.is_authenticated:
         if request.method=='POST':
@@ -1579,7 +1584,8 @@ def like(request):
     else:
         return redirect('login') 
   
-    
+
+@csrf_exempt   
 def unlike(request):
     if request.user.is_authenticated:
         if request.method=='POST':
@@ -1612,7 +1618,8 @@ def unlike(request):
     else:
         return redirect('login') 
  
-    
+
+@csrf_exempt    
 def dislike(request):
     if request.user.is_authenticated:
         if request.method=='POST':
@@ -1645,7 +1652,8 @@ def dislike(request):
     else:
         return redirect('login') 
  
-    
+
+@csrf_exempt  
 def undislike(request):
     if request.user.is_authenticated:
         if request.method=='POST':
@@ -1680,6 +1688,7 @@ def undislike(request):
         return redirect('login')
     
 
+@csrf_exempt
 def add_view(request):
     from .utils import view_valid
     
@@ -1750,6 +1759,7 @@ def add_view(request):
             return HttpResponse('No POST in request')
  
 
+@csrf_exempt
 def add_video_to_playlist(request):
     if request.user.is_authenticated:
         if request.method=='POST':
@@ -1768,6 +1778,7 @@ def add_video_to_playlist(request):
         return redirect('login') 
  
 
+@csrf_exempt
 def remove_video_from_playlist(request):
     if request.user.is_authenticated:
         if request.method=='POST':
@@ -1786,6 +1797,7 @@ def remove_video_from_playlist(request):
         return redirect('login') 
 
 
+@csrf_exempt
 def add_video_to_watchlater(request):
     if request.user.is_authenticated:
         if request.method=='POST':
@@ -1804,6 +1816,7 @@ def add_video_to_watchlater(request):
         return redirect('login')  
 
 
+@csrf_exempt
 def remove_video_from_watchlater(request):
     if request.user.is_authenticated:
         if request.method=='POST':
@@ -1821,7 +1834,8 @@ def remove_video_from_watchlater(request):
     else:
         return redirect('login') 
  
-    
+
+@csrf_exempt   
 def save_playlist(request):
     if request.user.is_authenticated:
         if request.method=='POST':
@@ -1839,7 +1853,8 @@ def save_playlist(request):
     else:
         return redirect('login')
  
-    
+
+@csrf_exempt   
 def unsave_playlist(request):
     if request.user.is_authenticated:
         if request.method=='POST':
@@ -1856,8 +1871,8 @@ def unsave_playlist(request):
             return HttpResponse('No POST in request')
     else:
         return redirect('login')
-    
-    
+
+
 def delete_playlist(request):
     if request.user.is_authenticated:
         if request.method=='POST':
@@ -1878,7 +1893,8 @@ def delete_playlist(request):
     else:
         return redirect('login')
     
-    
+
+  
 def delete_video(request):
     if request.user.is_authenticated:
         if request.method=='POST':
@@ -1898,7 +1914,7 @@ def delete_video(request):
     else:
         return redirect('login')
     
-    
+   
 def delete_channel(request):
     if request.user.is_authenticated:
         if request.method=='POST':
@@ -1918,7 +1934,7 @@ def delete_channel(request):
     else:
         return redirect('login')
     
-    
+   
 def delete_comment_reply(request):
     if request.user.is_authenticated:
         if request.method=='POST':
@@ -1938,7 +1954,7 @@ def delete_comment_reply(request):
     else:
         return redirect('login')
     
-    
+  
 def delete_comment(request):
     if request.user.is_authenticated:
         if request.method=='POST':
@@ -1958,7 +1974,7 @@ def delete_comment(request):
     else:
         return redirect('login')
     
-    
+  
 def delete_account(request):
     if request.user.is_authenticated:
         if request.method=='POST':
@@ -2005,6 +2021,7 @@ def delete_account(request):
         return redirect('login')
     
 
+@csrf_exempt
 def comment(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -2027,6 +2044,7 @@ def comment(request):
         return redirect('login')
     
 
+@csrf_exempt
 def comment_many_channels(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -2049,6 +2067,7 @@ def comment_many_channels(request):
         return redirect('login')
 
 
+@csrf_exempt
 def reply_comment(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -2071,7 +2090,7 @@ def reply_comment(request):
         return redirect('login')
 
 
-
+@csrf_exempt
 def reply_comment_many_channels(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -2097,6 +2116,7 @@ def reply_comment_many_channels(request):
 from django.contrib.auth import authenticate
 
 
+@csrf_exempt
 def authenticate_action(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -2114,6 +2134,7 @@ def authenticate_action(request):
         return redirect('login')
 
 
+@csrf_exempt
 def like_comment(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -2142,6 +2163,7 @@ def like_comment(request):
         return redirect('login')
 
 
+@csrf_exempt
 def dislike_comment(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -2170,6 +2192,7 @@ def dislike_comment(request):
         return redirect('login')
     
 
+@csrf_exempt
 def all_viewers(request):
     if request.user.is_authenticated:
         return render(request, 'tube/ajax_test.html')
@@ -2188,17 +2211,20 @@ def all_viewers(request):
 ##############################################################################################
 
 
+@csrf_exempt
 def get_viewers(request):
     viewers = Viewer.objects.all()
     return JsonResponse({'viewers':list(viewers.values())})
 
 
+@csrf_exempt
 def get_subs(request, pk):
     channel = Channel.objects.get(id=pk)
     subscriber_count = channel.subscribers.count()
     return JsonResponse({"subscriber_count":subscriber_count})
 
 
+@csrf_exempt
 def get_views(request, pk):
     video = Video.objects.get(slug=pk)
     views = video.views
@@ -2251,7 +2277,8 @@ def start_stream(request):
         return HttpResponseForbidden("Already streaming")
     stream.started_at = timezone.now()
     stream.save()
-    return redirect(stream.user.username)
+    # return redirect(stream.user.username)
+    return JsonResponse({'success': True, 'message': "success"})
 
 @require_POST
 @csrf_exempt
