@@ -165,12 +165,21 @@ Kenya web experts
     [] Resume capability
     [] Auto skip (Play next)
     [*] Pictures (For events and shit)
+[] Install rtmps in local nginx
 [] Lighthouse 100% mobile
-    [x] PWA
-    []
-    []
+    [] PWA
+        [x] Installable
+        [x] Web app and manifest
+        [] register a service worker that controls page and start_url
+        [] Maskable Icon
+    [] Performance
+    [] Accessibility
     [] Best Practises
-
+    [x] SEO
+[] Use Docker
+    [] Use RTMPs in docker
+[] Learn and Use Kubernetes
+[] Update types where possible
 [] Seperate logic into django apps
 [] Learn React
 [] Copyright DETECTION AND REGISTERING FUNCTIONALITY

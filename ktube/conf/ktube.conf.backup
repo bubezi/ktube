@@ -1,5 +1,5 @@
-log_format upstreamlog '$server_name to: $upstream_addr [$request] '
-    'upstream_response_time $upstream_response_time'
+log_format upstreamlog '[$time_local] $server_name to: $upstream_addr [$request] '
+    'upstream_response_time $upstream_response_time '
     'msec $msec request_time $request_time ';
 
 upstream ktube_upstream {
@@ -35,4 +35,3 @@ server {
         proxy_set_header Connection "upgrade";
     }
 }
-
