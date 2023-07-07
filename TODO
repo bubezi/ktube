@@ -1,24 +1,49 @@
-######
-
-Disable whitenoise and ALL related settings before collectstatic command
-
-Video-on-demand
-Pay-per-view
-
-Kenya web experts
-
-######
-######
-
-
 # KEY
     [] To do
     [x] Done
     [*] Will not do, for now
 
+
+######
+# NOTES
+
+#
+Disable whitenoise and ALL related settings before collectstatic command
+
+#
+Video-on-demand
+Pay-per-view
+
+#
+Kenya web experts
+
 ######
 
-# TODO
+# GOOGLE AND Research
+
+[] Fieldset
+
+[x] Chat GPT Prompt
+    I am making a django youtube clone and I need the user to add a subscriber with a button. 
+    That is, having the Viewer Model added to the channel model's subscribers ManyToManyField
+    without having to handle using a new view function.
+    The same for like and deslike buttons
+[x] google HUMANIze Tags
+[x] Add page Loader
+[x] *return to last video time after sub from video redirect
+[x] Drag and drop functionality
+[x] Django video View count
+[x] Does Django use websockets
+[x] UPDATE Like and Dislike buttons / svg
+[] How to serve videos better django
+[] Better alternative for paginator (For comments and Comment replies)
+[] Dynamic login redirect
+[] Optional url additions /url/<str:pk>
+[] Video.Js
+
+######
+
+# PHASE ! - Initialise
 [x] Utilize the {% empty %} tag in for loop TAGS
 [x] Add DP
 [x] Profile Page
@@ -116,50 +141,17 @@ Kenya web experts
 
 ######
 
-# PHASE 2
+# PHASE 2 - Perfect
 [x] Video slug - From link using video id to slug
 [x] Video costs something
 [x] Fix revenue percentage error
 [x] History compile similar adjacent videos
 [x] WARNING:waitress.queue:Task queue depth is 94
 [x] WARNING:waitress:total open connections reached the connection limit, no longer accepting new connections
-[] Autoplay
-[] Fix upload form. Esp price.
-[] Analytics
-    [] Paid viewers
-    [] views
-[] Limit Video Quality 720p
-[] Tutorials
-[] Background play 
-    [] Premium Videos ()
-[] Ads
-[] Local downloads (Save for offline)
-[] Pop out, confirm transaction
-[] Trailer, mid video transaction
-[] Categories
-[] Video short
-[] Shorts ****************************************************************
-[] Comment with Emoji ****************************************************************
-[] Filter Comment ****************************************************************
-[] Disable comments ****************************************************************
-[] Currencies in Quotations
-[] Report and feedback
-[] Internal copyright detection
-[] Autogenerate thumbnail from video
-[] Fix edit video form
-[] Implement types where possible
-[] Make form not loose data input after invalid form input
-[] Get IP address of the view for (esp) logged out viewers
-    [] Viewing algorithm limit
-[] Change video thumbnail bug
-[] Fix comments bug 
-[] Fix Photofiles with Asian characters bug
-[] Add Audio stream
-[] Find optimum ratio for thumbanail
-[] Check Lighthouse errors
-[] Search filters
-[] An uploading loader (Upoading, processing)
-[] Auto Skip
+[x] robots.txt => https://ordinarycoders.com/blog/article/robots-text-file-django
+[x] Change like and dislike buttons
+[x] Get IP address of the view for (esp) logged out viewers
+    [x] Viewing algorithm limit
 [] Create logic
     [x] Channel
     [x] comments
@@ -172,27 +164,66 @@ Kenya web experts
     [] Seaking
     [] Resume capability
     [] Auto skip (Play next)
-    [] Pictures (For events and shit)
-[] Round off cash
-[] Log video view count after a percentage of video length
-[] PWA
-    [] Add bootstrap.bundle.js
-    [] Use tools like ngrok or configure SSL certificates for local testing
-    [] Lighthouse 100% mobile
+    [*] Pictures (For events and shit)
+[] Lighthouse 100% mobile
+    [x] PWA
+    []
+    []
+    [] Best Practises
 
+[] Seperate logic into django apps
 [] Learn React
 [] Copyright DETECTION AND REGISTERING FUNCTIONALITY
 [] Recommend FUNCTIONALITY
+[] Analytics
+    [] Paid viewers
+    [] Views
+    [] Likes and Dislikes
+    [] Subscribers
+[] Limit Video Quality 720p
+[] Tutorials
+[] Background play 
+    [] Premium Videos ()
+[] Ads
+[] Hover to play
+[] Local downloads (Save for offline)
+[] Pop out, confirm transaction
+[] Trailer, mid video transaction
+[] Better profile image Placeholder
+[] Categories
+[] Video short
+[] Shorts ****************************************************************
+[] Comment with Emoji ****************************************************************
+[] Filter Comment ****************************************************************
+[] Optional Disable comments ****************************************************************
+[] Respective Currencies in Quotations
+[] Report and feedback
+[] Internal copyright detection (Sites own videos)
+[] Autogenerate thumbnail from video
+[] Autoplay
+[] Fix forms
+    [] Fix edit video form
+    [] Fix upload video form. Esp Price
+    [] Make form not loose data input after invalid form input During sign up (Or any other form)
+    [] Ajax all forms *(or React version of it)
+[] Change video thumbnail bug
+[] Fix comments bug 
+[] Fix Photofiles with Asian characters bug
+[] Add Audio stream
+[] Find optimum ratio for thumbanail
+[] Check Lighthouse errors
+[] Search filters
+[] An uploading loader (Upoading, processing)
+[] Auto Skip
+[] Round off cash
+[] Log video view count after a percentage of video length
+[] Add bootstrap.bundle.js
+[] Use tools like ngrok or configure SSL certificates for local testing
 [] Check out NODE JS FOR LIVE STREAMING
 [] Timezone management
 [] Manage recurring Ajax get functions
-[x] robots.txt => https://ordinarycoders.com/blog/article/robots-text-file-django
 [] Create dynamic sitemap => https://ordinarycoders.com/blog/article/django-sitemap
-
-
-
 [] Decorate Python Code
-
 [] You are signed in another tab, reload to update session ALERT
 [] Internal Mini player functionality
 [] Add to Que
@@ -201,7 +232,6 @@ Kenya web experts
 [] Drag and drop functionality
 [] Blue link problem
 [] Get video length
-[x] Change like and dislike buttons
 [] Return to specific page after subscribe login redirect
 [] Personalise password_change_view.html and password_reset_view.html pages
 [] video SHORTCUTS
@@ -250,47 +280,13 @@ Kenya web experts
     [] FIND MORE
 [] Edit Check Errors Function and make a loop function from a conditional one
 [] Compress Js code and all code or some shit
-[] Ajax all forms
 
 [] Learn Squel and Bash
 
-######
-
-# GOOGLE AND TODO
-
-[] Fieldset
-
-[x] Chat GPT Prompt
-    I am making a django youtube clone and I need the user to add a subscriber with a button. 
-    That is, having the Viewer Model added to the channel model's subscribers ManyToManyField
-    without having to handle using a new view function.
-    The same for like and deslike buttons
-[x] google HUMANIze Tags
-[x] Add page Loader
-[x] *return to last video time after sub from video redirect
-[x] Drag and drop functionality
-[x] Django video View count
-[x] Does Django use websockets
-[x] UPDATE Like and Dislike buttons / svg
-[] Better alternative for paginator
-[] How to serve videos better django
-[] Better profile image Placeholder
-[] Dynamic login redirect
-[] Optional url additions /url/<str:pk>
-[] Video.Js
-[] UI
-    [] Make everything beautiful
-    [] responsiveness 
-        [] Google Chrome Lighthouse (target 100%)
-            [x] How to convert images to WebP and AVIF from PNG or JPEG
-            [] Types for video upload
-        [] RWA
-    [] Possibly with react
-[] Google Authentication
 
 ######
 
-# Phase 3
+# Phase 3 - LiveStream
 
 [] To enable video streaming in your Django site, you can follow these general steps:
     [] 1. Store the video files in a directory on your 
@@ -334,19 +330,23 @@ video streaming in Django:
     streaming in Django using Nginx and Video.js: 
     https://simpleisbetterthancomplex.com/tutorial/2018/02/03/how-to-stream-video-on-demand-with-django.html
 
-######
-
-# [] PROBLEMS
-    [x] / THE URL problem
-    [] GET data from video
 
 ######
 
 # Pre Hosting shit
-    [] Your browser does not support the video tag
-    [] python manage.py check ****
-        [] python manage.py check --deploy
-        [] ****
-    [] python manage.py collectstatic
-    [] email configuration
-    [] Google Authentication (Firebase)
+[] Your browser does not support the video tag
+[] python manage.py check ****
+    [] python manage.py check --deploy
+    [] ****
+[] python manage.py collectstatic
+[] email configuration
+[] Authentication 
+    [] Google (Firebase)
+    [] Facebook
+    [] Email
+
+######
+
+# [] PROBLEMS
+[x] / THE URL problem
+[] GET data from video
