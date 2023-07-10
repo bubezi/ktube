@@ -166,6 +166,10 @@ Kenya web experts
     [] Auto skip (Play next)
     [*] Pictures (For events and shit)
 [] Install rtmps in local nginx
+    [] Dockerised rtmps server
+[] Dockerise django
+[] Install and implement postgresql
+[]
 [] Lighthouse 100% mobile
     [] PWA
         [x] Installable

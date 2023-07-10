@@ -23,7 +23,7 @@ NODE_SERVER_URL = 'http://localhost:8000'
 ######################## COMMENT THIS OUT DURING DEVELOPMENT AND TESTING AND UNCOMMENT THE ONE BELOW IT ###########################################
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = False
+# DEBUG = env("DEBUG")
 
 # # Database
 # # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -49,7 +49,7 @@ NODE_SERVER_URL = 'http://localhost:8000'
 
 
 
-DEBUG = True
+DEBUG = env("DEBUG")
 
 DEBUG_PROPAGATE_EXCEPTIONS = True
 
