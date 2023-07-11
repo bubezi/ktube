@@ -1,9 +1,11 @@
 // import './App.css'
 import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 // import { Routes, Route, Link } from "react-router-dom";
 import Homepage from './components/Homepage';
 // import Watchpage from "./components/Watchpage";
+import Navbar from "./components/Navbar";
 
 
 function App() {
@@ -19,6 +21,7 @@ function App() {
         {/* <Route path="/watch" element={<Watchpage/>}/> */}
         {/* <Route path="/" element={<Homepage/>}/> */}
       {/* </Routes> */}
+      <Navbar username="Bubezi"/>
       <Homepage/>
     </div>
     </>
