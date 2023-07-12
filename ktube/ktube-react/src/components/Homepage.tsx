@@ -5,9 +5,12 @@ function Homepage () {
     return (
         <>
             <Homescreen/>
+            <hr />
             <Videos/>
         </>
-    );
+    );           
+                      
+           
 }
 
 export default Homepage;

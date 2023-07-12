@@ -3,7 +3,7 @@ function Homescreen(){
         color: "Aliceblue"
     }
     return (
-        <>
+        <div className="row">
             <div className="container-home">
 
             </div>
@@ -17,7 +17,7 @@ function Homescreen(){
                     </div>
                 </div>
             </div>    
-        </>
+        </div>
     );
 }
 
