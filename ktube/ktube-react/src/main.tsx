@@ -14,12 +14,12 @@ import './assets/css/cdn/free-v4-shims.min.css'
 import './assets/css/cdn/free-v5-font-face.min.css'
 import './assets/css/cdn/free.min.css'
 
-import './src/assets/css/footer.css'
-import './src/assets/css/home.css'
-import './src/assets/css/main.css'
-import './src/assets/css/profile.css'
-import './src/assets/css/tube.css'
-import './src/assets/css/watch.css'
+import './assets/css/footer.css'
+import './assets/css/home.css'
+import './assets/css/main.css'
+import './assets/css/profile.css'
+import './assets/css/tube.css'
+import './assets/css/watch.css'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
