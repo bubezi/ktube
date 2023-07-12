@@ -2,14 +2,64 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>	
-    <script type="text/javascript" src="/src/js/jquery-3.7.0.min.js"></script>
-    <script type="text/javascript" src="/src/js/bootstrap.min.js"></script> 
-  </body>
+    <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
+
+    <title> {% block title %}K TUBE{% endblock title %} | K TUBE</title>
+    <meta name="description" content="Shows That Are Just You">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="robots" content="index,follow">
+    <meta name="keywords" content="Shows, Videos, Music, Documentaries" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=8, minimum-scale=1" />
+	
+    <link rel="apple-touch-icon" sizes="180x180" href="./src/assets/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./src/assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./src/assets//images/favicon-16x16.png">
+    <link rel="manifest" href="./src/assets/images/site.webmanifest">
+
+    <link rel="stylesheet" type="text/css" href="./src/assets/css/cdn/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="./src/assets/css/cdn/bootstrap.min.css"> 
+	
+    <link rel="stylesheet" type="text/css" href="./src/assets/css/main.css">
+    <link rel="stylesheet" type="text/css" href="./src/assets/css/home.css">
+    <link rel="stylesheet" type="text/css" href="./src/assets/css/footer.css">
+    <link rel="stylesheet" type="text/css" href="./src/assets/css/tube.css">
+    <link rel="stylesheet" type="text/css" href="./src/assets/css/watch.css">
+</head>
+
+
+<body  style="background: linear-gradient(grey, whitesmoke) !important;">
+	<!-- {% include 'loaders/loader0.html' %} -->
+	
+  <div id="root"></div>
+
+  <script type="text/javascript" src="./src/assets/js/jquery-3.7.0.min.js"></script>
+
+  <script type="module" src="./src/assets/src/main.tsx"></script>
+
+  <script type="text/javascript" src="./src/assets/js/bootstrap.min.js"></script> 	
+	
+	<script type="text/javascript" src="./src/assets/js/main.js"></script>
+	
+	<script type="text/javascript" src="./src/assets/js/c44ff25b2e.js"></script>
+	<script type="text/javascript" src="./src/assets/js/popper.min.js"></script>
+	<!-- <script type="text/javascript" src="{% static 'js/bootstrap.bundle.min.js' %}"></script> -->
+	
+
+	<script type="text/javascript">
+		window.addEventListener('load', function() {
+			document.getElementById('loader').style.display = 'none';
+		});
+
+
+		// if ('serviceWorker' in navigator) {
+		// 	 window.addEventListener('load', function() {
+		// 	 navigator.serviceWorker.register('/static/service-worker.js');
+		// 	});
+		// }
+	</script>
+	
+</body>
+
 </html>

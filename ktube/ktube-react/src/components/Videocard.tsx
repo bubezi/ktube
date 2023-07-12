@@ -1,5 +1,6 @@
-import placeholder from '../assets/thumbnail-placeholder.webp'
-import imagePlaceholder from '../assets/placeholder.png'
+import placeholder from '../assets/images/thumbnail-placeholder.webp'
+import imagePlaceholder from '../assets/images/placeholder.png'
+
 import Videooptions from './Videooptions'
 
 interface Prop {
