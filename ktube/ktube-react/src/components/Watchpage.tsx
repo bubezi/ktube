@@ -7,6 +7,11 @@ function Watchpage () {
     const mainColStyle = {
         padding: 0,
     }
+
+    const containerStyle = {
+        background: "linear-gradient(Grey, whitesmoke)!important"
+    }
+
     return (
         <>
             <Navbar username="bubezi"/>
@@ -17,13 +22,18 @@ function Watchpage () {
                     preload="auto" 
                     controls>
                     <source src="http://localhost/media/Rust_Absolutely_Positively_Sucks.mp4" type="video/mp4"/>
-                    {/* <source src="{{video.videoURL}}" type="video/x-matroska"/>
-                    <source src="{{video.videoURL}}" type="video/webm"/> */}
+                    {/* <source src="http://localhost/media/Rust_Absolutely_Positively_Sucks.mp4" type="video/x-matroska"/>
+                    <source src="http://localhost/media/Rust_Absolutely_Positively_Sucks.mp4" type="video/webm"/> */}
                     Your browser does not support the video
                     </video>
+
+                    <div className="container" style={containerStyle}></div> 
                 </div>
+                <div className="col-lg-3"></div>
 
             </div>
+
+
 
         </>
     );
