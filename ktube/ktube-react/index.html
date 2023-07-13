@@ -48,9 +48,11 @@
 	
 
 	<script type="text/javascript">
-		// window.addEventListener('load', function() {
-		// 	document.getElementById('loader').style.display = 'none';
-		// });
+		window.addEventListener('load', function() {
+      setTimeout(()=>{
+        document.getElementById('loader').style.display = 'none';
+      }, 1000);
+		});
 
 
 		// if ('serviceWorker' in navigator) {

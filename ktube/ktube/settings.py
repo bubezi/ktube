@@ -16,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY")
 
 ALLOWED_HOSTS = ['ktube.pythonanywhere.com']
-ALLOWED_HOSTS += ['192.168.87.137', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS += ['192.168.87.137', '127.0.0.1', '127.0.0.2', 'localhost']
 
 NODE_SERVER_URL = 'http://localhost:8000'
 
@@ -117,7 +117,7 @@ INSTALLED_APPS = [
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 CORS_ORIGIN_ALLOW_ALL = True 
-# CORS_ORIGIN_WHITELIST = ( 'http://localhost:5173') 
+# CORS_ORIGIN_WHITELIST = [ 'https://localhost:5173'] 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

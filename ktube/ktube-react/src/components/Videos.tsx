@@ -23,42 +23,40 @@ import React from 'react'
 
 function Videos () {
 
-    const [videos, setVideos] = React.useState([
-        {
-            title:"My video",
-            channel:"Bubezi",
-            price:20,
-            views:1022,
-        }
-    ])
+    // const [videos, setVideos] = React.useState({})
 
-
+    
     const fetchdata = () => {
-        fetch("http://localhost:8000/api/videos")
-            .then(response => response.json())
-            .then(data => setVideos(data))
+        fetch("http://127.0.0.1/api/videos")
+        .then(response => response.json())
+        .then(data => console.log(data))
+        // .then(data => setVideos(data))
     }
-
+    
     React.useEffect(() => {
         fetchdata();
-    })
-
-    // axios.get("http://localhost:8000/api/videos")
+    }, [])
+    
+    // axios.get("http://127.0.0.2:8000/api/videos")
     //     .then(res => setVideos(res.data))
-
-    const videocards = videos.map(video => {
-        const videoTitle = `${video.title}`
-        const videoChannel = `${video.channel}`
-        const videoPrice = `${video.price}`
-        const videoViews = `${video.views}`
-        return  <Videocard title = {videoTitle} channel={videoChannel} price={videoPrice} views={videoViews}/>
-    })
+    
+    // const videocards = videos.map(video => {
+    //     const videoTitle = `${video.title}`
+    //     const videoChannel = `${video.channel}`
+    //     const videoPrice = `${video.price}`
+    //     const videoViews = `${video.views}`
+    //     return  <Videocard title = {videoTitle} channel={videoChannel} price={videoPrice} views={videoViews}/>
+    // })
 
     return (
         <>
-            <div className="row">
+            {/* <div className="row">
                 { videocards }
+            </div> */}
+            <div className="row">
+                    <Videocard title = "Some Video" channel="Best Channel" price="200" views="201322"/>
             </div>
+
         </>
     );
 }

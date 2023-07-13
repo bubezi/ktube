@@ -1,12 +1,16 @@
 import Homescreen from "./Homescreen";
 import Videos from "./Videos";
+import Navbar from "./Navbar";
 
 function Homepage () {
     return (
         <>
-            <Homescreen/>
-            <hr />
-            <Videos/>
+            <Navbar username="Bubezi"/>
+            <div className="container">
+                <Homescreen/>
+                <hr />
+                <Videos/>
+            </div>
         </>
     );           
                       

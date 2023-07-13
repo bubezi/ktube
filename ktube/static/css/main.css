@@ -19,6 +19,10 @@ p, h1, h2, h3, h4, h5, h6 {
 	margin-bottom: 4px !important;
 }
 
+/* h6#video-views {
+	float: left;
+} */
+
 a:hover {
 	opacity: .7;
 	padding-bottom: 2px;

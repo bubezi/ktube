@@ -62,11 +62,13 @@ function Videocard (props: Prop) {
                     </div>
                     <div className="row">
                         <div className="col-lg-10">
-                            {/* {% if video.views is not 1 %} */}
-                                {/* <h6 style={videoTitle}>{{video.views | intcomma }} views</h6> */}
-                            {/* {% else %} */}
-                                <h6 style={videoTitle}>{props.views} view</h6>
-                            {/* {% endif %} */}
+                            <div className="row">
+                                {/* {% if video.views is not 1 %} */}
+                                    {/* <h6 id="video-views" style={videoTitle}>{{video.views | intcomma }} views</h6> */}
+                                {/* {% else %} */}
+                                    <h6 id="video-views" style={videoTitle}>{props.views} view</h6>
+                                {/* {% endif %} */}
+                            </div>
                         </div>
                         <div className="col-lg-2 col-12 text-right mt-2 mt-lg-0">
                             <Videooptions />
