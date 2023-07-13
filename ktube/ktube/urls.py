@@ -1,7 +1,7 @@
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 
 from tube import views as views_tube
 from register import views as views_reg
@@ -101,8 +101,9 @@ urlpatterns = [
 
 ### API
 
-# urlpatterns += [
-# ]
+urlpatterns += [
+    re_path(r'^api/videos/$', views_tube.video_list),
+]
 
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

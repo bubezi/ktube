@@ -15,6 +15,41 @@ PERCENTAGE_OF_REVENUE = Decimal('0.85')
 COMPANY_USERNAME = 'bubezi'
 
 
+
+##############################################################################################
+#############################                                   ##############################
+#############################                                   ##############################
+#############################             API FUNCTIONS         ##############################
+#############################                                   ##############################
+#############################                                   ##############################
+##############################################################################################
+
+
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import status
+
+from .serializers import *
+
+
+# @api_view(['GET', 'POST'])
+@api_view(['GET'])
+def video_list(request):
+    if request.method == 'GET':
+        data = Video.objects.filter(private=False, unlisted=False)
+        
+        serializer = VideoSerializer(data, context={'request': request}, many=True)
+        
+        return Response(serializer.data)
+    
+    elif request.method == 'POST':
+        serializer = VideoSerializer(data=request.data)   
+        pass    
+        
+
+
+
+
 ##############################################################################################
 #############################                                   ##############################
 #############################                                   ##############################
