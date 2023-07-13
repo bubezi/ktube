@@ -152,6 +152,9 @@ Kenya web experts
 [x] Change like and dislike buttons
 [x] Get IP address of the view for (esp) logged out viewers
     [x] Viewing algorithm limit
+[] Search
+    [] history
+    [] algorithm
 [] Create logic
     [x] Channel
     [x] comments
