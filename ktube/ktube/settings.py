@@ -108,10 +108,31 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'django_cleanup.apps.CleanupConfig',
+    
+    # API
+    'rest_framework',
+    # 'corsheaders', # python3 -m pip3 install django-cors-headers
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# CORS_ORIGIN_ALLOW_ALL = True # python3 -m pip3 install django-cors-headers
+# CORS_ORIGIN_WHITELIST = ( 'http://localhost:3000', ) # python3 -m pip3 install django-cors-headers
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    
+    # 'corsheaders.middleware.CorsMiddleware', # python3 -m pip3 install django-cors-headers
+    
+]
 
 # SITE_ID = 1
 ## ###########UPDATE site.domain in python manage.py shell after Hosting/production
@@ -124,17 +145,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 ## >site.save()
 ## ### Then set SITE_ID = 2
 
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-]
 
 ROOT_URLCONF = 'ktube.urls'
 
