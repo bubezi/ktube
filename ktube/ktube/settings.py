@@ -117,7 +117,7 @@ INSTALLED_APPS = [
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 CORS_ORIGIN_ALLOW_ALL = True 
-# CORS_ORIGIN_WHITELIST = ( 'http://localhost:5173', ) # python3 -m pip3 install django-cors-headers
+# CORS_ORIGIN_WHITELIST = ( 'http://localhost:5173') 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

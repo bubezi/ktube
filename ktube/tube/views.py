@@ -32,8 +32,7 @@ from rest_framework import status
 from .serializers import *
 
 
-# @api_view(['GET', 'POST'])
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
 def video_list(request):
     if request.method == 'GET':
         data = Video.objects.filter(private=False, unlisted=False)

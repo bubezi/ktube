@@ -21,7 +21,7 @@ class ChannelSerializer(serializers.ModelSerializer):
 class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
-        fields = ('id', 'title', 'video', 'thumbnail', 'description', 'upload_time', 'channel', 'private', 'unlisted', 'private', 'likes', 'dislikes', 'views', 'slug', 'path', 'price', 'paid_viewers')
+        fields = ('id', 'title', 'video', 'thumbnail', 'description', 'upload_time', 'channel', 'private', 'unlisted', 'likes', 'dislikes', 'views', 'slug', 'path', 'price', 'paid_viewers')
         
         
 class CommentSerializer(serializers.ModelSerializer):
