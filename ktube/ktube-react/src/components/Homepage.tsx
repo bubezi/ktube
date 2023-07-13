@@ -1,6 +1,7 @@
 import Homescreen from "./Homescreen";
 import Videos from "./Videos";
 import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 function Homepage () {
     return (
@@ -11,6 +12,7 @@ function Homepage () {
                 <hr />
                 <Videos/>
             </div>
+            <Footer/>
         </>
     );           
                       

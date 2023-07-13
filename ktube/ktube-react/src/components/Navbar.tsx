@@ -61,24 +61,24 @@ function Navbar (props:Props) {
                     <li className="nav-item active">
                         <a className="nav-link" href="#">Subscriptions<span className="sr-only">(current)</span></a>
                     </li>
-{/* 
-                    {% if user.is_authenticated %}
+
+                    {/* {% if user.is_authenticated %} */}
                     <li className="nav-item dropdown">
                         <a className="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="false" aria-expanded="false">{props.username}</a>
                         <div className="dropdown-menu">
                             <a className="dropdown-item" href="#">Profile</a>
                             <a className="dropdown-item" href="#">Deposit</a>
-                            {% if user.is_superuser %}
+                            {/* {% if user.is_superuser %} */}
                             <a className="dropdown-item" href="#">Admin</a>
-                            {% endif %}
+                            {/* {% endif %} */}
                             <a className="dropdown-item" href="#">Change Password</a>
                             <a className="dropdown-item" href="#">Reset Password</a>
                             <div className="dropdown-divider"></div>
                             <a className="dropdown-item" href="#">Log Out</a>
                         </div>
                     </li>
-                    {% endif %} 
-*/}
+                    {/* {% endif %}  */}
+
 
                     </ul>
                     <form className="form-inline" method='POST' action="#">
