@@ -116,10 +116,15 @@ INSTALLED_APPS = [
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-CORS_ORIGIN_ALLOW_ALL = True 
-# CORS_ORIGIN_WHITELIST = [ 'https://localhost:5173'] 
+
+# CORS_ORIGIN_ALLOW_ALL = True 
+# CORS_ORIGIN_WHITELIST = [ 'http://localhost:5173'] 
+CORS_ALLOWED_ORIGINS = ['http://localhost:5173']
 
 MIDDLEWARE = [
+    
+    'corsheaders.middleware.CorsMiddleware',
+    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -130,7 +135,6 @@ MIDDLEWARE = [
     
     'whitenoise.middleware.WhiteNoiseMiddleware',
     
-    'corsheaders.middleware.CorsMiddleware',
     
 ]
 
