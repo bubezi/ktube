@@ -111,6 +111,8 @@ INSTALLED_APPS = [
     
     # API
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
     'corsheaders',
 ]
 

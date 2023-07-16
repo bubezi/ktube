@@ -16,7 +16,7 @@ interface VideoState {
 
 function Videos() {
   const videoState: Array<VideoState> = [{id:0, title:'', thumbnail:'', channel:0, views:0, slug:'', path:'', price:0.0}]
-  const [videos, setVideos] = React.useState(videoState);
+  const [videos, setVideos] = React.useState<Array<VideoState>>(videoState);
 
   React.useEffect(()=>{
     axios.get(API_URL+"videos")

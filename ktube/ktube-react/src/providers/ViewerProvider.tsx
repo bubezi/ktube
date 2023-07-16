@@ -17,8 +17,11 @@ const ViewerContext = React.createContext(defaultValue);
 
 const viewerState :Viewer = {id:0, username:"", phone:0, gender:"", joined:0, wallet:0};
 
+interface ViewerProviderProps {
+  children: React.ReactNode;
+}
 
-const ViewerProvider = ({ children }) => {
+const ViewerProvider: React.FC<ViewerProviderProps> = ({ children }) => {
     const [viewer, setViewer] = React.useState(viewerState);
 
     React.useEffect(()=>{

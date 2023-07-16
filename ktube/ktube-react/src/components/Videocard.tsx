@@ -21,7 +21,7 @@ interface ChannelDetailsState {
 
 function Videocard (props: Prop) {
     const channelDetailsState: ChannelDetailsState = {profile_picture:'', name:''};
-    const [channelDetails, setChannelDetails] = React.useState(channelDetailsState);
+    const [channelDetails, setChannelDetails] = React.useState<ChannelDetailsState>(channelDetailsState);
 
 
     React.useEffect(()=>{

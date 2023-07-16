@@ -106,6 +106,8 @@ urlpatterns += [
     re_path(r'^api/cdp/$', views_tube.channel_profile_picture),
     path('api/homevideos', views_tube.VideosHome.as_view(), name='Videos_home'),
     path('api/dp/<str:pk>', views_tube.ChannelProfilePicture.as_view(), name='channel_dp'),
+    
+    path('api/login/', views_reg.LoginView.as_view()),
 ]
 
 
