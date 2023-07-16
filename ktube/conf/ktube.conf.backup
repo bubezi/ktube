@@ -4,10 +4,11 @@ log_format upstreamlog '[$time_local] $server_name to: $upstream_addr [$request]
 
 upstream ktube_upstream {
     server 127.0.0.1:8000;
+    server 127.0.0.2:8000;
     server 127.0.0.1:8001;
-    # server 127.0.0.1:8002;
-    # server 127.0.0.1:8003;
-    # server 127.0.0.1:8004;
+    server 127.0.0.1:8002;
+    server 127.0.0.1:8003;
+    server 127.0.0.1:8004;
 }
 
 server {
@@ -18,13 +19,13 @@ server {
 
     location /static {
         autoindex on;
-        alias /home/black/Documents/code/ktube/ktube/staticfiles; ## For now, change to .../.../staticfiles later
+        alias /home/black/Documents/code/ktube/ktube/staticfiles;
     }
 
-    #location /media {
-    #    autoindex on;
-    #    alias /home/black/Documents/code/ktube/ktube/media;
-    #}
+    location /media {
+       autoindex on;
+       alias /home/black/Documents/code/ktube/ktube/media;
+    }
     
     location / {
         proxy_pass http://ktube_upstream;
