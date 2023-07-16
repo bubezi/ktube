@@ -8,10 +8,26 @@ from django.http import HttpResponseForbidden, HttpResponseBadRequest
 
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework import generics
 from rest_framework.views import APIView
 from django.contrib.auth import authenticate
-from rest_framework.authtoken.models import Token  # new
+from rest_framework.authtoken.models import Token
+        
+        
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated 
+
+from tube.serializers import ViewerSerializer
+
+class GetViewer(generics.RetrieveAPIView):
+    permissions_classes = [IsAuthenticated]
+    def get_viewer(request):
+        data = request.user.viewer
+
+        serializer = ViewerSerializer(data, context={"request": request}, many=False)
+        
+        return Response(serializer.data)
+        
+    
 
 class LoginView(APIView):
     def post(self, request):
@@ -25,12 +41,6 @@ class LoginView(APIView):
             return Response({"token": token.key}, status=status.HTTP_200_OK)  # updated
         else:
             return Response({"error": "Invalid username/password."}, status=status.HTTP_400_BAD_REQUEST)
-        
-
-class GetViewer(generics.RetrieveAPIView):
-    queryset = Viewer.objects.all()
-    
-
 
 
 # Create your views here.

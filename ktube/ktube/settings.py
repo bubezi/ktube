@@ -119,9 +119,7 @@ INSTALLED_APPS = [
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
-# CORS_ORIGIN_ALLOW_ALL = True 
-# CORS_ORIGIN_WHITELIST = [ 'http://localhost:5173'] 
-CORS_ALLOWED_ORIGINS = ['http://localhost:5173']
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -138,6 +136,22 @@ MIDDLEWARE = [
     
     'whitenoise.middleware.WhiteNoiseMiddleware',    
 ]
+
+
+# CORS_ORIGIN_ALLOW_ALL = True 
+# CORS_ORIGIN_WHITELIST = [ 'http://localhost:5173'] 
+CORS_ALLOWED_ORIGINS = ['http://localhost:5173']
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
+    ],
+    # "DEFAULT_PERMISSION_CLASSES": [
+    #     "rest_framework.permissions.AllowAny",
+    # ]
+}
+
+
 
 # SITE_ID = 1
 ## ###########UPDATE site.domain in python manage.py shell after Hosting/production
