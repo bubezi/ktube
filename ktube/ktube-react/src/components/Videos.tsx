@@ -26,10 +26,15 @@ function Videos() {
     const videoThumbnail = `${video.thumbnail}`;
     const videoTitle = `${video.title}`;
     const videoChannelId = video.channel;
-    const videoPrice = video.price;
-    const videoViews = video.views;
         
-    return  <Videocard title = {videoTitle} thumbnail={videoThumbnail} channelId={videoChannelId} price={videoPrice} views={videoViews}/>
+    return  (<Videocard 
+              key={video.id} 
+              title = {videoTitle} 
+              thumbnail={videoThumbnail} 
+              channelId={videoChannelId} 
+              price={video.price} 
+              views={video.views}/>
+    );
   })
   
 
