@@ -19,7 +19,7 @@ function Videos() {
   const [videos, setVideos] = React.useState(videoState);
 
   axios.get(API_URL+"videos")
-      .then(res => setVideos(res.data))
+      .then(res => setVideos(res.data));
 
   
   const videocards = videos.map(video => {

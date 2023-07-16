@@ -66,7 +66,7 @@ def channel_profile_picture(request, id):
 
 
 class VideosHome(generics.ListAPIView):
-    queryset = Video.objects.all()
+    queryset = Video.objects.filter(private=False, unlisted=False)
     serializer_class = VideosHomeSerializer
 
 
