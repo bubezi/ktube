@@ -18,8 +18,10 @@ function Videos() {
   const videoState: Array<VideoState> = [{id:0, title:'', thumbnail:'', channel:0, views:0, slug:'', path:'', price:0.0}]
   const [videos, setVideos] = React.useState(videoState);
 
-  axios.get(API_URL+"videos")
-      .then(res => setVideos(res.data));
+  React.useEffect(()=>{
+    axios.get(API_URL+"videos")
+        .then(res => setVideos(res.data));
+  },[]);
 
   
   const videocards = videos.map(video => {

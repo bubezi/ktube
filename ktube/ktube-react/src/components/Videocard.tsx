@@ -24,16 +24,15 @@ function Videocard (props: Prop) {
     const [channelDetails, setChannelDetails] = React.useState(channelDetailsState);
 
 
-    axios.get(API_URL+"dp/"+props.channelId)
-        .then(res => setChannelDetails(res.data));
+    React.useEffect(()=>{
+        axios.get(API_URL+"dp/"+props.channelId)
+            .then(res => setChannelDetails(res.data));
+    },[]);
+
 
     const channelDp = `${channelDetails.profile_picture}`;
     const videoChannelName = `${channelDetails.name}`;
 
-
-    const videoTitle = {
-        // float: "left"
-    }
 
     const imageStyle = {
         width: "20px", 
@@ -75,7 +74,7 @@ function Videocard (props: Prop) {
                 <div className="box-element product">
                     <div className="row">
                         <a href="#">
-                            <h6 style={videoTitle}>{props.title}</h6>
+                            <h6>{props.title}</h6>
                         </a>
                     </div>
                     <div className="row">
@@ -97,7 +96,7 @@ function Videocard (props: Prop) {
                     <div className="row">
                         <div className="col-lg-10">
                             <div className="row">
-                                <h6 id="video-views" style={videoTitle}>{props.views} {pluralViews}</h6>
+                                <h6 id="video-views">{props.views} {pluralViews}</h6>
                             </div>
                         </div>
                         <div className="col-lg-2 col-12 text-right mt-2 mt-lg-0">
