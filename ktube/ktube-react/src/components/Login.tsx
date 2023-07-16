@@ -4,7 +4,7 @@ import { API_URL } from '../constants';
 import '../assets/css/Login.css'
 
 async function loginUser(credentials: { username: string, password: string }) {
-  return fetch((API_URL+'login/'), {
+  return fetch((API_URL+'auth/login/'), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
