@@ -89,7 +89,8 @@ function Videocard (props: Prop) {
                             </div>
                         </div>
                         <div className="col-lg-6 col-12 text-right mt-2 mt-lg-0">
-                            {/* <p style={priceStyle}>KShs. {{ video.price | floatformat:2 | intcomma }}</p> */}
+                            {/* <p style={priceStyle}>KShs. {{ video.price | floatformat:2 | intcomma }}</p> */} 
+                            {/* React version of Humanize*/}
                             <Price/>
                         </div>
                     </div>
