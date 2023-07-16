@@ -10,13 +10,24 @@ class ViewerSerializer(serializers.ModelSerializer):
         # verbose_name_plural = 'Viewers'
         model = Viewer
         fields = ('id', 'username', 'email', 'phone', 'gender', 'joined', 'wallet')
-      
-        
+
+
 class ChannelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Channel
         fields = ('id', 'user', 'name', 'profile_picture', 'about', 'subscribers', 'website_official', 'channel_active')
         
+        
+class VideosHomeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Video
+        fields = ('id', 'title', 'thumbnail', 'channel', 'views', 'slug', 'path', 'price')
+        
+class ChannelProfilePictureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Channel
+        fields = ('id', 'name', 'profile_picture')
+
 
 class VideoSerializer(serializers.ModelSerializer):
     class Meta:

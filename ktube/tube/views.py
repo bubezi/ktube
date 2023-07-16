@@ -36,24 +36,43 @@ COMPANY_USERNAME = 'bubezi'
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework import generics
 from rest_framework import status
 
 from .serializers import *
 
 
-@api_view(['GET', 'POST'])
-def video_list(request):
+@api_view(['GET'])
+def videos_home(request):
     if request.method == 'GET':
         data = Video.objects.filter(private=False, unlisted=False)
         
-        serializer = VideoSerializer(data, context={'request': request}, many=True)
+        serializer = VideosHomeSerializer(data, context={'request': request}, many=True)
         
         return Response(serializer.data)
     
     elif request.method == 'POST':
         serializer = VideoSerializer(data=request.data)   
         pass    
-        
+
+
+@api_view(['GET'])
+def channel_profile_picture(request, id):
+    data = Channel.objects.get(id=id)
+    
+    serializer = ChannelProfilePictureSerializer(data, context={'request': request}, many=False)
+    
+    return Response(serializer.data)
+
+
+class VideosHome(generics.ListAPIView):
+    queryset = Video.objects.all()
+    serializer_class = VideosHomeSerializer
+
+
+class ChannelProfilePicture(generics.RetrieveAPIView):
+    queryset = Channel.objects.all()
+    serializer_class = ChannelProfilePictureSerializer 
 
 
 

@@ -1,16 +1,35 @@
-import placeholder from '../assets/images/thumbnail-placeholder.webp'
-import imagePlaceholder from '../assets/images/placeholder.png'
+// import placeholder from '../assets/images/thumbnail-placeholder.webp'
+// import imagePlaceholder from '../assets/images/placeholder.png'
+import axios from 'axios'
+import { API_URL } from '../constants'
+import React from 'react'
 
 import Videooptions from './Videooptions'
 
 interface Prop {
-    title: String,
-    channel: String,
-    price: String,
-    views: String
+    title: string,
+    thumbnail: string,
+    channelId: string,
+    price: string,
+    views: string,
+}
+
+interface ChannelDetailsState {
+    profile_picture: string,
+    name: string,
 }
 
 function Videocard (props: Prop) {
+    const channelDetailsState: ChannelDetailsState = {profile_picture:'', name:''}
+    const [channelDetails, setChannelDetails] = React.useState(channelDetailsState);
+
+    axios.get(API_URL+"dp/"+props.channelId)
+        .then(res => setChannelDetails(res.data))
+
+    const channelDp = `${channelDetails.profile_picture}`
+    const videoChannelName = `${channelDetails.name}`
+
+
     const videoTitle = {
         // float: "left"
     }
@@ -30,7 +49,7 @@ function Videocard (props: Prop) {
         <>
             <div className="col-lg-4">
                 <a href="#">
-                    <img src={placeholder} alt="thumbnail" className="thumbnail" />
+                    <img src={props.thumbnail} alt="thumbnail" className="thumbnail" />
                 </a>
                 <div className="box-element product">
                     <div className="row">
@@ -43,13 +62,13 @@ function Videocard (props: Prop) {
                             <div className="row">
                                 <a href="#">
                                 {/* {% if video.channel.profile_picture %} */}
-                                {/* <img src="#" className="channel-icon" alt="Channel Profile picture" style={imageStyle}/> */}
+                                <img src={channelDp} className="channel-icon" alt="Channel Profile picture" style={imageStyle}/>
                                 {/* {% else %} */}
-                                <img src={imagePlaceholder} className="channel-icon" alt="Channel Profile picture" style={imageStyle}/>
+                                {/* <img src={imagePlaceholder} className="channel-icon" alt="Channel Profile picture" style={imageStyle}/> */}
                                 {/* {% endif %} */}
                                 </a>
                                 <a href="#">
-                                    <h6>{props.channel}</h6>
+                                    <h6>{videoChannelName}</h6>
                                 </a>
                             </div>
                         </div>

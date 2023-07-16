@@ -102,7 +102,10 @@ urlpatterns = [
 ### API
 
 urlpatterns += [
-    re_path(r'^api/videos/$', views_tube.video_list),
+    re_path(r'^api/videos/$', views_tube.videos_home),
+    re_path(r'^api/cdp/$', views_tube.channel_profile_picture),
+    path('api/homevideos', views_tube.VideosHome.as_view(), name='Videos_home'),
+    path('api/dp/<str:pk>', views_tube.ChannelProfilePicture.as_view(), name='channel_dp'),
 ]
 
 
