@@ -1,0 +1,41 @@
+log_format upstreamlog '[$time_local] $server_name to: $upstream_addr [$request] '
+    'upstream_response_time $upstream_response_time '
+    'msec $msec request_time $request_time ';
+
+upstream ktube_upstream {
+    server 127.0.0.1:8000;
+    server 127.0.0.2:8000;
+    server 127.0.0.1:8001;
+    server 127.0.0.1:8002;
+    server 127.0.0.1:8003;
+    server 127.0.0.1:8004;
+}
+
+server {
+    listen 80;
+    server_name 127.0.0.1 localhost;
+    
+    access_log /var/log/nginx/access.log upstreamlog;
+
+    location /static {
+        autoindex on;
+        alias /home/black/Documents/code/ktube/ktube/staticfiles;
+    }
+
+    location /media {
+       autoindex on;
+       alias /home/black/Documents/code/ktube/ktube/media;
+    }
+    
+    location / {
+        proxy_pass http://ktube_upstream;
+        proxy_http_version 1.1; # EDIT LATER APPROPRIATELY
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Host $server_name;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}

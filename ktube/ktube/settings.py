@@ -16,14 +16,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("SECRET_KEY")
 
 ALLOWED_HOSTS = ['ktube.pythonanywhere.com']
-ALLOWED_HOSTS += ['192.168.87.137', '127.0.0.1']
+ALLOWED_HOSTS += ['192.168.87.137', '127.0.0.1', '127.0.0.2', 'localhost']
 
 NODE_SERVER_URL = 'http://localhost:8000'
 
 ######################## COMMENT THIS OUT DURING DEVELOPMENT AND TESTING AND UNCOMMENT THE ONE BELOW IT ###########################################
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = False
+# DEBUG = env("DEBUG")
 
 # # Database
 # # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -49,7 +49,7 @@ NODE_SERVER_URL = 'http://localhost:8000'
 
 
 
-DEBUG = True
+DEBUG = env("DEBUG")
 
 DEBUG_PROPAGATE_EXCEPTIONS = True
 
@@ -108,10 +108,36 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'django_cleanup.apps.CleanupConfig',
+    
+    # API
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'corsheaders',
 ]
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+
+# CORS_ORIGIN_ALLOW_ALL = True 
+# CORS_ORIGIN_WHITELIST = [ 'http://localhost:5173'] 
+CORS_ALLOWED_ORIGINS = ['http://localhost:5173']
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    
+    'corsheaders.middleware.CorsMiddleware',
+    
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    
+    'whitenoise.middleware.WhiteNoiseMiddleware',    
+]
 
 # SITE_ID = 1
 ## ###########UPDATE site.domain in python manage.py shell after Hosting/production
@@ -124,17 +150,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 ## >site.save()
 ## ### Then set SITE_ID = 2
 
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-]
 
 ROOT_URLCONF = 'ktube.urls'
 

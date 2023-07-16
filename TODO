@@ -1,27 +1,49 @@
-######
-
-
-Disable whitenoise and ALL related settings before collectstatic command
-
-Video-on-demand
-Pay-per-view
-
-
-Kenya web experts
-
-######
-######
-
-
-
 # KEY
     [] To do
     [x] Done
     [*] Will not do, for now
 
+
+######
+# NOTES
+
+#
+Disable whitenoise and ALL related settings before collectstatic command
+
+#
+Video-on-demand
+Pay-per-view
+
+#
+Kenya web experts
+
 ######
 
-# TODO
+# GOOGLE AND Research
+
+[] Fieldset
+
+[x] Chat GPT Prompt
+    I am making a django youtube clone and I need the user to add a subscriber with a button. 
+    That is, having the Viewer Model added to the channel model's subscribers ManyToManyField
+    without having to handle using a new view function.
+    The same for like and deslike buttons
+[x] google HUMANIze Tags
+[x] Add page Loader
+[x] *return to last video time after sub from video redirect
+[x] Drag and drop functionality
+[x] Django video View count
+[x] Does Django use websockets
+[x] UPDATE Like and Dislike buttons / svg
+[] How to serve videos better django
+[] Better alternative for paginator (For comments and Comment replies)
+[] Dynamic login redirect
+[] Optional url additions /url/<str:pk>
+[] Video.Js
+
+######
+
+# PHASE ! - Initialise
 [x] Utilize the {% empty %} tag in for loop TAGS
 [x] Add DP
 [x] Profile Page
@@ -119,46 +141,20 @@ Kenya web experts
 
 ######
 
-# PHASE 2
+# PHASE 2 - Perfect
 [x] Video slug - From link using video id to slug
 [x] Video costs something
 [x] Fix revenue percentage error
 [x] History compile similar adjacent videos
 [x] WARNING:waitress.queue:Task queue depth is 94
 [x] WARNING:waitress:total open connections reached the connection limit, no longer accepting new connections
-[] Analytics
-    [] Paid viewers
-[] Limit Video Quality 720p
-[] Tutorials
-[] Background play 
-    [] Premium Videos ()
-[] Ads
-[] Local downloads (Save for offline)
-[] Pop out, confirm transaction
-[] Trailer, mid video transaction
-[] Categories
-[] Video short
-[] Shorts ****************************************************************
-[] Comment with Emoji ****************************************************************
-[] Filter Comment ****************************************************************
-[] Disable comments ****************************************************************
-[] Currencies in Quotations
-[] Report and feedback
-[] Internal copyright detection
-[] Autogenerate thumbnail from video
-[] Fix edit video form
-[] Make form not loose data input after invalid form input
-[] Get IP address of the view for (esp) logged out viewers
-    [] Viewing algorithm limit
-[] Change video thumbnail bug
-[] Fix comments bug 
-[] Fix Photofiles with Asian characters bug
-[] Add Audio stream
-[] Find optimum ratio for thumbanail
-[] Check Lighthouse errors
-[] Search filters
-[] An uploading loader (Upoading, processing)
-[] Auto Skip
+[x] robots.txt => https://ordinarycoders.com/blog/article/robots-text-file-django
+[x] Change like and dislike buttons
+[x] Get IP address of the view for (esp) logged out viewers
+    [x] Viewing algorithm limit
+[] Search
+    [] history
+    [] algorithm
 [] Create logic
     [x] Channel
     [x] comments
@@ -171,106 +167,79 @@ Kenya web experts
     [] Seaking
     [] Resume capability
     [] Auto skip (Play next)
-    [] Pictures (For events and shit)
-[] Round off cash
-[] Log video view count after a percentage of video length
-[] PWA
-    [] Add bootstrap.bundle.js
-    [] Use tools like ngrok or configure SSL certificates for local testing
-    [] Lighthouse 100% mobile
-
+    [*] Pictures (For events and shit)
+[] Install rtmps in local nginx
+    [] Dockerised rtmps server
+[] Dockerise django
+[] Install and implement postgresql
+[] File too large test
+[] Lighthouse 100% mobile
+    [] PWA
+        [x] Installable
+        [x] Web app and manifest
+        [] register a service worker that controls page and start_url
+        [] Maskable Icon
+    [] Performance
+    [] Accessibility
+    [] Best Practises
+    [x] SEO
+[] Use Docker
+    [] Use RTMPs in docker
+[] Learn and Use Kubernetes
+[] Update types where possible
+[] Seperate logic into django apps
 [] Learn React
 [] Copyright DETECTION AND REGISTERING FUNCTIONALITY
 [] Recommend FUNCTIONALITY
+[] Analytics
+    [] Paid viewers
+    [] Views
+    [] Likes and Dislikes
+    [] Subscribers
+[] Limit Video Quality 720p
+[] Tutorials
+[] Background play 
+    [] Premium Videos ()
+[] Ads
+[] Hover to play
+[] Local downloads (Save for offline)
+[] Pop out, confirm transaction
+[] Trailer, mid video transaction
+[] Better profile image Placeholder
+[] Categories
+[] Video short
+[] Shorts ****************************************************************
+[] Comment with Emoji ****************************************************************
+[] Filter Comment ****************************************************************
+[] Optional Disable comments ****************************************************************
+[] Respective Currencies in Quotations
+[] Report and feedback
+[] Internal copyright detection (Sites own videos)
+[] Autogenerate thumbnail from video
+[] Autoplay
+[] Fix forms
+    [] Fix edit video form
+    [] Fix upload video form. Esp Price
+    [] Make form not loose data input after invalid form input During sign up (Or any other form)
+    [] Ajax all forms *(or React version of it)
+[] Change video thumbnail bug
+[] Fix comments bug 
+[] Fix Photofiles with Asian characters bug
+[] Add Audio stream
+[] Find optimum ratio for thumbanail
+[] Check Lighthouse errors
+[] Search filters
+[] An uploading loader (Upoading, processing)
+[] Auto Skip
+[] Round off cash
+[] Log video view count after a percentage of video length
+[] Add bootstrap.bundle.js
+[] Use tools like ngrok or configure SSL certificates for local testing
 [] Check out NODE JS FOR LIVE STREAMING
 [] Timezone management
 [] Manage recurring Ajax get functions
-[x] robots.txt => https://ordinarycoders.com/blog/article/robots-text-file-django
 [] Create dynamic sitemap => https://ordinarycoders.com/blog/article/django-sitemap
-
-######
-
-# GOOGLE AND TODO
-
-[] Fieldset
-
-[x] Chat GPT Prompt
-    I am making a django youtube clone and I need the user to add a subscriber with a button. 
-    That is, having the Viewer Model added to the channel model's subscribers ManyToManyField
-    without having to handle using a new view function.
-    The same for like and deslike buttons
-[x] google HUMANIze Tags
-[x] Add page Loader
-[x] *return to last video time after sub from video redirect
-[x] Drag and drop functionality
-[x] Django video View count
-[x] Does Django use websockets
-[x] UPDATE Like and Dislike buttons / svg
-[] Better alternative for paginator
-[] How to serve videos better django
-[] Better profile image Placeholder
-[] Dynamic login redirect
-[] Optional url additions /url/<str:pk>
-[] Video.Js
-[] UI
-    [] Make everything beautiful
-    [] responsiveness 
-        [] Google Chrome Lighthouse (target 100%)
-            [x] How to convert images to WebP and AVIF from PNG or JPEG
-            [] Types for video upload
-        [] RWA
-    [] Possibly with react
-[] Google Authentication
-
-######
-
-# Phase 3
-
-[] To enable video streaming in your Django site, you can follow these general steps:
-    [] 1. Store the video files in a directory on your 
-    server or in a cloud storage service like AWS S3 or 
-    Google Cloud Storage.
-    [x] 2. Use a media server like Nginx, Apache or HLS to 
-    serve the video files to clients. These media servers 
-    can handle requests for video files and deliver them 
-    to clients over HTTP.
-    [x] 3. In your Django views, you can generate URLs to 
-    the video files based on their filename or ID in your 
-    database.
-    [] 4. Include a video player in your HTML templates to 
-    play the videos. Popular options include Video.js, JW 
-    Player, and Plyr.
-    [] 5. For live video streaming, you will need to use a 
-    streaming protocol like RTMP or HLS, and a media server 
-    that supports live streaming.
-[] Here are some additional tips and resources for implementing 
-video streaming in Django:
-    [x] - Use a media server that is optimized for video streaming. 
-    Nginx and Apache both have modules for serving video files over 
-    HTTP, and HLS is a popular streaming protocol that can be used 
-    with both servers.
-    [] - Consider using a content delivery network (CDN) to distribute 
-    your videos. A CDN can cache your video files at edge locations 
-    around the world, reducing latency and improving playback performance 
-    for viewers.
-    [] - For live video streaming, consider using a service like AWS 
-    Elemental MediaLive or Wowza Streaming Engine to handle the video 
-    encoding and delivery.
-    [] - Make sure to set the appropriate MIME type for video files in 
-    your HTTP response headers. For example, for MP4 files, you should 
-    set the MIME type to `video/mp4`.
-    [] - Use video encoding settings that are optimized for web playback. 
-    H.264 is a popular video codec for web video, and the MP4 container 
-    format is widely supported by modern browsers.
-    [] - Test your video streaming implementation thoroughly across different 
-    browsers and devices to ensure smooth playback and optimal performance.
-    [] - Here's a good tutorial that covers the basics of implementing video 
-    streaming in Django using Nginx and Video.js: 
-    https://simpleisbetterthancomplex.com/tutorial/2018/02/03/how-to-stream-video-on-demand-with-django.html
-
-
 [] Decorate Python Code
-
 [] You are signed in another tab, reload to update session ALERT
 [] Internal Mini player functionality
 [] Add to Que
@@ -279,7 +248,6 @@ video streaming in Django:
 [] Drag and drop functionality
 [] Blue link problem
 [] Get video length
-[x] Change like and dislike buttons
 [] Return to specific page after subscribe login redirect
 [] Personalise password_change_view.html and password_reset_view.html pages
 [] video SHORTCUTS
@@ -328,23 +296,73 @@ video streaming in Django:
     [] FIND MORE
 [] Edit Check Errors Function and make a loop function from a conditional one
 [] Compress Js code and all code or some shit
-[] Ajax all forms
 
 [] Learn Squel and Bash
 
+
 ######
 
-# [] PROBLEMS
-    [x] / THE URL problem
-    [] GET data from video
+# Phase 3 - LiveStream
+
+[] To enable video streaming in your Django site, you can follow these general steps:
+    [] 1. Store the video files in a directory on your 
+    server or in a cloud storage service like AWS S3 or 
+    Google Cloud Storage.
+    [x] 2. Use a media server like Nginx, Apache or HLS to 
+    serve the video files to clients. These media servers 
+    can handle requests for video files and deliver them 
+    to clients over HTTP.
+    [x] 3. In your Django views, you can generate URLs to 
+    the video files based on their filename or ID in your 
+    database.
+    [] 4. Include a video player in your HTML templates to 
+    play the videos. Popular options include Video.js, JW 
+    Player, and Plyr.
+    [] 5. For live video streaming, you will need to use a 
+    streaming protocol like RTMP or HLS, and a media server 
+    that supports live streaming.
+[] Here are some additional tips and resources for implementing 
+video streaming in Django:
+    [x] - Use a media server that is optimized for video streaming. 
+    Nginx and Apache both have modules for serving video files over 
+    HTTP, and HLS is a popular streaming protocol that can be used 
+    with both servers.
+    [] - Consider using a content delivery network (CDN) to distribute 
+    your videos. A CDN can cache your video files at edge locations 
+    around the world, reducing latency and improving playback performance 
+    for viewers.
+    [] - For live video streaming, consider using a service like AWS 
+    Elemental MediaLive or Wowza Streaming Engine to handle the video 
+    encoding and delivery.
+    [] - Make sure to set the appropriate MIME type for video files in 
+    your HTTP response headers. For example, for MP4 files, you should 
+    set the MIME type to `video/mp4`.
+    [] - Use video encoding settings that are optimized for web playback. 
+    H.264 is a popular video codec for web video, and the MP4 container 
+    format is widely supported by modern browsers.
+    [] - Test your video streaming implementation thoroughly across different 
+    browsers and devices to ensure smooth playback and optimal performance.
+    [] - Here's a good tutorial that covers the basics of implementing video 
+    streaming in Django using Nginx and Video.js: 
+    https://simpleisbetterthancomplex.com/tutorial/2018/02/03/how-to-stream-video-on-demand-with-django.html
+
 
 ######
 
 # Pre Hosting shit
-    [] Your browser does not support the video tag
-    [] python manage.py check ****
-        [] python manage.py check --deploy
-        [] ****
-    [] python manage.py collectstatic
-    [] email configuration
-    [] Google Authentication (Firebase)
+[] Your browser does not support the video tag
+[] python manage.py check ****
+    [] python manage.py check --deploy
+    [] ****
+[] python manage.py collectstatic
+[] email configuration
+[] Authentication 
+    [] Google (Firebase)
+    [] Facebook
+    [] Email
+
+######
+
+# [] PROBLEMS
+[x] / THE URL problem
+[] GET data from video

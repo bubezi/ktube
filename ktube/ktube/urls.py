@@ -1,7 +1,7 @@
 from django.conf.urls.static import static
 from django.conf import settings
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 
 from tube import views as views_tube
 from register import views as views_reg
@@ -92,7 +92,24 @@ urlpatterns = [
     path('watch_playlist/<str:pk>/<str:number>', views_tube.watch_playlist, name="watch_playlist"),
     
     path('get_views/<str:pk>',views_tube.get_views, name="get_views"),
+
+    path('go_live', views_tube.go_live, name="go_live"),
+    path('start_stream', views_tube.start_stream, name="start_stream"),
+    path('stop_stream', views_tube.stop_stream, name="stop_stream"),
+    
 ]
+
+### API
+
+urlpatterns += [
+    re_path(r'^api/videos/$', views_tube.videos_home),
+    re_path(r'^api/cdp/$', views_tube.channel_profile_picture),
+    path('api/homevideos', views_tube.VideosHome.as_view(), name='Videos_home'),
+    path('api/dp/<str:pk>', views_tube.ChannelProfilePicture.as_view(), name='channel_dp'),
+    
+    path('api/login/', views_reg.LoginView.as_view()),
+]
+
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

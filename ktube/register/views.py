@@ -6,6 +6,27 @@ from .utils import check_errors
 from django.http import HttpResponseForbidden, HttpResponseBadRequest
 
 
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from django.contrib.auth import authenticate
+from rest_framework.authtoken.models import Token  # new
+
+class LoginView(APIView):
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            # Generate token or get the existing token.
+            token, created = Token.objects.get_or_create(user=user)
+            return Response({"token": token.key}, status=status.HTTP_200_OK)  # updated
+        else:
+            return Response({"error": "Invalid username/password."}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 # Create your views here.
 def register(request):
     if not request.user.is_authenticated:
