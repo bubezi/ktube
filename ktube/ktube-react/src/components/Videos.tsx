@@ -28,6 +28,7 @@ function Videos() {
 
   
   const videocards = videos.map(video => {
+    if (video.channel!==0){
     const videoThumbnail = `${video.thumbnail}`;
     const videoTitle = `${video.title}`;
     const videoChannelId = video.channel;
@@ -40,7 +41,7 @@ function Videos() {
               price={video.price} 
               views={video.views}/>
     );
-  })
+}})
   
 
 
