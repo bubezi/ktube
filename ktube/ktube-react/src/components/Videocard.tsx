@@ -9,9 +9,9 @@ import Videooptions from './Videooptions'
 interface Prop {
     title: string,
     thumbnail: string,
-    channelId: string,
-    price: string,
-    views: string,
+    channelId: number,
+    price: number,
+    views: number,
 }
 
 interface ChannelDetailsState {
@@ -20,14 +20,16 @@ interface ChannelDetailsState {
 }
 
 function Videocard (props: Prop) {
-    const channelDetailsState: ChannelDetailsState = {profile_picture:'', name:''}
+    const channelDetailsState: ChannelDetailsState = {profile_picture:'', name:''};
     const [channelDetails, setChannelDetails] = React.useState(channelDetailsState);
 
     axios.get(API_URL+"dp/"+props.channelId)
-        .then(res => setChannelDetails(res.data))
+        .then(res => setChannelDetails(res.data));
 
-    const channelDp = `${channelDetails.profile_picture}`
-    const videoChannelName = `${channelDetails.name}`
+    const channelDp = `${channelDetails.profile_picture}`;
+    const videoChannelName = `${channelDetails.name}`;
+
+    const pluralViews = props.views === 1 ? 'view' : 'views';
 
 
     const videoTitle = {
@@ -82,11 +84,7 @@ function Videocard (props: Prop) {
                     <div className="row">
                         <div className="col-lg-10">
                             <div className="row">
-                                {/* {% if video.views is not 1 %} */}
-                                    {/* <h6 id="video-views" style={videoTitle}>{{video.views | intcomma }} views</h6> */}
-                                {/* {% else %} */}
-                                    <h6 id="video-views" style={videoTitle}>{props.views} view</h6>
-                                {/* {% endif %} */}
+                                <h6 id="video-views" style={videoTitle}>{props.views} {pluralViews}</h6>
                             </div>
                         </div>
                         <div className="col-lg-2 col-12 text-right mt-2 mt-lg-0">

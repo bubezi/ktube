@@ -7,7 +7,7 @@ interface VideoState {
     id : number;
     title : string;
     thumbnail : string;
-    channel : string;
+    channel : number;
     views : number;
     slug : string;
     path : string;
@@ -15,7 +15,7 @@ interface VideoState {
 }
 
 function Videos() {
-  const videoState: Array<VideoState> = [{id:0, title:'', thumbnail:'', channel:'', views:0, slug:'', path:'', price:0.0}]
+  const videoState: Array<VideoState> = [{id:0, title:'', thumbnail:'', channel:0, views:0, slug:'', path:'', price:0.0}]
   const [videos, setVideos] = React.useState(videoState);
 
   axios.get(API_URL+"videos")
@@ -23,11 +23,11 @@ function Videos() {
 
   
   const videocards = videos.map(video => {
-    const videoThumbnail = `${video.thumbnail}`
-    const videoTitle = `${video.title}`
-    const videoChannelId = `${video.channel}`
-    const videoPrice = `${video.price}`
-    const videoViews = `${video.views}`
+    const videoThumbnail = `${video.thumbnail}`;
+    const videoTitle = `${video.title}`;
+    const videoChannelId = video.channel;
+    const videoPrice = video.price;
+    const videoViews = video.views;
         
     return  <Videocard title = {videoTitle} thumbnail={videoThumbnail} channelId={videoChannelId} price={videoPrice} views={videoViews}/>
   })
