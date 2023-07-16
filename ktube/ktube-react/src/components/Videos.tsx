@@ -20,7 +20,10 @@ function Videos() {
 
   React.useEffect(()=>{
     axios.get(API_URL+"videos")
-        .then(res => setVideos(res.data));
+        .then(res => setVideos(res.data))
+        .catch((error)=>{
+          console.log(error);
+        })
   },[]);
 
   
