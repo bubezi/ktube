@@ -18,14 +18,15 @@ from rest_framework.permissions import IsAuthenticated
 
 from tube.serializers import ViewerSerializer
 
-class GetViewer(generics.RetrieveAPIView):
+class GetViewer(APIView):
     permissions_classes = [IsAuthenticated]
-    def get_viewer(request):
+    def get(request):
         data = request.user.viewer
 
         serializer = ViewerSerializer(data, context={"request": request}, many=False)
         
         return Response(serializer.data)
+    
         
     
 

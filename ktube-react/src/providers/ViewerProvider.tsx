@@ -23,18 +23,31 @@ interface ViewerProviderProps {
 
 const ViewerProvider: React.FC<ViewerProviderProps> = ({ children }) => {
     const [viewer, setViewer] = React.useState(viewerState);
+    const [myToken] = React.useState (() => {
+        const savedToken = localStorage.getItem('token');
+        return savedToken ?? null;
+      });
 
-    React.useEffect(()=>{
-        axios.get(API_URL+'auth/getCurrentViewer')
+    if (myToken){
+        React.useEffect(()=>{
+            
+            axios({
+                method: 'get',
+                url: API_URL+'auth/getCurrentViewer',
+                headers: {
+                    'Authorization': `Token ${myToken}`
+                }
+            })
             .then(res=> setViewer(res.data))
             .catch((error)=>{console.log(error)});
-    }, []);
-    
-    return (
-        <ViewerContext.Provider value={{ viewer }}>
-            {children}
-        </ViewerContext.Provider>
-    );
+        }, []);
+        
+        return (
+            <ViewerContext.Provider value={{ viewer, myToken }}>
+                {children}
+            </ViewerContext.Provider>
+        );
+    }
 };
 
 export const useViewerContext = () => React.useContext(ViewerContext);

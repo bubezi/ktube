@@ -1,12 +1,7 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import './App.css';
-import Dashboard from '../Dashboard/Dashboard';
 import Login from '../Login';
-import Preferences from '../Preferences/Preferences';
-import Loader from '../Loader';
 
-function App() {
+function Auth() {
   const [token, setToken] = React.useState (() => {
     const savedToken = localStorage.getItem('token');
     return savedToken ?? null;
@@ -20,23 +15,16 @@ function App() {
   if(!token) {
     return (
         <>
-          <Loader/>
           <Login saveToken={saveToken} />
         </>
           );
+  }else{
+    // redirect("http://localhost:5173");
+    return(
+      <>
+        <h1>Already logged in</h1>
+      </>
+    );
   }
-
-  return (
-    <div className="wrapper">
-      <Loader/>
-      <h1>Application</h1>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/preferences" element={<Preferences />} />
-        </Routes>
-      </BrowserRouter>
-    </div>
-  );
 }
-export default App;
+export default Auth;

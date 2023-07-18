@@ -1,9 +1,9 @@
 import Navbar from "./Navbar";
 
 interface Prop {
-    title: String,
-    channel: String,
-    subscriber_count: Int32Array
+    title: string,
+    channel: string,
+    subscriber_count: number
 }
 
 function Watchpage (props: Prop) {

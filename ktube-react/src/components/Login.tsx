@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { API_URL } from '../constants';
-import '../assets/css/Login.css'
+// import '../assets/css/Login.css'
 
 async function loginUser(credentials: { username: string, password: string }) {
   return fetch((API_URL+'auth/login/'), {
