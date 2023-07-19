@@ -1,28 +1,19 @@
 import { useViewerContext } from "../providers/ViewerProvider";
 
-interface Viewer {
-  id: number,
-  username: string,
-  phone: number,
-  gender: string,
-  joined: number,
-  wallet: number,
-}
-
-interface ViewerProvided {
-  viewer:Viewer,
-  myToken:string|null,
-}
-
 function Navbar() {
-  const viewer_info = useViewerContext ();
-  const viewerProvided:ViewerProvided = viewer_info;
+  const viewerProvided = useViewerContext();
+
+  function logOut(){
+    localStorage.removeItem('token');
+    location.reload();
+  }
 
   function AuthButtons() {
     if (viewerProvided.myToken) {
       return (
         <div className="form-inline my-2 my-lg-0">
-          <a href="#" className="btn btn-warning">
+          <a className="btn btn-warning"
+          onClick={logOut}>
             Log Out
           </a>
         </div>
@@ -41,7 +32,7 @@ function Navbar() {
   return (
     <>
       <div className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a className="navbar-brand" href="#">
+        <a className="navbar-brand" href="/">
           <div className="logo">
             K <span>TUBE</span>
           </div>
@@ -62,7 +53,7 @@ function Navbar() {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto">
             <li className="nav-item active">
-              <a className="nav-link" href="#">
+              <a className="nav-link" href="/">
                 Home <span className="sr-only">(current)</span>
               </a>
             </li>

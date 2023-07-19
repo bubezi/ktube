@@ -19,12 +19,7 @@ function Auth() {
         </>
           );
   }else{
-    // redirect("http://localhost:5173");
-    return(
-      <>
-        <h1>Already logged in</h1>
-      </>
-    );
+    location.assign('/');
   }
 }
 export default Auth;

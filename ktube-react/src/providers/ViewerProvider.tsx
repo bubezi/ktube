@@ -33,6 +33,14 @@ const ViewerProvider: React.FC<ViewerProviderProps> = ({ children }) => {
         const savedToken = localStorage.getItem('token');
         return savedToken ?? null;
       });
+    
+    React.useEffect(()=>{
+        console.log("Viewer:");
+        console.log(viewer);
+        console.log("My token:");
+        console.log(myToken);
+
+    });
 
     if (myToken){
         React.useEffect(()=>{
