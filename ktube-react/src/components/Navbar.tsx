@@ -8,57 +8,11 @@ function Navbar() {
     location.reload();
   }
 
-  function AuthButtons() {
-    if (viewerProvided.myToken) {
-      return (
-        <div className="form-inline my-2 my-lg-0">
-          <a className="btn btn-warning"
-          onClick={logOut}>
-            Log Out
-          </a>
-        </div>
-      );
-    } else {
-      return (
-        <div className="form-inline my-2 my-lg-0">
-          <a href="/auth/login" className="btn btn-warning">
-            Login
-          </a>
-        </div>
-      );
-    }
-  }
-
-  return (
-    <>
-      <div className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a className="navbar-brand" href="/">
-          <div className="logo">
-            K <span>TUBE</span>
-          </div>
-        </a>
-
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav mr-auto">
-            <li className="nav-item active">
-              <a className="nav-link" href="/">
-                Home <span className="sr-only">(current)</span>
-              </a>
-            </li>
-
-            <li className="nav-item dropdown">
+  function AuthLinks(){
+    if(viewerProvided.myToken){
+      return(
+      <>
+          <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle"
                 data-toggle="dropdown"
@@ -157,6 +111,105 @@ function Navbar() {
               </div>
             </li>
             {/* {% endif %}  */}
+      </>
+      );
+    }else{
+      return(
+      <>
+      <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                data-toggle="dropdown"
+                role="button"
+                aria-haspopup="false"
+                aria-expanded="false"
+              >
+                Library
+              </a>
+              <div className="dropdown-menu">
+                <a className="dropdown-item" href="/auth/login">
+                  My Library
+                </a>
+                
+                <div className="dropdown-divider"></div>
+
+                <a className="dropdown-item" href="/auth/login">
+                  My Watchlater
+                </a>
+                <a className="dropdown-item" href="/auth/login">
+                  My Liked Videos
+                </a>
+                <a className="dropdown-item" href="/auth/login">
+                  My History
+                </a>
+                <a className="dropdown-item" href="/auth/login">
+                  My Playlists
+                </a>
+              </div>
+            </li>
+
+            <li className="nav-item active">
+              <a className="nav-link" href="/auth/login">
+                Subscriptions<span className="sr-only">(current)</span>
+              </a>
+            </li>
+      </>
+      );
+    }
+  }
+
+  function AuthButtons() {
+    if (viewerProvided.myToken) {
+      return (
+        <div className="form-inline my-2 my-lg-0">
+          <a className="btn btn-warning"
+          onClick={logOut}>
+            Log Out
+          </a>
+        </div>
+      );
+    } else {
+      return (
+        <div className="form-inline my-2 my-lg-0">
+          <a href="/auth/login" className="btn btn-warning">
+            Login
+          </a>
+        </div>
+      );
+    }
+  }
+
+  return (
+    <>
+      <div className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a className="navbar-brand" href="/">
+          <div className="logo">
+            K <span>TUBE</span>
+          </div>
+        </a>
+
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul className="navbar-nav mr-auto">
+            <li className="nav-item active">
+              <a className="nav-link" href="/">
+                Home <span className="sr-only">(current)</span>
+              </a>
+            </li>
+            
+            <AuthLinks/>
+
           </ul>
           <form className="form-inline" method="POST" action="#">
             {/* {% csrf_token %} */}
