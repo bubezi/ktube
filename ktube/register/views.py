@@ -20,7 +20,7 @@ from tube.serializers import ViewerSerializer
 
 class GetViewer(APIView):
     permissions_classes = [IsAuthenticated]
-    def get(request):
+    def get(self, request):
         data = request.user.viewer
 
         serializer = ViewerSerializer(data, context={"request": request}, many=False)

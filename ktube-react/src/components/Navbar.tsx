@@ -1,39 +1,42 @@
-import React from "react";
-// import { useViewerContext } from "../providers/ViewerProvider";
+import { useViewerContext } from "../providers/ViewerProvider";
 
-// const viewer = useViewerContext();
-
-interface Props {
-  username: String;
+interface Viewer {
+  id: number,
+  username: string,
+  phone: number,
+  gender: string,
+  joined: number,
+  wallet: number,
 }
 
-function AuthButtons() {
-  const [myToken] = React.useState(() => {
-    const savedToken = localStorage.getItem("token");
-    return savedToken ?? null;
-  });
-//   console.log(viewer);
+interface ViewerProvided {
+  viewer:Viewer,
+  myToken:string
+}
 
-  if (myToken) {
-    return (
-      <div className="form-inline my-2 my-lg-0">
-        <a href="#" className="btn btn-warning">
-          Log Out
-        </a>
-      </div>
-    );
-  } else {
-    return (
-      <div className="form-inline my-2 my-lg-0">
-        <a href="/auth/login" className="btn btn-warning">
-          Login
-        </a>
-      </div>
-    );
+function Navbar() {
+  const viewerProvided:ViewerProvided = useViewerContext ();
+
+  function AuthButtons() {
+    if (viewerProvided.myToken) {
+      return (
+        <div className="form-inline my-2 my-lg-0">
+          <a href="#" className="btn btn-warning">
+            Log Out
+          </a>
+        </div>
+      );
+    } else {
+      return (
+        <div className="form-inline my-2 my-lg-0">
+          <a href="/auth/login" className="btn btn-warning">
+            Login
+          </a>
+        </div>
+      );
+    }
   }
-}
 
-function Navbar(props: Props) {
   return (
     <>
       <div className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -135,7 +138,7 @@ function Navbar(props: Props) {
                 aria-haspopup="false"
                 aria-expanded="false"
               >
-                {props.username}
+                {viewerProvided.viewer.username}
               </a>
               <div className="dropdown-menu">
                 <a className="dropdown-item" href="#">

@@ -35,15 +35,26 @@ const ViewerProvider: React.FC<ViewerProviderProps> = ({ children }) => {
                 method: 'get',
                 url: API_URL+'auth/getCurrentViewer',
                 headers: {
-                    'Authorization': `Token ${myToken}`
+                    'Authorization': `Token ${myToken}`,
                 }
             })
             .then(res=> setViewer(res.data))
-            .catch((error)=>{console.log(error)});
+            .catch(
+                (error)=>{console.log(error)}
+            );
         }, []);
         
         return (
             <ViewerContext.Provider value={{ viewer, myToken }}>
+                {children}
+            </ViewerContext.Provider>
+        );
+    }else{
+        const nullViewer = null;
+        const nullMyToken = null;
+
+        return (
+            <ViewerContext.Provider value={{ nullViewer, nullMyToken }}>
                 {children}
             </ViewerContext.Provider>
         );
