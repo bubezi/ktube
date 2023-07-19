@@ -2,6 +2,13 @@ from rest_framework import serializers
 
 from .models import *
 
+
+class PlaylistsHomeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Playlist
+        # fields = 
+
+
 class ViewerSerializer(serializers.ModelSerializer):
     class Meta:
         # db_table = ''

@@ -43,32 +43,38 @@ from rest_framework.decorators import api_view
 from rest_framework import generics
 from rest_framework import status
 
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated 
+
 from .serializers import *
 
 
-@api_view(["GET"])
-def videos_home(request):
-    if request.method == "GET":
-        data = Video.objects.filter(private=False, unlisted=False)
+class PlaylistsHomeAPI(APIView):
+    permissions_classes = [IsAuthenticated]
+    def get(self, request):
+        viewer = request.user.viewer
+        myContext = {}
 
-        serializer = VideosHomeSerializer(data, context={"request": request}, many=True)
+        try:
+            nav_channel = Channel.objects.get(user=viewer)
+            playlists = Playlist.objects.filter(channel=nav_channel)  # type: ignore
+            myContext["playlists"] = playlists
 
-        return Response(serializer.data)
+        except Channel.DoesNotExist:
+            pass
 
-    elif request.method == "POST":
-        serializer = VideoSerializer(data=request.data)
-        pass
+        except:
+            my_channels = Channel.objects.filter(user=viewer)
+            my_playlists = []
 
-
-@api_view(["GET"])
-def channel_profile_picture(request, id):
-    data = Channel.objects.get(id=id)
-
-    serializer = ChannelProfilePictureSerializer(
-        data, context={"request": request}, many=False
-    )
-
-    return Response(serializer.data)
+            for channel in my_channels:
+                channel_playlists = Playlist.objects.filter(channel=channel).in_bulk().values()  # type: ignore
+                for channel_playlist in channel_playlists:
+                    my_playlists.append(channel_playlist)
+            myContext["playlists"] = my_playlists
+            
+        return Response({'playlists': myContext['playlists']}, status=status.HTTP_200_OK)
+        
 
 
 class VideosHome(generics.ListAPIView):
@@ -79,6 +85,31 @@ class VideosHome(generics.ListAPIView):
 class ChannelProfilePicture(generics.RetrieveAPIView):
     queryset = Channel.objects.all()
     serializer_class = ChannelProfilePictureSerializer
+
+
+# @api_view(["GET"])
+# def videos_home(request):
+#     if request.method == "GET":
+#         data = Video.objects.filter(private=False, unlisted=False)
+
+#         serializer = VideosHomeSerializer(data, context={"request": request}, many=True)
+
+#         return Response(serializer.data)
+
+#     elif request.method == "POST":
+#         serializer = VideoSerializer(data=request.data)
+#         pass
+
+
+# @api_view(["GET"])
+# def channel_profile_picture(request, id):
+#     data = Channel.objects.get(id=id)
+
+#     serializer = ChannelProfilePictureSerializer(
+#         data, context={"request": request}, many=False
+#     )
+
+#     return Response(serializer.data)
 
 
 ##############################################################################################
