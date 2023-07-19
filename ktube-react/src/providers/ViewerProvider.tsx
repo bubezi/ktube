@@ -11,11 +11,17 @@ interface Viewer {
     wallet: number,
 }
 
-const defaultValue: unknown = '';
+interface ViewerProvided {
+    viewer:Viewer,
+    myToken:string|null,
+  }
+  
+const viewerState :Viewer = {id:0, username:"", phone:0, gender:"", joined:0, wallet:0};
+
+const defaultValue: ViewerProvided = {'viewer':viewerState, myToken:null};
 
 const ViewerContext = React.createContext(defaultValue);
 
-const viewerState :Viewer = {id:0, username:"", phone:0, gender:"", joined:0, wallet:0};
 
 interface ViewerProviderProps {
   children: React.ReactNode;
@@ -50,11 +56,8 @@ const ViewerProvider: React.FC<ViewerProviderProps> = ({ children }) => {
             </ViewerContext.Provider>
         );
     }else{
-        const nullViewer = null;
-        const nullMyToken = null;
-
         return (
-            <ViewerContext.Provider value={{ nullViewer, nullMyToken }}>
+            <ViewerContext.Provider value={{ viewer, myToken }}>
                 {children}
             </ViewerContext.Provider>
         );

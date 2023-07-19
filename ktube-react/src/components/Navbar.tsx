@@ -11,11 +11,12 @@ interface Viewer {
 
 interface ViewerProvided {
   viewer:Viewer,
-  myToken:string
+  myToken:string|null,
 }
 
 function Navbar() {
-  const viewerProvided:ViewerProvided = useViewerContext ();
+  const viewer_info = useViewerContext ();
+  const viewerProvided:ViewerProvided = viewer_info;
 
   function AuthButtons() {
     if (viewerProvided.myToken) {
