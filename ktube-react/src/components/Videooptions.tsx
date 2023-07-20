@@ -2,21 +2,48 @@ import React from "react";
 import axios from "axios";
 import { API_URL } from "../constants";
 
-interface Playlist {
-    name:string,
+// import { handleAddToPlaylist } from "../functions/fun";
+
+const optionsStyle = {
+  display: 'block'
 }
 
-const playlistsInit:Array<Playlist> = [{name:''}]
-function Videooptions() {
+interface PropOptions {
+  videoId:number,
+  slug:string
+}
+
+interface PropOption {
+  playlistName: string,
+  playlistId: number,
+  videoId: number
+}
+
+function Option(props:PropOption) {
+  const itemId: string = "playlist-"+props.playlistId+"-video-"+props.videoId
+  return (<a 
+          className="dropdown-item add-btn-link update-cart" 
+          style={optionsStyle}
+          id={itemId}
+          >Add video to {props.playlistName}</a>
+          );
+}
+
+
+interface Playlist {
+  id: number,
+  name:string,
+}
+
+const playlistsInit:Array<Playlist> = [{id: 0, name:''}]
+
+function Videooptions(props:PropOptions) {
   const [playlists, setPlaylists] = React.useState<Array<Playlist>>(playlistsInit);
   const [myToken] = React.useState(() => {
     const savedToken = localStorage.getItem("token");
     return savedToken ?? null;
   });
 
-  const optionsStyle = {
-    display: 'block'
-  }
 
   if (myToken) {
     React.useEffect(() => {
@@ -33,17 +60,14 @@ function Videooptions() {
         });
     }, []);
 
-    const options = playlists.map(playlist => {
+    const playlistOptions = playlists.map(playlist => {
+        console.log(playlist);
 
-        return (
-            <form id="remove-video-{{video.slug}}-from-watchlater-form">
-                {/* {% csrf_token %} */}
-                <input type="hidden" name="video_id" value="{{video.slug}}"/>
-                <a href="#" className="dropdown-item add-btn-link update-cart" 
-                id="remove-video-{{video.slug}}-from-watchlater-button" 
-                style={optionsStyle}
-                >{playlist.name}</a>
-            </form>
+        return (<Option 
+                  key={playlist.id} 
+                  playlistName={playlist.name} 
+                  videoId={props.videoId} 
+                  playlistId={playlist.id}/>
         );
     });
 
@@ -61,7 +85,9 @@ function Videooptions() {
             >
               <i className="fa-solid fa-ellipsis-vertical"></i>
             </button>
-            {options}
+            <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+            {playlistOptions}
+            </div>
           </div>
         </div>
       </>
@@ -81,19 +107,13 @@ function Videooptions() {
             >
               <i className="fa-solid fa-ellipsis-vertical"></i>
             </button>
-
             <div
               className="dropdown-menu dropdown-menu-right"
               aria-labelledby="dropdownMenuButton"
             >
-            <form id="remove-video-{{video.slug}}-from-watchlater-form">
-                {/* {% csrf_token %} */}
-                <input type="hidden" name="video_id" value="{{video.slug}}"/>
-                <a href="#" className="dropdown-item add-btn-link update-cart" 
-                id="remove-video-{{video.slug}}-from-watchlater-button" 
+              <a href="/auth/login" className="dropdown-item add-btn-link update-cart" 
                 style={optionsStyle}
-                >Remove Video From Watchlater</a>
-            </form>
+                >Add to playlist</a>
             </div>
           </div>
         </div>

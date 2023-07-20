@@ -6,7 +6,7 @@ from .models import *
 class PlaylistsHomeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Playlist
-        # fields = 
+        fields = '__all__'
 
 
 class ViewerSerializer(serializers.ModelSerializer):

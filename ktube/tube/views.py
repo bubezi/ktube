@@ -49,31 +49,47 @@ from rest_framework.permissions import IsAuthenticated
 from .serializers import *
 
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from django.contrib.auth import authenticate
+from rest_framework.authtoken.models import Token
+        
+        
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated 
+
+from tube.serializers import ViewerSerializer
+
 class PlaylistsHomeAPI(APIView):
     permissions_classes = [IsAuthenticated]
+
     def get(self, request):
         viewer = request.user.viewer
-        myContext = {}
 
         try:
             nav_channel = Channel.objects.get(user=viewer)
-            playlists = Playlist.objects.filter(channel=nav_channel)  # type: ignore
-            myContext["playlists"] = playlists
+            playlists = Playlist.objects.filter(channel=nav_channel)
 
         except Channel.DoesNotExist:
-            pass
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
         except:
             my_channels = Channel.objects.filter(user=viewer)
-            my_playlists = []
+            playlists = []
 
             for channel in my_channels:
-                channel_playlists = Playlist.objects.filter(channel=channel).in_bulk().values()  # type: ignore
-                for channel_playlist in channel_playlists:
-                    my_playlists.append(channel_playlist)
-            myContext["playlists"] = my_playlists
-            
-        return Response({'playlists': myContext['playlists']}, status=status.HTTP_200_OK)
+                channel_playlists = Playlist.objects.filter(channel=channel)
+                playlists.extend(channel_playlists)
+
+        serializer = PlaylistsHomeSerializer(playlists, many=True)
+        return Response({'playlists': serializer.data}, status=status.HTTP_200_OK)
+
         
 
 

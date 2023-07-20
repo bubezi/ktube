@@ -17,7 +17,6 @@ interface VideoState {
 function Videos() {
   const videoState: Array<VideoState> = [{id:0, title:'', thumbnail:'', channel:0, views:0, slug:'', path:'', price:0.0}]
   const [videos, setVideos] = React.useState<Array<VideoState>>(videoState);
-  const [playlists, setPlaylists] = React.useState();
 
   React.useEffect(()=>{
     axios.get(API_URL+"homevideos")
@@ -26,17 +25,6 @@ function Videos() {
           console.log(error);
         })
   },[]);
-
-
-  React.useEffect(()=>{
-    axios.get(API_URL+"playlistsHome")
-        .then(res => setPlaylists(res.data))
-        .catch((error)=>{
-          console.log(error);
-        })
-  },[]);
-
-  console.log(playlists);
   
   const videocards = videos.map(video => {
     if (video.channel!==0){
@@ -45,10 +33,12 @@ function Videos() {
     const videoChannelId = video.channel;
         
     return  (<Videocard 
-              key={video.id} 
+              key={video.id}
+              videoId={video.id}
               title = {videoTitle} 
               thumbnail={videoThumbnail} 
               channelId={videoChannelId} 
+              slug={video.slug}
               price={video.price} 
               views={video.views}/>
     );

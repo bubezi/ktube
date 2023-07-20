@@ -7,9 +7,11 @@ import React from 'react'
 import Videooptions from './Videooptions'
 
 interface Prop {
+    videoId: number,
     title: string,
     thumbnail: string,
     channelId: number,
+    slug: string,
     price: number,
     views: number,
 }
@@ -102,7 +104,7 @@ function Videocard (props: Prop) {
                             </div>
                         </div>
                         <div className="col-lg-2 col-12 text-right mt-2 mt-lg-0">
-                            <Videooptions />
+                            <Videooptions videoId={props.videoId} slug={props.slug}/>
                         </div>
                     </div>
                 </div>
