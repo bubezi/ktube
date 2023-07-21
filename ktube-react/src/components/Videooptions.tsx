@@ -1,3 +1,56 @@
+// import React, { useState } from 'react';
+
+// export function DropdownComponent() {
+//   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+//   const toggleDropdown = () => {
+//     setDropdownOpen(!dropdownOpen);
+//   };
+
+//   return (
+//     <div className="dropdown">
+//       <button
+//         className="btn"
+//         type="button"
+//         onClick={toggleDropdown}
+//       >
+//         Dropdown
+//       </button>
+//       {dropdownOpen ? (
+//         <div className="dropdown-menu">
+//           <a className="dropdown-item" href="#">
+//             Item 1
+//           </a>
+//           <a className="dropdown-item" href="#">
+//             Item 2
+//           </a>
+//           <a className="dropdown-item" href="#">
+//             Item 3
+//           </a>
+//         </div>
+//       ) : null}
+//     </div>
+//   );
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////
+
+
+
+
+
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
