@@ -65,6 +65,9 @@ class PlaylistsHomeAPI(APIView):
         # Retrieve the viewer associated with the current user
         viewer = request.user.viewer
 
+        # Define an empty playlists list
+        playlists = []
+
         try:
             # Attempt to get the channel associated with the viewer
             nav_channel = Channel.objects.get(user=viewer)
@@ -73,8 +76,8 @@ class PlaylistsHomeAPI(APIView):
             playlists = Playlist.objects.filter(channel=nav_channel)
 
         except Channel.DoesNotExist:
-            # If the channel does not exist, return a 404 NOT FOUND response
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            # If the channel does not exist, the empty playlists list will be used
+            pass
 
         except:
             # If there is an exception (other than DoesNotExist), get all playlists
@@ -87,6 +90,7 @@ class PlaylistsHomeAPI(APIView):
                 playlists.extend(channel_playlists)
 
         # Serialize the playlists data and return it as a JSON response
+        print(playlists)
         serializer = PlaylistsHomeSerializer(playlists, many=True)
         return Response({'playlists': serializer.data}, status=status.HTTP_200_OK)
 

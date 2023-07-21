@@ -20,12 +20,19 @@ interface PropOption {
 }
 
 function Option(props: PropOption) {
+  const [dropdownOpen, setDropdownOpen] = React.useState(false);
+
   const itemId: string =
     "playlist-" + props.playlistId + "-video-" + props.videoId;
   return (
     <a
       className="dropdown-item add-btn-link update-cart"
       style={optionsStyle}
+      // Remove data-toggle="dropdown"
+      // Add onClick handler to toggle dropdownOpen state
+      onClick={() => setDropdownOpen(!dropdownOpen)}
+      aria-haspopup="true"
+      aria-expanded={dropdownOpen} // Use dropdownOpen state here
       id={itemId}
     >
       Add video to {props.playlistName}
@@ -47,6 +54,8 @@ function Videooptions(props: PropOptions) {
     return savedToken ?? null;
   });
 
+  const [dropdownOpen, setDropdownOpen] = React.useState(false);
+
   if (myToken) {
     React.useEffect(() => {
       axios({
@@ -56,12 +65,22 @@ function Videooptions(props: PropOptions) {
           Authorization: `Token ${myToken}`,
         },
       })
-        .then((res) => setPlaylists(res.data))
+        .then((res) => {
+          if (Array.isArray(res.data.playlists)) {
+            setPlaylists(res.data.playlists);
+          } else {
+            // handle error
+          }
+        })
         .catch((error) => {
           console.log(error);
         });
-      console.log(playlists);
     }, []);
+
+    React.useEffect(() => {
+      console.log(playlists);
+    }, [playlists]);
+
     if (!Array.isArray(playlists)) {
       return null; // or handle the error in an appropriate way
     } else {
@@ -89,9 +108,12 @@ function Videooptions(props: PropOptions) {
                 className="btn"
                 type="button"
                 id="dropdownMenuButton"
-                data-toggle="dropdown"
+                // data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="true"
+                // Remove data-toggle="dropdown"
+                // Add onClick handler to toggle dropdownOpen state
+                onClick={() => setDropdownOpen(!dropdownOpen)}
               >
                 <i className="fa-solid fa-ellipsis-vertical"></i>
               </button>
