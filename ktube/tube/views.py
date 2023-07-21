@@ -53,33 +53,32 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
-        
-        
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated 
-
 from tube.serializers import ViewerSerializer
+
 
 class PlaylistsHomeAPI(APIView):
     permissions_classes = [IsAuthenticated]
 
     def get(self, request):
+        # Retrieve the viewer associated with the current user
         viewer = request.user.viewer
 
         try:
+            # Attempt to get the channel associated with the viewer
             nav_channel = Channel.objects.get(user=viewer)
+
+            # If the channel exists, get all playlists associated with it
             playlists = Playlist.objects.filter(channel=nav_channel)
 
         except Channel.DoesNotExist:
+            # If the channel does not exist, return a 404 NOT FOUND response
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         except:
+            # If there is an exception (other than DoesNotExist), get all playlists
+            # associated with all channels owned by the viewer
             my_channels = Channel.objects.filter(user=viewer)
             playlists = []
 
@@ -87,10 +86,10 @@ class PlaylistsHomeAPI(APIView):
                 channel_playlists = Playlist.objects.filter(channel=channel)
                 playlists.extend(channel_playlists)
 
+        # Serialize the playlists data and return it as a JSON response
         serializer = PlaylistsHomeSerializer(playlists, many=True)
         return Response({'playlists': serializer.data}, status=status.HTTP_200_OK)
 
-        
 
 
 class VideosHome(generics.ListAPIView):
