@@ -1,8 +1,60 @@
-import React from "react";
+import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.js';
+// import $ from 'jquery';
+// import Popper from 'popper.js';
+
+
+// import React from "react";
 import axios from "axios";
 import { API_URL } from "../constants";
 
 // import { handleAddToPlaylist } from "../functions/fun";
+
+// function DropdownComponent({ options, selectedOption, handleSelection }) {
+//   return (
+//     <select value={selectedOption} onChange={handleSelection}>
+//       {options.map((option) => (
+//         <option key={option.id} value={option.value}>
+//           {option.label}
+//         </option>
+//       ))}
+//     </select>
+//   );
+// }
+
+
+import React, { useState } from 'react';
+
+export function DropCard() {
+  const [dropdown, setDropdown] = useState(false);
+  const toggleOpen = () => setDropdown(!dropdown);
+
+  const handleItemClick = (action:string) => {
+    console.log(`Performing action: ${action}`);
+    // add your action handling logic here
+  };
+
+  return (
+    <div className="dropdown">
+        <button onClick={toggleOpen}>
+          Dropdown
+        </button>
+        <div
+          className={`dropdown-menu ${dropdown ? 'show' : ''}`}
+          aria-labelledby="dropdownMenuButton"
+          >
+            <a className="dropdown-item" href="#" onClick={() => handleItemClick('delete')}>
+              Delete
+            </a>
+            <a className="dropdown-item" href="#" onClick={() => handleItemClick('pin')}>
+              Pin to your Profile
+            </a>
+         </div>
+     </div>
+  );
+}
+
 
 const optionsStyle = {
   display: "block",
@@ -46,6 +98,7 @@ interface Playlist {
 }
 
 function Videooptions(props: PropOptions) {
+
   // // const playlistsInit:Array<Playlist> = [{id: 0, name:''}]
   // // const [playlists, setPlaylists] = React.useState<Array<Playlist>>(playlistsInit);
   const [playlists, setPlaylists] = React.useState<Array<Playlist>>([]);
@@ -55,6 +108,10 @@ function Videooptions(props: PropOptions) {
   });
 
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
+  // Dropdown event handler
+  // const toggleDropdown = () => {
+  //   setDropdownOpen(!dropdownOpen);
+  // };
 
   if (myToken) {
     React.useEffect(() => {
@@ -77,9 +134,9 @@ function Videooptions(props: PropOptions) {
         });
     }, []);
 
-    React.useEffect(() => {
-      console.log(playlists);
-    }, [playlists]);
+    // React.useEffect(() => {
+    //   console.log(playlists);
+    // }, [playlists]);
 
     if (!Array.isArray(playlists)) {
       return null; // or handle the error in an appropriate way
@@ -96,6 +153,12 @@ function Videooptions(props: PropOptions) {
               playlistId={playlistId}
               videoId={props.videoId}
             />
+
+      //       <DropdownComponent
+      //   options={options} // Replace 'options' with your own array of dropdown options
+      //   selectedOption={selectedOption} // Pass in the selected option state if needed
+      //   handleSelection={handleSelection} // Pass in your event handler function for handling selected options
+      // />
           );
         }
       });
@@ -103,27 +166,25 @@ function Videooptions(props: PropOptions) {
       return (
         <>
           <div className="video-options">
-            <div className="dropdown">
-              <button
-                className="btn"
-                type="button"
-                id="dropdownMenuButton"
-                // data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="true"
-                // Remove data-toggle="dropdown"
-                // Add onClick handler to toggle dropdownOpen state
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-              >
-                <i className="fa-solid fa-ellipsis-vertical"></i>
-              </button>
-              <div
-                className="dropdown-menu dropdown-menu-right"
-                aria-labelledby="dropdownMenuButton"
-              >
-                <div className="row">{playlistoptions}</div>
-              </div>
+          <div className="dropdown">
+          <button
+            className="btn"
+            type="button"
+            id="dropdownMenuButton"
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+          >
+            <i className="fa-solid fa-ellipsis-vertical"></i>
+          </button>
+          {dropdownOpen ? (
+            <div
+              className="dropdown-menu dropdown-menu-right"
+              aria-labelledby="dropdownMenuButton"
+            >
+              <div className="row">{playlistoptions}</div>
             </div>
+          ) : null}
+        </div>
+
           </div>
         </>
       );

@@ -172,6 +172,7 @@ Kenya web experts
     [] Dockerised rtmps server
 [] Dockerise django
 [] Install and implement postgresql
+[] Use React-specific libraries like React-Bootstrap or Reactstrap
 [] File too large test
 [] Lighthouse 100% mobile
     [] PWA
