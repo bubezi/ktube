@@ -60,6 +60,7 @@ function Videocard (props: Prop) {
         }
     }
 
+    
     function Price () {
         if (props.price>0) {
             return (<p style={priceStyle}>KShs. { props.price }</p>);
