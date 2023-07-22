@@ -37,25 +37,15 @@ COMPANY_USERNAME = "bubezi"
 #############################                                   ##############################
 ##############################################################################################
 
-
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from rest_framework import generics
-from rest_framework import status
-
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated 
-
 from .serializers import *
 
-
+from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 from rest_framework import generics
-from tube.serializers import ViewerSerializer
 
 
 class PlaylistsHomeAPI(APIView):
@@ -179,7 +169,7 @@ def home_view(request):
                 my_playlists = []
 
                 for channel in my_channels:
-                    channel_playlists = Playlist.objects.filter(channel=channel).in_bulk().values()  # type: ignore
+                    channel_playlists = Playlist.objects.filter(channel=channel)
                     for channel_playlist in channel_playlists:
                         my_playlists.append(channel_playlist)
                 context["playlists"] = my_playlists

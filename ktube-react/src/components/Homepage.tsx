@@ -3,6 +3,7 @@ import Videos from "./Videos";
 import Footer from "./Footer";
 
 function Homepage () {
+    document.title="Home | KTUBE";
     return (
         <>
             <div className="container">

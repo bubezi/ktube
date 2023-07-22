@@ -1,6 +1,12 @@
 import '../assets/css/loaders/loader0.css';
 
 function Loader () {
+    setTimeout(()=>{
+        const loader = document.getElementById('loader');
+        if (loader!==null){
+            loader.style.display = 'none';
+        }
+      }, 1000);
     return (
         <>
             <div className="loader" id="loader">

@@ -1,9 +1,6 @@
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
-// import $ from 'jquery';
-// import Popper from 'popper.js';
-
 
 import React from "react";
 import axios from "axios";
@@ -26,11 +23,6 @@ const elipsisStyle = {
   color:"black",
 };
 
-interface PropOptions {
-  videoId: number;
-  slug: string;
-}
-
 interface PropOption {
   playlistName: string;
   playlistId: number;
@@ -38,7 +30,6 @@ interface PropOption {
 }
 
 function Option(props: PropOption) {
-
   const itemId: string =
     "playlist-" + props.playlistId + "-video-" + props.videoId;
   return (
@@ -52,6 +43,12 @@ function Option(props: PropOption) {
 interface Playlist {
   id: number;
   name: string;
+  videos: Array<number>;
+}
+
+interface PropOptions {
+  videoId: number;
+  slug: string;
 }
 
 function Videooptions(props: PropOptions) {
@@ -87,17 +84,30 @@ function Videooptions(props: PropOptions) {
     } else {
       const playlistoptions = playlists.map((playlist) => {
         if (playlist.id !== 0) {
-          const playlistName = `${playlist.name}`;
           const playlistId = Number(playlist.id);
 
-          return (
-            <Option
-              key={playlistId}
-              playlistName={playlistName}
-              playlistId={playlistId}
-              videoId={props.videoId}
-            />
-          );
+          if (playlist.videos.includes(props.videoId)){
+            const playlistName = `Remove Video from ${playlist.name}`;
+            return (
+                <Option
+                  key={playlistId}
+                  playlistName={playlistName}
+                  playlistId={playlistId}
+                  videoId={props.videoId}
+                />
+              );
+          }else{
+            const playlistName = `Add Video to ${playlist.name}`;
+            return (
+                <Option
+                  key={playlistId}
+                  playlistName={playlistName}
+                  playlistId={playlistId}
+                  videoId={props.videoId}
+                />
+              );
+          }
+
         }
       });
 
@@ -130,7 +140,8 @@ function Videooptions(props: PropOptions) {
               </Dropdown.Toggle>
         
               <Dropdown.Menu>
-                <Dropdown.Item href="/auth/login">Add to playlist</Dropdown.Item>
+                <Dropdown.Item href="/auth/login">Add to Playlist</Dropdown.Item>
+                <Dropdown.Item href="/auth/login">Add to Watchlater</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </div>

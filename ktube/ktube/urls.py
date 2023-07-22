@@ -109,7 +109,6 @@ urlpatterns += [
     
     path('api/auth/login/', views_reg.LoginView.as_view()),
     path('api/auth/getCurrentViewer', views_reg.GetViewer.as_view()),
-    # path('api/auth/getCurrentViewer', views_reg.getViewer.as_view()),
     path('api/playlistsHome', views_tube.PlaylistsHomeAPI.as_view() ),
 ]
 

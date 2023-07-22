@@ -17,15 +17,6 @@
     <link rel="icon" type="image/png" sizes="32x32" href="./src/assets/images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="./src/assets//images/favicon-16x16.png">
     <link rel="manifest" href="./src/assets/images/site.webmanifest">
-
-    <!-- <link rel="stylesheet" type="text/css" href="./src/assets/css/cdn/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="./src/assets/css/cdn/bootstrap.min.css"> 
-	
-    <link rel="stylesheet" type="text/css" href="./src/assets/css/main.css">
-    <link rel="stylesheet" type="text/css" href="./src/assets/css/home.css">
-    <link rel="stylesheet" type="text/css" href="./src/assets/css/footer.css">
-    <link rel="stylesheet" type="text/css" href="./src/assets/css/tube.css">
-    <link rel="stylesheet" type="text/css" href="./src/assets/css/watch.css"> -->
 </head>
 
 
@@ -41,20 +32,7 @@
   <script type="text/javascript" src="./src/assets/js/bootstrap.min.js"></script> 	
 	<script type="text/javascript" src="./src/assets/js/bootstrap.bundle.min.js"></script>
 
-  
-  <!--####################################################################-->
-  <!--####################################################################-->
-	
-  
-  <script type="text/javascript" src="./src/assets/js/popper.js"></script>
 
-  
-  <!--####################################################################-->
-  <!--####################################################################-->
-	
-  
-  
-  
   <script type="text/javascript" src="./src/assets/js/popper.min.js"></script>
 	
 	<script type="text/javascript" src="./src/assets/js/main.js"></script>
@@ -63,18 +41,11 @@
 	
 
 	<script type="text/javascript">
-		window.addEventListener('load', function() {
-      setTimeout(()=>{
-        document.getElementById('loader').style.display = 'none';
-      }, 1000);
-		});
-
-
-		// if ('serviceWorker' in navigator) {
-		// 	 window.addEventListener('load', function() {
-		// 	 navigator.serviceWorker.register('/static/service-worker.js');
-		// 	});
-		// }
+		if ('serviceWorker' in navigator) {
+			  window.addEventListener('load', function() {
+		 	  navigator.serviceWorker.register('./src/assets/service-worker.js');
+		  });
+		}
 	</script>
 	
 </body>
