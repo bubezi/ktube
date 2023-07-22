@@ -128,28 +128,102 @@ class ChannelProfilePicture(generics.RetrieveAPIView):
 
 @api_view(["POST"])
 def add_video_to_playlist_API(request):
+    video_id = request.POST.get("video_id")
+    playlist_id = request.POST.get("playlist_id")
+    
+    if video_id is None or playlist_id is None:
+        return Response({'error': 'video_id and playlist_id are required'}, status=status.HTTP_400_BAD_REQUEST)
+    
     try:
-        video_id = request.POST["video_id"]
-        playlist_id = request.POST["playlist_id"]
         video = Video.objects.get(slug=video_id)
         playlist = Playlist.objects.get(id=playlist_id)
         playlist.videos.add(video)
         return Response(status=status.HTTP_200_OK)
+    except Video.DoesNotExist:
+        print("video not found")
+        return Response({'error': 'Video not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Playlist.DoesNotExist:
+        print("Playlist not found")
+        return Response({'error': 'Playlist not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        print(e)
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
+        print("Bad Request")
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["POST"])
 def remove_video_from_playlist_API(request):
+    video_id = request.POST.get("video_id")
+    playlist_id = request.POST.get("playlist_id")
+    
+    if video_id is None or playlist_id is None:
+        return Response({'error': 'video_id and playlist_id are required'}, status=status.HTTP_400_BAD_REQUEST)
+    
     try:
-        video_id = request.POST["video_id"]
-        playlist_id = request.POST["playlist_id"]
         video = Video.objects.get(slug=video_id)
         playlist = Playlist.objects.get(id=playlist_id)
         playlist.videos.remove(video)
         return Response(status=status.HTTP_200_OK)
+    except Video.DoesNotExist:
+        return Response({'error': 'Video not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Playlist.DoesNotExist:
+        return Response({'error': 'Playlist not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return Response({'error': 'Some other error'},status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+def add_video_to_watchlater_API(request):
+    video_id = request.POST.get("video_id")
+    
+    if video_id is None:
+        return Response({'error': 'video_id are required'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        viewer = request.user.viewer
+        video = Video.objects.get(slug=video_id)
+        watchlater = Watchlater.objects.get(viewer=viewer)
+        watchlater.videos.add(video)
+        return Response(status=status.HTTP_200_OK)
+    except Video.DoesNotExist:
+        return Response({'error': 'Video not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Playlist.DoesNotExist:
+        return Response({'error': 'Playlist not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+@api_view(["POST"])
+def remove_video_from_watchlater_API(request):
+    video_id = request.POST.get("video_id")
+    
+    if video_id is None:
+        return Response({'error': 'video_id are required'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    try:
+        viewer = request.user.viewer
+        video = Video.objects.get(slug=video_id)
+        watchlater = Watchlater.objects.get(viewer=viewer)
+        watchlater.videos.remove(video)
+        return Response(status=status.HTTP_200_OK)
+    except Video.DoesNotExist:
+        return Response({'error': 'Video not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Playlist.DoesNotExist:
+        return Response({'error': 'Playlist not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
 
 
 ##############################################################################################

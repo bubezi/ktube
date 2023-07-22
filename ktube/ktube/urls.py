@@ -115,8 +115,8 @@ urlpatterns += [
     path('api/add_video_to_playlist',views_tube.add_video_to_playlist_API),
     path('api/remove_video_from_playlist',views_tube.remove_video_from_playlist_API),
     
-    path('api/add_video_to_watchlater',views_tube.add_video_to_watchlater),
-    path('api/remove_video_from_watchlater',views_tube.remove_video_from_watchlater),
+    path('api/add_video_to_watchlater',views_tube.add_video_to_watchlater_API),
+    path('api/remove_video_from_watchlater',views_tube.remove_video_from_watchlater_API),
 ]
 
 

@@ -6,60 +6,16 @@ import React from "react";
 import axios from "axios";
 import { API_URL } from "../constants";
 import Dropdown from "react-bootstrap/Dropdown";
+import Option from "./Options";
 
 import {
   handleAddToPlaylist,
+  handleAddToWatchlater,
   handleRemoveFromPlaylist,
+  handleRemoveFromWatchlater,
 } from "../functions/fun";
 
-const optionsStyle = {
-  display: "block",
-};
-
-const toggleStyle = {
-  padding: 0,
-  outline: 0,
-  border: "none",
-  backgroundColor: "white",
-};
-
-const elipsisStyle = {
-  color: "black",
-};
-
-interface PropOption {
-  playlistName: string;
-  playlistId: number;
-  videoId: number;
-  add: boolean;
-  itemId: string;
-}
-
-function Option(props: PropOption) {
-  let handleClick = (event: any) => {
-    console.log(event);
-  };
-
-  if (props.add) {
-    handleClick = (event) => {
-      handleAddToPlaylist(event, props.videoId, props.playlistId);
-    };
-  } else {
-    handleClick = (event) => {
-      handleRemoveFromPlaylist(event, props.videoId, props.playlistId);
-    };
-  }
-  return (
-    <Dropdown.Item
-      style={optionsStyle}
-      id={props.itemId}
-      href="#"
-      onClick={handleClick}
-    >
-      {props.playlistName}
-    </Dropdown.Item>
-  );
-}
+import { toggleStyle, elipsisStyle } from "./styles/Styles";
 
 interface Playlist {
   id: number;
@@ -123,6 +79,11 @@ function Videooptions(props: PropOptions) {
                 videoId={props.videoId}
                 add={false}
                 itemId={"playlist-" + playlistId + "-video-" + props.videoId}
+                handleMethod={async () => handleRemoveFromPlaylist(
+                  props.videoId,
+                  playlistId,
+                  myToken
+                )}
               />
             );
           } else {
@@ -135,6 +96,11 @@ function Videooptions(props: PropOptions) {
                 videoId={props.videoId}
                 add={true}
                 itemId={"playlist-" + playlistId + "-video-" + props.videoId}
+                handleMethod={async () => handleAddToPlaylist(
+                  props.videoId,
+                  playlistId,
+                  myToken
+                )}
               />
             );
           }
@@ -161,10 +127,10 @@ function Videooptions(props: PropOptions) {
           });
       }, []);
 
-      const watchlaterOption = watchlater.map( (watchlaterItem) => {
+      const watchlaterOption = watchlater.map((watchlaterItem) => {
         const playlistId = Number(watchlaterItem.id);
         if (watchlaterItem.videos.includes(props.videoId)) {
-          const playlistName = 'Remove Video from Watchlater';
+          const playlistName = "Remove Video from Watchlater";
           return (
             <Option
               key={playlistId}
@@ -173,10 +139,11 @@ function Videooptions(props: PropOptions) {
               videoId={props.videoId}
               add={false}
               itemId={"watchlater-" + playlistId + "-video-" + props.videoId}
+              handleMethod={async () => handleRemoveFromWatchlater(props.videoId, myToken)}
             />
           );
         } else {
-          const playlistName = 'Add Video to Watchlater';
+          const playlistName = "Add Video to Watchlater";
           return (
             <Option
               key={playlistId}
@@ -185,10 +152,11 @@ function Videooptions(props: PropOptions) {
               videoId={props.videoId}
               add={true}
               itemId={"watchlater-" + playlistId + "-video-" + props.videoId}
+              handleMethod={async () => handleAddToWatchlater(props.videoId, myToken)}
             />
           );
         }
-      })
+      });
 
       return (
         <>
@@ -205,8 +173,10 @@ function Videooptions(props: PropOptions) {
                     style={elipsisStyle}
                   ></i>
                 </Dropdown.Toggle>
-
-                <Dropdown.Menu>{playlistoptions}{watchlaterOption}</Dropdown.Menu>
+                <Dropdown.Menu>
+                  {playlistoptions}
+                  {watchlaterOption}
+                </Dropdown.Menu>
               </Dropdown>
             </div>
           </div>
