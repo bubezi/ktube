@@ -119,6 +119,31 @@ class ChannelProfilePicture(generics.RetrieveAPIView):
 
 #     return Response(serializer.data)
 
+@api_view(["POST"])
+def add_video_to_playlist_API(request):
+    try:
+        video_id = request.POST["video_id"]
+        playlist_id = request.POST["playlist_id"]
+        video = Video.objects.get(slug=video_id)
+        playlist = Playlist.objects.get(id=playlist_id)
+        playlist.videos.add(video)
+        return Response(status=status.HTTP_200_OK)
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+def remove_video_from_playlist_API(request):
+    try:
+        video_id = request.POST["video_id"]
+        playlist_id = request.POST["playlist_id"]
+        video = Video.objects.get(slug=video_id)
+        playlist = Playlist.objects.get(id=playlist_id)
+        playlist.videos.remove(video)
+        return Response(status=status.HTTP_200_OK)
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
 
 ##############################################################################################
 #############################                                   ##############################

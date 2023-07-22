@@ -150,8 +150,7 @@ Kenya web experts
 [x] WARNING:waitress:total open connections reached the connection limit, no longer accepting new connections
 [x] robots.txt => https://ordinarycoders.com/blog/article/robots-text-file-django
 [x] Change like and dislike buttons
-[x] Get IP address of the view for (esp) logged out viewers
-    [x] Viewing algorithm limit
+[x] File too large test
 [] Search
     [] history
     [] algorithm
@@ -168,12 +167,13 @@ Kenya web experts
     [] Resume capability
     [] Auto skip (Play next)
     [*] Pictures (For events and shit)
+[x] Get IP address of the view for (esp) logged out viewers
+    [x] Viewing algorithm limit
 [] Install rtmps in local nginx
     [] Dockerised rtmps server
 [] Dockerise django
 [] Install and implement postgresql
 [] Use React-specific libraries like React-Bootstrap or Reactstrap
-[] File too large test
 [] Lighthouse 100% mobile
     [] PWA
         [x] Installable

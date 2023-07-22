@@ -1,12 +1,13 @@
-import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/js/bootstrap.js';
+import "bootstrap";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap.js";
 
 import React from "react";
 import axios from "axios";
 import { API_URL } from "../constants";
-import Dropdown from 'react-bootstrap/Dropdown';
+import Dropdown from "react-bootstrap/Dropdown";
 
+import { handleAddToPlaylist, handleRemoveFromPlaylist } from "../functions/fun";
 
 const optionsStyle = {
   display: "block",
@@ -20,23 +21,34 @@ const toggleStyle = {
 };
 
 const elipsisStyle = {
-  color:"black",
+  color: "black",
 };
 
 interface PropOption {
   playlistName: string;
   playlistId: number;
   videoId: number;
+  add: boolean;
+  itemId: string;
 }
 
+
 function Option(props: PropOption) {
-  const itemId: string =
-    "playlist-" + props.playlistId + "-video-" + props.videoId;
+  let handleClick = (event: any) => {console.log(event)};
+
+  if (props.add){
+    handleClick = (event)=>{
+      handleAddToPlaylist(event, props.videoId, props.playlistId);
+    }
+  }else{
+    handleClick = (event)=>{
+      handleRemoveFromPlaylist(event, props.videoId, props.playlistId);
+    }
+  }
   return (
-    <Dropdown.Item 
-      style={optionsStyle}
-      id={itemId}
-      href="#">{props.playlistName}</Dropdown.Item>
+    <Dropdown.Item style={optionsStyle} id={props.itemId} href="#" onClick={handleClick}>
+      {props.playlistName}
+    </Dropdown.Item>
   );
 }
 
@@ -86,66 +98,85 @@ function Videooptions(props: PropOptions) {
         if (playlist.id !== 0) {
           const playlistId = Number(playlist.id);
 
-          if (playlist.videos.includes(props.videoId)){
+          if (playlist.videos.includes(props.videoId)) {
             const playlistName = `Remove Video from ${playlist.name}`;
             return (
-                <Option
-                  key={playlistId}
-                  playlistName={playlistName}
-                  playlistId={playlistId}
-                  videoId={props.videoId}
-                />
-              );
-          }else{
+              <Option
+                key={playlistId}
+                playlistName={playlistName}
+                playlistId={playlistId}
+                videoId={props.videoId}
+                add={false}
+                itemId={"playlist-" + playlistId + "-video-" + props.videoId}
+              />
+            );
+          } else {
             const playlistName = `Add Video to ${playlist.name}`;
             return (
-                <Option
-                  key={playlistId}
-                  playlistName={playlistName}
-                  playlistId={playlistId}
-                  videoId={props.videoId}
-                />
-              );
+              <Option
+                key={playlistId}
+                playlistName={playlistName}
+                playlistId={playlistId}
+                videoId={props.videoId}
+                add={true}
+                itemId={"playlist-" + playlistId + "-video-" + props.videoId}
+              />
+            );
           }
-
         }
       });
 
       return (
         <>
-        <div className="video-options">
+          <div className="video-options">
             <div className="dropdown">
               <Dropdown>
-                <Dropdown.Toggle id="dropdownMenuButton" className="custom-dropdown" style={toggleStyle}>
-                  <i className="fa-solid fa-ellipsis-vertical" style={elipsisStyle}></i>
+                <Dropdown.Toggle
+                  id="dropdownMenuButton"
+                  className="custom-dropdown"
+                  style={toggleStyle}
+                >
+                  <i
+                    className="fa-solid fa-ellipsis-vertical"
+                    style={elipsisStyle}
+                  ></i>
                 </Dropdown.Toggle>
-          
-                <Dropdown.Menu>
-                  {playlistoptions}
-                </Dropdown.Menu>
+
+                <Dropdown.Menu>{playlistoptions}</Dropdown.Menu>
               </Dropdown>
             </div>
-        </div>
+          </div>
         </>
       );
     }
   } else {
     return (
       <>
-      <div className="video-options">
+        <div className="video-options">
           <div className="dropdown">
             <Dropdown>
-              <Dropdown.Toggle id="dropdownMenuButton" className="custom-dropdown" style={toggleStyle}>
-                <i className="fa-solid fa-ellipsis-vertical" style={elipsisStyle}></i>
+              <Dropdown.Toggle
+                id="dropdownMenuButton"
+                className="custom-dropdown"
+                style={toggleStyle}
+              >
+                <i
+                  className="fa-solid fa-ellipsis-vertical"
+                  style={elipsisStyle}
+                ></i>
               </Dropdown.Toggle>
-        
+
               <Dropdown.Menu>
-                <Dropdown.Item href="/auth/login">Add to Playlist</Dropdown.Item>
-                <Dropdown.Item href="/auth/login">Add to Watchlater</Dropdown.Item>
+                <Dropdown.Item href="/auth/login">
+                  Add to Playlist
+                </Dropdown.Item>
+                <Dropdown.Item href="/auth/login">
+                  Add to Watchlater
+                </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </div>
-      </div>
+        </div>
       </>
     );
   }
