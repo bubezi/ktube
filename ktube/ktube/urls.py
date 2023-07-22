@@ -110,6 +110,7 @@ urlpatterns += [
     path('api/auth/login/', views_reg.LoginView.as_view()),
     path('api/auth/getCurrentViewer', views_reg.GetViewer.as_view()),
     path('api/playlistsHome', views_tube.PlaylistsHomeAPI.as_view()),
+    path('api/watchlater', views_tube.WatchlaterHomeAPI.as_view()),
     
     path('api/add_video_to_playlist',views_tube.add_video_to_playlist_API),
     path('api/remove_video_from_playlist',views_tube.remove_video_from_playlist_API),

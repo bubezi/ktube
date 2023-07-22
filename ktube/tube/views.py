@@ -47,31 +47,39 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 from rest_framework import generics
 
+class WatchlaterHomeAPI(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        viewer = request.user.viewer
+        
+        try:
+            watchlater = Watchlater.objects.get(viewer=viewer)
+
+        except Watchlater.DoesNotExist:
+            watchlater = Watchlater(viewer=viewer)
+            watchlater.save()
+
+        serializer = WatchlaterSerializer(watchlater, many=False)
+        return Response({'watchlater':serializer.data}, status=status.HTTP_200_OK)
+        
 
 class PlaylistsHomeAPI(APIView):
     permissions_classes = [IsAuthenticated]
 
     def get(self, request):
-        # Retrieve the viewer associated with the current user
         viewer = request.user.viewer
 
-        # Define an empty playlists list
         playlists = []
 
         try:
-            # Attempt to get the channel associated with the viewer
             nav_channel = Channel.objects.get(user=viewer)
-
-            # If the channel exists, get all playlists associated with it
             playlists = Playlist.objects.filter(channel=nav_channel)
 
         except Channel.DoesNotExist:
-            # If the channel does not exist, the empty playlists list will be used
             pass
 
         except:
-            # If there is an exception (other than DoesNotExist), get all playlists
-            # associated with all channels owned by the viewer
             my_channels = Channel.objects.filter(user=viewer)
             playlists = []
 
@@ -79,7 +87,6 @@ class PlaylistsHomeAPI(APIView):
                 channel_playlists = Playlist.objects.filter(channel=channel)
                 playlists.extend(channel_playlists)
 
-        # Serialize the playlists data and return it as a JSON response
         serializer = PlaylistsHomeSerializer(playlists, many=True)
         return Response({'playlists': serializer.data}, status=status.HTTP_200_OK)
 

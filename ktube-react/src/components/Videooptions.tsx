@@ -7,7 +7,10 @@ import axios from "axios";
 import { API_URL } from "../constants";
 import Dropdown from "react-bootstrap/Dropdown";
 
-import { handleAddToPlaylist, handleRemoveFromPlaylist } from "../functions/fun";
+import {
+  handleAddToPlaylist,
+  handleRemoveFromPlaylist,
+} from "../functions/fun";
 
 const optionsStyle = {
   display: "block",
@@ -32,21 +35,27 @@ interface PropOption {
   itemId: string;
 }
 
-
 function Option(props: PropOption) {
-  let handleClick = (event: any) => {console.log(event)};
+  let handleClick = (event: any) => {
+    console.log(event);
+  };
 
-  if (props.add){
-    handleClick = (event)=>{
+  if (props.add) {
+    handleClick = (event) => {
       handleAddToPlaylist(event, props.videoId, props.playlistId);
-    }
-  }else{
-    handleClick = (event)=>{
+    };
+  } else {
+    handleClick = (event) => {
       handleRemoveFromPlaylist(event, props.videoId, props.playlistId);
-    }
+    };
   }
   return (
-    <Dropdown.Item style={optionsStyle} id={props.itemId} href="#" onClick={handleClick}>
+    <Dropdown.Item
+      style={optionsStyle}
+      id={props.itemId}
+      href="#"
+      onClick={handleClick}
+    >
       {props.playlistName}
     </Dropdown.Item>
   );
@@ -58,6 +67,11 @@ interface Playlist {
   videos: Array<number>;
 }
 
+interface Watchlater {
+  id: number;
+  videos: Array<number>;
+}
+
 interface PropOptions {
   videoId: number;
   slug: string;
@@ -65,6 +79,7 @@ interface PropOptions {
 
 function Videooptions(props: PropOptions) {
   const [playlists, setPlaylists] = React.useState<Array<Playlist>>([]);
+  const [watchlater, setWatchlater] = React.useState<Array<Watchlater>>([]);
   const [myToken] = React.useState(() => {
     const savedToken = localStorage.getItem("token");
     return savedToken ?? null;
@@ -126,6 +141,55 @@ function Videooptions(props: PropOptions) {
         }
       });
 
+      React.useEffect(() => {
+        axios({
+          method: "get",
+          url: API_URL + "watchlater",
+          headers: {
+            Authorization: `Token ${myToken}`,
+          },
+        })
+          .then((res) => {
+            if (Array.isArray(res.data.watchlater)) {
+              setWatchlater(res.data.watchlater);
+            } else {
+              setWatchlater(Array(res.data.watchlater));
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }, []);
+
+      const watchlaterOption = watchlater.map( (watchlaterItem) => {
+        const playlistId = Number(watchlaterItem.id);
+        if (watchlaterItem.videos.includes(props.videoId)) {
+          const playlistName = 'Remove Video from Watchlater';
+          return (
+            <Option
+              key={playlistId}
+              playlistName={playlistName}
+              playlistId={playlistId}
+              videoId={props.videoId}
+              add={false}
+              itemId={"watchlater-" + playlistId + "-video-" + props.videoId}
+            />
+          );
+        } else {
+          const playlistName = 'Add Video to Watchlater';
+          return (
+            <Option
+              key={playlistId}
+              playlistName={playlistName}
+              playlistId={playlistId}
+              videoId={props.videoId}
+              add={true}
+              itemId={"watchlater-" + playlistId + "-video-" + props.videoId}
+            />
+          );
+        }
+      })
+
       return (
         <>
           <div className="video-options">
@@ -142,7 +206,7 @@ function Videooptions(props: PropOptions) {
                   ></i>
                 </Dropdown.Toggle>
 
-                <Dropdown.Menu>{playlistoptions}</Dropdown.Menu>
+                <Dropdown.Menu>{playlistoptions}{watchlaterOption}</Dropdown.Menu>
               </Dropdown>
             </div>
           </div>
