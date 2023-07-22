@@ -54,7 +54,17 @@ a:hover {
 .dropdown-content {
 	z-index:100000;
 }
+.dropdown-menu {
+	z-index:100000;
+}
 
+.custom-dropdown::after {
+	display: none;
+}
+
+.custom-dropdown:focus {
+	box-shadow: none;
+}
 
 .box-element{
 	box-shadow:hsl(0, 0%, 80%) 0 0 16px;

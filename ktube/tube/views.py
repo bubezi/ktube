@@ -90,7 +90,6 @@ class PlaylistsHomeAPI(APIView):
                 playlists.extend(channel_playlists)
 
         # Serialize the playlists data and return it as a JSON response
-        print(playlists)
         serializer = PlaylistsHomeSerializer(playlists, many=True)
         return Response({'playlists': serializer.data}, status=status.HTTP_200_OK)
 
