@@ -19,13 +19,12 @@ function Videos() {
   const [videos, setVideos] = React.useState<Array<VideoState>>(videoState);
 
   React.useEffect(()=>{
-    axios.get(API_URL+"videos")
+    axios.get(API_URL+"homevideos")
         .then(res => setVideos(res.data))
         .catch((error)=>{
           console.log(error);
         })
   },[]);
-
   
   const videocards = videos.map(video => {
     if (video.channel!==0){
@@ -34,10 +33,12 @@ function Videos() {
     const videoChannelId = video.channel;
         
     return  (<Videocard 
-              key={video.id} 
+              key={video.id}
+              videoId={video.id}
               title = {videoTitle} 
               thumbnail={videoThumbnail} 
               channelId={videoChannelId} 
+              slug={video.slug}
               price={video.price} 
               views={video.views}/>
     );

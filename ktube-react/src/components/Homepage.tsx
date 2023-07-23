@@ -1,12 +1,11 @@
 import Homescreen from "./Homescreen";
 import Videos from "./Videos";
-import Navbar from "./Navbar";
 import Footer from "./Footer";
 
 function Homepage () {
+    document.title="Home | KTUBE";
     return (
         <>
-            <Navbar username="Bubezi"/>
             <div className="container">
                 <Homescreen/>
                 <hr />

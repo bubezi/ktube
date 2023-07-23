@@ -99,15 +99,24 @@ urlpatterns = [
     
 ]
 
-### API
+### API endpoints
 
 urlpatterns += [
-    re_path(r'^api/videos/$', views_tube.videos_home),
-    re_path(r'^api/cdp/$', views_tube.channel_profile_picture),
+    # re_path(r'^api/videos/$', views_tube.videos_home),
+    # re_path(r'^api/cdp/$', views_tube.channel_profile_picture),
     path('api/homevideos', views_tube.VideosHome.as_view(), name='Videos_home'),
     path('api/dp/<str:pk>', views_tube.ChannelProfilePicture.as_view(), name='channel_dp'),
     
-    path('api/login/', views_reg.LoginView.as_view()),
+    path('api/auth/login/', views_reg.LoginView.as_view()),
+    path('api/auth/getCurrentViewer', views_reg.GetViewer.as_view()),
+    path('api/playlistsHome', views_tube.PlaylistsHomeAPI.as_view()),
+    path('api/watchlater', views_tube.WatchlaterHomeAPI.as_view()),
+    
+    path('api/add_video_to_playlist',views_tube.add_video_to_playlist_API),
+    path('api/remove_video_from_playlist',views_tube.remove_video_from_playlist_API),
+    
+    path('api/add_video_to_watchlater',views_tube.add_video_to_watchlater_API),
+    path('api/remove_video_from_watchlater',views_tube.remove_video_from_watchlater_API),
 ]
 
 

@@ -14,7 +14,9 @@ upstream ktube_upstream {
 server {
     listen 80;
     server_name 127.0.0.1 localhost;
-    
+
+    client_max_body_size 2g;
+
     access_log /var/log/nginx/access.log upstreamlog;
 
     location /static {

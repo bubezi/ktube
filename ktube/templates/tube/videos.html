@@ -243,7 +243,7 @@
         });
     }
     
-    function handleAddToWatchlater(event, videoId, playlistId, addButtonId, successId) {
+    function handleAddToWatchlater(event, videoId, addButtonId, successId) {
         event.preventDefault();
         $.ajax({
             type: 'POST',
@@ -259,7 +259,7 @@
         });
     }
     
-    function handleRemoveFromWatchlater(event, videoId, playlistId, addButtonId, successId) {
+    function handleRemoveFromWatchlater(event, videoId, addButtonId, successId) {
         event.preventDefault();
         $.ajax({
             type: 'POST',

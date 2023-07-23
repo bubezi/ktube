@@ -4,7 +4,7 @@ import { API_URL } from '../constants';
 import '../assets/css/Login.css'
 
 async function loginUser(credentials: { username: string, password: string }) {
-  return fetch((API_URL+'login/'), {
+  return fetch((API_URL+'auth/login/'), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -40,7 +40,6 @@ const Login: React.FC<LoginProps> = ({ saveToken }) => {
 
   return (
     <div className="login-wrapper">
-      <h1>Please Log In</h1>
       <form onSubmit={handleSubmit}>
         <label>
           <p>Username</p>
@@ -51,7 +50,7 @@ const Login: React.FC<LoginProps> = ({ saveToken }) => {
           <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
         </label>
         <div>
-          <button type="submit">Submit</button>
+          <button type="submit">Login</button>
         </div>
       </form>
     </div>

@@ -1,12 +1,19 @@
-import Navbar from "./Navbar";
+import React from "react";
+import { useParams } from "react-router-dom"
 
 interface Prop {
-    title: String,
-    channel: String,
-    subscriber_count: Int32Array
+    title: string,
+    channel: string,
+    subscriber_count: number
 }
 
 function Watchpage (props: Prop) {
+    const { slug } = useParams();
+
+    React.useEffect(() => {
+        // Fetch data from Django backend using `slug`
+      }, [slug]);
+
     const mainRowStyle = {
         alignItems: "flex-start"
     }
@@ -38,7 +45,6 @@ function Watchpage (props: Prop) {
 
     return (
         <>
-            <Navbar username="bubezi"/>
             <div className="row" style={mainRowStyle}>
                 <div className="col-lg-9" style={mainColStyle}>
                     <video 
@@ -52,7 +58,8 @@ function Watchpage (props: Prop) {
                     </video>
 
                     <div className="container" style={containerStyle}>
-                        <div className="row box-element"><div className="col-lg-12">  
+                        <div className="row box-element">
+                            <div className="col-lg-12">  
                                 <div className="row">
                                     <div className="col-lg-12">
                                         <div className="row">
@@ -63,14 +70,14 @@ function Watchpage (props: Prop) {
                                             <h6 style={publicityStyle}>(unlisted)</h6>
                                             {/* {% endif %} */}
 
-                                        </div> 
+                                        </div>
                                         <div className="row">
                                             {/* {% if video.channel.profile_picture %} */}
-                                            <img src="{{video.channel.profilePictureURL}}" className="channel-icon" alt="Channel Profile picture" style={dpStyle}/>
+                                            <img src="#" className="channel-icon" alt="Channel Profile picture" style={dpStyle}/>
                                             {/* {% else %} */}
-                                            <img src="{% static 'images/placeholder.png' %}" className="channel-icon" alt="Channel Profile picture" style={dpStyle}/>
+                                            <img src="#" className="channel-icon" alt="Channel Profile picture" style={dpStyle}/>
                                             {/* {% endif %} */}
-                                            <a href="{% url 'channel' video.channel.id %}">
+                                            <a href="#">
                                                 <h6 style={channelStyle}><strong>{props.channel}</strong></h6>
                                             </a>
                                             <h5 style={publicityStyle}>-</h5>
@@ -79,19 +86,16 @@ function Watchpage (props: Prop) {
                                             {/* {% endif %} */}
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
 
                         </div>
-                    </div> 
+
+                    </div>
+
                 </div>
                 <div className="col-lg-3"></div>
-
             </div>
-
-
-
         </>
     );
 }

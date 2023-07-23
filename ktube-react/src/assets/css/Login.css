@@ -10,11 +10,11 @@
   
   /* Form types */
   
-  input[type="text"],
-  input[type="password"],
-  input[type="email"],
-  textarea,
-  select {
+  .login-wrapper input[type="text"],
+  .login-wrapper input[type="password"],
+  .login-wrapper input[type="email"],
+  .login-wrapper textarea,
+  .login-wrapper select {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
@@ -24,8 +24,8 @@
     box-sizing: border-box;
   }
   
-  input[type="submit"],
-  button {
+  .login-wrapper input[type="submit"],
+  .login-wrapper button {
     width: 100%;
     background-color: #4CAF50;
     color: white;
@@ -36,8 +36,8 @@
     cursor: pointer;
   }
   
-  input[type="submit"]:hover,
-  button:hover {
+  .login-wrapper input[type="submit"]:hover,
+  .login-wrapper button:hover {
     background-color: #45a049;
   }
   
