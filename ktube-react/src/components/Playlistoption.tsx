@@ -4,7 +4,7 @@ import { optionsStyle } from "./styles/Styles";
 import { handleAddToPlaylist, handleRemoveFromPlaylist } from "../functions/fun";
 
 interface PropOption {
-  playlistName: string;
+  prompt: string;
   playlistId: number;
   videoId: number;
   add: boolean;
@@ -12,7 +12,7 @@ interface PropOption {
   myToken: string;
 }
 function Playlistoption(props: PropOption) {
-  const [prompt, setPrompt] = React.useState(props.playlistName);
+  const [prompt, setPrompt] = React.useState(props.prompt);
   const [addTo, setAddTo] = React.useState(props.add);
   let handleClick = () => {};
 

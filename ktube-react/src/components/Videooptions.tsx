@@ -69,7 +69,7 @@ function Videooptions(props: PropOptions) {
             return (
               <Playlistoption
                 key={playlistId}
-                playlistName={playlistName}
+                prompt={playlistName}
                 playlistId={playlistId}
                 videoId={props.videoId}
                 add={false}
@@ -82,7 +82,7 @@ function Videooptions(props: PropOptions) {
             return (
               <Playlistoption
                 key={playlistId}
-                playlistName={playlistName}
+                prompt={playlistName}
                 playlistId={playlistId}
                 videoId={props.videoId}
                 add={true}
@@ -121,7 +121,7 @@ function Videooptions(props: PropOptions) {
           return (
             <Watchlateroption
               key={playlistId}
-              playlistName={playlistName}
+              prompt={playlistName}
               videoId={props.videoId}
               add={false}
               itemId={"watchlater-" + playlistId + "-video-" + props.videoId}
@@ -133,7 +133,7 @@ function Videooptions(props: PropOptions) {
           return (
             <Watchlateroption
               key={playlistId}
-              playlistName={playlistName}
+              prompt={playlistName}
               videoId={props.videoId}
               add={true}
               itemId={"watchlater-" + playlistId + "-video-" + props.videoId}

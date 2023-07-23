@@ -4,14 +4,14 @@ import { optionsStyle } from "./styles/Styles";
 import { handleAddToWatchlater, handleRemoveFromWatchlater } from "../functions/fun";
 
 interface PropOption {
-  playlistName: string;
+  prompt: string;
   videoId: number;
   add: boolean;
   itemId: string;
   myToken: string;
 }
 function Watchlateroption(props: PropOption) {
-  const [prompt, setPrompt] = React.useState(props.playlistName);
+  const [prompt, setPrompt] = React.useState(props.prompt);
   const [addTo, setAddTo] = React.useState(props.add);
   let handleClick = () => {};
 
