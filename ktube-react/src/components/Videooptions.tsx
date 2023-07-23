@@ -6,16 +6,11 @@ import React from "react";
 import axios from "axios";
 import { API_URL } from "../constants";
 import Dropdown from "react-bootstrap/Dropdown";
-import Option from "./Options";
+import Playlistoption from "./Playlistoption";
 
-import {
-  handleAddToPlaylist,
-  handleAddToWatchlater,
-  handleRemoveFromPlaylist,
-  handleRemoveFromWatchlater,
-} from "../functions/fun";
 
 import { toggleStyle, elipsisStyle } from "./styles/Styles";
+import Watchlateroption from "./Watchlateroption";
 
 interface Playlist {
   id: number;
@@ -72,31 +67,27 @@ function Videooptions(props: PropOptions) {
           if (playlist.videos.includes(props.videoId)) {
             const playlistName = `Remove Video from ${playlist.name}`;
             return (
-              <Option
+              <Playlistoption
                 key={playlistId}
                 playlistName={playlistName}
                 playlistId={playlistId}
                 videoId={props.videoId}
                 add={false}
                 itemId={"playlist-" + playlistId + "-video-" + props.videoId}
-                handleMethod={async () =>
-                  handleRemoveFromPlaylist(props.videoId, playlistId, myToken)
-                }
+                myToken={myToken}
               />
             );
           } else {
             const playlistName = `Add Video to ${playlist.name}`;
             return (
-              <Option
+              <Playlistoption
                 key={playlistId}
                 playlistName={playlistName}
                 playlistId={playlistId}
                 videoId={props.videoId}
                 add={true}
                 itemId={"playlist-" + playlistId + "-video-" + props.videoId}
-                handleMethod={async () =>
-                  handleAddToPlaylist(props.videoId, playlistId, myToken)
-                }
+                myToken={myToken}
               />
             );
           }
@@ -128,31 +119,25 @@ function Videooptions(props: PropOptions) {
         if (watchlaterItem.videos.includes(props.videoId)) {
           const playlistName = "Remove Video from Watchlater";
           return (
-            <Option
+            <Watchlateroption
               key={playlistId}
               playlistName={playlistName}
-              playlistId={playlistId}
               videoId={props.videoId}
               add={false}
               itemId={"watchlater-" + playlistId + "-video-" + props.videoId}
-              handleMethod={async () =>
-                handleRemoveFromWatchlater(props.videoId, myToken)
-              }
+              myToken={myToken}
             />
           );
         } else {
           const playlistName = "Add Video to Watchlater";
           return (
-            <Option
+            <Watchlateroption
               key={playlistId}
               playlistName={playlistName}
-              playlistId={playlistId}
               videoId={props.videoId}
               add={true}
               itemId={"watchlater-" + playlistId + "-video-" + props.videoId}
-              handleMethod={async () =>
-                handleAddToWatchlater(props.videoId, myToken)
-              }
+              myToken={myToken}
             />
           );
         }
