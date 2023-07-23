@@ -79,11 +79,9 @@ function Videooptions(props: PropOptions) {
                 videoId={props.videoId}
                 add={false}
                 itemId={"playlist-" + playlistId + "-video-" + props.videoId}
-                handleMethod={async () => handleRemoveFromPlaylist(
-                  props.videoId,
-                  playlistId,
-                  myToken
-                )}
+                handleMethod={async () =>
+                  handleRemoveFromPlaylist(props.videoId, playlistId, myToken)
+                }
               />
             );
           } else {
@@ -96,11 +94,9 @@ function Videooptions(props: PropOptions) {
                 videoId={props.videoId}
                 add={true}
                 itemId={"playlist-" + playlistId + "-video-" + props.videoId}
-                handleMethod={async () => handleAddToPlaylist(
-                  props.videoId,
-                  playlistId,
-                  myToken
-                )}
+                handleMethod={async () =>
+                  handleAddToPlaylist(props.videoId, playlistId, myToken)
+                }
               />
             );
           }
@@ -139,7 +135,9 @@ function Videooptions(props: PropOptions) {
               videoId={props.videoId}
               add={false}
               itemId={"watchlater-" + playlistId + "-video-" + props.videoId}
-              handleMethod={async () => handleRemoveFromWatchlater(props.videoId, myToken)}
+              handleMethod={async () =>
+                handleRemoveFromWatchlater(props.videoId, myToken)
+              }
             />
           );
         } else {
@@ -152,7 +150,9 @@ function Videooptions(props: PropOptions) {
               videoId={props.videoId}
               add={true}
               itemId={"watchlater-" + playlistId + "-video-" + props.videoId}
-              handleMethod={async () => handleAddToWatchlater(props.videoId, myToken)}
+              handleMethod={async () =>
+                handleAddToWatchlater(props.videoId, myToken)
+              }
             />
           );
         }

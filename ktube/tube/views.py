@@ -47,12 +47,13 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 from rest_framework import generics
 
+
 class WatchlaterHomeAPI(APIView):
     permission_classes = [IsAuthenticated]
-    
+
     def get(self, request):
         viewer = request.user.viewer
-        
+
         try:
             watchlater = Watchlater.objects.get(viewer=viewer)
 
@@ -61,8 +62,8 @@ class WatchlaterHomeAPI(APIView):
             watchlater.save()
 
         serializer = WatchlaterSerializer(watchlater, many=False)
-        return Response({'watchlater':serializer.data}, status=status.HTTP_200_OK)
-        
+        return Response({"watchlater": serializer.data}, status=status.HTTP_200_OK)
+
 
 class PlaylistsHomeAPI(APIView):
     permissions_classes = [IsAuthenticated]
@@ -88,8 +89,7 @@ class PlaylistsHomeAPI(APIView):
                 playlists.extend(channel_playlists)
 
         serializer = PlaylistsHomeSerializer(playlists, many=True)
-        return Response({'playlists': serializer.data}, status=status.HTTP_200_OK)
-
+        return Response({"playlists": serializer.data}, status=status.HTTP_200_OK)
 
 
 class VideosHome(generics.ListAPIView):
@@ -126,14 +126,18 @@ class ChannelProfilePicture(generics.RetrieveAPIView):
 
 #     return Response(serializer.data)
 
+
 @api_view(["POST"])
 def add_video_to_playlist_API(request):
     video_id = request.data.get("video_id")
     playlist_id = request.data.get("playlist_id")
-    
+
     if video_id is None or playlist_id is None:
-        return Response({'error': 'video_id and playlist_id are required'}, status=status.HTTP_400_BAD_REQUEST)
-    
+        return Response(
+            {"error": "video_id and playlist_id are required"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
     try:
         video = Video.objects.get(id=video_id)
         playlist = Playlist.objects.get(id=playlist_id)
@@ -141,13 +145,15 @@ def add_video_to_playlist_API(request):
         return Response(status=status.HTTP_200_OK)
     except Video.DoesNotExist:
         print("video not found")
-        return Response({'error': 'Video not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)
     except Playlist.DoesNotExist:
         print("Playlist not found")
-        return Response({'error': 'Playlist not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"error": "Playlist not found"}, status=status.HTTP_404_NOT_FOUND
+        )
     except Exception as e:
         print(e)
-        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
         print("Bad Request")
         return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -157,32 +163,41 @@ def add_video_to_playlist_API(request):
 def remove_video_from_playlist_API(request):
     video_id = request.data.get("video_id")
     playlist_id = request.data.get("playlist_id")
-    
+
     if video_id is None or playlist_id is None:
-        return Response({'error': 'video_id and playlist_id are required'}, status=status.HTTP_400_BAD_REQUEST)
-    
+        return Response(
+            {"error": "video_id and playlist_id are required"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
     try:
         video = Video.objects.get(id=video_id)
         playlist = Playlist.objects.get(id=playlist_id)
         playlist.videos.remove(video)
         return Response(status=status.HTTP_200_OK)
     except Video.DoesNotExist:
-        return Response({'error': 'Video not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)
     except Playlist.DoesNotExist:
-        return Response({'error': 'Playlist not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"error": "Playlist not found"}, status=status.HTTP_404_NOT_FOUND
+        )
     except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
-        return Response({'error': 'Some other error'},status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {"error": "Some other error"}, status=status.HTTP_400_BAD_REQUEST
+        )
 
 
 @api_view(["POST"])
 def add_video_to_watchlater_API(request):
     video_id = request.data.get("video_id")
-    
+
     if video_id is None:
-        return Response({'error': 'video_id are required'}, status=status.HTTP_400_BAD_REQUEST)
-    
+        return Response(
+            {"error": "video_id are required"}, status=status.HTTP_400_BAD_REQUEST
+        )
+
     try:
         viewer = request.user.viewer
         video = Video.objects.get(id=video_id)
@@ -190,24 +205,26 @@ def add_video_to_watchlater_API(request):
         watchlater.videos.add(video)
         return Response(status=status.HTTP_200_OK)
     except Video.DoesNotExist:
-        return Response({'error': 'Video not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)
     except Playlist.DoesNotExist:
-        return Response({'error': 'Playlist not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"error": "Playlist not found"}, status=status.HTTP_404_NOT_FOUND
+        )
     except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
         return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
 
 
 @api_view(["POST"])
 def remove_video_from_watchlater_API(request):
     video_id = request.data.get("video_id")
-    
+
     if video_id is None:
-        return Response({'error': 'video_id are required'}, status=status.HTTP_400_BAD_REQUEST)
-    
+        return Response(
+            {"error": "video_id are required"}, status=status.HTTP_400_BAD_REQUEST
+        )
+
     try:
         viewer = request.user.viewer
         video = Video.objects.get(id=video_id)
@@ -215,15 +232,15 @@ def remove_video_from_watchlater_API(request):
         watchlater.videos.remove(video)
         return Response(status=status.HTTP_200_OK)
     except Video.DoesNotExist:
-        return Response({'error': 'Video not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)
     except Playlist.DoesNotExist:
-        return Response({'error': 'Playlist not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"error": "Playlist not found"}, status=status.HTTP_404_NOT_FOUND
+        )
     except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
         return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
 
 
 ##############################################################################################
