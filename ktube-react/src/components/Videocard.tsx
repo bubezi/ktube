@@ -105,7 +105,7 @@ function Videocard (props: Prop) {
                             </div>
                         </div>
                         <div className="col-lg-2 col-12 text-right mt-2 mt-lg-0">
-                            {/* <Videooptions videoId={props.videoId} slug={props.slug}/> */}
+                            <Videooptions videoId={props.videoId} slug={props.slug}/>
                         </div>
                     </div>
                 </div>

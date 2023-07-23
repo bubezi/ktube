@@ -128,14 +128,14 @@ class ChannelProfilePicture(generics.RetrieveAPIView):
 
 @api_view(["POST"])
 def add_video_to_playlist_API(request):
-    video_id = request.POST.get("video_id")
-    playlist_id = request.POST.get("playlist_id")
+    video_id = request.data.get("video_id")
+    playlist_id = request.data.get("playlist_id")
     
     if video_id is None or playlist_id is None:
         return Response({'error': 'video_id and playlist_id are required'}, status=status.HTTP_400_BAD_REQUEST)
     
     try:
-        video = Video.objects.get(slug=video_id)
+        video = Video.objects.get(id=video_id)
         playlist = Playlist.objects.get(id=playlist_id)
         playlist.videos.add(video)
         return Response(status=status.HTTP_200_OK)
@@ -155,14 +155,14 @@ def add_video_to_playlist_API(request):
 
 @api_view(["POST"])
 def remove_video_from_playlist_API(request):
-    video_id = request.POST.get("video_id")
-    playlist_id = request.POST.get("playlist_id")
+    video_id = request.data.get("video_id")
+    playlist_id = request.data.get("playlist_id")
     
     if video_id is None or playlist_id is None:
         return Response({'error': 'video_id and playlist_id are required'}, status=status.HTTP_400_BAD_REQUEST)
     
     try:
-        video = Video.objects.get(slug=video_id)
+        video = Video.objects.get(id=video_id)
         playlist = Playlist.objects.get(id=playlist_id)
         playlist.videos.remove(video)
         return Response(status=status.HTTP_200_OK)
@@ -178,14 +178,14 @@ def remove_video_from_playlist_API(request):
 
 @api_view(["POST"])
 def add_video_to_watchlater_API(request):
-    video_id = request.POST.get("video_id")
+    video_id = request.data.get("video_id")
     
     if video_id is None:
         return Response({'error': 'video_id are required'}, status=status.HTTP_400_BAD_REQUEST)
     
     try:
         viewer = request.user.viewer
-        video = Video.objects.get(slug=video_id)
+        video = Video.objects.get(id=video_id)
         watchlater = Watchlater.objects.get(viewer=viewer)
         watchlater.videos.add(video)
         return Response(status=status.HTTP_200_OK)
@@ -203,14 +203,14 @@ def add_video_to_watchlater_API(request):
 
 @api_view(["POST"])
 def remove_video_from_watchlater_API(request):
-    video_id = request.POST.get("video_id")
+    video_id = request.data.get("video_id")
     
     if video_id is None:
         return Response({'error': 'video_id are required'}, status=status.HTTP_400_BAD_REQUEST)
     
     try:
         viewer = request.user.viewer
-        video = Video.objects.get(slug=video_id)
+        video = Video.objects.get(id=video_id)
         watchlater = Watchlater.objects.get(viewer=viewer)
         watchlater.videos.remove(video)
         return Response(status=status.HTTP_200_OK)
