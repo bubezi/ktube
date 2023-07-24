@@ -111,6 +111,8 @@ function Watchpage() {
             views={video.views}
             likes={video.likes}
             dislikes={video.dislikes}
+            description={video.description}
+            upload_time={video.upload_time}
           />
         </div>
         <div className="col-lg-3"></div>

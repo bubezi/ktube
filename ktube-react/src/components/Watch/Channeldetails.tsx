@@ -1,6 +1,8 @@
 import imagePlaceholder from '../../assets/images/placeholder.png'
 import Subscribe from '../Subscribe';
 import Viewsandoptions from './Viewsandoptions';
+import Likeanddislike from "./Likeanddislike";
+import Description from './Description';
 
 
 interface Prop {
@@ -15,6 +17,10 @@ interface Prop {
     channelUserId: number,
     videoId: number,
     views: number,
+    likes: number,
+    dislikes: number,
+    description: string,
+    upload_time: string,
 }
 
 export default function Channeldetails (props: Prop) {
@@ -62,10 +68,13 @@ export default function Channeldetails (props: Prop) {
                             <h5 style={publicityStyle}>-</h5>
                             <Subscribercount/>
                         </div>
-                        <Subscribe subscribers={props.subscribers} channelId={props.channelId} channelUserId={props.channelUserId}/>
-                        <Viewsandoptions videoId={props.videoId} views={props.views}/>
                     </div>
                 </div>
+                <Subscribe subscribers={props.subscribers} channelId={props.channelId} channelUserId={props.channelUserId}/>
+                <Viewsandoptions videoId={props.videoId} views={props.views}/>
+                <Likeanddislike videoId={props.videoId} likes={props.likes} dislikes={props.dislikes}/>
+                <Description description={props.description} upload_time={props.upload_time}/>
+                <br/>
             </div>
         </div>
     </>
