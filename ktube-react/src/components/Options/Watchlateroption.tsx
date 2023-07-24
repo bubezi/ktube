@@ -1,7 +1,7 @@
 import React from "react";
 import Dropdown from "react-bootstrap/Dropdown";
-import { optionsStyle } from "./styles/Styles";
-import { handleAddToWatchlater, handleRemoveFromWatchlater } from "../functions/fun";
+import { optionsStyle } from "../../assets/styles/Styles";
+import { handleAddToWatchlater, handleRemoveFromWatchlater } from "../../functions/fun";
 
 interface PropOption {
   prompt: string;
@@ -16,16 +16,16 @@ function Watchlateroption(props: PropOption) {
   let handleClick = () => {};
 
   if (addTo) {
-    handleClick = async () => {
-      await handleAddToWatchlater(props.videoId, props.myToken);
+    handleClick = () => {
+      handleAddToWatchlater(props.videoId, props.myToken);
       setAddTo(false);
-      setPrompt("Video Added");
+      setPrompt("Video Added to Watchlater");
     };
   } else {
-    handleClick = async () => {
-      await handleRemoveFromWatchlater(props.videoId, props.myToken);
+    handleClick = () => {
+      handleRemoveFromWatchlater(props.videoId, props.myToken);
       setAddTo(true);
-      setPrompt("Video Removed");
+      setPrompt("Video Removed click to Add");
     };
   }
   return (

@@ -102,29 +102,91 @@ class ChannelProfilePicture(generics.RetrieveAPIView):
     serializer_class = ChannelProfilePictureSerializer
 
 
-# @api_view(["GET"])
-# def videos_home(request):
-#     if request.method == "GET":
-#         data = Video.objects.filter(private=False, unlisted=False)
+@api_view(["GET"])
+def watchAPI(request, slug):
+    try:
+        video = Video.objects.get(slug=slug)  # type: ignore
 
-#         serializer = VideosHomeSerializer(data, context={"request": request}, many=True)
+    except Video.DoesNotExist:
+        return Response(
+            {"error": "Video Does Not Exist! SORRYYY"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+    
+    if video.private:
+        if request.user.is_authenticated:
+            try:
+                viewer = request.user.viewer
+                if not video.channel.user == viewer:
+                    return Response(
+                        {"error": "Video is private"},
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
+                    
+            except:
+                return Response(
+                    {"error": "Video is private"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+        else:
+            return Response(
+                {"error": "Video is private"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+    
+    
+# from .serializers import VideoSerializer
+# from rest_framework.exceptions import PermissionDenied
+# from .models import Viewer
 
+# class VideoView(APIView):
+#     def get(self, request, pk, format=None):
+#         try:
+#             video = Video.objects.get(slug=pk)
+#         except Video.DoesNotExist:
+#             return Response({
+#                 'error': 'Video Not Found!'
+#             }, status=status.HTTP_404_NOT_FOUND)
+
+#         # If the video is private, make sure the viewer is the owner
+#         if video.private:
+#             if request.user.is_authenticated:
+#                 try:
+#                     viewer = request.user.viewer
+#                     if not video.channel.user == viewer:  
+#                         raise PermissionDenied('You are not the owner of this video')
+#                 except Viewer.DoesNotExist:  
+#                     raise PermissionDenied('You are not the owner of this video')
+
+#         # Handle monetisation
+#         if video.price > 0:
+#             if request.user.is_authenticated:
+#                 viewer = request.user.viewer
+#                 if not video.channel.user == viewer:
+#                      if not video.paid_viewers.contains(viewer):
+#                         if viewer.spend(video.price):
+#                             video_owner_cut = PERCENTAGE_OF_REVENUE * Decimal(video.price)
+#                             company_cut = Decimal(video.price) - video_owner_cut
+#                             video.channel.user.wallet += float(video_owner_cut)
+#                             main_viewer = Viewer.objects.get(username=COMPANY_USERNAME)
+#                             main_viewer.wallet += float(company_cut)
+#                             video.paid_viewers.add(viewer)
+#                             viewer.save()
+#                             main_viewer.save()
+#                             video.channel.user.save()
+#                             video.save()
+#                         else:
+#                             return Response({
+#                                 'error': 'Please deposit money to watch this video'
+#                             }, status=status.HTTP_403_FORBIDDEN)
+#             else:
+#                 raise PermissionDenied('You are not logged in')
+
+#         # Serialize video
+#         serializer = VideoSerializer(video)
 #         return Response(serializer.data)
 
-#     elif request.method == "POST":
-#         serializer = VideoSerializer(data=request.data)
-#         pass
-
-
-# @api_view(["GET"])
-# def channel_profile_picture(request, id):
-#     data = Channel.objects.get(id=id)
-
-#     serializer = ChannelProfilePictureSerializer(
-#         data, context={"request": request}, many=False
-#     )
-
-#     return Response(serializer.data)
+                    
 
 
 @api_view(["POST"])
@@ -144,18 +206,14 @@ def add_video_to_playlist_API(request):
         playlist.videos.add(video)
         return Response(status=status.HTTP_200_OK)
     except Video.DoesNotExist:
-        print("video not found")
         return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)
     except Playlist.DoesNotExist:
-        print("Playlist not found")
         return Response(
             {"error": "Playlist not found"}, status=status.HTTP_404_NOT_FOUND
         )
     except Exception as e:
-        print(e)
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
-        print("Bad Request")
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 

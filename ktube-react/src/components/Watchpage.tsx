@@ -1,103 +1,120 @@
+import axios from "axios";
 import React from "react";
-import { useParams } from "react-router-dom"
+import { useParams } from "react-router-dom";
+import { API_URL } from "../constants";
+import Videoview from "./Watch/Videoview";
+import Watchpagecontainer from "./Watch/Watchpagecontainer";
 
-interface Prop {
-    title: string,
-    channel: string,
-    subscriber_count: number
+interface Video {
+  id: number;
+  title: string;
+  video: string;
+  thumbnail: string;
+  description: string;
+  upload_time: string;
+  channel: number;
+  private: boolean;
+  unlisted: boolean;
+  likes: number;
+  dislikes: number;
+  views: number;
+  slug: string;
+  path: string;
+  price: number;
 }
 
-function Watchpage (props: Prop) {
-    const { slug } = useParams();
+interface Channel {
+    id: number;
+    name: string;
+    profile_picture: string;
+    subscriber_count: number;
+    private: boolean;
+    unlisted: boolean;
+    subscribers: number[];
+    userId: number;
+}
 
-    React.useEffect(() => {
-        // Fetch data from Django backend using `slug`
-      }, [slug]);
+function Watchpage() {
+  const videoInit = {
+    id: 0,
+    title: "",
+    video: "",
+    thumbnail: "",
+    description: "",
+    upload_time: "",
+    channel: 0,
+    private: true,
+    unlisted: true,
+    likes: 0,
+    dislikes: 0,
+    views: 0,
+    slug: "",
+    path: "",
+    price: 0,
+  };
+  const channelInit = { id:0, name: "", profile_picture: "", subscriber_count: 0, private: true, unlisted:true, subscribers:[0], userId:0};
 
-    const mainRowStyle = {
-        alignItems: "flex-start"
-    }
-    const mainColStyle = {
-        padding: 0,
-    }
+  const [channel, setChannel] = React.useState<Channel>(channelInit);
+  const [video, setVideo] = React.useState<Video>(videoInit);
+  const { slug } = useParams();
 
-    const containerStyle = {
-        background: "linear-gradient(Grey, whitesmoke)!important"
-    }
+  React.useEffect(() => {
+    // Fetch data from Django backend using `slug`
+    axios({
+      method: "get",
+      url: API_URL + "watch/v/" + slug,
+      // headers: {
+      //   Authorization: `Token ${myToken}`,
+      // },
+    })
+      .then((res) => {
+        setVideo(res.data.video);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [slug]);
 
-    const titleStyle = {
-        fontSize: "25px"
-    }
+  React.useEffect(() => {
+    axios({
+      method: "get",
+      url: API_URL + "channel/" + video.channel,
+      // headers: {
+      //   Authorization: `Token ${myToken}`,
+      // },
+    })
+      .then((res) => {
+        setChannel(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [video]);
 
-    const publicityStyle = {
-        paddingLeft: "10px"
-    }
+  return (
+    <>
+      <div className="row" style={mainRowStyle}>
+        <div className="col-lg-9" style={mainColStyle}>
+          <Videoview video={video.video} />
 
-    const dpStyle = {
-        width: "30px",
-        height: "30px"
-    }
-
-    const channelStyle = {
-        fontSize: "20px"
-    }
-
-
-    return (
-        <>
-            <div className="row" style={mainRowStyle}>
-                <div className="col-lg-9" style={mainColStyle}>
-                    <video 
-                    autoPlay
-                    preload="auto" 
-                    controls>
-                    <source src="http://localhost/media/Rust_Absolutely_Positively_Sucks.mp4" type="video/mp4"/>
-                    {/* <source src="http://localhost/media/Rust_Absolutely_Positively_Sucks.mp4" type="video/x-matroska"/>
-                    <source src="http://localhost/media/Rust_Absolutely_Positively_Sucks.mp4" type="video/webm"/> */}
-                    Your browser does not support the video
-                    </video>
-
-                    <div className="container" style={containerStyle}>
-                        <div className="row box-element">
-                            <div className="col-lg-12">  
-                                <div className="row">
-                                    <div className="col-lg-12">
-                                        <div className="row">
-                                            <h6 style={titleStyle}><strong>{props.title}</strong></h6>
-                                            {/* {% if video.private %} */}
-                                            {/* <h6 style={publicityStyle}>(private)</h6> */}
-                                            {/* {% elif video.unlisted %} */}
-                                            <h6 style={publicityStyle}>(unlisted)</h6>
-                                            {/* {% endif %} */}
-
-                                        </div>
-                                        <div className="row">
-                                            {/* {% if video.channel.profile_picture %} */}
-                                            <img src="#" className="channel-icon" alt="Channel Profile picture" style={dpStyle}/>
-                                            {/* {% else %} */}
-                                            <img src="#" className="channel-icon" alt="Channel Profile picture" style={dpStyle}/>
-                                            {/* {% endif %} */}
-                                            <a href="#">
-                                                <h6 style={channelStyle}><strong>{props.channel}</strong></h6>
-                                            </a>
-                                            <h5 style={publicityStyle}>-</h5>
-                                            {/* {% if props.subscriber_count  == 1 %}<h5 id='subscriber-count' style={publicityStyle}>{props.subscriber_count } Subscriber</h5>{% else %} */}
-                                            <h5 id='subscriber-count' style={publicityStyle}>{props.subscriber_count } Subscribers</h5>
-                                            {/* {% endif %} */}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-                <div className="col-lg-3"></div>
-            </div>
-        </>
-    );
+          <Watchpagecontainer
+            title={video.title}
+            channel={channel.name}
+            subscriber_count={channel.subscriber_count}
+            private={channel.private}
+            unlisted={channel.unlisted}
+            profile_picture={channel.profile_picture}
+            channelId={channel.id}
+            subscribers={channel.subscribers}
+            channelUserId={channel.userId}
+            videoId={video.id}
+            views={video.views}
+          />
+        </div>
+        <div className="col-lg-3"></div>
+      </div>
+    </>
+  );
 }
 
 export default Watchpage;

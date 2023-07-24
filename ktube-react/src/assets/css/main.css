@@ -196,6 +196,15 @@ a:hover {
     margin-right: 10px;
 }
 
+#video-views-count #likes-count #dislikes-count {
+	font-size: 18px; 
+	float: left;
+}
+
+#dislikes-count {
+	margin-left:5px;
+}
+
 .dropdown .btn:focus,
 .dropdown .btn:active,
 .dropdown .btn:not(:disabled):not(.disabled):active:focus,

@@ -2,15 +2,14 @@ import "bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 
+import { elipsisStyle, toggleStyle } from "../../assets/styles/Styles";
+
 import React from "react";
 import axios from "axios";
-import { API_URL } from "../constants";
 import Dropdown from "react-bootstrap/Dropdown";
 import Playlistoption from "./Playlistoption";
-
-
-import { toggleStyle, elipsisStyle } from "./styles/Styles";
 import Watchlateroption from "./Watchlateroption";
+import { API_URL } from "../../constants";
 
 interface Playlist {
   id: number;
@@ -25,7 +24,6 @@ interface Watchlater {
 
 interface PropOptions {
   videoId: number;
-  slug: string;
 }
 
 function Videooptions(props: PropOptions) {
@@ -65,11 +63,12 @@ function Videooptions(props: PropOptions) {
           const playlistId = Number(playlist.id);
 
           if (playlist.videos.includes(props.videoId)) {
-            const playlistName = `Remove Video from ${playlist.name}`;
+            const prompt = `Remove Video from ${playlist.name}`;
             return (
               <Playlistoption
                 key={playlistId}
-                prompt={playlistName}
+                name={playlist.name}
+                prompt={prompt}
                 playlistId={playlistId}
                 videoId={props.videoId}
                 add={false}
@@ -78,11 +77,12 @@ function Videooptions(props: PropOptions) {
               />
             );
           } else {
-            const playlistName = `Add Video to ${playlist.name}`;
+            const prompt = `Add Video to ${playlist.name}`;
             return (
               <Playlistoption
                 key={playlistId}
-                prompt={playlistName}
+                name={playlist.name}
+                prompt={prompt}
                 playlistId={playlistId}
                 videoId={props.videoId}
                 add={true}

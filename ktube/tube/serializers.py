@@ -33,13 +33,13 @@ class VideosHomeSerializer(serializers.ModelSerializer):
 class ChannelProfilePictureSerializer(serializers.ModelSerializer):
     class Meta:
         model = Channel
-        fields = ('id', 'name', 'profile_picture')
+        fields = ('id', 'name', 'profile_picture', )
 
 
 class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
-        fields = ('id', 'title', 'video', 'thumbnail', 'description', 'upload_time', 'channel', 'private', 'unlisted', 'likes', 'dislikes', 'views', 'slug', 'path', 'price', 'paid_viewers')
+        fields = ('id', 'title', 'video', 'thumbnail', 'description', 'upload_time', 'channel', 'private', 'unlisted', 'likes', 'dislikes', 'views', 'slug', 'path', 'price')
         
         
 class CommentSerializer(serializers.ModelSerializer):

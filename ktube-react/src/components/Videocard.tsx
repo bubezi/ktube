@@ -4,7 +4,7 @@ import axios from 'axios'
 import { API_URL } from '../constants'
 import React from 'react'
 
-import Videooptions from './Videooptions'
+import Videooptions from './Options/Videooptions'
 
 interface Prop {
     videoId: number,
@@ -105,7 +105,7 @@ function Videocard (props: Prop) {
                             </div>
                         </div>
                         <div className="col-lg-2 col-12 text-right mt-2 mt-lg-0">
-                            <Videooptions videoId={props.videoId} slug={props.slug}/>
+                            <Videooptions videoId={props.videoId}/>
                         </div>
                     </div>
                 </div>
