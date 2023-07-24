@@ -53,3 +53,8 @@ const marginLeft40 = {
 const marginLeft0 = {
     marginLeft: '0px',
 }
+
+const commentButton = {
+    paddingLeft:'20px',
+    paddingTop:'10px',
+}

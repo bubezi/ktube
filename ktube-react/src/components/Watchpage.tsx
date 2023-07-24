@@ -23,7 +23,7 @@ interface Video {
   price: number;
 }
 
-interface Channel {
+export interface Channel {
     id: number;
     name: string;
     profile_picture: string;
@@ -33,6 +33,8 @@ interface Channel {
     subscribers: number[];
     userId: number;
 }
+
+export const channelInit = { id:0, name: "", profile_picture: "", subscriber_count: 0, private: true, unlisted:true, subscribers:[0], userId:0};
 
 function Watchpage() {
   const videoInit = {
@@ -52,7 +54,6 @@ function Watchpage() {
     path: "",
     price: 0,
   };
-  const channelInit = { id:0, name: "", profile_picture: "", subscriber_count: 0, private: true, unlisted:true, subscribers:[0], userId:0};
 
   const [channel, setChannel] = React.useState<Channel>(channelInit);
   const [video, setVideo] = React.useState<Video>(videoInit);
