@@ -1,4 +1,5 @@
 import Channeldetails from "./Channeldetails";
+import Likeanddislike from "./Likeanddislike";
 
 interface Prop {
   title: string;
@@ -12,6 +13,8 @@ interface Prop {
   channelUserId: number,
   videoId: number,
   views: number,
+  likes: number,
+  dislikes: number,
 }
 
 export default function Watchpagecontainer(props: Prop) {
@@ -32,6 +35,7 @@ export default function Watchpagecontainer(props: Prop) {
           views={props.views}
         />
       </div>
+      <Likeanddislike videoId={props.videoId} likes={props.likes} dislikes={props.dislikes}/>
     </>
   );
 }

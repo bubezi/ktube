@@ -109,6 +109,8 @@ function Watchpage() {
             channelUserId={channel.userId}
             videoId={video.id}
             views={video.views}
+            likes={video.likes}
+            dislikes={video.dislikes}
           />
         </div>
         <div className="col-lg-3"></div>

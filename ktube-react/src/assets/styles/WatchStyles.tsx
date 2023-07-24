@@ -49,3 +49,7 @@ const displayNone = {
 const marginLeft40 = {
     marginLeft: '40px',
 }
+
+const marginLeft0 = {
+    marginLeft: '0px',
+}
