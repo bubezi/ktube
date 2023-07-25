@@ -70,7 +70,7 @@ function Watchpage() {
       // },
     })
       .then((res) => {
-        setVideo(res.data.video);
+        setVideo(res.data);
       })
       .catch((error) => {
         console.log(error);

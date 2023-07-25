@@ -183,8 +183,20 @@ class watch_video_API(APIView):
         # Serialize video
         serializer = VideoSerializer(video)
         return Response(serializer.data)
+    
 
-                    
+class channel_API():
+    def get(self, request, pk, format=None):
+        try:
+            channel = Channel.objects.get(id=pk)
+        except Channel.DoesNotExist:
+            return Response({
+                'error': 'Channel Not Found!'
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = ChannelSerializer(channel)
+        return Response(serializer.data)
+                       
 
 
 @api_view(["POST"])
