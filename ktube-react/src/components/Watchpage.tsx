@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { API_URL } from "../constants";
 import Videoview from "./Watch/Videoview";
 import Watchpagecontainer from "./Watch/Watchpagecontainer";
+import Morevideos from "./Watch/Morevideos";
 
 interface Video {
   id: number;
@@ -116,7 +117,9 @@ function Watchpage() {
             upload_time={video.upload_time}
           />
         </div>
-        <div className="col-lg-3"></div>
+        <div className="col-lg-3">
+          <Morevideos videoId={video.id}/>
+        </div>
       </div>
     </>
   );

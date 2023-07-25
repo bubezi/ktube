@@ -3,7 +3,7 @@ import React from "react";
 import axios from 'axios'
 import { API_URL } from "../constants";
 
-interface VideoState {
+export interface VideoType {
     id : number;
     title : string;
     thumbnail : string;
@@ -14,9 +14,10 @@ interface VideoState {
     price : number;
 }
 
+export const videoInit: Array<VideoType> = [{id:0, title:'', thumbnail:'', channel:0, views:0, slug:'', path:'', price:0.0}]
+
 function Videos() {
-  const videoState: Array<VideoState> = [{id:0, title:'', thumbnail:'', channel:0, views:0, slug:'', path:'', price:0.0}]
-  const [videos, setVideos] = React.useState<Array<VideoState>>(videoState);
+  const [videos, setVideos] = React.useState<Array<VideoType>>(videoInit);
 
   React.useEffect(()=>{
     axios.get(API_URL+"homevideos")
@@ -40,7 +41,9 @@ function Videos() {
               channelId={videoChannelId} 
               slug={video.slug}
               price={video.price} 
-              views={video.views}/>
+              views={video.views}
+              colSize="col-lg-4"
+              />
     );
 }})
   

@@ -14,6 +14,7 @@ interface Prop {
     slug: string,
     price: number,
     views: number,
+    colSize: string,
 }
 
 interface ChannelDetailsState {
@@ -71,23 +72,23 @@ function Videocard (props: Prop) {
     
     return (
         <>
-            <div className="col-lg-4">
-                <a href="#">
+            <div className={props.colSize}>
+                <a href={"/watch/" + props.slug}>
                     <img src={props.thumbnail} alt="thumbnail" className="thumbnail" />
                 </a>
                 <div className="box-element product">
                     <div className="row">
-                        <a href="#">
+                        <a href={"/watch/" + props.slug}>
                             <h6>{props.title}</h6>
                         </a>
                     </div>
                     <div className="row">
                         <div className="col-lg-6">
                             <div className="row">
-                                <a href="#">
+                                <a href={"/channel/" + props.channelId}>
                                     <Thumbnail/>
                                 </a>
-                                <a href="#">
+                                <a href={"/channel/" + props.channelId}>
                                     <h6>{videoChannelName}</h6>
                                 </a>
                             </div>
