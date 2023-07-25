@@ -102,89 +102,87 @@ class ChannelProfilePicture(generics.RetrieveAPIView):
     serializer_class = ChannelProfilePictureSerializer
 
 
-@api_view(["GET"])
-def watchAPI(request, slug):
-    try:
-        video = Video.objects.get(slug=slug)  # type: ignore
+# @api_view(["GET"])
+# def watch_video_API(request, slug):
+#     try:
+#         video = Video.objects.get(slug=slug)  # type: ignore
 
-    except Video.DoesNotExist:
-        return Response(
-            {"error": "Video Does Not Exist! SORRYYY"},
-            status=status.HTTP_400_BAD_REQUEST,
-        )
+#     except Video.DoesNotExist:
+#         return Response(
+#             {"error": "Video Does Not Exist! SORRYYY"},
+#             status=status.HTTP_400_BAD_REQUEST,
+#         )
     
-    if video.private:
-        if request.user.is_authenticated:
-            try:
-                viewer = request.user.viewer
-                if not video.channel.user == viewer:
-                    return Response(
-                        {"error": "Video is private"},
-                        status=status.HTTP_400_BAD_REQUEST,
-                    )
-                    
-            except:
-                return Response(
-                    {"error": "Video is private"},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
-        else:
-            return Response(
-                {"error": "Video is private"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-    
-    
-# from .serializers import VideoSerializer
-# from rest_framework.exceptions import PermissionDenied
-# from .models import Viewer
-
-# class VideoView(APIView):
-#     def get(self, request, pk, format=None):
-#         try:
-#             video = Video.objects.get(slug=pk)
-#         except Video.DoesNotExist:
-#             return Response({
-#                 'error': 'Video Not Found!'
-#             }, status=status.HTTP_404_NOT_FOUND)
-
-#         # If the video is private, make sure the viewer is the owner
-#         if video.private:
-#             if request.user.is_authenticated:
-#                 try:
-#                     viewer = request.user.viewer
-#                     if not video.channel.user == viewer:  
-#                         raise PermissionDenied('You are not the owner of this video')
-#                 except Viewer.DoesNotExist:  
-#                     raise PermissionDenied('You are not the owner of this video')
-
-#         # Handle monetisation
-#         if video.price > 0:
-#             if request.user.is_authenticated:
+#     if video.private:
+#         if request.user.is_authenticated:
+#             try:
 #                 viewer = request.user.viewer
 #                 if not video.channel.user == viewer:
-#                      if not video.paid_viewers.contains(viewer):
-#                         if viewer.spend(video.price):
-#                             video_owner_cut = PERCENTAGE_OF_REVENUE * Decimal(video.price)
-#                             company_cut = Decimal(video.price) - video_owner_cut
-#                             video.channel.user.wallet += float(video_owner_cut)
-#                             main_viewer = Viewer.objects.get(username=COMPANY_USERNAME)
-#                             main_viewer.wallet += float(company_cut)
-#                             video.paid_viewers.add(viewer)
-#                             viewer.save()
-#                             main_viewer.save()
-#                             video.channel.user.save()
-#                             video.save()
-#                         else:
-#                             return Response({
-#                                 'error': 'Please deposit money to watch this video'
-#                             }, status=status.HTTP_403_FORBIDDEN)
-#             else:
-#                 raise PermissionDenied('You are not logged in')
+#                     return Response(
+#                         {"error": "Video is private"},
+#                         status=status.HTTP_400_BAD_REQUEST,
+#                     )
+                    
+#             except:
+#                 return Response(
+#                     {"error": "Video is private"},
+#                     status=status.HTTP_400_BAD_REQUEST,
+#                 )
+#         else:
+#             return Response(
+#                 {"error": "Video is private"},
+#                 status=status.HTTP_400_BAD_REQUEST,
+#             )
+    
+    
+from rest_framework.exceptions import PermissionDenied
 
-#         # Serialize video
-#         serializer = VideoSerializer(video)
-#         return Response(serializer.data)
+class watch_video_API(APIView):
+    def get(self, request, pk, format=None):
+        try:
+            video = Video.objects.get(slug=pk)
+        except Video.DoesNotExist:
+            return Response({
+                'error': 'Video Not Found!'
+            }, status=status.HTTP_404_NOT_FOUND)
+
+        # If the video is private, make sure the viewer is the owner
+        if video.private:
+            if request.user.is_authenticated:
+                try:
+                    viewer = request.user.viewer
+                    if not video.channel.user == viewer:  
+                        raise PermissionDenied('You are not the owner of this video')
+                except Viewer.DoesNotExist:  
+                    raise PermissionDenied('You are not the owner of this video')
+
+        # Handle monetisation
+        if video.price > 0:
+            if request.user.is_authenticated:
+                viewer = request.user.viewer
+                if not video.channel.user == viewer:
+                     if not video.paid_viewers.contains(viewer):
+                        if viewer.spend(video.price):
+                            video_owner_cut = PERCENTAGE_OF_REVENUE * Decimal(video.price)
+                            company_cut = Decimal(video.price) - video_owner_cut
+                            video.channel.user.wallet += float(video_owner_cut)
+                            main_viewer = Viewer.objects.get(username=COMPANY_USERNAME)
+                            main_viewer.wallet += float(company_cut)
+                            video.paid_viewers.add(viewer)
+                            viewer.save()
+                            main_viewer.save()
+                            video.channel.user.save()
+                            video.save()
+                        else:
+                            return Response({
+                                'error': 'Please deposit money to watch this video'
+                            }, status=status.HTTP_403_FORBIDDEN)
+            else:
+                raise PermissionDenied('You are not logged in')
+
+        # Serialize video
+        serializer = VideoSerializer(video)
+        return Response(serializer.data)
 
                     
 
