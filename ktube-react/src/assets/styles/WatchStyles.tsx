@@ -23,6 +23,11 @@ const dpStyle = {
     height: "30px"
 }
 
+const commentDpStyle = {
+    width: "30px",
+    height: "30px"
+}
+
 const channelStyle = {
     fontSize: "20px"
 }
@@ -57,4 +62,13 @@ const marginLeft0 = {
 const commentButton = {
     paddingLeft:'20px',
     paddingTop:'10px',
+}
+
+const colorRed = {
+    color: 'red',
+}
+
+const commentHeading = {
+    marginTop: "0", 
+    marginBottom: "0 !important",
 }

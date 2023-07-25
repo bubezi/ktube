@@ -205,6 +205,13 @@ a:hover {
 	margin-left:5px;
 }
 
+#comment-section {
+	max-height: 1000px;
+	overflow-y: scroll;
+	scroll-behavior: auto;
+	overflow-x: hidden;
+}
+
 .dropdown .btn:focus,
 .dropdown .btn:active,
 .dropdown .btn:not(:disabled):not(.disabled):active:focus,

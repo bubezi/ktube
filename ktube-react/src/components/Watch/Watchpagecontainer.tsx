@@ -40,7 +40,7 @@ export default function Watchpagecontainer(props: Prop) {
           description={props.description}
           upload_time={props.upload_time}
         />
-        <Comments/>
+        <Comments videoId={props.videoId}/>
       </div>
     </>
   );

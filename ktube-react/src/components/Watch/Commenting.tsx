@@ -1,9 +1,9 @@
 import React from "react";
-import { Channel } from "../Watchpage";
-import { channelInit } from "../Watchpage";
 import axios from "axios";
 import { API_URL } from "../../constants";
 import { useViewerContext } from "../../providers/ViewerProvider";
+import { Channel } from "../Watchpage";
+import { channelInit } from "../Watchpage";
 
 const channelsInit = [channelInit]
 
