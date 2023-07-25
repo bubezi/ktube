@@ -185,7 +185,7 @@ class watch_video_API(APIView):
         return Response(serializer.data)
     
 
-class channel_API():
+class channel_API(APIView):
     def get(self, request, pk, format=None):
         try:
             channel = Channel.objects.get(id=pk)
