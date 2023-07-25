@@ -1,6 +1,8 @@
+import Dropdown from "react-bootstrap/Dropdown";
 import imagePlaceholder from "../../assets/images/placeholder.png";
 import { Channel } from "../Watchpage";
 import { Comment } from "./Comments";
+import { toggleStyle } from "../../assets/styles/Styles";
 
 interface Props {
   comment: Comment;
@@ -48,29 +50,23 @@ export default function Commentsection(props: Props) {
           <div className="row">
             <div className="video-options">
               <div className="dropdown">
-                <button
-                  className="btn"
-                  type="button"
-                  id="dropdownMenuButton1"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="true"
-                >
-                  <i className="fa-solid fa-ellipsis-vertical"></i>
-                </button>
-
-                <div
-                  className="dropdown-menu dropdown-menu-right"
-                  aria-labelledby="dropdownMenuButton1"
-                >
-                  <a
+                <Dropdown>
+                    <Dropdown.Toggle
+                    id="dropdownMenuButton1"
+                    className="custom-dropdown"
+                    style={toggleStyle}
+                    aria-haspopup="true"
+                    aria-expanded="true">
+                    <i className="fa-solid fa-ellipsis-vertical"></i>
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                        <Dropdown.Item
                     className="dropdown-item"
                     style={colorRed}
                     // onClick={"event.preventDefault(); deleteComment(event, '{{comment.id}}');"}
-                  >
-                    Delete Comment
-                  </a>
-                </div>
+                    >Delete Comment</Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
               </div>
             </div>
           </div>
