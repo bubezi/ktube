@@ -220,6 +220,13 @@ class Get_Channels_API(APIView):
         
         serializer = ChannelSerializer(my_channels, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+class Is_owner_API(APIView):
+    permissions_classes = [IsAuthenticated]
+    def get(self, request, format=None):
+        viewer_signed
+    
 
 
 @api_view(["POST"])
