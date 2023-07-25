@@ -26,7 +26,7 @@ export default function Commenting () {
           },
         })
           .then((res) => {
-            setChannels(res.data.channels);
+            setChannels(res.data);
             if(channels.length>1){setManyChannels(true)};})
           .catch((error) => {
             console.log(error);

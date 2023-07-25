@@ -118,8 +118,10 @@ urlpatterns += [
     path('api/add_video_to_watchlater',views_tube.add_video_to_watchlater_API),
     path('api/remove_video_from_watchlater',views_tube.remove_video_from_watchlater_API),
     
-    path('api/watch/v/<str:slug>', views_tube.watch_video_API),
-    path('api/channel/<str:id>', views_tube.channel_API),
+    path('api/watch/v/<str:slug>', views_tube.Watch_video_API),
+    path('api/channel/<str:id>', views_tube.Channel_API),
+    
+    path('api/getChannels/<str:id>', views_tube.Get_Channels_API),
 ]
 
 

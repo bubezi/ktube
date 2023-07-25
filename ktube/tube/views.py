@@ -137,7 +137,7 @@ class ChannelProfilePicture(generics.RetrieveAPIView):
     
 from rest_framework.exceptions import PermissionDenied
 
-class watch_video_API(APIView):
+class Watch_video_API(APIView):
     def get(self, request, pk, format=None):
         try:
             video = Video.objects.get(slug=pk)
@@ -182,21 +182,44 @@ class watch_video_API(APIView):
 
         # Serialize video
         serializer = VideoSerializer(video)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
 
-class channel_API(APIView):
-    def get(self, request, pk, format=None):
+class Channel_API(APIView):
+    def get(self, request, id, format=None):
         try:
-            channel = Channel.objects.get(id=pk)
+            channel = Channel.objects.get(id=id)
         except Channel.DoesNotExist:
             return Response({
                 'error': 'Channel Not Found!'
             }, status=status.HTTP_404_NOT_FOUND)
         
         serializer = ChannelSerializer(channel)
-        return Response(serializer.data)
-                       
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    
+class Get_Channels_API(APIView):
+    permissions_classes = [IsAuthenticated]
+    
+    def get(self, request, id, format=None):
+        viewer = request.user.viewer
+        
+        channels = []
+
+        try:
+            nav_channel = Channel.objects.get(user=viewer)
+            channels = nav_channel
+
+        except Channel.DoesNotExist:
+            return Response({
+                'error': 'Video Not Found!'
+            }, status=status.HTTP_404_NOT_FOUND)
+        except:
+            my_channels = Channel.objects.filter(user=viewer)  
+            channels.extend(my_channels)
+        
+        serializer = ChannelSerializer(my_channels, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(["POST"])
