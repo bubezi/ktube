@@ -202,7 +202,7 @@ class Get_Channels_API(APIView):
     permissions_classes = [IsAuthenticated]
     
     def get(self, request, id, format=None):
-        viewer = request.user.viewer
+        viewer = Viewer.objects.get(id=id)
         
         channels = []
 
@@ -212,7 +212,7 @@ class Get_Channels_API(APIView):
 
         except Channel.DoesNotExist:
             return Response({
-                'error': 'Video Not Found!'
+                'error': 'Channel Not Found!'
             }, status=status.HTTP_404_NOT_FOUND)
         except:
             my_channels = Channel.objects.filter(user=viewer)  
