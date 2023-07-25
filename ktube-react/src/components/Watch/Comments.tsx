@@ -38,13 +38,28 @@ const commentInit = [
 ];
 
 export default function Comments(props: Props) {
-  const [manyChannels, setManyChannels] = React.useState<boolean>(false);
-  const [channels, setChannels] = React.useState<Array<Channel>>(channelsInit);
-  const [comments, setComments] = React.useState<Array<Comment>>(commentInit);
-  const [myToken] = React.useState(() => {
+  const [ owner, setOwner ] = React.useState<boolean>(false);
+  const [ manyChannels, setManyChannels ] = React.useState<boolean>(false);
+  const [ channels, setChannels ] = React.useState<Array<Channel>>(channelsInit);
+  const [ comments, setComments ] = React.useState<Array<Comment>>(commentInit);
+  const [ myToken ] = React.useState(() => {
     const savedToken = localStorage.getItem("token");
     return savedToken ?? null;
   });
+
+  React.useEffect(() => {
+    axios({
+      method: "get",
+      url: API_URL + "isowner/" + String(channels[0].id),
+      headers: {
+        Authorization: `Token ${myToken}`,
+      },
+    })
+      .then((res) => setOwner(res.data.is_owner))
+      .catch((error) => {
+        console.log(error);
+      });    
+  }, [myToken]);
 
   React.useEffect(() => {
     axios({
@@ -101,6 +116,7 @@ export default function Comments(props: Props) {
       <>
         <Commentitem 
           comment={commentReply}
+          owner={owner}
           manyChannels={manyChannels}
           channels={channels}
         />
@@ -112,6 +128,7 @@ export default function Comments(props: Props) {
       <>
         <Commentitem
           comment={comment}
+          owner={owner}
           manyChannels={manyChannels}
           channels={channels}
         />

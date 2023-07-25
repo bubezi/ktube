@@ -9,33 +9,19 @@ import React from "react";
 
 interface Props {
   comment: Comment;
+  owner: boolean;
   manyChannels: boolean;
   channels: Array<Channel>;
 }
 
 export default function Commentitem(props: Props) {
-  const [owner, setOwner] = React.useState<boolean>(false);
   const [myToken] = React.useState(() => {
     const savedToken = localStorage.getItem("token");
     return savedToken ?? null;
   });
 
-  React.useEffect(() => {
-    axios({
-      method: "get",
-      url: API_URL + "isowner/" + String(props.comment.id),
-      headers: {
-        Authorization: `Token ${myToken}`,
-      },
-    })
-      .then((res) => setOwner(res.data.is_owner))
-      .catch((error) => {
-        console.log(error);
-      });    
-  }, [myToken]);
-
   const DeleteComp = () => {
-    if (myToken && owner) {
+    if (myToken && props.owner) {
       return (
         <div className="row">
           <div className="video-options">
