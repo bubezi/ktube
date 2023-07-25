@@ -58,23 +58,25 @@ export default function Comments(props: Props) {
       .catch((error) => {
         console.log(error);
       });
-
-    axios({
-      method: "get",
-      url: API_URL + "getChannels/" + String(viewerProvided.viewer.id),
-      headers: {
-        Authorization: `Token ${myToken}`,
-      },
-    })
-      .then((res) => {
-        setChannels(res.data.channels);
-        if (channels.length > 1) {
-          setManyChannels(true);
-        }
+    
+    if (myToken){
+      axios({
+        method: "get",
+        url: API_URL + "getChannels/" + String(viewerProvided.viewer.id),
+        headers: {
+          Authorization: `Token ${myToken}`,
+        },
       })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then((res) => {
+          setChannels(res.data.channels);
+          if (channels.length > 1) {
+            setManyChannels(true);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }, []);
 
   const showComments = comments.map((comment) => {
