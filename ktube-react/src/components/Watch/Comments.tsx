@@ -5,7 +5,7 @@ import { API_URL } from "../../constants";
 import { useViewerContext } from "../../providers/ViewerProvider";
 import { Channel } from "../Watchpage";
 import { channelInit } from "../Watchpage";
-import Commentsection from "./Commentsection";
+import Commentitem from "./Commentitem";
 
 const channelsInit = [channelInit];
 
@@ -50,9 +50,9 @@ export default function Comments(props: Props) {
     axios({
       method: "get",
       url: API_URL + "getComments/" + String(props.videoId),
-      headers: {
-        Authorization: `Token ${myToken}`,
-      },
+      // headers: {
+      //   Authorization: `Token ${myToken}`,
+      // },
     })
       .then((res) => setComments(res.data.comments))
       .catch((error) => {
@@ -80,7 +80,7 @@ export default function Comments(props: Props) {
   const showComments = comments.map((comment) => {
     return (
       <>
-        <Commentsection
+        <Commentitem
           comment={comment}
           manyChannels={manyChannels}
           channels={channels}

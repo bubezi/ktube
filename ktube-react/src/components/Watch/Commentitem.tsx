@@ -3,14 +3,57 @@ import imagePlaceholder from "../../assets/images/placeholder.png";
 import { Channel } from "../Watchpage";
 import { Comment } from "./Comments";
 import { toggleStyle } from "../../assets/styles/Styles";
+import axios from "axios";
+import { API_URL } from "../../constants";
+import React from "react";
 
 interface Props {
-  comment: Comment;
-  manyChannels: boolean;
-  channels: Array<Channel>;
+  comment: Comment,
+  manyChannels: boolean,
+  channels: Array<Channel>,
 }
 
-export default function Commentsection(props: Props) {
+export default function Commentitem(props: Props) {
+  const [myToken] = React.useState(() => {
+    const savedToken = localStorage.getItem("token");
+    return savedToken ?? null;
+  });
+
+  const deleteComment = ()=>{
+
+    const data = {
+      commentId: props.comment.id,
+    };
+  
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${myToken}`,
+      },
+    };
+  
+    axios
+      .post(API_URL + 'deleteComment', data, config)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log("Error", error.message);
+        }
+        console.log(error.config);
+      });
+  }
 
   const ChannelDp = () => {
     if (props.comment.channel_dp === "") {
@@ -64,7 +107,7 @@ export default function Commentsection(props: Props) {
                         <Dropdown.Item
                     className="dropdown-item"
                     style={colorRed}
-                    // onClick={"event.preventDefault(); deleteComment(event, '{{comment.id}}');"}
+                    onClick={deleteComment}
                     >Delete Comment</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
