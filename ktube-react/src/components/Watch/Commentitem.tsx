@@ -8,32 +8,79 @@ import { API_URL } from "../../constants";
 import React from "react";
 
 interface Props {
-  comment: Comment,
-  manyChannels: boolean,
-  channels: Array<Channel>,
+  comment: Comment;
+  manyChannels: boolean;
+  channels: Array<Channel>;
 }
 
 export default function Commentitem(props: Props) {
+  const [owner, setOwner] = React.useState<boolean>(false);
   const [myToken] = React.useState(() => {
     const savedToken = localStorage.getItem("token");
     return savedToken ?? null;
   });
 
-  const deleteComment = ()=>{
+  React.useEffect(() => {
+    axios({
+      method: "get",
+      url: API_URL + "isowner/" + String(props.comment.id),
+      headers: {
+        Authorization: `Token ${myToken}`,
+      },
+    })
+      .then((res) => setOwner(res.data.is_owner))
+      .catch((error) => {
+        console.log(error);
+      });    
+  }, [myToken]);
 
+  const DeleteComp = () => {
+    if (myToken && owner) {
+      return (
+        <div className="row">
+          <div className="video-options">
+            <div className="dropdown">
+              <Dropdown>
+                <Dropdown.Toggle
+                  id="dropdownMenuButton1"
+                  className="custom-dropdown"
+                  style={toggleStyle}
+                  aria-haspopup="true"
+                  aria-expanded="true"
+                >
+                  <i className="fa-solid fa-ellipsis-vertical"></i>
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item
+                    className="dropdown-item"
+                    style={colorRed}
+                    onClick={deleteComment}
+                  >
+                    Delete Comment
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
+          </div>
+        </div>
+      );
+    }
+  };
+
+  const deleteComment = () => {
     const data = {
       commentId: props.comment.id,
     };
-  
+
     const config = {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Token ${myToken}`,
       },
     };
-  
+
     axios
-      .post(API_URL + 'deleteComment', data, config)
+      .post(API_URL + "deleteComment", data, config)
       .then((response) => {
         console.log(response.data);
       })
@@ -49,7 +96,7 @@ export default function Commentitem(props: Props) {
         }
         console.log(error.config);
       });
-  }
+  };
 
   const ChannelDp = () => {
     if (props.comment.channel_dp === "") {
@@ -87,29 +134,7 @@ export default function Commentitem(props: Props) {
           <div className="row description">
             <p>{props.comment.comment_text}</p>
           </div>
-          <div className="row">
-            <div className="video-options">
-              <div className="dropdown">
-                <Dropdown>
-                    <Dropdown.Toggle
-                    id="dropdownMenuButton1"
-                    className="custom-dropdown"
-                    style={toggleStyle}
-                    aria-haspopup="true"
-                    aria-expanded="true">
-                    <i className="fa-solid fa-ellipsis-vertical"></i>
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        <Dropdown.Item
-                    className="dropdown-item"
-                    style={colorRed}
-                    onClick={deleteComment}
-                    >Delete Comment</Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
-              </div>
-            </div>
-          </div>
+          <DeleteComp />
         </div>
       </div>
     </>

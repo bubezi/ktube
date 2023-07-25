@@ -80,6 +80,34 @@ export default function Comments(props: Props) {
   }, []);
 
   const showComments = comments.map((comment) => {
+    const [ commentReplies, setCommentReplies ] = React.useState<Array<Comment>>(commentInit);
+
+    React.useEffect(() => {
+      axios({
+        method: "get",
+        url: API_URL + "getReplies/" + String(comment.id),
+        // headers: {
+        //   Authorization: `Token ${myToken}`,
+        // },
+      })
+        .then((res) => setCommentReplies(res.data.comments))
+        .catch((error) => {
+          console.log(error);
+        });
+    }, []);
+
+    const showCommentReplies = commentReplies.map((commentReply)=>{
+      return (
+      <>
+        <Commentitem 
+          comment={commentReply}
+          manyChannels={manyChannels}
+          channels={channels}
+        />
+      </>
+      );
+    })
+
     return (
       <>
         <Commentitem
@@ -87,6 +115,7 @@ export default function Comments(props: Props) {
           manyChannels={manyChannels}
           channels={channels}
         />
+        {showCommentReplies}
       </>
     );
   });
