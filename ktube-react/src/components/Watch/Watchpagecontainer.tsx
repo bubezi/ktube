@@ -1,4 +1,4 @@
-import Channeldetails from "./Channeldetails";
+import Videodetails from "./Videodetails";
 import Comments from "./Comments";
 
 interface Prop {
@@ -23,7 +23,7 @@ export default function Watchpagecontainer(props: Prop) {
   return (
     <>
       <div className="container" style={containerStyle}>
-        <Channeldetails
+        <Videodetails
           title={props.title}
           channel={props.channel}
           subscriber_count={props.subscriber_count}

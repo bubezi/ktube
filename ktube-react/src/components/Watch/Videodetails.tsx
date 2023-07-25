@@ -23,7 +23,7 @@ interface Prop {
     upload_time: string,
 }
 
-export default function Channeldetails (props: Prop) {
+export default function Videodetails (props: Prop) {
     const PrivateOrUnlisted = () => {
         if (props.private){
             return (<h6 style={publicityStyle}>(private)</h6>);
