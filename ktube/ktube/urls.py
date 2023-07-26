@@ -112,11 +112,11 @@ urlpatterns += [
     path('api/playlistsHome', views_tube.PlaylistsHomeAPI.as_view()),
     path('api/watchlater', views_tube.WatchlaterHomeAPI.as_view()),
     
-    path('api/add_video_to_playlist',views_tube.add_video_to_playlist_API.as_view()),
-    path('api/remove_video_from_playlist',views_tube.remove_video_from_playlist_API.as_view()),
+    path('api/add_video_to_playlist',views_tube.add_video_to_playlist_API),
+    path('api/remove_video_from_playlist',views_tube.remove_video_from_playlist_API),
     
-    path('api/add_video_to_watchlater',views_tube.add_video_to_watchlater_API.as_view()),
-    path('api/remove_video_from_watchlater',views_tube.remove_video_from_watchlater_API.as_view()),
+    path('api/add_video_to_watchlater',views_tube.add_video_to_watchlater_API),
+    path('api/remove_video_from_watchlater',views_tube.remove_video_from_watchlater_API),
     
     path('api/watch/v/<str:slug>', views_tube.Watch_video_API.as_view()),
     path('api/channel/<str:id>', views_tube.Channel_API.as_view()),
