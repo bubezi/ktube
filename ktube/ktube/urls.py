@@ -122,6 +122,16 @@ urlpatterns += [
     path('api/channel/<str:id>', views_tube.Channel_API),
     
     path('api/getChannels/<str:id>', views_tube.Get_Channels_API),
+    
+    path('api/isowner/<str:id>', views_tube.Is_owner_API),
+    path('api/getComments/<str:id>', views_tube.Get_comments_API),
+    
+    path('api/getReplies/<str:id>', views_tube.Get_replies_API),
+    
+    path('api/liked/<str:id>', views_tube.Liked_API),
+    path('api/disliked/<str:id>', views_tube.DisLiked_API),
+    
+    path('api/moreVideos/<str:id>', views_tube.More_Videos_API),
 ]
 
 

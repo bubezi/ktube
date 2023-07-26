@@ -69,7 +69,7 @@ export default function Comments(props: Props) {
       //   Authorization: `Token ${myToken}`,
       // },
     })
-      .then((res) => setComments(res.data.comments))
+      .then((res) => setComments(res.data))
       .catch((error) => {
         console.log(error);
       });
@@ -105,7 +105,7 @@ export default function Comments(props: Props) {
         //   Authorization: `Token ${myToken}`,
         // },
       })
-        .then((res) => setCommentReplies(res.data.comments))
+        .then((res) => setCommentReplies(res.data))
         .catch((error) => {
           console.log(error);
         });

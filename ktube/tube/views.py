@@ -224,10 +224,120 @@ class Get_Channels_API(APIView):
 
 class Is_owner_API(APIView):
     permissions_classes = [IsAuthenticated]
-    def get(self, request, format=None):
-        viewer_signed
+    def get(self, request, id, format=None):
+        viewer_signed_in = request.user.viewier
+        try:
+            viewer_in_db = Viewer.objects.get(id=id)
+        except Viewer.DoesNotExist:
+            return Response({
+                'error': 'Viewer Not Found!'
+            }, status=status.HTTP_404_NOT_FOUND)
+            
+        owner = viewer_signed_in is viewer_in_db
+        
+        return Response({'is_owner':owner}, status=status.HTTP_200_OK)
+
+
+class Get_comments_API(APIView):
+    def get(self, request, id, format=None):
+        try:
+            video = Video.objects.get(id=id)
+        except Video.DoesNotExist:
+            return Response({
+                'error': 'Video Not Found!'
+            }, status=status.HTTP_404_NOT_FOUND)
+        try:
+            comments = Comment.objects.filter(video=video)
+        except Exception as e:
+            return Response({
+                'error': e
+            }, status=status.HTTP_404_NOT_FOUND)
+            
+        serializer = CommentSerializer(comments, many=True)
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class Get_replies_API(APIView):
+    def get(self, request, id, format=None):
+        try:
+            comment = Comment.objects.get(id=id)
+        except Comment.DoesNotExist:
+            return Response({
+                'error': 'Comment Not Found!'
+            }, status=status.HTTP_404_NOT_FOUND)
+            
+        try:
+            comment_replies = CommentReply.objects.filter(comment=comment)
+        except Exception as e:
+            return Response({
+                'error': e
+            }, status=status.HTTP_404_NOT_FOUND)
+            
+        serializer = CommentReplySerializer(comment_replies, many=True)
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
 
+class Liked_API(APIView):
+    permissions_classes = [IsAuthenticated]
+    def get(self, request, id, format=None):
+        viewer = request.user.viewier
+        try:
+            video = Video.objects.get(id=id)
+        except Video.DoesNotExist:
+            return Response({
+                'error': 'Video Not Found!'
+            }, status=status.HTTP_404_NOT_FOUND)
+            
+        try:
+            liked_videos = LikedVideos.objects.get(viewer=viewer)
+        except LikedVideos.DoesNotExist:
+            return Response({
+                'error': 'LikedVideos Not Found!'
+            }, status=status.HTTP_404_NOT_FOUND)
+            
+        liked = liked_videos.video.contains(video)     
+        
+        return Response({'liked':liked}, status=status.HTTP_200_OK)
+    
+
+class DisLiked_API(APIView):
+    permissions_classes = [IsAuthenticated]
+    def get(self, request, id, format=None):
+        viewer = request.user.viewier
+        try:
+            video = Video.objects.get(id=id)
+        except Video.DoesNotExist:
+            return Response({
+                'error': 'Video Not Found!'
+            }, status=status.HTTP_404_NOT_FOUND)
+            
+        try:
+            disliked_videos = DisLikedVideos.objects.get(viewer=viewer)
+        except DisLikedVideos.DoesNotExist:
+            return Response({
+                'error': 'DisLikedVideos Not Found!'
+            }, status=status.HTTP_404_NOT_FOUND)
+            
+        disliked = liked_videos.video.contains(video)     
+        
+        return Response({'disliked':disliked}, status=status.HTTP_200_OK)
+    
+
+class More_Videos_API(APIView):
+    def get(self, request, id, format=None):
+        try:
+            more_videos = Videos.objects.exclude(id=id)
+        except Exception as e:
+            return Response({
+                'error': e
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = VideoSerializer(more_videos, many=True)
+        
+        return Response({'videos':serializer.data}, status.HTTP_200_OK)
+        
 
 @api_view(["POST"])
 def add_video_to_playlist_API(request):
