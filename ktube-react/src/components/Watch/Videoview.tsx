@@ -1,4 +1,4 @@
-import { IMAGES_URL } from "../../constants";
+import { API_BASE_URL } from "../../constants";
 
 interface Prop {
     video: string,
@@ -11,9 +11,9 @@ export default function Videoview (props: Prop) {
         autoPlay
         preload="auto" 
         controls>
-        <source src={IMAGES_URL + props.video} type="video/mp4"/>
-        <source src={IMAGES_URL + props.video} type="video/x-matroska"/>
-        <source src={IMAGES_URL + props.video} type="video/webm"/>
+        <source src={API_BASE_URL + props.video} type="video/mp4"/>
+        <source src={API_BASE_URL + props.video} type="video/x-matroska"/>
+        <source src={API_BASE_URL + props.video} type="video/webm"/>
         Your browser does not support the video
         </video>
     </>

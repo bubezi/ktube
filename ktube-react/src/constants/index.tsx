@@ -3,4 +3,4 @@ export const API_URL = "http://localhost/api/";
 
 
 
-export const IMAGES_URL = API_URL.slice(0, -5)
+export const API_BASE_URL = API_URL.slice(0, -5)
