@@ -1,74 +1,74 @@
-const mainRowStyle = {
+export const mainRowStyle = {
     alignItems: "flex-start"
 }
 
-const mainColStyle = {
+export const mainColStyle = {
     padding: 0,
 }
 
-const containerStyle = {
+export const containerStyle = {
     background: "linear-gradient(Grey, whitesmoke)!important"
 }
 
-const titleStyle = {
+export const titleStyle = {
     fontSize: "25px"
 }
 
-const publicityStyle = {
+export const publicityStyle = {
     paddingLeft: "10px"
 }
 
-const dpStyle = {
+export const dpStyle = {
     width: "30px",
     height: "30px"
 }
 
-const commentDpStyle = {
+export const commentDpStyle = {
     width: "30px",
     height: "30px"
 }
 
-const channelStyle = {
+export const channelStyle = {
     fontSize: "20px"
 }
 
-const imageStyle = {
+export const imageStyle = {
     width: "20px", 
     height: "20px",
 }
 
-const priceStyle = {
+export const priceStyle = {
     // float: "right", 
     color: "green",
     marginBottom: "0 !important",
 }
 
-const displayBlock = {
+export const displayBlock = {
     display: 'block',
 }
 
-const displayNone = {
+export const displayNone = {
     display: 'none',
 }
 
-const marginLeft40 = {
+export const marginLeft40 = {
     marginLeft: '40px',
 }
 
-const marginLeft0 = {
+export const marginLeft0 = {
     marginLeft: '0px',
 }
 
-const commentButton = {
+export const commentButton = {
     paddingLeft:'20px',
     paddingTop:'10px',
 }
 
-const colorRed = {
+export const colorRed = {
     color: 'red',
 }
 
-const commentHeading = {
+export const commentHeading = {
     marginTop: "0", 
     marginBottom: "0 !important",
 }

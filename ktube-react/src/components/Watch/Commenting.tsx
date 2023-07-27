@@ -3,13 +3,19 @@ import axios from "axios";
 import { API_URL } from "../../constants";
 import { useViewerContext } from "../../providers/ViewerProvider";
 import { Channel } from "../Watchpage";
-import { channelInit } from "../Watchpage";
+import { commentButton } from "../../assets/styles/WatchStyles";
+// import { channelInit } from "../Watchpage";
+
+const channelInit = { id:0, name: "", profile_picture: "", subscriber_count: 0, private: true, unlisted:true, subscribers:[0], userId:0};
 
 const channelsInit = [channelInit]
 
-const viewerProvided = useViewerContext();
+interface Props {
+    videoId: number,
+}
 
-export default function Commenting () {
+export default function Commenting (props: Props) {
+    const viewerProvided = useViewerContext();
     const [ manyChannels, setManyChannels ] = React.useState<boolean>(false)
     const [ channels, setChannels ] = React.useState<Array<Channel>>(channelsInit)
     const [myToken] = React.useState(() => {
@@ -18,19 +24,21 @@ export default function Commenting () {
     });
 
     React.useEffect(()=>{
-        axios({
-          method: "get",
-          url: API_URL + "getChannels/" + String(viewerProvided.viewer.id),
-          headers: {
-            Authorization: `Token ${myToken}`,
-          },
-        })
-          .then((res) => {
-            setChannels(res.data);
-            if(channels.length>1){setManyChannels(true)};})
-          .catch((error) => {
-            console.log(error);
-          });
+        if (viewerProvided.viewer.id !== 0){
+            axios({
+              method: "get",
+              url: API_URL + "getChannels/" + String(viewerProvided.viewer.id),
+              headers: {
+                Authorization: `Token ${myToken}`,
+              },
+            })
+              .then((res) => {
+                setChannels(res.data);
+                if(channels.length>1){setManyChannels(true)};})
+              .catch((error) => {
+                console.log(error);
+              });
+        }
       }, []);
       
     if (myToken) {
@@ -54,7 +62,7 @@ export default function Commenting () {
             const options = channels.map((channel)=>{
                 const value = `${channel.id}`
                 const name = `${channel.name}`
-                return (<option value={value}>{name}</option>);
+                return (<option key={channel.id} value={value}>{name}</option>);
             })
             return (
                 <>
@@ -64,7 +72,7 @@ export default function Commenting () {
                             <h5><label htmlFor="comment-text">Add Comment</label></h5>
                             <textarea rows={3} cols={140} maxLength={500} id="comment-text" name="comment_text"></textarea>
                         </div>
-                        <input type="hidden" name="video_id" value="{{video.slug}}"/>
+                        <input type="hidden" name="video_id" value={props.videoId}/>
                         <div className="row">
                             <div className="col-lg-12">
                                 <div className="row">

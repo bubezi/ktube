@@ -28,9 +28,11 @@ function Videocard (props: Prop) {
 
 
     React.useEffect(()=>{
-        axios.get(API_URL+"dp/"+props.channelId)
-            .then(res => setChannelDetails(res.data))
-            .catch((error)=>{console.log(error)});
+        if (props.channelId !== 0){
+            axios.get(API_URL+"dp/"+props.channelId)
+                .then(res => setChannelDetails(res.data))
+                .catch((error)=>{console.log(error)});
+        }
     },[]);
 
 

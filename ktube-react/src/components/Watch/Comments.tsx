@@ -4,12 +4,14 @@ import axios from "axios";
 import { API_URL } from "../../constants";
 import { useViewerContext } from "../../providers/ViewerProvider";
 import { Channel } from "../Watchpage";
-import { channelInit } from "../Watchpage";
 import Commentitem from "./Commentitem";
+import { commentHeading } from "../../assets/styles/WatchStyles";
+// import { channelInit } from "../Watchpage";
+
+const channelInit = { id:0, name: "", profile_picture: "", subscriber_count: 0, private: true, unlisted:true, subscribers:[0], userId:0};
 
 const channelsInit = [channelInit];
 
-const viewerProvided = useViewerContext();
 
 interface Props {
   videoId: number;
@@ -38,6 +40,7 @@ const commentInit = [
 ];
 
 export default function Comments(props: Props) {
+  const viewerProvided = useViewerContext();
   const [ owner, setOwner ] = React.useState<boolean>(false);
   const [ manyChannels, setManyChannels ] = React.useState<boolean>(false);
   const [ channels, setChannels ] = React.useState<Array<Channel>>(channelsInit);
@@ -48,33 +51,21 @@ export default function Comments(props: Props) {
   });
 
   React.useEffect(() => {
-    axios({
-      method: "get",
-      url: API_URL + "isowner/" + String(channels[0].id),
-      headers: {
-        Authorization: `Token ${myToken}`,
-      },
-    })
-      .then((res) => setOwner(res.data.is_owner))
-      .catch((error) => {
-        console.log(error);
-      });    
-  }, [myToken]);
+    if (props.videoId !== 0) {
+      axios({
+        method: "get",
+        url: API_URL + "getComments/" + String(props.videoId),
+        // headers: {
+        //   Authorization: `Token ${myToken}`,
+        // },
+      })
+        .then((res) => setComments(res.data))
+        .catch((error) => {
+          console.log(error);
+        });
+    }
 
-  React.useEffect(() => {
-    axios({
-      method: "get",
-      url: API_URL + "getComments/" + String(props.videoId),
-      // headers: {
-      //   Authorization: `Token ${myToken}`,
-      // },
-    })
-      .then((res) => setComments(res.data))
-      .catch((error) => {
-        console.log(error);
-      });
-    
-    if (myToken){
+    if (myToken && viewerProvided.viewer.id !== 0){
       axios({
         method: "get",
         url: API_URL + "getChannels/" + String(viewerProvided.viewer.id),
@@ -92,40 +83,58 @@ export default function Comments(props: Props) {
           console.log(error);
         });
     }
+
   }, []);
+
+  React.useEffect(() => {
+    if (channels[0].id !== 0){
+      axios({
+        method: "get",
+        url: API_URL + "isowner/" + String(channels[0].id),
+        headers: {
+          Authorization: `Token ${myToken}`,
+        },
+      })
+        .then((res) => setOwner(res.data.is_owner))
+        .catch((error) => {
+          console.log(error);
+        });    
+    }
+  }, [channels]);
 
   const showComments = comments.map((comment) => {
     const [ commentReplies, setCommentReplies ] = React.useState<Array<Comment>>(commentInit);
 
     React.useEffect(() => {
-      axios({
-        method: "get",
-        url: API_URL + "getReplies/" + String(comment.id),
-        // headers: {
-        //   Authorization: `Token ${myToken}`,
-        // },
-      })
-        .then((res) => setCommentReplies(res.data))
-        .catch((error) => {
-          console.log(error);
-        });
+      if (comment.id !== 0){
+        axios({
+          method: "get",
+          url: API_URL + "getReplies/" + String(comment.id),
+          // headers: {
+          //   Authorization: `Token ${myToken}`,
+          // },
+        })
+          .then((res) => setCommentReplies(res.data))
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     }, []);
 
     const showCommentReplies = commentReplies.map((commentReply)=>{
       return (
-      <>
         <Commentitem 
+          key={commentReply.id}
           comment={commentReply}
           owner={owner}
           manyChannels={manyChannels}
           channels={channels}
         />
-      </>
       );
     })
 
     return (
-      <>
+      <React.Fragment key={comment.id}>
         <Commentitem
           comment={comment}
           owner={owner}
@@ -133,13 +142,13 @@ export default function Comments(props: Props) {
           channels={channels}
         />
         {showCommentReplies}
-      </>
+      </React.Fragment>
     );
   });
 
   return (
     <>
-      <Commenting />
+      <Commenting videoId={props.videoId}/>
       <div className="row">
         <h4 className="col-lg-12 box-element" style={commentHeading}>
           Comments

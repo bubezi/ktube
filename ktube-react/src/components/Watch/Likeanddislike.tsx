@@ -3,6 +3,7 @@ import axios from "axios";
 import { API_URL } from "../../constants";
 import { useViewerContext } from "../../providers/ViewerProvider";
 import { likeunlikeOrdislikeUndislike } from "../../functions/fun";
+import { marginLeft0 } from "../../assets/styles/WatchStyles";
 
 interface Props {
   likes: number;
@@ -14,9 +15,9 @@ interface PropsButtons {
   videoId: number;
 }
 
-const viewerProvided = useViewerContext();
 
 const Likeanddislikebuttons = (props: PropsButtons) => {
+  const viewerProvided = useViewerContext();
   const [liked, setLiked] = React.useState<boolean>(false);
   const [disLiked, setDisLiked] = React.useState<boolean>(false);
   const [myToken] = React.useState(() => {
@@ -25,30 +26,32 @@ const Likeanddislikebuttons = (props: PropsButtons) => {
   });
 
   React.useEffect(() => {
-    axios({
-      method: "get",
-      url: API_URL + "liked/" + String(props.videoId),
-      headers: {
-        Authorization: `Token ${myToken}`,
-      },
-    })
-      .then((res) => setLiked(res.data.liked))
-      .catch((error) => {
-        console.log(error);
-      });
-
-    axios({
-      method: "get",
-      url: API_URL + "disliked/" + String(props.videoId),
-      headers: {
-        Authorization: `Token ${myToken}`,
-      },
-    })
-      .then((res) => setDisLiked(res.data.disliked))
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+    if (props.videoId !== 0 ) {
+      axios({
+        method: "get",
+        url: API_URL + "liked/" + String(props.videoId),
+        headers: {
+          Authorization: `Token ${myToken}`,
+        },
+      })
+        .then((res) => setLiked(res.data.liked))
+        .catch((error) => {
+          console.log(error);
+        });
+  
+      axios({
+        method: "get",
+        url: API_URL + "disliked/" + String(props.videoId),
+        headers: {
+          Authorization: `Token ${myToken}`,
+        },
+      })
+        .then((res) => setDisLiked(res.data.disliked))
+        .catch((error) => {
+          console.log(error);
+        });
+      }
+    }, []);
 
   if (myToken) {
     const like = () => {

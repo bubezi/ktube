@@ -138,9 +138,9 @@ class ChannelProfilePicture(generics.RetrieveAPIView):
 from rest_framework.exceptions import PermissionDenied
 
 class Watch_video_API(APIView):
-    def get(self, request, pk, format=None):
+    def get(self, request, slug, format=None):
         try:
-            video = Video.objects.get(slug=pk)
+            video = Video.objects.get(slug=slug)
         except Video.DoesNotExist:
             return Response({
                 'error': 'Video Not Found!'
@@ -225,7 +225,7 @@ class Get_Channels_API(APIView):
 class Is_owner_API(APIView):
     permissions_classes = [IsAuthenticated]
     def get(self, request, id, format=None):
-        viewer_signed_in = request.user.viewier
+        viewer_signed_in = request.user.viewer
         try:
             viewer_in_db = Viewer.objects.get(id=id)
         except Viewer.DoesNotExist:
@@ -282,7 +282,7 @@ class Get_replies_API(APIView):
 class Liked_API(APIView):
     permissions_classes = [IsAuthenticated]
     def get(self, request, id, format=None):
-        viewer = request.user.viewier
+        viewer = request.user.viewer
         try:
             video = Video.objects.get(id=id)
         except Video.DoesNotExist:
@@ -305,7 +305,7 @@ class Liked_API(APIView):
 class DisLiked_API(APIView):
     permissions_classes = [IsAuthenticated]
     def get(self, request, id, format=None):
-        viewer = request.user.viewier
+        viewer = request.user.viewer
         try:
             video = Video.objects.get(id=id)
         except Video.DoesNotExist:

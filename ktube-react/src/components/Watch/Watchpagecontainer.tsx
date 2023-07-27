@@ -1,5 +1,6 @@
 import Videodetails from "./Videodetails";
 import Comments from "./Comments";
+import { containerStyle } from "../../assets/styles/WatchStyles";
 
 interface Prop {
   title: string;

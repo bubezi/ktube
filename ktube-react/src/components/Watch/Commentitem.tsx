@@ -6,6 +6,7 @@ import { toggleStyle } from "../../assets/styles/Styles";
 import axios from "axios";
 import { API_URL } from "../../constants";
 import React from "react";
+import { colorRed, commentDpStyle } from "../../assets/styles/WatchStyles";
 
 interface Props {
   comment: Comment;

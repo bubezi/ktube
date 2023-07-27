@@ -5,6 +5,7 @@ import { API_URL } from "../constants";
 import Videoview from "./Watch/Videoview";
 import Watchpagecontainer from "./Watch/Watchpagecontainer";
 import Morevideos from "./Watch/Morevideos";
+import { mainColStyle, mainRowStyle } from "../assets/styles/WatchStyles";
 
 interface Video {
   id: number;
@@ -78,19 +79,21 @@ function Watchpage() {
   }, [slug]);
 
   React.useEffect(() => {
-    axios({
-      method: "get",
-      url: API_URL + "channel/" + video.channel,
-      // headers: {
-      //   Authorization: `Token ${myToken}`,
-      // },
-    })
-      .then((res) => {
-        setChannel(res.data);
+    if (video.channel !== 0){
+      axios({
+        method: "get",
+        url: API_URL + "channel/" + video.channel,
+        // headers: {
+        //   Authorization: `Token ${myToken}`,
+        // },
       })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then((res) => {
+          setChannel(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }, [video]);
 
   return (

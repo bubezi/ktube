@@ -3,6 +3,8 @@ import Subscribe from '../Subscribe';
 import Viewsandoptions from './Viewsandoptions';
 import Likeanddislike from "./Likeanddislike";
 import Description from './Description';
+import { channelStyle, dpStyle, publicityStyle, titleStyle } from '../../assets/styles/WatchStyles';
+import { IMAGES_URL } from '../../constants';
 
 
 interface Prop {
@@ -36,7 +38,7 @@ export default function Videodetails (props: Prop) {
 
     const Profilepicture = () => {
         if (props.profile_picture !== ''){
-            return (<img src={props.profile_picture} className="channel-icon" alt="Channel Profile picture" style={dpStyle}/>);
+            return (<img src={IMAGES_URL + props.profile_picture} className="channel-icon" alt="Channel Profile picture" style={dpStyle}/>);
         }else{
             return (<img src={imagePlaceholder} className="channel-icon" alt="Channel Profile picture placeholder" style={dpStyle}/>);
         }
