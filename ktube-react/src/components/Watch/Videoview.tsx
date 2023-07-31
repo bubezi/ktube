@@ -6,7 +6,6 @@ interface Prop {
 
 export default function Videoview (props: Prop) {
     return (
-    <>
         <video 
         autoPlay
         preload="auto" 
@@ -16,6 +15,5 @@ export default function Videoview (props: Prop) {
         <source src={API_BASE_URL + props.video} type="video/webm"/>
         Your browser does not support the video
         </video>
-    </>
     );
 }

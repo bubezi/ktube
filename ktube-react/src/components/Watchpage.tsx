@@ -76,9 +76,11 @@ function Watchpage() {
       .catch((error) => {
         console.log(error);
       });
+
   }, [slug]);
 
   React.useEffect(() => {
+    document.title = video.title + ' | KTUBE';
     if (video.channel !== 0){
       axios({
         method: "get",
