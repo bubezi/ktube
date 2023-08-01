@@ -17,7 +17,7 @@ interface Prop {
     colSize: string,
 }
 
-interface ChannelDetailsState {
+export interface ChannelDetailsState {
     profile_picture: string,
     name: string,
 }

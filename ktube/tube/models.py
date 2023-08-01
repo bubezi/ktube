@@ -125,7 +125,7 @@ class Comment(models.Model):
     channel = models.ForeignKey(Channel, null=True, on_delete=models.CASCADE)
     likes = models.PositiveBigIntegerField(default=0)
     dislikes = models.PositiveBigIntegerField(default=0)
-    commmented_on = models.DateTimeField(auto_now_add=True)
+    commented_on = models.DateTimeField(auto_now_add=True)
         
     def __str__(self):
         return self.comment_text

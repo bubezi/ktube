@@ -6,6 +6,7 @@ import { useViewerContext } from "../../providers/ViewerProvider";
 import { Channel } from "../Watchpage";
 import Commentitem from "./Commentitem";
 import { commentHeading } from "../../assets/styles/WatchStyles";
+import CommentReplyItem from "./CommentReplyItem";
 // import { channelInit } from "../Watchpage";
 
 const channelInit = { id:0, name: "", profile_picture: "", subscriber_count: 0, private: true, unlisted:true, subscribers:[0], userId:0};
@@ -13,15 +14,10 @@ const channelInit = { id:0, name: "", profile_picture: "", subscriber_count: 0, 
 const channelsInit = [channelInit];
 
 
-interface Props {
-  videoId: number;
-}
-
 export interface Comment {
   id: number;
   comment_text: string;
-  channel_dp: string;
-  channel: string;
+  channel: number;
   likes: number;
   dislikes: number;
   commented_on: string;
@@ -31,13 +27,86 @@ const commentInit = [
   {
     id: 0,
     comment_text: "",
-    channel_dp: "",
-    channel: "",
+    channel: 0,
     likes: 0,
     dislikes: 0,
     commented_on: "",
   },
 ];
+
+const commentReplyInit = [
+  {
+    id: 0,
+    reply: "",
+    channel: 0,
+    likes: 0,
+    dislikes: 0,
+    commented_on: "",
+  },
+];
+
+export interface CommentReply {
+  id: number;
+  reply: string;
+  channel: number;
+  likes: number;
+  dislikes: number;
+  commented_on: string;
+}
+
+
+interface Props {
+  videoId: number;
+}
+
+interface RepliesProps {
+  comment: Comment,
+  owner: boolean,
+  manyChannels: boolean,
+  channels: Channel[],
+}
+
+const CommentWithReplies: React.FC<RepliesProps> = ({ comment, owner, manyChannels, channels }) => {
+  const [ commentReplies, setCommentReplies ] = React.useState<Array<CommentReply>>(commentReplyInit);
+
+  React.useEffect(() => {
+    if (comment.id !== 0){
+      axios({
+        method: "get",
+        url: API_URL + "getReplies/" + String(comment.id),
+      })
+        .then((res) => setCommentReplies(res.data))
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, []);
+
+  const showCommentReplies = commentReplies.map((commentReply)=>{
+    console.log(commentReply);
+    return (
+      <CommentReplyItem 
+        key={commentReply.id}
+        comment={commentReply}
+        owner={owner}
+        manyChannels={manyChannels}
+        channels={channels}
+      />
+    );
+  })
+
+  return (
+    <React.Fragment key={comment.id}>
+      <Commentitem
+        comment={comment}
+        owner={owner}
+        manyChannels={manyChannels}
+        channels={channels}
+      />
+      {showCommentReplies}
+    </React.Fragment>
+  );
+}
 
 const Comments = (props: Props) => {
   const viewerProvided = useViewerContext();
@@ -65,6 +134,10 @@ const Comments = (props: Props) => {
         });
     }
 
+  }, [props.videoId]);
+
+
+  React.useEffect(() => {
     if (myToken && viewerProvided.viewer.id !== 0){
       axios({
         method: "get",
@@ -84,7 +157,7 @@ const Comments = (props: Props) => {
         });
     }
 
-  }, []);
+  }, [viewerProvided.viewer.id]);
 
   React.useEffect(() => {
     if (channels[0].id !== 0){
@@ -102,49 +175,15 @@ const Comments = (props: Props) => {
     }
   }, [channels]);
 
-  const showComments = comments.map((comment) => {
-    const [ commentReplies, setCommentReplies ] = React.useState<Array<Comment>>(commentInit);
-
-    React.useEffect(() => {
-      if (comment.id !== 0){
-        axios({
-          method: "get",
-          url: API_URL + "getReplies/" + String(comment.id),
-          // headers: {
-          //   Authorization: `Token ${myToken}`,
-          // },
-        })
-          .then((res) => setCommentReplies(res.data))
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-    }, []);
-
-    const showCommentReplies = commentReplies.map((commentReply)=>{
-      return (
-        <Commentitem 
-          key={commentReply.id}
-          comment={commentReply}
-          owner={owner}
-          manyChannels={manyChannels}
-          channels={channels}
-        />
-      );
-    })
-
-    return (
-      <React.Fragment key={comment.id}>
-        <Commentitem
-          comment={comment}
-          owner={owner}
-          manyChannels={manyChannels}
-          channels={channels}
-        />
-        {showCommentReplies}
-      </React.Fragment>
-    );
-  });
+  const showComments = comments.map((comment) =>
+    <CommentWithReplies 
+    key={comment.id}
+    comment={comment}
+    owner={owner}
+    manyChannels={manyChannels}
+    channels={channels}
+  />
+  );
 
   return (
     <>

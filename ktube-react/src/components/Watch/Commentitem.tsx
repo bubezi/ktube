@@ -7,6 +7,7 @@ import axios from "axios";
 import { API_URL } from "../../constants";
 import React from "react";
 import { colorRed, commentDpStyle } from "../../assets/styles/WatchStyles";
+import { ChannelDetailsState } from "../Videocard";
 
 interface Props {
   comment: Comment;
@@ -15,12 +16,28 @@ interface Props {
   channels: Array<Channel>;
 }
 
+
 const Commentitem = (props: Props) => {
+  const channelDetailsState: ChannelDetailsState = {profile_picture:'', name:''};
+  const [channelDetails, setChannelDetails] = React.useState<ChannelDetailsState>(channelDetailsState);
+
+  React.useEffect(()=>{
+      if (props.comment.channel !== 0){
+          axios.get(API_URL+"dp/"+props.comment.channel)
+              .then(res => setChannelDetails(res.data))
+              .catch((error)=>{console.log(error)});
+      }
+  }, [props.comment]);
+
   const [myToken] = React.useState(() => {
     const savedToken = localStorage.getItem("token");
     return savedToken ?? null;
   });
 
+  const commentStyle = {
+    marginLeft: "0px"
+  }
+  
   const DeleteComp = () => {
     if (myToken && props.owner) {
       return (
@@ -86,7 +103,7 @@ const Commentitem = (props: Props) => {
   };
 
   const ChannelDp = () => {
-    if (props.comment.channel_dp === "") {
+    if (props.comment.channel === 0) {
       return (
         <img
           src={imagePlaceholder}
@@ -98,7 +115,7 @@ const Commentitem = (props: Props) => {
     } else {
       return (
         <img
-          src={props.comment.channel_dp}
+          src={channelDetails.profile_picture}
           className="channel-icon"
           alt="Channel Profile picture"
           style={commentDpStyle}
@@ -106,26 +123,26 @@ const Commentitem = (props: Props) => {
       );
     }
   };
-  return (
-    <>
-      <div className="row box-element">
-        <div className="col-lg-12">
-          <div className="row description">
-            <ChannelDp />
-            <a href="{% url 'channel' comment.channel.id %}">
-              <p>
-                <strong>{props.comment.channel}</strong>
-              </p>
-            </a>
+    return (
+      <>
+        <div className="row box-element" style={commentStyle}>
+          <div className="col-lg-12">
+            <div className="row description">
+              <ChannelDp />
+              <a href="#">
+                <p>
+                  <strong>{channelDetails.name}</strong>
+                </p>
+              </a>
+            </div>
+            <div className="row description">
+              <p>{props.comment.comment_text}</p>
+            </div>
+            <DeleteComp />
           </div>
-          <div className="row description">
-            <p>{props.comment.comment_text}</p>
-          </div>
-          <DeleteComp />
         </div>
-      </div>
-    </>
-  );
+      </>
+    );
 }
 
 export default Commentitem;
