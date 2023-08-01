@@ -68,7 +68,4 @@ export const colorRed = {
   color: "red",
 };
 
-export const commentHeading = {
-  marginTop: "0",
-  marginBottom: "0 !important",
-};
+

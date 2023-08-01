@@ -214,8 +214,14 @@ a:hover {
   margin-left: 5px;
 }
 
+#comment-heading {
+  margin-top: 0;
+
+}
+
 #comment-section {
   max-height: 1000px;
+  margin-top: 0;
   overflow-y: scroll;
   scroll-behavior: auto;
   overflow-x: hidden;
@@ -229,6 +235,7 @@ a:hover {
 }
 
 #repliesStyle {
+  margin-top: 0;
   max-height: 250px;
   overflow-y: scroll;
   scroll-behavior: smooth;

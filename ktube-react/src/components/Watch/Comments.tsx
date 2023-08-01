@@ -5,7 +5,6 @@ import { API_URL } from "../../constants";
 import { useViewerContext } from "../../providers/ViewerProvider";
 import { Channel } from "../Watchpage";
 import Commentitem from "./Commentitem";
-import { commentHeading } from "../../assets/styles/WatchStyles";
 import CommentReplyItem from "./CommentReplyItem";
 // import { channelInit } from "../Watchpage";
 
@@ -200,7 +199,7 @@ const Comments = (props: Props) => {
     <>
       <Commenting videoId={props.videoId} />
       <div className="row">
-        <h4 className="col-lg-12 box-element" style={commentHeading}>
+        <h4 className="col-lg-12 box-element" id="comment-heading">
           Comments
         </h4>
       </div>
