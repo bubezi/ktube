@@ -26,17 +26,26 @@ interface Video {
 }
 
 export interface Channel {
-    id: number;
-    name: string;
-    profile_picture: string;
-    subscriber_count: number;
-    private: boolean;
-    unlisted: boolean;
-    subscribers: number[];
-    userId: number;
+  id: number;
+  name: string;
+  profile_picture: string;
+  subscriber_count: number;
+  private: boolean;
+  unlisted: boolean;
+  subscribers: number[];
+  userId: number;
 }
 
-export const channelInit = { id:0, name: "", profile_picture: "", subscriber_count: 0, private: true, unlisted:true, subscribers:[0], userId:0};
+export const channelInit = {
+  id: 0,
+  name: "",
+  profile_picture: "",
+  subscriber_count: 0,
+  private: true,
+  unlisted: true,
+  subscribers: [0],
+  userId: 0,
+};
 
 const Watchpage = () => {
   const videoInit = {
@@ -76,12 +85,11 @@ const Watchpage = () => {
       .catch((error) => {
         console.log(error);
       });
-
   }, [slug]);
 
   React.useEffect(() => {
-    document.title = video.title + ' | KTUBE';
-    if (video.channel !== 0){
+    document.title = video.title + " | KTUBE";
+    if (video.channel !== 0) {
       axios({
         method: "get",
         url: API_URL + "channel/" + video.channel,
@@ -123,11 +131,11 @@ const Watchpage = () => {
           />
         </div>
         <div className="col-lg-3">
-          <Morevideos videoId={video.id}/>
+          <Morevideos videoId={video.id} />
         </div>
       </div>
     </>
   );
-}
+};
 
 export default Watchpage;

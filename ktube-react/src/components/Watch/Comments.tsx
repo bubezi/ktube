@@ -9,10 +9,18 @@ import { commentHeading } from "../../assets/styles/WatchStyles";
 import CommentReplyItem from "./CommentReplyItem";
 // import { channelInit } from "../Watchpage";
 
-const channelInit = { id:0, name: "", profile_picture: "", subscriber_count: 0, private: true, unlisted:true, subscribers:[0], userId:0};
+const channelInit = {
+  id: 0,
+  name: "",
+  profile_picture: "",
+  subscriber_count: 0,
+  private: true,
+  unlisted: true,
+  subscribers: [0],
+  userId: 0,
+};
 
 const channelsInit = [channelInit];
-
 
 export interface Comment {
   id: number;
@@ -54,23 +62,28 @@ export interface CommentReply {
   commented_on: string;
 }
 
-
 interface Props {
   videoId: number;
 }
 
 interface RepliesProps {
-  comment: Comment,
-  owner: boolean,
-  manyChannels: boolean,
-  channels: Channel[],
+  comment: Comment;
+  owner: boolean;
+  manyChannels: boolean;
+  channels: Channel[];
 }
 
-const CommentWithReplies: React.FC<RepliesProps> = ({ comment, owner, manyChannels, channels }) => {
-  const [ commentReplies, setCommentReplies ] = React.useState<Array<CommentReply>>(commentReplyInit);
+const CommentWithReplies: React.FC<RepliesProps> = ({
+  comment,
+  owner,
+  manyChannels,
+  channels,
+}) => {
+  const [commentReplies, setCommentReplies] =
+    React.useState<Array<CommentReply>>(commentReplyInit);
 
   React.useEffect(() => {
-    if (comment.id !== 0){
+    if (comment.id !== 0) {
       axios({
         method: "get",
         url: API_URL + "getReplies/" + String(comment.id),
@@ -82,10 +95,9 @@ const CommentWithReplies: React.FC<RepliesProps> = ({ comment, owner, manyChanne
     }
   }, []);
 
-  const showCommentReplies = commentReplies.map((commentReply)=>{
-    console.log(commentReply);
+  const showCommentReplies = commentReplies.map((commentReply) => {
     return (
-      <CommentReplyItem 
+      <CommentReplyItem
         key={commentReply.id}
         comment={commentReply}
         owner={owner}
@@ -93,7 +105,7 @@ const CommentWithReplies: React.FC<RepliesProps> = ({ comment, owner, manyChanne
         channels={channels}
       />
     );
-  })
+  });
 
   return (
     <React.Fragment key={comment.id}>
@@ -103,18 +115,20 @@ const CommentWithReplies: React.FC<RepliesProps> = ({ comment, owner, manyChanne
         manyChannels={manyChannels}
         channels={channels}
       />
-      {showCommentReplies}
+      <div className="col-lg-12" id="repliesStyle">
+        {showCommentReplies}
+      </div>
     </React.Fragment>
   );
-}
+};
 
 const Comments = (props: Props) => {
   const viewerProvided = useViewerContext();
-  const [ owner, setOwner ] = React.useState<boolean>(false);
-  const [ manyChannels, setManyChannels ] = React.useState<boolean>(false);
-  const [ channels, setChannels ] = React.useState<Array<Channel>>(channelsInit);
-  const [ comments, setComments ] = React.useState<Array<Comment>>(commentInit);
-  const [ myToken ] = React.useState(() => {
+  const [owner, setOwner] = React.useState<boolean>(false);
+  const [manyChannels, setManyChannels] = React.useState<boolean>(false);
+  const [channels, setChannels] = React.useState<Array<Channel>>(channelsInit);
+  const [comments, setComments] = React.useState<Array<Comment>>(commentInit);
+  const [myToken] = React.useState(() => {
     const savedToken = localStorage.getItem("token");
     return savedToken ?? null;
   });
@@ -133,12 +147,10 @@ const Comments = (props: Props) => {
           console.log(error);
         });
     }
-
   }, [props.videoId]);
 
-
   React.useEffect(() => {
-    if (myToken && viewerProvided.viewer.id !== 0){
+    if (myToken && viewerProvided.viewer.id !== 0) {
       axios({
         method: "get",
         url: API_URL + "getChannels/" + String(viewerProvided.viewer.id),
@@ -156,11 +168,10 @@ const Comments = (props: Props) => {
           console.log(error);
         });
     }
-
   }, [viewerProvided.viewer.id]);
 
   React.useEffect(() => {
-    if (channels[0].id !== 0){
+    if (channels[0].id !== 0) {
       axios({
         method: "get",
         url: API_URL + "isowner/" + String(channels[0].id),
@@ -171,23 +182,23 @@ const Comments = (props: Props) => {
         .then((res) => setOwner(res.data.is_owner))
         .catch((error) => {
           console.log(error);
-        });    
+        });
     }
   }, [channels]);
 
-  const showComments = comments.map((comment) =>
-    <CommentWithReplies 
-    key={comment.id}
-    comment={comment}
-    owner={owner}
-    manyChannels={manyChannels}
-    channels={channels}
-  />
-  );
+  const showComments = comments.map((comment) => (
+    <CommentWithReplies
+      key={comment.id}
+      comment={comment}
+      owner={owner}
+      manyChannels={manyChannels}
+      channels={channels}
+    />
+  ));
 
   return (
     <>
-      <Commenting videoId={props.videoId}/>
+      <Commenting videoId={props.videoId} />
       <div className="row">
         <h4 className="col-lg-12 box-element" style={commentHeading}>
           Comments
@@ -199,6 +210,6 @@ const Comments = (props: Props) => {
       </div>
     </>
   );
-}
+};
 
 export default Comments;
