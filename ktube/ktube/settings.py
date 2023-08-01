@@ -1,6 +1,13 @@
 from pathlib import Path
 import os
 import environ
+import mimetypes
+
+mimetypes.add_type("application/javascript", ".js", True)
+mimetypes.add_type("video/mp4", ".mp4", True)
+mimetypes.add_type("video/webm", ".webm", True)
+mimetypes.add_type("video/x-matroska", ".mkv", True)
+
 
 env = environ.Env()
 environ.Env.read_env()
