@@ -22,7 +22,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/auth/login" element={<Auth />} />
-            <Route path="/watch/:slug" element={<Watchpage title="Some Video Title" channel="Bubezi" subscriber_count={346780}/>} />
+            <Route path="/watch/:slug" element={<Watchpage/>} />
+            {/* <Route path="/channel/:channelId" element={<Channel/>} /> */}
           </Routes>
         </BrowserRouter>
       </ViewerProvider>

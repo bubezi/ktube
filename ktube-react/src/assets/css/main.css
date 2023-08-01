@@ -196,6 +196,32 @@ a:hover {
     margin-right: 10px;
 }
 
+#video-views-count #likes-count #dislikes-count {
+	font-size: 18px; 
+	float: left;
+}
+
+#more-videos-title {
+	float: left;
+}
+
+#dislikes-count {
+	margin-left:5px;
+}
+
+#comment-section {
+	max-height: 1000px;
+	overflow-y: scroll;
+	scroll-behavior: auto;
+	overflow-x: hidden;
+}
+
+#more-videos {
+	max-height: 1000px;
+	overflow-y: scroll;
+	scroll-behavior: smooth;
+}
+
 .dropdown .btn:focus,
 .dropdown .btn:active,
 .dropdown .btn:not(:disabled):not(.disabled):active:focus,

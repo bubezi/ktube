@@ -47,12 +47,13 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 from rest_framework import generics
 
+
 class WatchlaterHomeAPI(APIView):
     permission_classes = [IsAuthenticated]
-    
+
     def get(self, request):
         viewer = request.user.viewer
-        
+
         try:
             watchlater = Watchlater.objects.get(viewer=viewer)
 
@@ -61,8 +62,8 @@ class WatchlaterHomeAPI(APIView):
             watchlater.save()
 
         serializer = WatchlaterSerializer(watchlater, many=False)
-        return Response({'watchlater':serializer.data}, status=status.HTTP_200_OK)
-        
+        return Response({"watchlater": serializer.data}, status=status.HTTP_200_OK)
+
 
 class PlaylistsHomeAPI(APIView):
     permissions_classes = [IsAuthenticated]
@@ -88,8 +89,7 @@ class PlaylistsHomeAPI(APIView):
                 playlists.extend(channel_playlists)
 
         serializer = PlaylistsHomeSerializer(playlists, many=True)
-        return Response({'playlists': serializer.data}, status=status.HTTP_200_OK)
-
+        return Response({"playlists": serializer.data}, status=status.HTTP_200_OK)
 
 
 class VideosHome(generics.ListAPIView):
@@ -103,53 +103,267 @@ class ChannelProfilePicture(generics.RetrieveAPIView):
 
 
 # @api_view(["GET"])
-# def videos_home(request):
-#     if request.method == "GET":
-#         data = Video.objects.filter(private=False, unlisted=False)
+# def watch_video_API(request, slug):
+#     try:
+#         video = Video.objects.get(slug=slug)  # type: ignore
 
-#         serializer = VideosHomeSerializer(data, context={"request": request}, many=True)
+#     except Video.DoesNotExist:
+#         return Response(
+#             {"error": "Video Does Not Exist! SORRYYY"},
+#             status=status.HTTP_400_BAD_REQUEST,
+#         )
+    
+#     if video.private:
+#         if request.user.is_authenticated:
+#             try:
+#                 viewer = request.user.viewer
+#                 if not video.channel.user == viewer:
+#                     return Response(
+#                         {"error": "Video is private"},
+#                         status=status.HTTP_400_BAD_REQUEST,
+#                     )
+                    
+#             except:
+#                 return Response(
+#                     {"error": "Video is private"},
+#                     status=status.HTTP_400_BAD_REQUEST,
+#                 )
+#         else:
+#             return Response(
+#                 {"error": "Video is private"},
+#                 status=status.HTTP_400_BAD_REQUEST,
+#             )
+    
+    
+from rest_framework.exceptions import PermissionDenied
 
-#         return Response(serializer.data)
+class Watch_video_API(APIView):
+    def get(self, request, slug, format=None):
+        try:
+            video = Video.objects.get(slug=slug)
+        except Video.DoesNotExist:
+            return Response({
+                'error': 'Video Not Found!'
+            }, status=status.HTTP_404_NOT_FOUND)
 
-#     elif request.method == "POST":
-#         serializer = VideoSerializer(data=request.data)
-#         pass
+        # If the video is private, make sure the viewer is the owner
+        if video.private:
+            if request.user.is_authenticated:
+                try:
+                    viewer = request.user.viewer
+                    if not video.channel.user == viewer:  
+                        raise PermissionDenied('You are not the owner of this video')
+                except Viewer.DoesNotExist:  
+                    raise PermissionDenied('You are not the owner of this video')
+
+        # Handle monetisation
+        if video.price > 0:
+            if request.user.is_authenticated:
+                viewer = request.user.viewer
+                if not video.channel.user == viewer:
+                     if not video.paid_viewers.contains(viewer):
+                        if viewer.spend(video.price):
+                            video_owner_cut = PERCENTAGE_OF_REVENUE * Decimal(video.price)
+                            company_cut = Decimal(video.price) - video_owner_cut
+                            video.channel.user.wallet += float(video_owner_cut)
+                            main_viewer = Viewer.objects.get(username=COMPANY_USERNAME)
+                            main_viewer.wallet += float(company_cut)
+                            video.paid_viewers.add(viewer)
+                            viewer.save()
+                            main_viewer.save()
+                            video.channel.user.save()
+                            video.save()
+                        else:
+                            return Response({
+                                'error': 'Please deposit money to watch this video'
+                            }, status=status.HTTP_403_FORBIDDEN)
+            else:
+                raise PermissionDenied('You are not logged in')
+
+        # Serialize video
+        serializer = VideoSerializer(video)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+class Channel_API(APIView):
+    def get(self, request, id, format=None):
+        try:
+            channel = Channel.objects.get(id=id)
+        except Channel.DoesNotExist:
+            return Response({
+                'error': 'Channel Not Found!'
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = ChannelSerializer(channel)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    
+class Get_Channels_API(APIView):
+    permissions_classes = [IsAuthenticated]
+    
+    def get(self, request, id, format=None):
+        viewer = Viewer.objects.get(id=id)
+        
+        channels = []
+
+        try:
+            nav_channel = Channel.objects.get(user=viewer)
+            channels = nav_channel
+
+        except Channel.DoesNotExist:
+            return Response({
+                'error': 'Channel Not Found!'
+            }, status=status.HTTP_404_NOT_FOUND)
+        except:
+            my_channels = Channel.objects.filter(user=viewer)  
+            channels.extend(my_channels)
+        
+        serializer = ChannelSerializer(my_channels, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+class Is_owner_API(APIView):
+    permissions_classes = [IsAuthenticated]
+    def get(self, request, id, format=None):
+        viewer_signed_in = request.user.viewer
+        try:
+            viewer_in_db = Viewer.objects.get(id=id)
+        except Viewer.DoesNotExist:
+            return Response({
+                'error': 'Viewer Not Found!'
+            }, status=status.HTTP_404_NOT_FOUND)
+            
+        owner = viewer_signed_in is viewer_in_db
+        
+        return Response({'is_owner':owner}, status=status.HTTP_200_OK)
 
 
-# @api_view(["GET"])
-# def channel_profile_picture(request, id):
-#     data = Channel.objects.get(id=id)
+class Get_comments_API(APIView):
+    def get(self, request, id, format=None):
+        try:
+            video = Video.objects.get(id=id)
+        except Video.DoesNotExist:
+            return Response({
+                'error': 'Video Not Found!'
+            }, status=status.HTTP_404_NOT_FOUND)
+        try:
+            comments = Comment.objects.filter(video=video)
+        except Exception as e:
+            return Response({
+                'error': e
+            }, status=status.HTTP_404_NOT_FOUND)
+            
+        serializer = CommentSerializer(comments, many=True)
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-#     serializer = ChannelProfilePictureSerializer(
-#         data, context={"request": request}, many=False
-#     )
 
-#     return Response(serializer.data)
+class Get_replies_API(APIView):
+    def get(self, request, id, format=None):
+        try:
+            comment = Comment.objects.get(id=id)
+        except Comment.DoesNotExist:
+            return Response({
+                'error': 'Comment Not Found!'
+            }, status=status.HTTP_404_NOT_FOUND)
+            
+        try:
+            comment_replies = CommentReply.objects.filter(comment=comment)
+        except Exception as e:
+            return Response({
+                'error': e
+            }, status=status.HTTP_404_NOT_FOUND)
+            
+        serializer = CommentReplySerializer(comment_replies, many=True)
+        
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+
+class Liked_API(APIView):
+    permissions_classes = [IsAuthenticated]
+    def get(self, request, id, format=None):
+        viewer = request.user.viewer
+        try:
+            video = Video.objects.get(id=id)
+        except Video.DoesNotExist:
+            return Response({
+                'error': 'Video Not Found!'
+            }, status=status.HTTP_404_NOT_FOUND)
+            
+        try:
+            liked_videos = LikedVideos.objects.get(viewer=viewer)
+        except LikedVideos.DoesNotExist:
+            return Response({
+                'error': 'LikedVideos Not Found!'
+            }, status=status.HTTP_404_NOT_FOUND)
+            
+        liked = liked_videos.video.contains(video)     
+        
+        return Response({'liked':liked}, status=status.HTTP_200_OK)
+    
+
+class DisLiked_API(APIView):
+    permissions_classes = [IsAuthenticated]
+    def get(self, request, id, format=None):
+        viewer = request.user.viewer
+        try:
+            video = Video.objects.get(id=id)
+        except Video.DoesNotExist:
+            return Response({
+                'error': 'Video Not Found!'
+            }, status=status.HTTP_404_NOT_FOUND)
+            
+        try:
+            disliked_videos = DisLikedVideos.objects.get(viewer=viewer)
+        except DisLikedVideos.DoesNotExist:
+            return Response({
+                'error': 'DisLikedVideos Not Found!'
+            }, status=status.HTTP_404_NOT_FOUND)
+            
+        disliked = liked_videos.video.contains(video)     
+        
+        return Response({'disliked':disliked}, status=status.HTTP_200_OK)
+    
+
+class More_Videos_API(APIView):
+    def get(self, request, id, format=None):
+        try:
+            more_videos = Videos.objects.exclude(id=id)
+        except Exception as e:
+            return Response({
+                'error': e
+            }, status=status.HTTP_404_NOT_FOUND)
+        
+        serializer = VideoSerializer(more_videos, many=True)
+        
+        return Response({'videos':serializer.data}, status.HTTP_200_OK)
+        
 
 @api_view(["POST"])
 def add_video_to_playlist_API(request):
     video_id = request.data.get("video_id")
     playlist_id = request.data.get("playlist_id")
-    
+
     if video_id is None or playlist_id is None:
-        return Response({'error': 'video_id and playlist_id are required'}, status=status.HTTP_400_BAD_REQUEST)
-    
+        return Response(
+            {"error": "video_id and playlist_id are required"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
     try:
         video = Video.objects.get(id=video_id)
         playlist = Playlist.objects.get(id=playlist_id)
         playlist.videos.add(video)
         return Response(status=status.HTTP_200_OK)
     except Video.DoesNotExist:
-        print("video not found")
-        return Response({'error': 'Video not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)
     except Playlist.DoesNotExist:
-        print("Playlist not found")
-        return Response({'error': 'Playlist not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"error": "Playlist not found"}, status=status.HTTP_404_NOT_FOUND
+        )
     except Exception as e:
-        print(e)
-        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
-        print("Bad Request")
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -157,32 +371,41 @@ def add_video_to_playlist_API(request):
 def remove_video_from_playlist_API(request):
     video_id = request.data.get("video_id")
     playlist_id = request.data.get("playlist_id")
-    
+
     if video_id is None or playlist_id is None:
-        return Response({'error': 'video_id and playlist_id are required'}, status=status.HTTP_400_BAD_REQUEST)
-    
+        return Response(
+            {"error": "video_id and playlist_id are required"},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
     try:
         video = Video.objects.get(id=video_id)
         playlist = Playlist.objects.get(id=playlist_id)
         playlist.videos.remove(video)
         return Response(status=status.HTTP_200_OK)
     except Video.DoesNotExist:
-        return Response({'error': 'Video not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)
     except Playlist.DoesNotExist:
-        return Response({'error': 'Playlist not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"error": "Playlist not found"}, status=status.HTTP_404_NOT_FOUND
+        )
     except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
-        return Response({'error': 'Some other error'},status=status.HTTP_400_BAD_REQUEST)
+        return Response(
+            {"error": "Some other error"}, status=status.HTTP_400_BAD_REQUEST
+        )
 
 
 @api_view(["POST"])
 def add_video_to_watchlater_API(request):
     video_id = request.data.get("video_id")
-    
+
     if video_id is None:
-        return Response({'error': 'video_id are required'}, status=status.HTTP_400_BAD_REQUEST)
-    
+        return Response(
+            {"error": "video_id are required"}, status=status.HTTP_400_BAD_REQUEST
+        )
+
     try:
         viewer = request.user.viewer
         video = Video.objects.get(id=video_id)
@@ -190,24 +413,26 @@ def add_video_to_watchlater_API(request):
         watchlater.videos.add(video)
         return Response(status=status.HTTP_200_OK)
     except Video.DoesNotExist:
-        return Response({'error': 'Video not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)
     except Playlist.DoesNotExist:
-        return Response({'error': 'Playlist not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"error": "Playlist not found"}, status=status.HTTP_404_NOT_FOUND
+        )
     except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
         return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
 
 
 @api_view(["POST"])
 def remove_video_from_watchlater_API(request):
     video_id = request.data.get("video_id")
-    
+
     if video_id is None:
-        return Response({'error': 'video_id are required'}, status=status.HTTP_400_BAD_REQUEST)
-    
+        return Response(
+            {"error": "video_id are required"}, status=status.HTTP_400_BAD_REQUEST
+        )
+
     try:
         viewer = request.user.viewer
         video = Video.objects.get(id=video_id)
@@ -215,15 +440,15 @@ def remove_video_from_watchlater_API(request):
         watchlater.videos.remove(video)
         return Response(status=status.HTTP_200_OK)
     except Video.DoesNotExist:
-        return Response({'error': 'Video not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)
     except Playlist.DoesNotExist:
-        return Response({'error': 'Playlist not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"error": "Playlist not found"}, status=status.HTTP_404_NOT_FOUND
+        )
     except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
         return Response(status=status.HTTP_400_BAD_REQUEST)
-
-
 
 
 ##############################################################################################

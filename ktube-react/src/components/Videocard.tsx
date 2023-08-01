@@ -4,7 +4,7 @@ import axios from 'axios'
 import { API_URL } from '../constants'
 import React from 'react'
 
-import Videooptions from './Videooptions'
+import Videooptions from './Options/Videooptions'
 
 interface Prop {
     videoId: number,
@@ -14,6 +14,7 @@ interface Prop {
     slug: string,
     price: number,
     views: number,
+    colSize: string,
 }
 
 interface ChannelDetailsState {
@@ -27,9 +28,11 @@ function Videocard (props: Prop) {
 
 
     React.useEffect(()=>{
-        axios.get(API_URL+"dp/"+props.channelId)
-            .then(res => setChannelDetails(res.data))
-            .catch((error)=>{console.log(error)});
+        if (props.channelId !== 0){
+            axios.get(API_URL+"dp/"+props.channelId)
+                .then(res => setChannelDetails(res.data))
+                .catch((error)=>{console.log(error)});
+        }
     },[]);
 
 
@@ -71,23 +74,23 @@ function Videocard (props: Prop) {
     
     return (
         <>
-            <div className="col-lg-4">
-                <a href="#">
+            <div className={props.colSize}>
+                <a href={"/watch/" + props.slug}>
                     <img src={props.thumbnail} alt="thumbnail" className="thumbnail" />
                 </a>
                 <div className="box-element product">
                     <div className="row">
-                        <a href="#">
+                        <a href={"/watch/" + props.slug}>
                             <h6>{props.title}</h6>
                         </a>
                     </div>
                     <div className="row">
                         <div className="col-lg-6">
                             <div className="row">
-                                <a href="#">
+                                <a href={"/channel/" + props.channelId}>
                                     <Thumbnail/>
                                 </a>
-                                <a href="#">
+                                <a href={"/channel/" + props.channelId}>
                                     <h6>{videoChannelName}</h6>
                                 </a>
                             </div>
@@ -105,7 +108,7 @@ function Videocard (props: Prop) {
                             </div>
                         </div>
                         <div className="col-lg-2 col-12 text-right mt-2 mt-lg-0">
-                            <Videooptions videoId={props.videoId} slug={props.slug}/>
+                            <Videooptions videoId={props.videoId}/>
                         </div>
                     </div>
                 </div>

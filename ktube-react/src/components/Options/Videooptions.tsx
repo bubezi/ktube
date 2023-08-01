@@ -2,20 +2,14 @@ import "bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.js";
 
+import { elipsisStyle, toggleStyle } from "../../assets/styles/Styles";
+
 import React from "react";
 import axios from "axios";
-import { API_URL } from "../constants";
 import Dropdown from "react-bootstrap/Dropdown";
-import Option from "./Options";
-
-import {
-  handleAddToPlaylist,
-  handleAddToWatchlater,
-  handleRemoveFromPlaylist,
-  handleRemoveFromWatchlater,
-} from "../functions/fun";
-
-import { toggleStyle, elipsisStyle } from "./styles/Styles";
+import Playlistoption from "./Playlistoption";
+import Watchlateroption from "./Watchlateroption";
+import { API_URL } from "../../constants";
 
 interface Playlist {
   id: number;
@@ -30,7 +24,6 @@ interface Watchlater {
 
 interface PropOptions {
   videoId: number;
-  slug: string;
 }
 
 function Videooptions(props: PropOptions) {
@@ -70,37 +63,31 @@ function Videooptions(props: PropOptions) {
           const playlistId = Number(playlist.id);
 
           if (playlist.videos.includes(props.videoId)) {
-            const playlistName = `Remove Video from ${playlist.name}`;
+            const prompt = `Remove Video from ${playlist.name}`;
             return (
-              <Option
+              <Playlistoption
                 key={playlistId}
-                playlistName={playlistName}
+                name={playlist.name}
+                prompt={prompt}
                 playlistId={playlistId}
                 videoId={props.videoId}
                 add={false}
                 itemId={"playlist-" + playlistId + "-video-" + props.videoId}
-                handleMethod={async () => handleRemoveFromPlaylist(
-                  props.videoId,
-                  playlistId,
-                  myToken
-                )}
+                myToken={myToken}
               />
             );
           } else {
-            const playlistName = `Add Video to ${playlist.name}`;
+            const prompt = `Add Video to ${playlist.name}`;
             return (
-              <Option
+              <Playlistoption
                 key={playlistId}
-                playlistName={playlistName}
+                name={playlist.name}
+                prompt={prompt}
                 playlistId={playlistId}
                 videoId={props.videoId}
                 add={true}
                 itemId={"playlist-" + playlistId + "-video-" + props.videoId}
-                handleMethod={async () => handleAddToPlaylist(
-                  props.videoId,
-                  playlistId,
-                  myToken
-                )}
+                myToken={myToken}
               />
             );
           }
@@ -132,27 +119,25 @@ function Videooptions(props: PropOptions) {
         if (watchlaterItem.videos.includes(props.videoId)) {
           const playlistName = "Remove Video from Watchlater";
           return (
-            <Option
+            <Watchlateroption
               key={playlistId}
-              playlistName={playlistName}
-              playlistId={playlistId}
+              prompt={playlistName}
               videoId={props.videoId}
               add={false}
               itemId={"watchlater-" + playlistId + "-video-" + props.videoId}
-              handleMethod={async () => handleRemoveFromWatchlater(props.videoId, myToken)}
+              myToken={myToken}
             />
           );
         } else {
           const playlistName = "Add Video to Watchlater";
           return (
-            <Option
+            <Watchlateroption
               key={playlistId}
-              playlistName={playlistName}
-              playlistId={playlistId}
+              prompt={playlistName}
               videoId={props.videoId}
               add={true}
               itemId={"watchlater-" + playlistId + "-video-" + props.videoId}
-              handleMethod={async () => handleAddToWatchlater(props.videoId, myToken)}
+              myToken={myToken}
             />
           );
         }

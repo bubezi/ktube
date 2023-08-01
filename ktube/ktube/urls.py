@@ -117,6 +117,21 @@ urlpatterns += [
     
     path('api/add_video_to_watchlater',views_tube.add_video_to_watchlater_API),
     path('api/remove_video_from_watchlater',views_tube.remove_video_from_watchlater_API),
+    
+    path('api/watch/v/<str:slug>', views_tube.Watch_video_API.as_view()),
+    path('api/channel/<str:id>', views_tube.Channel_API.as_view()),
+    
+    path('api/getChannels/<str:id>', views_tube.Get_Channels_API.as_view()),
+    
+    path('api/isowner/<str:id>', views_tube.Is_owner_API.as_view()),
+    path('api/getComments/<str:id>', views_tube.Get_comments_API.as_view()),
+    
+    path('api/getReplies/<str:id>', views_tube.Get_replies_API.as_view()),
+    
+    path('api/liked/<str:id>', views_tube.Liked_API.as_view()),
+    path('api/disliked/<str:id>', views_tube.DisLiked_API.as_view()),
+    
+    path('api/moreVideos/<str:id>', views_tube.More_Videos_API.as_view()),
 ]
 
 
