@@ -1,9 +1,8 @@
 import React from "react";
-import { VideoType } from "../Videos";
-import Videocard from "../Videocard";
-import { videoInit } from "../Videos";
+import { VideoType, videoInit } from "../Videos";
 import axios from "axios";
 import { API_URL } from "../../constants";
+import MoreVideosCard from "./MoreVideosCard";
 
 interface Props {
   videoId: number,
@@ -27,11 +26,11 @@ const Morevideos = (props: Props) => {
         .catch((error) => {
           console.log(error);
         });}
-  }, []);
+  }, [props.videoId]);
 
   const morevideos = moreVideos.map((video) => {
     return (
-      <Videocard
+      <MoreVideosCard
         key={video.id}
         videoId={video.id}
         title={video.title}

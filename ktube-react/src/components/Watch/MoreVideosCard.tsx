@@ -1,10 +1,10 @@
 // import placeholder from '../assets/images/thumbnail-placeholder.webp'
-import imagePlaceholder from '../assets/images/placeholder.png'
+import imagePlaceholder from '../../assets/images/placeholder.png'
 import axios from 'axios'
-import { API_URL } from '../constants'
+import { API_BASE_URL, API_URL } from '../../constants'
 import React from 'react'
 
-import Videooptions from './Options/Videooptions'
+import Videooptions from '../Options/Videooptions'
 
 interface Prop {
     videoId: number,
@@ -22,13 +22,12 @@ export interface ChannelDetailsState {
     name: string,
 }
 
-const Videocard = (props: Prop) => {
+const MoreVideosCard = (props: Prop) => {
     const channelDetailsState: ChannelDetailsState = {profile_picture:'', name:''};
     const [channelDetails, setChannelDetails] = React.useState<ChannelDetailsState>(channelDetailsState);
 
 
     React.useEffect(()=>{
-        console.log(props.thumbnail);
         if (props.channelId !== 0){
             axios.get(API_URL+"dp/"+props.channelId)
                 .then(res => setChannelDetails(res.data))
@@ -76,7 +75,7 @@ const Videocard = (props: Prop) => {
         <>
             <div className={props.colSize}>
                 <a href={"/watch/" + props.slug}>
-                    <img src={props.thumbnail} alt="thumbnail" className="thumbnail" />
+                    <img src={API_BASE_URL + props.thumbnail} alt="thumbnail" className="thumbnail" />
                 </a>
                 <div className="box-element product">
                     <div className="row">
@@ -117,4 +116,4 @@ const Videocard = (props: Prop) => {
     );
 }
 
-export default Videocard;
+export default MoreVideosCard;
