@@ -6,7 +6,7 @@
 
 body {
   background-color: hsl(0, 0%, 98%);
-  padding-top: 65px !important;
+  padding-top: 56px !important;
   overflow-x: hidden;
 }
 
@@ -222,9 +222,10 @@ a:hover {
 }
 
 #more-videos {
-  max-height: 1000px;
+  max-height: 1500px;
   overflow-y: scroll;
   scroll-behavior: smooth;
+  padding-top: 0;
 }
 
 #repliesStyle {

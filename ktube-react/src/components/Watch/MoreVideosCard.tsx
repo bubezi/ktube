@@ -50,6 +50,11 @@ const MoreVideosCard = (props: Prop) => {
         color: "green",
         marginBottom: "0 !important",
     }
+
+    const cardStyle = {
+        paddingLeft: "0",
+        paddingRight: "0",
+    }
     
 
     const pluralViews = props.views === 1 ? 'view' : 'views';
@@ -73,7 +78,7 @@ const MoreVideosCard = (props: Prop) => {
     
     return (
         <>
-            <div className={props.colSize}>
+            <div className={props.colSize} style={cardStyle}>
                 <a href={"/watch/" + props.slug}>
                     <img src={API_BASE_URL + props.thumbnail} alt="thumbnail" className="thumbnail" />
                 </a>

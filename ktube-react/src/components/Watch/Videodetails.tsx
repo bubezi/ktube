@@ -25,6 +25,10 @@ interface Prop {
     upload_time: string,
 }
 
+const brStyle = {
+    
+}
+
 const Videodetails = (props: Prop) => {
     const PrivateOrUnlisted = () => {
         if (props.private){
@@ -73,7 +77,9 @@ const Videodetails = (props: Prop) => {
                     </div>
                 </div>
                 <Subscribe subscribers={props.subscribers} channelId={props.channelId} channelUserId={props.channelUserId}/>
+                <br style={brStyle}/>
                 <Viewsandoptions videoId={props.videoId} views={props.views}/>
+                <br style={brStyle}/>
                 <Likeanddislike videoId={props.videoId} likes={props.likes} dislikes={props.dislikes}/>
                 <Description description={props.description} upload_time={props.upload_time}/>
                 <br/>
