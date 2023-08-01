@@ -3,7 +3,7 @@ interface Props {
     upload_time: string,
 }
 
-export default function Description (props: Props) {
+const Description = (props: Props) => {
     const DescriptionText = () => {
         if (props.description===""){
             return (<div className="row"><h6 >No Description</h6></div>);
@@ -27,3 +27,5 @@ export default function Description (props: Props) {
     </>
     );
 }
+
+export default Description;

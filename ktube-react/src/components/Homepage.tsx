@@ -2,7 +2,7 @@ import Homescreen from "./Homescreen";
 import Videos from "./Videos";
 import Footer from "./Footer";
 
-function Homepage () {
+const Homepage = () => {
     document.title="Home | KTUBE";
     return (
         <>

@@ -25,7 +25,7 @@ interface Prop {
     upload_time: string,
 }
 
-export default function Videodetails (props: Prop) {
+const Videodetails = (props: Prop) => {
     const PrivateOrUnlisted = () => {
         if (props.private){
             return (<h6 style={publicityStyle}>(private)</h6>);
@@ -82,3 +82,5 @@ export default function Videodetails (props: Prop) {
     </>
     );
 }
+
+export default Videodetails;

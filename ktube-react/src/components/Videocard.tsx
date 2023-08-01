@@ -22,7 +22,7 @@ interface ChannelDetailsState {
     name: string,
 }
 
-function Videocard (props: Prop) {
+const Videocard = (props: Prop) => {
     const channelDetailsState: ChannelDetailsState = {profile_picture:'', name:''};
     const [channelDetails, setChannelDetails] = React.useState<ChannelDetailsState>(channelDetailsState);
 
@@ -54,7 +54,7 @@ function Videocard (props: Prop) {
 
     const pluralViews = props.views === 1 ? 'view' : 'views';
 
-    function Thumbnail () {
+    const Thumbnail = () => {
         if (props.thumbnail===''){
             return ( <img src={imagePlaceholder} className="channel-icon" alt="Channel Profile picture" style={imageStyle}/>);
         }
@@ -63,8 +63,7 @@ function Videocard (props: Prop) {
         }
     }
 
-    
-    function Price () {
+    const Price = () => {
         if (props.price>0) {
             return (<p style={priceStyle}>KShs. { props.price }</p>);
         }else{

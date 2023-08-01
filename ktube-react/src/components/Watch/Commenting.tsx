@@ -14,7 +14,7 @@ interface Props {
     videoId: number,
 }
 
-export default function Commenting (props: Props) {
+const Commenting = (props: Props) => {
     const viewerProvided = useViewerContext();
     const [ manyChannels, setManyChannels ] = React.useState<boolean>(false)
     const [ channels, setChannels ] = React.useState<Array<Channel>>(channelsInit)
@@ -97,3 +97,5 @@ export default function Commenting (props: Props) {
         return (<a href="/auth/login" target="_blank"><h6 className="row box-element"><u>Login</u> to Add Comment</h6></a>);
     }
 }
+
+export default Commenting;

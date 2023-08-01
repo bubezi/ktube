@@ -5,7 +5,7 @@ interface Props {
     views: number,
 }
 
-export default function Viewsandoptions (props: Props) {
+const Viewsandoptions = (props: Props) => {
     const Views = () => {
         if (props.views === 1){
             // <h6><strong id="video-views-count"> {{video.views | intcomma }} views</strong></h6>
@@ -27,3 +27,5 @@ export default function Viewsandoptions (props: Props) {
     </>
     );
 }
+
+export default Viewsandoptions;

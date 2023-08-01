@@ -15,7 +15,7 @@ interface PropOption {
   myToken: string;
 }
 
-function Playlistoption(props: PropOption) {
+const Playlistoption = (props: PropOption) => {
   const [prompt, setPrompt] = React.useState(props.prompt);
   const [addTo, setAddTo] = React.useState(props.add);
   let handleClick = () => {};

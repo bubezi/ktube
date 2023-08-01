@@ -9,7 +9,7 @@ interface Props {
   videoId: number,
 }
 
-export default function Morevideos(props: Props) {
+const Morevideos = (props: Props) => {
   const [moreVideos, setMoreVideos] = React.useState<VideoType[]>(videoInit);
 
   React.useEffect(()=>{
@@ -53,3 +53,5 @@ export default function Morevideos(props: Props) {
     </>
   );
 }
+
+export default Morevideos;

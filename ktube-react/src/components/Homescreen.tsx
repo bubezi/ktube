@@ -1,4 +1,4 @@
-function Homescreen(){
+const Homescreen = () => {
     const sloganStyle = {
         color: "Aliceblue"
     }

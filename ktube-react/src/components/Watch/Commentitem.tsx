@@ -15,7 +15,7 @@ interface Props {
   channels: Array<Channel>;
 }
 
-export default function Commentitem(props: Props) {
+const Commentitem = (props: Props) => {
   const [myToken] = React.useState(() => {
     const savedToken = localStorage.getItem("token");
     return savedToken ?? null;
@@ -127,3 +127,5 @@ export default function Commentitem(props: Props) {
     </>
   );
 }
+
+export default Commentitem;

@@ -38,7 +38,7 @@ export interface Channel {
 
 export const channelInit = { id:0, name: "", profile_picture: "", subscriber_count: 0, private: true, unlisted:true, subscribers:[0], userId:0};
 
-function Watchpage() {
+const Watchpage = () => {
   const videoInit = {
     id: 0,
     title: "",

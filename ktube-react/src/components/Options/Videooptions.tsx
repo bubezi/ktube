@@ -26,7 +26,7 @@ interface PropOptions {
   videoId: number;
 }
 
-function Videooptions(props: PropOptions) {
+const Videooptions = (props: PropOptions) => {
   const [playlists, setPlaylists] = React.useState<Array<Playlist>>([]);
   const [watchlater, setWatchlater] = React.useState<Array<Watchlater>>([]);
   const [myToken] = React.useState(() => {

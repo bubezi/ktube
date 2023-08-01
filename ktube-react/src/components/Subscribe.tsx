@@ -10,7 +10,7 @@ interface Props {
     channelUserId: number,
 }
 
-export default function Subscribe (props: Props) {
+const Subscribe = (props: Props) => {
     const [ subscribed, setSubscribed ] = React.useState(props.subscribers.includes(props.channelUserId));
     const [myToken] = React.useState(() => {
       const savedToken = localStorage.getItem("token");
@@ -79,3 +79,5 @@ export default function Subscribe (props: Props) {
         );
     }
 }
+
+export default Subscribe;

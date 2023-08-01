@@ -39,7 +39,7 @@ const commentInit = [
   },
 ];
 
-export default function Comments(props: Props) {
+const Comments = (props: Props) => {
   const viewerProvided = useViewerContext();
   const [ owner, setOwner ] = React.useState<boolean>(false);
   const [ manyChannels, setManyChannels ] = React.useState<boolean>(false);
@@ -161,3 +161,5 @@ export default function Comments(props: Props) {
     </>
   );
 }
+
+export default Comments;

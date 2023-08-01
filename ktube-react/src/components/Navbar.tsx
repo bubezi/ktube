@@ -1,14 +1,15 @@
 import { useViewerContext } from "../providers/ViewerProvider";
 
-function Navbar() {
+const Navbar = () => {
   const viewerProvided = useViewerContext();
 
-  function logOut(){
+  const logOut = () => {
     localStorage.removeItem('token');
     location.reload();
   }
 
-  function AuthLinks(){
+
+  const AuthLinks = () => {
     if(viewerProvided.myToken){
       return(
       <>
@@ -158,7 +159,7 @@ function Navbar() {
     }
   }
 
-  function AuthButtons() {
+  const AuthButtons = () => {
     if (viewerProvided.myToken) {
       return (
         <div className="form-inline my-2 my-lg-0">

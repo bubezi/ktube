@@ -1,7 +1,8 @@
 import React from 'react';
 import Login from '../Login';
 
-function Auth() {
+
+const Auth = () => {
   const [token, setToken] = React.useState (() => {
     const savedToken = localStorage.getItem('token');
     return savedToken ?? null;

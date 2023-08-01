@@ -217,7 +217,7 @@ const Likeanddislikebuttons = (props: PropsButtons) => {
   }
 };
 
-export default function Likeanddislike(props: Props) {
+const Likeanddislike = (props: Props) => {
   const Likes = () => {
     if (props.likes === 1) {
       return (
@@ -258,3 +258,5 @@ export default function Likeanddislike(props: Props) {
     </>
   );
 }
+
+export default Likeanddislike;
