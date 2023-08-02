@@ -25,24 +25,31 @@ interface Video {
   price: number;
 }
 
+
 export interface Channel {
   id: number;
   name: string;
   profile_picture: string;
+  user: number;
   private: boolean;
   unlisted: boolean;
   subscribers: number[];
-  userId: number;
+  website_official: string;
+  channel_active: boolean;
+  about: string;
 }
 
 export const channelInit = {
   id: 0,
   name: "",
   profile_picture: "",
+  user: 0,
   private: true,
   unlisted: true,
   subscribers: [0],
-  userId: 0,
+  website_official: '',
+  channel_active: false,
+  about: '',
 };
 
 const Watchpage = () => {
@@ -119,7 +126,7 @@ const Watchpage = () => {
             profile_picture={channel.profile_picture}
             channelId={channel.id}
             subscribers={channel.subscribers}
-            channelUserId={channel.userId}
+            channelUserId={channel.user}
             videoId={video.id}
             views={video.views}
             likes={video.likes}

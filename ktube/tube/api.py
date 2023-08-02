@@ -229,7 +229,7 @@ class Get_Channels_API(APIView):
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         serializer = ChannelSerializer(channels, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({'channels':serializer.data}, status=status.HTTP_200_OK)
     
 
 class Is_owner_API(APIView):
@@ -243,7 +243,7 @@ class Is_owner_API(APIView):
                 'error': 'Viewer Not Found!'
             }, status=status.HTTP_404_NOT_FOUND)
             
-        owner = viewer_signed_in is viewer_in_db
+        owner = viewer_signed_in == viewer_in_db
         
         return Response({'is_owner':owner}, status=status.HTTP_200_OK)
 
