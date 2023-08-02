@@ -29,7 +29,6 @@ export interface Channel {
   id: number;
   name: string;
   profile_picture: string;
-  subscriber_count: number;
   private: boolean;
   unlisted: boolean;
   subscribers: number[];
@@ -40,7 +39,6 @@ export const channelInit = {
   id: 0,
   name: "",
   profile_picture: "",
-  subscriber_count: 0,
   private: true,
   unlisted: true,
   subscribers: [0],
@@ -89,7 +87,7 @@ const Watchpage = () => {
 
   React.useEffect(() => {
     document.title = video.title + " | KTUBE";
-    if (video.channel !== 0) {
+    if (video.channel !== 0 && channel.id === 0) {
       axios({
         method: "get",
         url: API_URL + "channel/" + video.channel,
@@ -104,7 +102,7 @@ const Watchpage = () => {
           console.log(error);
         });
     }
-  }, [video]);
+  }, [video, channel]);
 
   return (
     <>
@@ -115,7 +113,7 @@ const Watchpage = () => {
           <Watchpagecontainer
             title={video.title}
             channel={channel.name}
-            subscriber_count={channel.subscriber_count}
+            subscriber_count={channel.subscribers.length}
             private={channel.private}
             unlisted={channel.unlisted}
             profile_picture={channel.profile_picture}

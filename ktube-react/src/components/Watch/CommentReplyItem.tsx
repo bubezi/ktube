@@ -10,7 +10,7 @@ import { ChannelDetailsState } from "../Videocard";
 import { CommentReply } from "./Comments";
 
 interface Props {
-  comment: CommentReply;
+  reply: CommentReply;
   owner: boolean;
   manyChannels: boolean;
   channels: Array<Channel>;
@@ -22,12 +22,12 @@ const CommentReplyItem = (props: Props) => {
     const [channelDetails, setChannelDetails] = React.useState<ChannelDetailsState>(channelDetailsState);
   
     React.useEffect(()=>{
-        if (props.comment.channel !== 0){
-            axios.get(API_URL+"dp/"+props.comment.channel)
+        if (props.reply.channel !== 0){
+            axios.get(API_URL+"dp/"+props.reply.channel)
                 .then(res => setChannelDetails(res.data))
                 .catch((error)=>{console.log(error)});
         }
-    }, [props.comment]);
+    }, [props.reply]);
   
     const [myToken] = React.useState(() => {
       const savedToken = localStorage.getItem("token");
@@ -73,7 +73,7 @@ const CommentReplyItem = (props: Props) => {
   
     const deleteComment = () => {
       const data = {
-        commentId: props.comment.id,
+        commentId: props.reply.id,
       };
   
       const config = {
@@ -103,7 +103,7 @@ const CommentReplyItem = (props: Props) => {
     };
   
     const ChannelDp = () => {
-      if (props.comment.channel === 0) {
+      if (props.reply.channel === 0) {
         return (
           <img
             src={imagePlaceholder}
@@ -129,14 +129,10 @@ const CommentReplyItem = (props: Props) => {
         <div className="col-lg-12">
             <div className="row description">
             <ChannelDp />
-            <a href="#">
-                <p>
-                <strong><small>{channelDetails.name}</small></strong>
-                </p>
-            </a>
+            <p><strong><small><a href={"/channel/" + props.reply.channel}>{channelDetails.name}</a> replied</small></strong></p>
             </div>
             <div className="row description">
-            <p><small>{props.comment.reply}</small></p>
+            <p><small>{props.reply.reply}</small></p>
             </div>
             <DeleteComp />
         </div>

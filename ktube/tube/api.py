@@ -207,18 +207,28 @@ class Get_Channels_API(APIView):
         channels = []
 
         try:
-            nav_channel = Channel.objects.get(user=viewer)
-            channels = nav_channel
+            my_channels = Channel.objects.filter(user=viewer)
+            
+            if not my_channels:
+                return Response({
+                    'error': 'No Channels Found!'
+                }, status=status.HTTP_404_NOT_FOUND)
+
+            if len(my_channels) == 1:
+                channels.append(my_channels[0])
+            else:
+                channels.extend(my_channels)
 
         except Channel.DoesNotExist:
             return Response({
                 'error': 'Channel Not Found!'
             }, status=status.HTTP_404_NOT_FOUND)
-        except:
-            my_channels = Channel.objects.filter(user=viewer)  
-            channels.extend(my_channels)
-        
-        serializer = ChannelSerializer(my_channels, many=True)
+        except Exception as e:
+            return Response({
+                'error': str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        serializer = ChannelSerializer(channels, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
 

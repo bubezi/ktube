@@ -98,7 +98,7 @@ const CommentWithReplies: React.FC<RepliesProps> = ({
     return (
       <CommentReplyItem
         key={commentReply.id}
-        comment={commentReply}
+        reply={commentReply}
         owner={owner}
         manyChannels={manyChannels}
         channels={channels}
@@ -158,8 +158,9 @@ const Comments = (props: Props) => {
         },
       })
         .then((res) => {
-          setChannels(res.data.channels);
-          if (channels.length > 1) {
+          const channelsData = res.data?.channels;
+          setChannels(channelsData);
+          if (channelsData?.length > 1) {
             setManyChannels(true);
           }
         })
@@ -168,9 +169,10 @@ const Comments = (props: Props) => {
         });
     }
   }, [viewerProvided.viewer.id]);
+  
 
   React.useEffect(() => {
-    if (channels[0].id !== 0) {
+    if (channels && channels[0]?.id !== 0) {
       axios({
         method: "get",
         url: API_URL + "isowner/" + String(channels[0].id),
@@ -184,6 +186,7 @@ const Comments = (props: Props) => {
         });
     }
   }, [channels]);
+  
 
   const showComments = comments.map((comment) => (
     <CommentWithReplies
