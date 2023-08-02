@@ -28,7 +28,6 @@ const Videocard = (props: Prop) => {
 
 
     React.useEffect(()=>{
-        console.log(props.thumbnail);
         if (props.channelId !== 0){
             axios.get(API_URL+"dp/"+props.channelId)
                 .then(res => setChannelDetails(res.data))
