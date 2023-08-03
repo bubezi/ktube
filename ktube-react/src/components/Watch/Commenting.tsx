@@ -12,6 +12,7 @@ interface Props {
 
 const Commenting = (props: Props) => {
   const [commentText, setCommentText] = React.useState<string>("");
+  const [channelId, setChannelId] = React.useState<number>(0);
   const [myToken] = React.useState(() => {
     const savedToken = localStorage.getItem("token");
     return savedToken ?? null;
@@ -52,6 +53,44 @@ const Commenting = (props: Props) => {
     }
   };
 
+ 
+  const handleManyChannelsComment = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if(channelId!==0){
+      try {
+        const formData = new FormData();
+        formData.append("comment_text", commentText);
+        formData.append("video_id", props.videoId.toString());
+        formData.append("channel_id", channelId.toString());
+  
+        const response = await axios.post(
+          API_URL + "commentManyChannels",
+          formData,
+          {
+            headers: {
+              Authorization: `Token ${myToken}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+  
+        if (response.status === 201) {
+          setCommentText("");
+          alert('Comment Added');
+        } else {
+          // Handle error response
+          console.error("Failed to submit comment");
+          // Display error message to the user
+        }
+      } catch (error) {
+        // Handle network error
+        console.error("Network error:", error);
+        // Display error message to the user
+      }
+    }
+  };
+
   if (myToken) {
     if (!props.manyChannels) {
       return (
@@ -59,7 +98,7 @@ const Commenting = (props: Props) => {
           <form id="comment-form"
           onSubmit={handleComment}
           >
-            {/* {% csrf_token %} */}
+            <fieldset>
             <div className="row">
               <h5>
                 <label htmlFor="comment-text">Add Comment</label>
@@ -74,7 +113,6 @@ const Commenting = (props: Props) => {
                 onChange={(e) => setCommentText(e.target.value)}
               ></textarea>
             </div>
-            <input type="hidden" name="video_id" value="{{video.slug}}" />
             <div className="row" style={commentButton}>
               <button className="btn btn-success" type="submit"
               disabled={!commentText}
@@ -82,6 +120,7 @@ const Commenting = (props: Props) => {
                 Comment
               </button>
             </div>
+            </fieldset>
           </form>
         </>
       );
@@ -99,10 +138,9 @@ const Commenting = (props: Props) => {
         <>
           <form
             id="comment-many-channels-form"
-            method="post"
-            encType="multipart/form-data"
+            onSubmit={handleManyChannelsComment}
           >
-            {/* {% csrf_token %} */}
+            <fieldset>
             <div className="row">
               <h5>
                 <label htmlFor="comment-text">Add Comment</label>
@@ -113,16 +151,18 @@ const Commenting = (props: Props) => {
                 maxLength={500}
                 id="comment-text"
                 name="comment_text"
+                value={commentText}
+                onChange={(e) => setCommentText(e.target.value)}
               ></textarea>
             </div>
-            <input type="hidden" name="video_id" value={props.videoId} />
             <div className="row">
               <div className="col-lg-12">
                 <div className="row">
                   <label htmlFor="channel-id">Select channel</label>
                 </div>
                 <div className="row">
-                  <select name="channel_id" id="channel-id">
+                  <select name="channel_id" id="channel-id" onChange={(e) => setChannelId(Number(e.target.value))}>
+                  <option key="select_channel" value={0}>Select Channel</option>
                     {options}
                   </select>
                 </div>
@@ -132,11 +172,12 @@ const Commenting = (props: Props) => {
               <button
                 className="btn btn-success"
                 type="submit"
-                //   onClick={}
+                disabled={!commentText || channelId === 0}
               >
                 Comment
               </button>
             </div>
+            </fieldset>
           </form>
           <br />
         </>
