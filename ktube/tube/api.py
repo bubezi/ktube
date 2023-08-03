@@ -237,13 +237,18 @@ class Is_owner_API(APIView):
     def get(self, request, id, format=None):
         viewer_signed_in = request.user.viewer
         try:
-            viewer_in_db = Viewer.objects.get(id=id)
-        except Viewer.DoesNotExist:
+            channel = Channel.objects.get(id=id)
+            viewer_in_db = channel.user
+        except Channel.DoesNotExist:
             return Response({
-                'error': 'Viewer Not Found!'
+                'error': 'Channel Not Found!'
             }, status=status.HTTP_404_NOT_FOUND)
             
         owner = viewer_signed_in == viewer_in_db
+        print('viewer_signed_in: ', viewer_signed_in)
+        print('viewer_in_db: ', viewer_in_db)
+        print('id: ', id)
+        print('owner: ', owner)
         
         return Response({'is_owner':owner}, status=status.HTTP_200_OK)
 

@@ -6,17 +6,19 @@ import { useViewerContext } from "../../providers/ViewerProvider";
 import { Channel } from "../Watchpage";
 import Commentitem from "./Commentitem";
 import CommentReplyItem from "./CommentReplyItem";
-// import { channelInit } from "../Watchpage";
 
-const channelInit = {
+
+export const channelInit = {
   id: 0,
   name: "",
   profile_picture: "",
-  subscriber_count: 0,
+  user: 0,
   private: true,
   unlisted: true,
   subscribers: [0],
-  userId: 0,
+  website_official: '',
+  channel_active: false,
+  about: '',
 };
 
 const channelsInit = [channelInit];
@@ -67,14 +69,12 @@ interface Props {
 
 interface RepliesProps {
   comment: Comment;
-  owner: boolean;
   manyChannels: boolean;
   channels: Channel[];
 }
 
 const CommentWithReplies: React.FC<RepliesProps> = ({
   comment,
-  owner,
   manyChannels,
   channels,
 }) => {
@@ -99,7 +99,6 @@ const CommentWithReplies: React.FC<RepliesProps> = ({
       <CommentReplyItem
         key={commentReply.id}
         reply={commentReply}
-        owner={owner}
         manyChannels={manyChannels}
         channels={channels}
       />
@@ -110,7 +109,6 @@ const CommentWithReplies: React.FC<RepliesProps> = ({
     <React.Fragment key={comment.id}>
       <Commentitem
         comment={comment}
-        owner={owner}
         manyChannels={manyChannels}
         channels={channels}
       />
@@ -123,7 +121,6 @@ const CommentWithReplies: React.FC<RepliesProps> = ({
 
 const Comments = (props: Props) => {
   const viewerProvided = useViewerContext();
-  const [owner, setOwner] = React.useState<boolean>(false);
   const [manyChannels, setManyChannels] = React.useState<boolean>(false);
   const [channels, setChannels] = React.useState<Array<Channel>>(channelsInit);
   const [comments, setComments] = React.useState<Array<Comment>>(commentInit);
@@ -171,28 +168,10 @@ const Comments = (props: Props) => {
   }, [viewerProvided.viewer.id]);
   
 
-  React.useEffect(() => {
-    if (channels && channels[0]?.id !== 0) {
-      axios({
-        method: "get",
-        url: API_URL + "isowner/" + String(channels[0].id),
-        headers: {
-          Authorization: `Token ${myToken}`,
-        },
-      })
-        .then((res) => setOwner(res.data.is_owner))
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  }, [channels]);
-  
-
   const showComments = comments.map((comment) => (
     <CommentWithReplies
       key={comment.id}
       comment={comment}
-      owner={owner}
       manyChannels={manyChannels}
       channels={channels}
     />

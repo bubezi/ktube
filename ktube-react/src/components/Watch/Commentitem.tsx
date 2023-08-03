@@ -2,7 +2,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import imagePlaceholder from "../../assets/images/placeholder.png";
 import { Channel } from "../Watchpage";
 import { Comment } from "./Comments";
-import { toggleStyle } from "../../assets/styles/Styles";
+import { elipsisStyle, toggleStyle } from "../../assets/styles/Styles";
 import axios from "axios";
 import { API_URL } from "../../constants";
 import React from "react";
@@ -11,7 +11,6 @@ import { ChannelDetailsState } from "../Videocard";
 
 interface Props {
   comment: Comment;
-  owner: boolean;
   manyChannels: boolean;
   channels: Array<Channel>;
 }
@@ -20,6 +19,7 @@ interface Props {
 const Commentitem = (props: Props) => {
   const channelDetailsState: ChannelDetailsState = {profile_picture:'', name:''};
   const [channelDetails, setChannelDetails] = React.useState<ChannelDetailsState>(channelDetailsState);
+  const [owner, setOwner] = React.useState<boolean>(false);
 
   React.useEffect(()=>{
       if (props.comment.channel !== 0){
@@ -33,15 +33,37 @@ const Commentitem = (props: Props) => {
     const savedToken = localStorage.getItem("token");
     return savedToken ?? null;
   });
+  
+
+  React.useEffect(() => {
+    if (myToken !== null && props.comment.channel !== 0) {
+      axios({
+        method: "get",
+        url: API_URL + "isowner/" + String(props.comment.channel),
+        headers: {
+          Authorization: `Token ${myToken}`,
+        },
+      })
+        .then((res) => {
+          const channelOwner = res.data?.is_owner;
+          setOwner(channelOwner);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, []);
 
   const commentStyle = {
     marginLeft: "0px"
   }
   
   const DeleteComp = () => {
-    if (myToken && props.owner) {
+    if (myToken && owner) {
       return (
         <div className="row">
+          <div className="col-lg-10"></div>
+          <div className="col-lg-2 col-12 text-right mt-2 mt-lg-0">
           <div className="video-options">
             <div className="dropdown">
               <Dropdown>
@@ -49,10 +71,10 @@ const Commentitem = (props: Props) => {
                   id="dropdownMenuButton1"
                   className="custom-dropdown"
                   style={toggleStyle}
-                  aria-haspopup="true"
-                  aria-expanded="true"
                 >
-                  <i className="fa-solid fa-ellipsis-vertical"></i>
+                  <i className="fa-solid fa-ellipsis-vertical"
+                  style={elipsisStyle}
+                  ></i>
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
                   <Dropdown.Item
@@ -65,6 +87,7 @@ const Commentitem = (props: Props) => {
                 </Dropdown.Menu>
               </Dropdown>
             </div>
+          </div>
           </div>
         </div>
       );
