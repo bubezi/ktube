@@ -9,8 +9,10 @@ import {
   publicityStyle,
   titleStyle,
 } from "../../assets/styles/WatchStyles";
-import { API_BASE_URL } from "../../constants";
+import { API_BASE_URL, API_URL } from "../../constants";
 import React from "react";
+import { useViewerContext } from "../../providers/ViewerProvider";
+import axios from "axios";
 
 interface Prop {
   title: string;
@@ -34,10 +36,55 @@ const Videodetails = (props: Prop) => {
   const [subscriberCount, setSubscriberCount] = React.useState<number>(
     props.subscriber_count
   );
+  
+  const myToken = useViewerContext().myToken;
+  const viewerId = useViewerContext().viewer.id;
 
   React.useEffect(() => {
     setSubscriberCount(props.subscriber_count);
   }, [props.subscriber_count]);
+
+  React.useEffect(()=>{
+    setTimeout(async ()=>{
+
+      const data = {
+        video_id: props.videoId,
+        viewer_id: viewerId,
+      };
+    
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Token ${myToken}`,
+        },
+      };
+    
+      if(props.videoId !== 0){
+        await axios
+          .post(API_URL + "addView", data, config)
+          .then((response) => {
+            console.log(response.data);
+          })
+          .catch((error) => {
+            if (error.response) {
+              // The request was made and the server responded with a status code
+              // that falls out of the range of 2xx
+              console.log(error.response.data);
+              console.log(error.response.status);
+              console.log(error.response.headers);
+            } else if (error.request) {
+              // The request was made but no response was received
+              console.log(error.request);
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              console.log("Error", error.message);
+            }
+            console.log(error.config);
+          });
+      }
+    }, 5000);
+  },[props.videoId])
+
   const PrivateOrUnlisted = () => {
     if (props.private) {
       return <h6 style={publicityStyle}>(private)</h6>;
