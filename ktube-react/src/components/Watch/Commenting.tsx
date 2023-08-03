@@ -44,7 +44,7 @@ const Commenting = (props: Props) => {
         </>
       );
     } else {
-      const options = channels.map((channel) => {
+      const options = props.channels.map((channel) => {
         const value = `${channel.id}`;
         const name = `${channel.name}`;
         return (
