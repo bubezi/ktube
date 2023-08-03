@@ -113,7 +113,6 @@ const CommentReplyItem = (props: Props) => {
         .then((response) => {
           console.log(response.data);
           toggleItem("comment-" + props.reply.id, false);
-          alert('Reply Deleted Successfully!')
         })
         .catch((error) => {
           if (error.response) {
