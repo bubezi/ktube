@@ -6,6 +6,7 @@ import { useViewerContext } from "../../providers/ViewerProvider";
 import { Channel } from "../Watchpage";
 import Commentitem from "./Commentitem";
 import CommentReplyItem from "./CommentReplyItem";
+import { toggleItem } from "../../functions/fun";
 
 
 const channelInit = {
@@ -73,6 +74,25 @@ interface RepliesProps {
   channels: Channel[];
 }
 
+const commentRepiesStyle = {
+  display:'none'
+}
+
+
+const toggleReplies = () => {
+  toggleItem("repliesStyle", true);
+  toggleItem("replies-toggle", false); 
+  toggleItem("replies-untoggle", true); 
+}
+
+
+const untoggleReplies = () => {
+  toggleItem("repliesStyle", false);
+  toggleItem("replies-toggle", true); 
+  toggleItem("replies-untoggle", false); 
+}
+
+
 const CommentWithReplies: React.FC<RepliesProps> = ({
   comment,
   manyChannels,
@@ -105,18 +125,36 @@ const CommentWithReplies: React.FC<RepliesProps> = ({
     );
   });
 
-  return (
-    <React.Fragment key={comment.id}>
-      <Commentitem
-        comment={comment}
-        manyChannels={manyChannels}
-        channels={channels}
-      />
-      <div className="col-lg-12" id="repliesStyle">
-        {showCommentReplies}
-      </div>
-    </React.Fragment>
-  );
+  if (commentReplies.length>0){
+    return (
+      <React.Fragment key={comment.id}>
+        <Commentitem
+          comment={comment}
+          manyChannels={manyChannels}
+          channels={channels}
+        />
+        <div className="row">
+          <div className="col-lg-3">
+            <a onClick={toggleReplies} id="replies-toggle">Show Replies</a>
+            <a onClick={untoggleReplies} id="replies-untoggle" style={commentRepiesStyle}>Hide Replies</a>
+          </div>
+        </div>
+        <div className="col-lg-12" id="repliesStyle" style={commentRepiesStyle}>
+          {showCommentReplies}
+        </div>
+      </React.Fragment>
+    );
+  }else{
+    return (
+      <React.Fragment key={comment.id}>
+        <Commentitem
+          comment={comment}
+          manyChannels={manyChannels}
+          channels={channels}
+        />
+      </React.Fragment>
+    );}
+
 };
 
 const Comments = (props: Props) => {
