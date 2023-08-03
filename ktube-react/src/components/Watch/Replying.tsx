@@ -20,6 +20,11 @@ const marginLeft = {
     marginLeft: "30px"
 }
 
+
+const marginLeft2 = {
+    marginLeft: "10px"
+}
+
 const Replying = (props: Props) => {
   const [replyText, setReplyText] = React.useState<string>("");
   const [channelId, setChannelId] = React.useState<number>(0);
@@ -31,10 +36,12 @@ const Replying = (props: Props) => {
 
 
 const toggleId = "reply-toggle"+ props.commentId
+const untoggleId = "reply-untoggle"+ props.commentId
 const toggleFormMany = () => {
     const formId = "reply-many-channels-form"+ props.commentId
     toggleItem(formId, true);
     toggleItem(toggleId, false);
+    toggleItem(untoggleId, true);
 }
 
 
@@ -42,6 +49,22 @@ const toggleForm = () => {
     const formId = "reply-form"+ props.commentId
     toggleItem(formId, true);
     toggleItem(toggleId, false);
+    toggleItem(untoggleId, true);
+}
+
+const untoggleFormMany = () => {
+    const formId = "reply-many-channels-form"+ props.commentId
+    toggleItem(formId, false);
+    toggleItem(toggleId, true);
+    toggleItem(untoggleId, false);
+}
+
+
+const untoggleForm = () => {
+    const formId = "reply-form"+ props.commentId
+    toggleItem(formId, false);
+    toggleItem(toggleId, true);
+    toggleItem(untoggleId, false);
 }
  
   const handleReply = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -121,6 +144,7 @@ const toggleForm = () => {
       return (
         <>
         <a id={"reply-toggle"+ props.commentId} onClick={toggleForm}><small>Reply</small></a>
+        <a id={"reply-untoggle"+ props.commentId} onClick={untoggleForm} style={formStyle}><small>Hide</small></a>
           <form 
           style={formStyle}
           id={"reply-form"+ props.commentId}
@@ -164,6 +188,7 @@ const toggleForm = () => {
       return (
         <>
         <a id={"reply-toggle"+ props.commentId} onClick={toggleFormMany}><small>Reply</small></a>
+        <a id={"reply-untoggle"+ props.commentId} onClick={untoggleFormMany} style={formStyle}><small>Hide</small></a>
           <form 
             style={formStyle}
             id={"reply-many-channels-form"+ props.commentId}
@@ -213,7 +238,7 @@ const toggleForm = () => {
   } else {
     return (
       <a href="/auth/login" target="_blank">
-        <h6 className="row box-element">Login to Add Comment</h6>
+        <h6 className="row" style={marginLeft2}><small><small>Login to reply</small></small></h6>
       </a>
     );
   }

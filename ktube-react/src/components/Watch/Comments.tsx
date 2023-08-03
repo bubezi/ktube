@@ -78,21 +78,6 @@ const commentRepiesStyle = {
   display:'none'
 }
 
-
-const toggleReplies = () => {
-  toggleItem("repliesStyle", true);
-  toggleItem("replies-toggle", false); 
-  toggleItem("replies-untoggle", true); 
-}
-
-
-const untoggleReplies = () => {
-  toggleItem("repliesStyle", false);
-  toggleItem("replies-toggle", true); 
-  toggleItem("replies-untoggle", false); 
-}
-
-
 const CommentWithReplies: React.FC<RepliesProps> = ({
   comment,
   manyChannels,
@@ -100,6 +85,23 @@ const CommentWithReplies: React.FC<RepliesProps> = ({
 }) => {
   const [commentReplies, setCommentReplies] =
     React.useState<Array<CommentReply>>(commentReplyInit);
+
+    const repliesId = "repliesStyle" + comment.id
+    const toogleId = "replies-toggle" + comment.id
+    const unToogleId = "replies-untoggle" + comment.id
+
+    const toggleReplies = () => {
+      toggleItem(repliesId, true);
+      toggleItem(toogleId, false); 
+      toggleItem(unToogleId, true); 
+    }
+    
+    const untoggleReplies = () => {
+      toggleItem(repliesId, false);
+      toggleItem(toogleId, true); 
+      toggleItem(unToogleId, false); 
+    }
+    
 
   React.useEffect(() => {
     if (comment.id !== 0) {
@@ -135,11 +137,11 @@ const CommentWithReplies: React.FC<RepliesProps> = ({
         />
         <div className="row">
           <div className="col-lg-3">
-            <a onClick={toggleReplies} id="replies-toggle">Show Replies</a>
-            <a onClick={untoggleReplies} id="replies-untoggle" style={commentRepiesStyle}>Hide Replies</a>
+            <a onClick={toggleReplies} id={"replies-toggle" + comment.id}><small>Show Replies</small></a>
+            <a onClick={untoggleReplies} id={"replies-untoggle"+ comment.id} style={commentRepiesStyle}><small>Hide Replies</small></a>
           </div>
         </div>
-        <div className="col-lg-12" id="repliesStyle" style={commentRepiesStyle}>
+        <div className="col-lg-12" id={"repliesStyle"+ comment.id} style={commentRepiesStyle}>
           {showCommentReplies}
         </div>
       </React.Fragment>
