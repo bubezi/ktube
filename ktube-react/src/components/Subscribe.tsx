@@ -8,25 +8,33 @@ interface Props {
     subscribers: number[],
     channelId: number,
     channelUserId: number,
+    setSubscriberCount:  React.Dispatch<React.SetStateAction<number>>,
+    subscriberCount: number,
 }
 
 const Subscribe = (props: Props) => {
-    const [ subscribed, setSubscribed ] = React.useState(props.subscribers.includes(props.channelUserId));
+    const viewerProvided = useViewerContext();
+    const [ subscribed, setSubscribed ] = React.useState(props.subscribers.includes(viewerProvided.viewer.id) && viewerProvided.viewer.id !== 0);
     const [myToken] = React.useState(() => {
       const savedToken = localStorage.getItem("token");
       return savedToken ?? null;
     });
 
-    const viewerProvided = useViewerContext();
+      React.useEffect(() => {
+        setSubscribed(props.subscribers.includes(viewerProvided.viewer.id) && viewerProvided.viewer.id !== 0);
+      }, [props.subscribers, viewerProvided.viewer.id]);
+
 
     if (myToken){
         const subscribe = () => {
             subOrUnsub('subscribeAPI',  props.channelId, viewerProvided.viewer.id, myToken);
+            props.setSubscriberCount(props.subscriberCount + 1);
             setSubscribed(true);
         }
     
         const unSubscribe = () => {
             subOrUnsub('unSubscribeAPI',  props.channelId, viewerProvided.viewer.id, myToken);
+            props.setSubscriberCount(props.subscriberCount - 1);
             setSubscribed(false);
         }
 

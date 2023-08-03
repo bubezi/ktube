@@ -516,6 +516,62 @@ def delete_reply_API(request):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['POST'])
+def subscribe_API(request):
+    try:
+        channel_id = request.data.get("channel_id")
+        viewer_id = request.data.get("viewer_id")
+        channel = Channel.objects.get(id=channel_id)
+        viewer = Viewer.objects.get(id=viewer_id)
+
+        if channel.user == viewer:
+            return Response({"success": False, "message": "You cannot subscribe to your own channel."}, status=status.HTTP_404_BAD_REQUEST)
+
+        try:
+            subscriptions = Subscriptions.objects.get(viewer=viewer)
+        except Subscriptions.DoesNotExist:
+            subscriptions = Subscriptions(viewer=viewer)
+            subscriptions.save()
+            
+        subscriptions.subscriptions.add(channel)
+        channel.subscribers.add(viewer)  # type: ignore
+        return Response(status=status.HTTP_200_OK)
+    except Channel.DoesNotExist:
+        return Response({"error": "Channel not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def unsubscribe_API(request):
+    try:
+        channel_id = request.data.get("channel_id")
+        viewer_id = request.data.get("viewer_id")
+        channel = Channel.objects.get(id=channel_id)
+        viewer = Viewer.objects.get(id=viewer_id)
+
+        if channel.user == viewer:
+            return Response({"success": False, "message": "You cannot unsubscribe to your own channel."}, status=status.HTTP_404_BAD_REQUEST)
+
+        try:
+            subscriptions = Subscriptions.objects.get(viewer=viewer)
+            subscriptions.subscriptions.remove(channel)
+        except Subscriptions.DoesNotExist:
+            subscriptions = Subscriptions(viewer=viewer)
+            subscriptions.save()
+            
+        channel.subscribers.remove(viewer)  # type: ignore
+        return Response(status=status.HTTP_200_OK)
+    except Channel.DoesNotExist:
+        return Response({"error": "Channel not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
 @api_view(["POST"])
 def comment_API(request):
     try:
@@ -537,3 +593,4 @@ def comment_API(request):
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
         return Response(status=status.HTTP_400_BAD_REQUEST)
+    
