@@ -31,12 +31,12 @@ interface Prop {
 }
 
 const Videodetails = (props: Prop) => {
-  const [subscriber_count, setSubscriber_count] = React.useState<number>(
+  const [subscriberCount, setSubscriberCount] = React.useState<number>(
     props.subscriber_count
   );
 
   React.useEffect(() => {
-    setSubscriber_count(props.subscriber_count);
+    setSubscriberCount(props.subscriber_count);
   }, [props.subscriber_count]);
   const PrivateOrUnlisted = () => {
     if (props.private) {
@@ -71,16 +71,16 @@ const Videodetails = (props: Prop) => {
   };
 
   const Subscribercount = () => {
-    if (subscriber_count === 1) {
+    if (subscriberCount === 1) {
       return (
         <h5 id="subscriber-count" style={publicityStyle}>
-          {subscriber_count} Subscriber
+          {subscriberCount} Subscriber
         </h5>
       );
     } else {
       return (
         <h5 id="subscriber-count" style={publicityStyle}>
-          {subscriber_count} Subscribers
+          {subscriberCount} Subscribers
         </h5>
       );
     }
@@ -114,8 +114,8 @@ const Videodetails = (props: Prop) => {
             subscribers={props.subscribers}
             channelId={props.channelId}
             channelUserId={props.channelUserId}
-            setSubscriberCount={setSubscriber_count}
-            subscriberCount={subscriber_count}
+            setSubscriberCount={setSubscriberCount}
+            subscriberCount={subscriberCount}
           />
           <Viewsandoptions videoId={props.videoId} views={props.views} />
           <Likeanddislike
