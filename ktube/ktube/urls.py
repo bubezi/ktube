@@ -142,6 +142,11 @@ urlpatterns += [
     
     path('api/subscribeAPI', tube_api.subscribe_API),
     path('api/unSubscribeAPI', tube_api.unsubscribe_API),
+    
+    path('api/likeVideo', tube_api.like_API),
+    path('api/unLikeVideo', tube_api.unlike_API),
+    path('api/disLikeVideo', tube_api.dislike_API),
+    path('api/unDisLikeVideo', tube_api.undislike_API),
 ]
 
 

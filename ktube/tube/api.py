@@ -308,7 +308,7 @@ class Liked_API(APIView):
                 'error': 'LikedVideos Not Found!'
             }, status=status.HTTP_404_NOT_FOUND)
             
-        liked = liked_videos.video.contains(video)     
+        liked = liked_videos.videos.contains(video)     
         
         return Response({'liked':liked}, status=status.HTTP_200_OK)
     
@@ -331,7 +331,7 @@ class DisLiked_API(APIView):
                 'error': 'DisLikedVideos Not Found!'
             }, status=status.HTTP_404_NOT_FOUND)
             
-        disliked = liked_videos.video.contains(video)     
+        disliked = disliked_videos.videos.contains(video)     
         
         return Response({'disliked':disliked}, status=status.HTTP_200_OK)
     
@@ -595,3 +595,151 @@ def comment_API(request):
     except:
         return Response(status=status.HTTP_400_BAD_REQUEST)
     
+
+@api_view(['POST'])
+def like_API(request):
+    try:
+        video_id = request.data.get("video_id")
+        viewer_id = request.data.get("viewer_id")
+        video = Video.objects.get(id=video_id)
+        viewer = Viewer.objects.get(id=viewer_id)
+        try:
+            liked_videos = LikedVideos.objects.get(viewer=viewer)
+
+        except LikedVideos.DoesNotExist:
+            liked_videos = LikedVideos(viewer=viewer)
+            liked_videos.save()
+
+        if liked_videos.videos.contains(video):
+            return Response({"error": "Video already liked"}, status=status.HTTP_404_BAD_REQUEST)
+
+        else:
+            video.likes += 1  # type: ignore
+            liked_videos.videos.add(video)
+            video.save()
+            return Response(status=status.HTTP_200_OK)
+        
+    except Video.DoesNotExist:
+        return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)      
+    except LikedVideos.DoesNotExist:
+        return Response({"error": "LikedVideos not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Viewer.DoesNotExist:
+        return Response({"error": "Viewer not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    
+
+@api_view(['POST'])
+def dislike_API(request):
+    try:
+        video_id = request.data.get("video_id")
+        viewer_id = request.data.get("viewer_id")
+        video = Video.objects.get(id=video_id)
+        viewer = Viewer.objects.get(id=viewer_id)
+        try:
+            disliked_videos = DisLikedVideos.objects.get(viewer=viewer)
+
+        except DisLikedVideos.DoesNotExist:
+            disliked_videos = DisLikedVideos(viewer=viewer)
+            disliked_videos.save()
+
+        if disliked_videos.videos.contains(video):
+            return Response({"error": "Video already disliked"}, status=status.HTTP_404_BAD_REQUEST)
+
+        else:
+            video.dislikes += 1  # type: ignore
+            disliked_videos.videos.add(video)
+            video.save()
+            return Response(status=status.HTTP_200_OK)
+        
+    except Video.DoesNotExist:
+        return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)      
+    except DisLikedVideos.DoesNotExist:
+        return Response({"error": "DisLikedVideos not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Viewer.DoesNotExist:
+        return Response({"error": "Viewer not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    
+
+@api_view(['POST'])
+def unlike_API(request):
+    try:
+        video_id = request.data.get("video_id")
+        viewer_id = request.data.get("viewer_id")
+        video = Video.objects.get(id=video_id)
+        viewer = Viewer.objects.get(id=viewer_id)
+        try:
+            liked_videos = LikedVideos.objects.get(viewer=viewer)
+
+            if liked_videos.videos.contains(video):
+                video.likes -= 1  # type: ignore
+                liked_videos.videos.remove(video)
+                video.save()
+                return Response(status=status.HTTP_200_OK)
+
+            else:
+                return Response({"error": "Video already unliked"}, status=status.HTTP_404_BAD_REQUEST)
+
+        except LikedVideos.DoesNotExist:
+            liked_videos = LikedVideos(viewer=viewer)
+            liked_videos.save()
+        
+    except Video.DoesNotExist:
+        return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)      
+    except LikedVideos.DoesNotExist:
+        return Response({"error": "LikedVideos not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Viewer.DoesNotExist:
+        return Response({"error": "Viewer not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+    
+
+@api_view(['POST'])
+def undislike_API(request):
+    try:
+        video_id = request.data.get("video_id")
+        viewer_id = request.data.get("viewer_id")
+        video = Video.objects.get(id=video_id)
+        viewer = Viewer.objects.get(id=viewer_id)
+        try:
+            disliked_videos = DisLikedVideos.objects.get(viewer=viewer)
+
+            if disliked_videos.videos.contains(video):
+                video.dislikes -= 1  # type: ignore
+                disliked_videos.videos.remove(video)
+                video.save()
+                return Response(status=status.HTTP_200_OK)
+
+            else:
+                return Response({"error": "Video already undisliked"}, status=status.HTTP_404_BAD_REQUEST)
+
+        except DisLikedVideos.DoesNotExist:
+            disliked_videos = DisLikedVideos(viewer=viewer)
+            disliked_videos.save()
+
+        if disliked_videos.videos.contains(video):
+            return Response({"error": "Video already disliked"}, status=status.HTTP_404_BAD_REQUEST)
+
+        else:
+            video.dislikes += 1  # type: ignore
+            disliked_videos.videos.add(video)
+            video.save()
+            return Response(status=status.HTTP_200_OK)
+        
+    except Video.DoesNotExist:
+        return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)      
+    except DisLikedVideos.DoesNotExist:
+        return Response({"error": "DisLikedVideos not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Viewer.DoesNotExist:
+        return Response({"error": "Viewer not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
