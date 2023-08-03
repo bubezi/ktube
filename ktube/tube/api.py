@@ -544,6 +544,7 @@ def subscribe_API(request):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+@csrf_exempt
 @api_view(['POST'])
 def unsubscribe_API(request):
     try:
@@ -580,7 +581,7 @@ def comment_API(request):
         viewer = request.user.viewer
         if len(comment_text) < 3:
             return JsonResponse({"success": False})
-        video = Video.objects.get(slug=video_id)
+        video = Video.objects.get(id=video_id)
         channel = Channel.objects.get(user=viewer)
         comment = Comment(
             comment_text=comment_text, video=video, channel=channel

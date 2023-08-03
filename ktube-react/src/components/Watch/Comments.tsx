@@ -176,11 +176,8 @@ const Comments = (props: Props) => {
       channels={channels}
     />
   ));
-
-  if (manyChannels) {
-
-  }else{    
-    return (
+  
+  return (
       <>
         <Commenting videoId={props.videoId} channels={channels} manyChannels={manyChannels}/>
         <div className="row">
@@ -195,6 +192,6 @@ const Comments = (props: Props) => {
       </>
     );
   }
-};
+
 
 export default Comments;

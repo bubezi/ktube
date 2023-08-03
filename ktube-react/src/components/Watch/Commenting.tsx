@@ -1,8 +1,8 @@
 import React from "react";
 import { commentButton } from "../../assets/styles/WatchStyles";
 import { Channel } from "../Watchpage";
-
-
+import axios from "axios";
+import { API_URL } from "../../constants";
 
 interface Props {
   videoId: number;
@@ -11,16 +11,54 @@ interface Props {
 }
 
 const Commenting = (props: Props) => {
+  const [commentText, setCommentText] = React.useState<string>("");
   const [myToken] = React.useState(() => {
     const savedToken = localStorage.getItem("token");
     return savedToken ?? null;
   });
 
+ 
+  const handleComment = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      const formData = new FormData();
+      formData.append("comment_text", commentText);
+      formData.append("video_id", props.videoId.toString());
+
+      const response = await axios.post(
+        API_URL + "comment",
+        formData,
+        {
+          headers: {
+            Authorization: `Token ${myToken}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.status === 201) {
+        setCommentText("");
+        alert('Comment Added');
+      } else {
+        // Handle error response
+        console.error("Failed to submit comment");
+        // Display error message to the user
+      }
+    } catch (error) {
+      // Handle network error
+      console.error("Network error:", error);
+      // Display error message to the user
+    }
+  };
+
   if (myToken) {
     if (!props.manyChannels) {
       return (
         <>
-          <form id="comment-form" method="post">
+          <form id="comment-form"
+          onSubmit={handleComment}
+          >
             {/* {% csrf_token %} */}
             <div className="row">
               <h5>
@@ -32,11 +70,15 @@ const Commenting = (props: Props) => {
                 maxLength={500}
                 id="comment-text"
                 name="comment_text"
+                value={commentText}
+                onChange={(e) => setCommentText(e.target.value)}
               ></textarea>
             </div>
             <input type="hidden" name="video_id" value="{{video.slug}}" />
             <div className="row" style={commentButton}>
-              <button className="btn btn-success" type="submit">
+              <button className="btn btn-success" type="submit"
+              disabled={!commentText}
+              >
                 Comment
               </button>
             </div>
@@ -87,8 +129,10 @@ const Commenting = (props: Props) => {
               </div>
             </div>
             <div className="row" style={commentButton}>
-              <button className="btn btn-success" type="submit"
-            //   onClick={}
+              <button
+                className="btn btn-success"
+                type="submit"
+                //   onClick={}
               >
                 Comment
               </button>
@@ -101,9 +145,7 @@ const Commenting = (props: Props) => {
   } else {
     return (
       <a href="/auth/login" target="_blank">
-        <h6 className="row box-element">
-          Login to Add Comment
-        </h6>
+        <h6 className="row box-element">Login to Add Comment</h6>
       </a>
     );
   }
