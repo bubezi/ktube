@@ -8,7 +8,7 @@ import Commentitem from "./Commentitem";
 import CommentReplyItem from "./CommentReplyItem";
 
 
-export const channelInit = {
+const channelInit = {
   id: 0,
   name: "",
   profile_picture: "",
@@ -177,20 +177,24 @@ const Comments = (props: Props) => {
     />
   ));
 
-  return (
-    <>
-      <Commenting videoId={props.videoId} />
-      <div className="row">
-        <h4 className="col-lg-12 box-element" id="comment-heading">
-          Comments
-        </h4>
-      </div>
+  if (manyChannels) {
 
-      <div className="col-lg-12" id="comment-section">
-        {showComments}
-      </div>
-    </>
-  );
+  }else{    
+    return (
+      <>
+        <Commenting videoId={props.videoId} channels={channels} manyChannels={manyChannels}/>
+        <div className="row">
+          <h4 className="col-lg-12 box-element" id="comment-heading">
+            Comments
+          </h4>
+        </div>
+  
+        <div className="col-lg-12" id="comment-section">
+          {showComments}
+        </div>
+      </>
+    );
+  }
 };
 
 export default Comments;

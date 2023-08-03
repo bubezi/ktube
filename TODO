@@ -184,12 +184,13 @@ Kenya web experts
     [] Accessibility
     [] Best Practises
     [x] SEO
+[x] Learn React
+[] Fix login error feedback
 [] Use Docker
     [] Use RTMPs in docker
 [] Learn and Use Kubernetes
 [] Update types where possible
 [] Seperate logic into django apps
-[] Learn React
 [] Copyright DETECTION AND REGISTERING FUNCTIONALITY
 [] Recommend FUNCTIONALITY
 [] Analytics

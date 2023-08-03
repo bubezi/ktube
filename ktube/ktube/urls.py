@@ -137,6 +137,8 @@ urlpatterns += [
     
     path('api/deleteComment', tube_api.delete_comment_API),
     path('api/deleteReply', tube_api.delete_reply_API),
+    
+    path('api/comment', tube_api.comment_API),
 ]
 
 

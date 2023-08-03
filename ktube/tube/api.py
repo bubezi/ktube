@@ -514,3 +514,26 @@ def delete_reply_API(request):
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+def comment_API(request):
+    try:
+        video_id = request.POST.get('video_id')
+        comment_text = request.POST.get('comment_text')
+        viewer = request.user.viewer
+        if len(comment_text) < 3:
+            return JsonResponse({"success": False})
+        video = Video.objects.get(slug=video_id)
+        channel = Channel.objects.get(user=viewer)
+        comment = Comment(
+            comment_text=comment_text, video=video, channel=channel
+        )
+        comment.save()
+        return Response(status=status.HTTP_201_CREATED)
+    except Channel.DoesNotExist:
+        return Response({"error": "Channel not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)

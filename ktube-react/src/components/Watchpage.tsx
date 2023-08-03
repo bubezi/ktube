@@ -39,7 +39,7 @@ export interface Channel {
   about: string;
 }
 
-export const channelInit = {
+const channelInit = {
   id: 0,
   name: "",
   profile_picture: "",
