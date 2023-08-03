@@ -247,3 +247,8 @@ export const likeunlikeOrdislikeUndislike = (url: string, videoId: number, viewe
     });
 
 }
+
+export const toggleItem = (id: string, toggle:boolean) => {
+  let element = document.getElementById(id);
+  if (element) element.style.display = (toggle) ? 'block' : 'none';
+};

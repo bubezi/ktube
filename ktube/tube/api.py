@@ -245,10 +245,6 @@ class Is_owner_API(APIView):
             }, status=status.HTTP_404_NOT_FOUND)
             
         owner = viewer_signed_in == viewer_in_db
-        print('viewer_signed_in: ', viewer_signed_in)
-        print('viewer_in_db: ', viewer_in_db)
-        print('id: ', id)
-        print('owner: ', owner)
         
         return Response({'is_owner':owner}, status=status.HTTP_200_OK)
 
@@ -418,7 +414,7 @@ def add_video_to_watchlater_API(request):
 
     if video_id is None:
         return Response(
-            {"error": "video_id are required"}, status=status.HTTP_400_BAD_REQUEST
+            {"error": "video_id is required"}, status=status.HTTP_400_BAD_REQUEST
         )
 
     try:
@@ -445,7 +441,7 @@ def remove_video_from_watchlater_API(request):
 
     if video_id is None:
         return Response(
-            {"error": "video_id are required"}, status=status.HTTP_400_BAD_REQUEST
+            {"error": "video_id is required"}, status=status.HTTP_400_BAD_REQUEST
         )
 
     try:
@@ -460,6 +456,60 @@ def remove_video_from_watchlater_API(request):
         return Response(
             {"error": "Playlist not found"}, status=status.HTTP_404_NOT_FOUND
         )
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+def delete_comment_API(request):
+    comment_id = request.data.get("comment_id")
+
+    if comment_id is None:
+        return Response(
+            {"error": "comment_id is required"}, status=status.HTTP_400_BAD_REQUEST
+        )
+
+    try:
+        viewer = request.user.viewer
+        comment = Comment.objects.get(id=comment_id)
+        if not comment.channel.user == viewer:  # type: ignore
+            return Response({"success": False, "message": "You Don't own this Comment"}, status=status.HTTP_404_BAD_REQUEST)
+        try:
+            comment.delete()
+            return Response(status=status.HTTP_200_OK)
+        except:
+            return Response({"success": False, "message": "Deletion Failed"}, status=status.HTTP_404_BAD_REQUEST)
+    except Comment.DoesNotExist:
+        return Response({"error": "Comment not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+def delete_reply_API(request):
+    reply_id = request.data.get("reply_id")
+
+    if reply_id is None:
+        return Response(
+            {"error": "reply_id is required"}, status=status.HTTP_400_BAD_REQUEST
+        )
+
+    try:
+        viewer = request.user.viewer
+        reply = CommentReply.objects.get(id=reply_id)
+        if not reply.channel.user == viewer:  # type: ignore
+            return Response({"success": False, "message": "You Don't own this Reply"}, status=status.HTTP_404_BAD_REQUEST)
+        try:
+            reply.delete()
+            return Response(status=status.HTTP_200_OK)
+        except:
+            return Response({"success": False, "message": "Deletion Failed"}, status=status.HTTP_404_BAD_REQUEST)
+    except CommentReply.DoesNotExist:
+        return Response({"error": "CommentReply not found"}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:

@@ -133,6 +133,10 @@ urlpatterns += [
     path('api/disliked/<str:id>', tube_api.DisLiked_API.as_view()),
     
     path('api/moreVideos/<str:id>', tube_api.More_Videos_API.as_view()),
+    
+    
+    path('api/deleteComment', tube_api.delete_comment_API),
+    path('api/deleteReply', tube_api.delete_reply_API),
 ]
 
 

@@ -8,6 +8,7 @@ import React from "react";
 import { colorRed, commentDpStyle } from "../../assets/styles/WatchStyles";
 import { ChannelDetailsState } from "../Videocard";
 import { CommentReply } from "./Comments";
+import { toggleItem } from "../../functions/fun";
 
 interface Props {
   reply: CommentReply;
@@ -82,7 +83,7 @@ const CommentReplyItem = (props: Props) => {
                       style={colorRed}
                       onClick={deleteComment}
                     >
-                      Delete Comment
+                      Delete Reply
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
@@ -97,7 +98,7 @@ const CommentReplyItem = (props: Props) => {
     
     const deleteComment = () => {
       const data = {
-        commentId: props.reply.id,
+        reply_id: props.reply.id,
       };
   
       const config = {
@@ -108,9 +109,11 @@ const CommentReplyItem = (props: Props) => {
       };
   
       axios
-        .post(API_URL + "deleteComment", data, config)
+        .post(API_URL + "deleteReply", data, config)
         .then((response) => {
           console.log(response.data);
+          toggleItem("comment-" + props.reply.id, false);
+          alert('Reply Deleted Successfully!')
         })
         .catch((error) => {
           if (error.response) {
@@ -149,7 +152,7 @@ const CommentReplyItem = (props: Props) => {
     };
     return (
     <>
-        <div className="row box-element" style={commentReplyStyle}>
+        <div className="row box-element" style={commentReplyStyle} id={'comment-'+ props.reply.id}>
         <div className="col-lg-12">
             <div className="row description">
             <ChannelDp />

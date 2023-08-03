@@ -8,6 +8,7 @@ import { API_URL } from "../../constants";
 import React from "react";
 import { colorRed, commentDpStyle } from "../../assets/styles/WatchStyles";
 import { ChannelDetailsState } from "../Videocard";
+import { toggleItem } from "../../functions/fun";
 
 interface Props {
   comment: Comment;
@@ -96,7 +97,7 @@ const Commentitem = (props: Props) => {
 
   const deleteComment = () => {
     const data = {
-      commentId: props.comment.id,
+      comment_id: props.comment.id,
     };
 
     const config = {
@@ -110,6 +111,8 @@ const Commentitem = (props: Props) => {
       .post(API_URL + "deleteComment", data, config)
       .then((response) => {
         console.log(response.data);
+        toggleItem("comment-" + props.comment.id, false);
+        alert('Comment Deleted Successfully!')
       })
       .catch((error) => {
         if (error.response) {
@@ -148,7 +151,7 @@ const Commentitem = (props: Props) => {
   };
     return (
       <>
-        <div className="row box-element" style={commentStyle}>
+        <div className="row box-element" style={commentStyle} id={'comment-'+ props.comment.id}>
           <div className="col-lg-12">
             <div className="row description">
               <ChannelDp />
