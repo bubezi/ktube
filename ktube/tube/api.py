@@ -747,18 +747,13 @@ def undislike_API(request):
     
 @api_view(['POST'])
 def add_view_API(request):
-    viewer_id = request.data.get('viewer_id')
-    viewer = Viewer.objects.get(id=viewer_id)
     from .utils import view_valid
-
     INVALID_MINUTES = 5
-
-    print("request.user", request.user)
-    print("request.user.is_authenticated", request.user.is_authenticated)
-
+    viewer_ip = request.META.get("REMOTE_ADDR")
     try:
         if request.user.is_authenticated:
-            viewer_ip = request.META.get("REMOTE_ADDR")
+            viewer_id = request.data.get('viewer_id')
+            viewer = Viewer.objects.get(id=viewer_id)
             pk = request.data.get("video_id")
             video = Video.objects.get(id=pk)
             view = VideoView(viewer=viewer, video=video, viewer_ip=viewer_ip)
@@ -790,7 +785,6 @@ def add_view_API(request):
             return Response(status=status.HTTP_200_OK)
         else:
             pk = request.data.get("video_id")
-            viewer_ip = request.META.get("REMOTE_ADDR")
             video = Video.objects.get(id=pk)
             view = VideoView(video=video, viewer_ip=viewer_ip)
             view.save()

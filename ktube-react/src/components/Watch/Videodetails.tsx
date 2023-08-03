@@ -46,41 +46,68 @@ const Videodetails = (props: Prop) => {
 
   React.useEffect(()=>{
     setTimeout(async ()=>{
-
-      const data = {
-        video_id: props.videoId,
-        viewer_id: viewerId,
-      };
-    
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Token ${myToken}`,
-        },
-      };
     
       if(props.videoId !== 0){
-        await axios
-          .post(API_URL + "addView", data, config)
-          .then((response) => {
-            console.log(response.data);
-          })
-          .catch((error) => {
-            if (error.response) {
-              // The request was made and the server responded with a status code
-              // that falls out of the range of 2xx
-              console.log(error.response.data);
-              console.log(error.response.status);
-              console.log(error.response.headers);
-            } else if (error.request) {
-              // The request was made but no response was received
-              console.log(error.request);
-            } else {
-              // Something happened in setting up the request that triggered an Error
-              console.log("Error", error.message);
-            }
-            console.log(error.config);
-          });
+        const data = {
+          video_id: props.videoId,
+          viewer_id: viewerId,
+        };
+      
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${myToken}`,
+          },
+        };
+        if(myToken){
+          await axios
+            .post(API_URL + "addView", data, config)
+            .then((response) => {
+              console.log(response.data);
+            })
+            .catch((error) => {
+              if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+              } else if (error.request) {
+                // The request was made but no response was received
+                console.log(error.request);
+              } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log("Error", error.message);
+              }
+              console.log(error.config);
+            });
+        }else{
+          const data = {
+            video_id: props.videoId,
+          };
+
+          await axios
+            .post(API_URL + "addView", data)
+            .then((response) => {
+              console.log(response.data);
+            })
+            .catch((error) => {
+              if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+              } else if (error.request) {
+                // The request was made but no response was received
+                console.log(error.request);
+              } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log("Error", error.message);
+              }
+              console.log(error.config);
+            });
+        }
       }
     }, 5000);
   },[props.videoId])
