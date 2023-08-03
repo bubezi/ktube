@@ -588,6 +588,8 @@ def comment_API(request):
         )
         comment.save()
         return Response(status=status.HTTP_201_CREATED)
+    except Video.DoesNotExist:
+        return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)
     except Channel.DoesNotExist:
         return Response({"error": "Channel not found"}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
@@ -611,6 +613,56 @@ def comment_many_channels_API(request):
         )
         comment.save()
         return Response(status=status.HTTP_201_CREATED)
+    except Channel.DoesNotExist:
+        return Response({"error": "Channel not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+def reply_API(request):
+    try:
+        comment_id = request.POST.get('comment_id')
+        reply_text = request.POST.get('reply_text')
+        viewer = request.user.viewer
+        if len(reply_text) < 3:
+            return JsonResponse({"success": False})
+        comment = Comment.objects.get(id=comment_id)
+        channel = Channel.objects.get(user=viewer)
+        reply = CommentReply(
+            reply=reply_text, comment=comment, channel=channel
+        )
+        reply.save()
+        return Response(status=status.HTTP_201_CREATED)
+    except Comment.DoesNotExist:
+        return Response({"error": "Comment not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Channel.DoesNotExist:
+        return Response({"error": "Channel not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+def reply_many_channels_API(request):
+    try:
+        comment_id = request.POST.get('comment_id')
+        reply_text = request.POST.get('reply_text')
+        channel_id = request.POST.get('channel_id')
+        if len(reply_text) < 3:
+            return JsonResponse({"success": False})
+        comment = Comment.objects.get(id=comment_id)
+        channel = Channel.objects.get(id=channel_id)
+        reply = CommentReply(
+            reply=reply_text, comment=comment, channel=channel
+        )
+        reply.save()
+        return Response(status=status.HTTP_201_CREATED)
+    except Comment.DoesNotExist:
+        return Response({"error": "Comment not found"}, status=status.HTTP_404_NOT_FOUND)
     except Channel.DoesNotExist:
         return Response({"error": "Channel not found"}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
@@ -777,6 +829,8 @@ def add_view_API(request):
         if request.user.is_authenticated:
             viewer_id = request.data.get('viewer_id')
             viewer = Viewer.objects.get(id=viewer_id)
+            print('viewer_id', viewer_id)
+            print('viewer', viewer)
             pk = request.data.get("video_id")
             video = Video.objects.get(id=pk)
             view = VideoView(viewer=viewer, video=video, viewer_ip=viewer_ip)

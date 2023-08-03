@@ -141,6 +141,9 @@ urlpatterns += [
     path('api/comment', tube_api.comment_API),
     path('api/commentManyChannels', tube_api.comment_many_channels_API),
     
+    path('api/reply', tube_api.reply_API),
+    path('api/replyManyChannels', tube_api.reply_many_channels_API),
+    
     path('api/subscribeAPI', tube_api.subscribe_API),
     path('api/unSubscribeAPI', tube_api.unsubscribe_API),
     

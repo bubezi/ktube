@@ -9,6 +9,7 @@ import React from "react";
 import { colorRed, commentDpStyle } from "../../assets/styles/WatchStyles";
 import { ChannelDetailsState } from "../Videocard";
 import { toggleItem } from "../../functions/fun";
+import Replying from "./Replying";
 
 interface Props {
   comment: Comment;
@@ -16,25 +17,30 @@ interface Props {
   channels: Array<Channel>;
 }
 
-
 const Commentitem = (props: Props) => {
-  const channelDetailsState: ChannelDetailsState = {profile_picture:'', name:''};
-  const [channelDetails, setChannelDetails] = React.useState<ChannelDetailsState>(channelDetailsState);
+  const channelDetailsState: ChannelDetailsState = {
+    profile_picture: "",
+    name: "",
+  };
+  const [channelDetails, setChannelDetails] =
+    React.useState<ChannelDetailsState>(channelDetailsState);
   const [owner, setOwner] = React.useState<boolean>(false);
 
-  React.useEffect(()=>{
-      if (props.comment.channel !== 0){
-          axios.get(API_URL+"dp/"+props.comment.channel)
-              .then(res => setChannelDetails(res.data))
-              .catch((error)=>{console.log(error)});
-      }
+  React.useEffect(() => {
+    if (props.comment.channel !== 0) {
+      axios
+        .get(API_URL + "dp/" + props.comment.channel)
+        .then((res) => setChannelDetails(res.data))
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }, [props.comment]);
 
   const [myToken] = React.useState(() => {
     const savedToken = localStorage.getItem("token");
     return savedToken ?? null;
   });
-  
 
   React.useEffect(() => {
     if (myToken !== null && props.comment.channel !== 0) {
@@ -56,41 +62,39 @@ const Commentitem = (props: Props) => {
   }, []);
 
   const commentStyle = {
-    marginLeft: "0px"
-  }
-  
+    marginLeft: "0px",
+  };
+
   const DeleteComp = () => {
     if (myToken && owner) {
       return (
-        <div className="row">
-          <div className="col-lg-10"></div>
           <div className="col-lg-2 col-12 text-right mt-2 mt-lg-0">
-          <div className="video-options">
-            <div className="dropdown">
-              <Dropdown>
-                <Dropdown.Toggle
-                  id="dropdownMenuButton1"
-                  className="custom-dropdown"
-                  style={toggleStyle}
-                >
-                  <i className="fa-solid fa-ellipsis-vertical"
-                  style={elipsisStyle}
-                  ></i>
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item
-                    className="dropdown-item"
-                    style={colorRed}
-                    onClick={deleteComment}
+            <div className="video-options">
+              <div className="dropdown">
+                <Dropdown>
+                  <Dropdown.Toggle
+                    id="dropdownMenuButton1"
+                    className="custom-dropdown"
+                    style={toggleStyle}
                   >
-                    Delete Comment
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+                    <i
+                      className="fa-solid fa-ellipsis-vertical"
+                      style={elipsisStyle}
+                    ></i>
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item
+                      className="dropdown-item"
+                      style={colorRed}
+                      onClick={deleteComment}
+                    >
+                      Delete Comment
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </div>
             </div>
           </div>
-          </div>
-        </div>
       );
     }
   };
@@ -148,26 +152,41 @@ const Commentitem = (props: Props) => {
       );
     }
   };
-    return (
-      <>
-        <div className="row box-element" style={commentStyle} id={'comment-'+ props.comment.id}>
-          <div className="col-lg-12">
-            <div className="row description">
-              <ChannelDp />
-              <a href="#">
-                <p>
-                  <strong>{channelDetails.name}</strong>
-                </p>
-              </a>
-            </div>
-            <div className="row description">
-              <p>{props.comment.comment_text}</p>
-            </div>
-            <DeleteComp />
+  return (
+    <>
+      <div
+        className="row box-element"
+        style={commentStyle}
+        id={"comment-" + props.comment.id}
+      >
+        <div className="col-lg-12">
+          <div className="row description">
+            <ChannelDp />
+            <a href="#">
+              <p>
+                <strong>{channelDetails.name}</strong>
+              </p>
+            </a>
           </div>
+          <div className="row description">
+            <p>{props.comment.comment_text}</p>
+          </div>
+        <div className="row">
+          <div className="col-lg-10">
+            <div className="row">
+              <Replying
+                commentId={props.comment.id}
+                channels={props.channels}
+                manyChannels={props.manyChannels}
+              />
+            </div>
+          </div>
+          <DeleteComp />
         </div>
-      </>
-    );
-}
+        </div>
+      </div>
+    </>
+  );
+};
 
 export default Commentitem;
