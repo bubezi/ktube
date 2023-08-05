@@ -10,6 +10,7 @@ import Navbar from "./components/Navbar";
 import ViewerProvider from "./providers/ViewerProvider";
 import Watchpage from "./components/Watchpage";
 import PlaylistProvider from "./providers/PlaylistsProvider";
+import Channel from "./components/Channel";
 
 
 function App() {
@@ -25,7 +26,7 @@ function App() {
               <Route path="/" element={<Homepage />} />
               <Route path="/auth/login" element={<Auth />} />
               <Route path="/watch/:slug" element={<Watchpage/>} />
-              {/* <Route path="/channel/:channelId" element={<Channel/>} /> */}
+              <Route path="/channel/:channelId" element={<Channel/>} />
             </Routes>
           </BrowserRouter>
       </PlaylistProvider>

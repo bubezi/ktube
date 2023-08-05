@@ -26,7 +26,7 @@ interface Video {
 }
 
 
-export interface Channel {
+export interface ChannelType {
   id: number;
   name: string;
   profile_picture: string;
@@ -39,7 +39,7 @@ export interface Channel {
   about: string;
 }
 
-const channelInit = {
+export const channelInit = {
   id: 0,
   name: "",
   profile_picture: "",
@@ -71,7 +71,7 @@ const Watchpage = () => {
     price: 0,
   };
 
-  const [channel, setChannel] = React.useState<Channel>(channelInit);
+  const [channel, setChannel] = React.useState<ChannelType>(channelInit);
   const [video, setVideo] = React.useState<Video>(videoInit);
   const { slug } = useParams();
 

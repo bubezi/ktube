@@ -6,6 +6,7 @@ import Description from "./Description";
 import {
   channelStyle,
   dpStyle,
+  marginLeft40,
   publicityStyle,
   titleStyle,
 } from "../../assets/styles/WatchStyles";
@@ -190,6 +191,7 @@ const Videodetails = (props: Prop) => {
             channelUserId={props.channelUserId}
             setSubscriberCount={setSubscriberCount}
             subscriberCount={subscriberCount}
+            marginLeft={marginLeft40}
           />
           <Viewsandoptions videoId={props.videoId} views={props.views} />
           <Likeanddislike

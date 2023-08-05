@@ -23,6 +23,11 @@ export const dpStyle = {
   height: "30px",
 };
 
+export const channelDpStyle = {
+  width: "40px",
+  height: "40px",
+};
+
 export const commentDpStyle = {
   width: "30px",
   height: "30px",
@@ -55,6 +60,10 @@ export const marginLeft40 = {
   marginLeft: "40px",
 };
 
+export const marginLeft60 = {
+  marginLeft: "60px",
+};
+
 export const marginLeft0 = {
   marginLeft: "0px",
 };
@@ -68,4 +77,14 @@ export const colorRed = {
   color: "red",
 };
 
+export const marginTopN22 = {
+  marginTop: "-22px",
+};
 
+export const paddingLeft45 = {
+  paddingLeft: "45px"
+}
+
+export const paddingTop35 = {
+  paddingTop: "35px"
+}

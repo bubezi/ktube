@@ -1,88 +1,122 @@
-import React from "react";
+import React, { CSSProperties } from "react";
 
 import { useViewerContext } from "../providers/ViewerProvider";
 import { subOrUnsub } from "../functions/fun";
-import { marginLeft40 } from "../assets/styles/WatchStyles";
 
 interface Props {
-    subscribers: number[],
-    channelId: number,
-    channelUserId: number,
-    setSubscriberCount:  React.Dispatch<React.SetStateAction<number>>,
-    subscriberCount: number,
+  subscribers: number[];
+  channelId: number;
+  channelUserId: number;
+  setSubscriberCount: React.Dispatch<React.SetStateAction<number>>;
+  subscriberCount: number;
+  marginLeft: CSSProperties;
 }
 
 const Subscribe = (props: Props) => {
-    const viewerProvided = useViewerContext();
-    const myToken = viewerProvided.myToken;
-    const [ subscribed, setSubscribed ] = React.useState(props.subscribers.includes(viewerProvided.viewer.id) && viewerProvided.viewer.id !== 0);
+  const viewerProvided = useViewerContext();
+  const myToken = viewerProvided.myToken;
+  const [subscribed, setSubscribed] = React.useState(
+    props.subscribers.includes(viewerProvided.viewer.id) &&
+      viewerProvided.viewer.id !== 0
+  );
 
-      React.useEffect(() => {
-        setSubscribed(props.subscribers.includes(viewerProvided.viewer.id) && viewerProvided.viewer.id !== 0);
-      }, [props.subscribers, viewerProvided.viewer.id]);
+  React.useEffect(() => {
+    setSubscribed(
+      props.subscribers.includes(viewerProvided.viewer.id) &&
+        viewerProvided.viewer.id !== 0
+    );
+  }, [props.subscribers, viewerProvided.viewer.id]);
 
+  if (myToken) {
+    const subscribe = () => {
+      subOrUnsub(
+        "subscribeAPI",
+        props.channelId,
+        viewerProvided.viewer.id,
+        myToken
+      );
+      setSubscribed(true);
+      props.setSubscriberCount(props.subscriberCount + 1);
+    };
 
-    if (myToken){
-        const subscribe = () => {
-            subOrUnsub('subscribeAPI',  props.channelId, viewerProvided.viewer.id, myToken);
-            props.setSubscriberCount(props.subscriberCount + 1);
-            setSubscribed(true);
-        }
-    
-        const unSubscribe = () => {
-            subOrUnsub('unSubscribeAPI',  props.channelId, viewerProvided.viewer.id, myToken);
-            props.setSubscriberCount(props.subscriberCount - 1);
-            setSubscribed(false);
-        }
+    const unSubscribe = () => {
+      subOrUnsub(
+        "unSubscribeAPI",
+        props.channelId,
+        viewerProvided.viewer.id,
+        myToken
+      );
+      setSubscribed(false);
+      props.setSubscriberCount(props.subscriberCount - 1);
+    };
 
-        if (viewerProvided.viewer.id === props.channelUserId){
-            return (
-                <>
-                <div className="row">
-                    <div className="row"><h6><a href={"/editChannel/" + String(props.channelId)}><button 
-                        className="btn btn-outline-secondary add-btn update-cart"
-                        style={marginLeft40}>Edit Channel</button></a></h6></div>                
-                </div>
-                </>
-            );
-
-        }else{
-            if (!subscribed) {
-                return (
-                    <>
-                    <div className="row">
-                        <button className="btn btn-success"
-                        style={marginLeft40} type="submit" id="subscribe-button"
-                        onClick={subscribe}>Subscribe</button>
-                    </div>
-                    </>
-                );
-            }else {
-                return (
-                    <>
-                    <div className="row">
-                        <button className="btn btn-outline-secondary add-btn update-cart"
-                        style={marginLeft40}  type="submit" id="unsubscribe-button"
-                        onClick={unSubscribe}>Unsubscribe</button>  
-                    </div>
-                    </>
-                );
-            }
-        }
-
-    }else{
-        return (
-            <>
+    if (viewerProvided.viewer.id === props.channelUserId) {
+      return (
+        <>
+          <div className="row">
             <div className="row">
-                <a href="/auth/login" target="_blank">
-                    <button
-                    className="btn btn-success"
-                    style={marginLeft40}>Subscribe</button>
+              <h6>
+                <a href={"/editChannel/" + String(props.channelId)}>
+                  <button
+                    className="btn btn-outline-secondary add-btn update-cart"
+                    style={props.marginLeft}
+                  >
+                    Edit Channel
+                  </button>
                 </a>
+              </h6>
             </div>
-            </>
+          </div>
+        </>
+      );
+    } else {
+      if (!subscribed) {
+        return (
+          <>
+            <div className="row">
+              <button
+                className="btn btn-success"
+                style={props.marginLeft}
+                type="submit"
+                id="subscribe-button"
+                onClick={subscribe}
+              >
+                Subscribe
+              </button>
+            </div>
+          </>
         );
+      } else {
+        return (
+          <>
+            <div className="row">
+              <button
+                className="btn btn-outline-secondary add-btn update-cart"
+                style={props.marginLeft}
+                type="submit"
+                id="unsubscribe-button"
+                onClick={unSubscribe}
+              >
+                Unsubscribe
+              </button>
+            </div>
+          </>
+        );
+      }
     }
-}
+  } else {
+    return (
+      <>
+        <div className="row">
+          <a href="/auth/login" target="_blank">
+            <button className="btn btn-success" style={props.marginLeft}>
+              Subscribe
+            </button>
+          </a>
+        </div>
+      </>
+    );
+  }
+};
 
 export default Subscribe;

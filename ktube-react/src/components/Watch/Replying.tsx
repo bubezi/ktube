@@ -1,6 +1,6 @@
 import React from "react";
 import { commentButton } from "../../assets/styles/WatchStyles";
-import { Channel } from "../Watchpage";
+import { ChannelType } from "../Watchpage";
 import axios from "axios";
 import { API_URL } from "../../constants";
 import { toggleItem } from "../../functions/fun";
@@ -8,7 +8,7 @@ import { useViewerContext } from "../../providers/ViewerProvider";
 
 interface Props {
   commentId: number;
-  channels: Channel[];
+  channels: ChannelType[];
   manyChannels: Boolean;
 }
 

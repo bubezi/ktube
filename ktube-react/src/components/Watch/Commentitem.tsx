@@ -1,6 +1,6 @@
 import Dropdown from "react-bootstrap/Dropdown";
 import imagePlaceholder from "../../assets/images/placeholder.png";
-import { Channel } from "../Watchpage";
+import { ChannelType } from "../Watchpage";
 import { Comment } from "./Comments";
 import { elipsisStyle, toggleStyle } from "../../assets/styles/Styles";
 import axios from "axios";
@@ -15,7 +15,7 @@ import { useViewerContext } from "../../providers/ViewerProvider";
 interface Props {
   comment: Comment;
   manyChannels: boolean;
-  channels: Array<Channel>;
+  channels: Array<ChannelType>;
 }
 
 const Commentitem = (props: Props) => {

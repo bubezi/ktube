@@ -3,7 +3,7 @@ import React from "react";
 import axios from "axios";
 import { API_URL } from "../../constants";
 import { useViewerContext } from "../../providers/ViewerProvider";
-import { Channel } from "../Watchpage";
+import { ChannelType } from "../Watchpage";
 import Commentitem from "./Commentitem";
 import CommentReplyItem from "./CommentReplyItem";
 import { toggleItem } from "../../functions/fun";
@@ -70,7 +70,7 @@ interface Props {
 interface RepliesProps {
   comment: Comment;
   manyChannels: boolean;
-  channels: Channel[];
+  channels: ChannelType[];
 }
 
 const commentRepiesStyle = {
@@ -172,7 +172,7 @@ const CommentWithReplies: React.FC<RepliesProps> = ({
 const Comments = (props: Props) => {
   const viewerProvided = useViewerContext();
   const [manyChannels, setManyChannels] = React.useState<boolean>(false);
-  const [channels, setChannels] = React.useState<Array<Channel>>(channelsInit);
+  const [channels, setChannels] = React.useState<Array<ChannelType>>(channelsInit);
   const [comments, setComments] = React.useState<Array<Comment>>(commentInit);
   const myToken = useViewerContext().myToken;
 
