@@ -24,10 +24,7 @@ const Likeanddislikebuttons = (props: PropsButtons) => {
   const viewerProvided = useViewerContext();
   const [liked, setLiked] = React.useState<boolean>(false);
   const [disLiked, setDisLiked] = React.useState<boolean>(false);
-  const [myToken] = React.useState(() => {
-    const savedToken = localStorage.getItem("token");
-    return savedToken ?? null;
-  });
+  const myToken = useViewerContext().myToken;
 
   if (myToken) {
 

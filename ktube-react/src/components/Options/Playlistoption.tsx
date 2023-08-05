@@ -3,10 +3,13 @@ import Dropdown from "react-bootstrap/Dropdown";
 
 import { optionsStyle } from "../../assets/styles/Styles";
 
-import { handleAddToPlaylist, handleRemoveFromPlaylist } from "../../functions/fun";
+import {
+  handleAddToPlaylist,
+  handleRemoveFromPlaylist,
+} from "../../functions/fun";
 
 interface PropOption {
-  name: string,
+  name: string;
   prompt: string;
   playlistId: number;
   videoId: number;
@@ -43,6 +46,6 @@ const Playlistoption = (props: PropOption) => {
       {prompt}
     </Dropdown.Item>
   );
-}
+};
 
 export default React.memo(Playlistoption);

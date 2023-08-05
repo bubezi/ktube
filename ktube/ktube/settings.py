@@ -21,10 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
 
-ALLOWED_HOSTS = ['ktube.pythonanywhere.com']
-ALLOWED_HOSTS += ['192.168.87.137', '127.0.0.1', '127.0.0.2', 'localhost']
+ALLOWED_HOSTS = ["ktube.pythonanywhere.com"]
+ALLOWED_HOSTS += ["192.168.87.137", "127.0.0.1", "127.0.0.2", "localhost"]
 
-NODE_SERVER_URL = 'http://localhost:8000'
+NODE_SERVER_URL = "http://localhost:8000"
 
 ######################## COMMENT THIS OUT DURING DEVELOPMENT AND TESTING AND UNCOMMENT THE ONE BELOW IT ###########################################
 
@@ -47,12 +47,7 @@ NODE_SERVER_URL = 'http://localhost:8000'
 #########################################################################################################################################################
 
 
-
-
-
-
 ######################## COMMENT THIS OUT WHEN DEPLOYING TO PRODUCTION AND UNCOMMENT THE ONE ABOVE IT ###############################################
-
 
 
 DEBUG = env("DEBUG")
@@ -79,9 +74,9 @@ DEBUG_PROPAGATE_EXCEPTIONS = True
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
@@ -89,83 +84,70 @@ DATABASES = {
 #########################################################################################################################################################
 
 
-
-
-
-
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
     # 'django.contrib.sites',
-    
     # Own Apps
-    'tube',
-    'register',    
-    
+    "tube",
+    "register",
     # Third-party apps
-    'django.contrib.humanize',
-    'django_filters',
-    'crispy_forms',
-    'crispy_bootstrap5',
-    'django_cleanup.apps.CleanupConfig',
-    
+    "django.contrib.humanize",
+    "django_filters",
+    "crispy_forms",
+    "crispy_bootstrap5",
+    "django_cleanup.apps.CleanupConfig",
     # API
-    'rest_framework',
-    'rest_framework.authtoken',
-    'rest_auth',
-    'corsheaders',
+    "rest_framework",
+    "rest_framework.authtoken",
+    "rest_auth",
+    "corsheaders",
 ]
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    
-    'corsheaders.middleware.CorsMiddleware',
-    
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    
-    
-    'whitenoise.middleware.WhiteNoiseMiddleware',    
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 CORS_ALLOW_METHODS = (
-    'DELETE',
-    'GET',
-    'OPTIONS',
-    'PATCH',
-    'POST',
-    'PUT',
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
 )
 
 CORS_ALLOW_HEADERS = (
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
 )
 
-CORS_ORIGIN_ALLOW_ALL = True 
-# CORS_ORIGIN_WHITELIST = [ 'http://localhost:5173', 'http://127.0.0.1:5173'] 
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_WHITELIST = [ 'http://localhost:5173', 'http://127.0.0.1:5173']
 # CORS_ALLOWED_ORIGINS = ['http://localhost:5173', 'http://127.0.0.1:5173']
 
 REST_FRAMEWORK = {
@@ -174,9 +156,8 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.AllowAny",
-    ]
+    ],
 }
-
 
 
 # SITE_ID = 1
@@ -191,28 +172,25 @@ REST_FRAMEWORK = {
 ## ### Then set SITE_ID = 2
 
 
-ROOT_URLCONF = 'ktube.urls'
+ROOT_URLCONF = "ktube.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [BASE_DIR / "templates"],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'ktube.wsgi.application'
-
-
-
+WSGI_APPLICATION = "ktube.wsgi.application"
 
 
 # Password validation
@@ -220,16 +198,16 @@ WSGI_APPLICATION = 'ktube.wsgi.application'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -237,9 +215,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'Africa/Nairobi'
+TIME_ZONE = "Africa/Nairobi"
 
 USE_I18N = True
 
@@ -249,25 +227,23 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
 
-STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'static')
-   ]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Base url to serve media files
-MEDIA_URL = '/media/'
+MEDIA_URL = "/media/"
 
 # Path where media is stored
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -356,4 +332,3 @@ LOGOUT_REDIRECT_URL = "/bye"
 
 # # # Referrer-Policy
 # REFERRER_POLICY = 'same-origin'
-

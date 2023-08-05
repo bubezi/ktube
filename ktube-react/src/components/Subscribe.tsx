@@ -14,11 +14,8 @@ interface Props {
 
 const Subscribe = (props: Props) => {
     const viewerProvided = useViewerContext();
+    const myToken = viewerProvided.myToken;
     const [ subscribed, setSubscribed ] = React.useState(props.subscribers.includes(viewerProvided.viewer.id) && viewerProvided.viewer.id !== 0);
-    const [myToken] = React.useState(() => {
-      const savedToken = localStorage.getItem("token");
-      return savedToken ?? null;
-    });
 
       React.useEffect(() => {
         setSubscribed(props.subscribers.includes(viewerProvided.viewer.id) && viewerProvided.viewer.id !== 0);

@@ -10,6 +10,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Playlistoption from "./Playlistoption";
 import Watchlateroption from "./Watchlateroption";
 import { API_URL } from "../../constants";
+import { useViewerContext } from "../../providers/ViewerProvider";
 
 interface Playlist {
   id: number;
@@ -29,10 +30,7 @@ interface PropOptions {
 const Videooptions = (props: PropOptions) => {
   const [playlists, setPlaylists] = React.useState<Array<Playlist>>([]);
   const [watchlater, setWatchlater] = React.useState<Array<Watchlater>>([]);
-  const [myToken] = React.useState(() => {
-    const savedToken = localStorage.getItem("token");
-    return savedToken ?? null;
-  });
+  const myToken = useViewerContext().myToken;
 
   if (myToken) {
     React.useEffect(() => {

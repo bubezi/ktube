@@ -46,6 +46,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.models import Token
 from rest_framework import generics
+from rest_framework.exceptions import PermissionDenied
 
 
 class WatchlaterHomeAPI(APIView):
@@ -102,68 +103,35 @@ class ChannelProfilePicture(generics.RetrieveAPIView):
     serializer_class = ChannelProfilePictureSerializer
 
 
-# @api_view(["GET"])
-# def watch_video_API(request, slug):
-#     try:
-#         video = Video.objects.get(slug=slug)  # type: ignore
-
-#     except Video.DoesNotExist:
-#         return Response(
-#             {"error": "Video Does Not Exist! SORRYYY"},
-#             status=status.HTTP_400_BAD_REQUEST,
-#         )
-    
-#     if video.private:
-#         if request.user.is_authenticated:
-#             try:
-#                 viewer = request.user.viewer
-#                 if not video.channel.user == viewer:
-#                     return Response(
-#                         {"error": "Video is private"},
-#                         status=status.HTTP_400_BAD_REQUEST,
-#                     )
-                    
-#             except:
-#                 return Response(
-#                     {"error": "Video is private"},
-#                     status=status.HTTP_400_BAD_REQUEST,
-#                 )
-#         else:
-#             return Response(
-#                 {"error": "Video is private"},
-#                 status=status.HTTP_400_BAD_REQUEST,
-#             )
-    
-    
-from rest_framework.exceptions import PermissionDenied
-
 class Watch_video_API(APIView):
     def get(self, request, slug, format=None):
         try:
             video = Video.objects.get(slug=slug)
         except Video.DoesNotExist:
-            return Response({
-                'error': 'Video Not Found!'
-            }, status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                {"error": "Video Not Found!"}, status=status.HTTP_404_NOT_FOUND
+            )
 
         # If the video is private, make sure the viewer is the owner
         if video.private:
             if request.user.is_authenticated:
                 try:
                     viewer = request.user.viewer
-                    if not video.channel.user == viewer:  
-                        raise PermissionDenied('You are not the owner of this video')
-                except Viewer.DoesNotExist:  
-                    raise PermissionDenied('You are not the owner of this video')
+                    if not video.channel.user == viewer:
+                        raise PermissionDenied("You are not the owner of this video")
+                except Viewer.DoesNotExist:
+                    raise PermissionDenied("You are not the owner of this video")
 
         # Handle monetisation
         if video.price > 0:
             if request.user.is_authenticated:
                 viewer = request.user.viewer
                 if not video.channel.user == viewer:
-                     if not video.paid_viewers.contains(viewer):
+                    if not video.paid_viewers.contains(viewer):
                         if viewer.spend(video.price):
-                            video_owner_cut = PERCENTAGE_OF_REVENUE * Decimal(video.price)
+                            video_owner_cut = PERCENTAGE_OF_REVENUE * Decimal(
+                                video.price
+                            )
                             company_cut = Decimal(video.price) - video_owner_cut
                             video.channel.user.wallet += float(video_owner_cut)
                             main_viewer = Viewer.objects.get(username=COMPANY_USERNAME)
@@ -174,45 +142,46 @@ class Watch_video_API(APIView):
                             video.channel.user.save()
                             video.save()
                         else:
-                            return Response({
-                                'error': 'Please deposit money to watch this video'
-                            }, status=status.HTTP_403_FORBIDDEN)
+                            return Response(
+                                {"error": "Please deposit money to watch this video"},
+                                status=status.HTTP_403_FORBIDDEN,
+                            )
             else:
-                raise PermissionDenied('You are not logged in')
+                raise PermissionDenied("You are not logged in")
 
         # Serialize video
         serializer = VideoSerializer(video)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
 
 class Channel_API(APIView):
     def get(self, request, id, format=None):
         try:
             channel = Channel.objects.get(id=id)
         except Channel.DoesNotExist:
-            return Response({
-                'error': 'Channel Not Found!'
-            }, status=status.HTTP_404_NOT_FOUND)
-        
+            return Response(
+                {"error": "Channel Not Found!"}, status=status.HTTP_404_NOT_FOUND
+            )
+
         serializer = ChannelSerializer(channel)
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
-    
+
+
 class Get_Channels_API(APIView):
     permissions_classes = [IsAuthenticated]
-    
+
     def get(self, request, id, format=None):
         viewer = Viewer.objects.get(id=id)
-        
+
         channels = []
 
         try:
             my_channels = Channel.objects.filter(user=viewer)
-            
+
             if not my_channels:
-                return Response({
-                    'error': 'No Channels Found!'
-                }, status=status.HTTP_404_NOT_FOUND)
+                return Response(
+                    {"error": "No Channels Found!"}, status=status.HTTP_404_NOT_FOUND
+                )
 
             if len(my_channels) == 1:
                 channels.append(my_channels[0])
@@ -220,33 +189,34 @@ class Get_Channels_API(APIView):
                 channels.extend(my_channels)
 
         except Channel.DoesNotExist:
-            return Response({
-                'error': 'Channel Not Found!'
-            }, status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                {"error": "Channel Not Found!"}, status=status.HTTP_404_NOT_FOUND
+            )
         except Exception as e:
-            return Response({
-                'error': str(e)
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response(
+                {"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
         serializer = ChannelSerializer(channels, many=True)
-        return Response({'channels':serializer.data}, status=status.HTTP_200_OK)
-    
+        return Response({"channels": serializer.data}, status=status.HTTP_200_OK)
+
 
 class Is_owner_API(APIView):
     permissions_classes = [IsAuthenticated]
+
     def get(self, request, id, format=None):
         viewer_signed_in = request.user.viewer
         try:
             channel = Channel.objects.get(id=id)
             viewer_in_db = channel.user
         except Channel.DoesNotExist:
-            return Response({
-                'error': 'Channel Not Found!'
-            }, status=status.HTTP_404_NOT_FOUND)
-            
+            return Response(
+                {"error": "Channel Not Found!"}, status=status.HTTP_404_NOT_FOUND
+            )
+
         owner = viewer_signed_in == viewer_in_db
-        
-        return Response({'is_owner':owner}, status=status.HTTP_200_OK)
+
+        return Response({"is_owner": owner}, status=status.HTTP_200_OK)
 
 
 class Get_comments_API(APIView):
@@ -254,18 +224,16 @@ class Get_comments_API(APIView):
         try:
             video = Video.objects.get(id=id)
         except Video.DoesNotExist:
-            return Response({
-                'error': 'Video Not Found!'
-            }, status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                {"error": "Video Not Found!"}, status=status.HTTP_404_NOT_FOUND
+            )
         try:
             comments = Comment.objects.filter(video=video)
         except Exception as e:
-            return Response({
-                'error': e
-            }, status=status.HTTP_404_NOT_FOUND)
-            
+            return Response({"error": e}, status=status.HTTP_404_NOT_FOUND)
+
         serializer = CommentSerializer(comments, many=True)
-        
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -274,81 +242,79 @@ class Get_replies_API(APIView):
         try:
             comment = Comment.objects.get(id=id)
         except Comment.DoesNotExist:
-            return Response({
-                'error': 'Comment Not Found!'
-            }, status=status.HTTP_404_NOT_FOUND)
-            
+            return Response(
+                {"error": "Comment Not Found!"}, status=status.HTTP_404_NOT_FOUND
+            )
+
         try:
             comment_replies = CommentReply.objects.filter(comment=comment)
         except Exception as e:
-            return Response({
-                'error': e
-            }, status=status.HTTP_404_NOT_FOUND)
-            
+            return Response({"error": e}, status=status.HTTP_404_NOT_FOUND)
+
         serializer = CommentReplySerializer(comment_replies, many=True)
-        
+
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
+
 
 class Liked_API(APIView):
     permissions_classes = [IsAuthenticated]
+
     def get(self, request, id, format=None):
         viewer = request.user.viewer
         try:
             video = Video.objects.get(id=id)
         except Video.DoesNotExist:
-            return Response({
-                'error': 'Video Not Found!'
-            }, status=status.HTTP_404_NOT_FOUND)
-            
+            return Response(
+                {"error": "Video Not Found!"}, status=status.HTTP_404_NOT_FOUND
+            )
+
         try:
             liked_videos = LikedVideos.objects.get(viewer=viewer)
         except LikedVideos.DoesNotExist:
-            return Response({
-                'error': 'LikedVideos Not Found!'
-            }, status=status.HTTP_404_NOT_FOUND)
-            
-        liked = liked_videos.videos.contains(video)     
-        
-        return Response({'liked':liked}, status=status.HTTP_200_OK)
-    
+            return Response(
+                {"error": "LikedVideos Not Found!"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        liked = liked_videos.videos.contains(video)
+
+        return Response({"liked": liked}, status=status.HTTP_200_OK)
+
 
 class DisLiked_API(APIView):
     permissions_classes = [IsAuthenticated]
+
     def get(self, request, id, format=None):
         viewer = request.user.viewer
         try:
             video = Video.objects.get(id=id)
         except Video.DoesNotExist:
-            return Response({
-                'error': 'Video Not Found!'
-            }, status=status.HTTP_404_NOT_FOUND)
-            
+            return Response(
+                {"error": "Video Not Found!"}, status=status.HTTP_404_NOT_FOUND
+            )
+
         try:
             disliked_videos = DisLikedVideos.objects.get(viewer=viewer)
         except DisLikedVideos.DoesNotExist:
-            return Response({
-                'error': 'DisLikedVideos Not Found!'
-            }, status=status.HTTP_404_NOT_FOUND)
-            
-        disliked = disliked_videos.videos.contains(video)     
-        
-        return Response({'disliked':disliked}, status=status.HTTP_200_OK)
-    
+            return Response(
+                {"error": "DisLikedVideos Not Found!"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        disliked = disliked_videos.videos.contains(video)
+
+        return Response({"disliked": disliked}, status=status.HTTP_200_OK)
+
 
 class More_Videos_API(APIView):
     def get(self, request, id, format=None):
         try:
             more_videos = Video.objects.exclude(id=id)
         except Exception as e:
-            return Response({
-                'error': e
-            }, status=status.HTTP_404_NOT_FOUND)
-        
+            return Response({"error": e}, status=status.HTTP_404_NOT_FOUND)
+
         serializer = VideoSerializer(more_videos, many=True)
-        
-        return Response({'videos':serializer.data}, status.HTTP_200_OK)
-        
+
+        return Response({"videos": serializer.data}, status.HTTP_200_OK)
+
 
 @api_view(["POST"])
 def add_video_to_playlist_API(request):
@@ -475,14 +441,22 @@ def delete_comment_API(request):
         viewer = request.user.viewer
         comment = Comment.objects.get(id=comment_id)
         if not comment.channel.user == viewer:  # type: ignore
-            return Response({"success": False, "message": "You Don't own this Comment"}, status=status.HTTP_404_BAD_REQUEST)
+            return Response(
+                {"success": False, "message": "You Don't own this Comment"},
+                status=status.HTTP_404_BAD_REQUEST,
+            )
         try:
             comment.delete()
             return Response(status=status.HTTP_200_OK)
         except:
-            return Response({"success": False, "message": "Deletion Failed"}, status=status.HTTP_404_BAD_REQUEST)
+            return Response(
+                {"success": False, "message": "Deletion Failed"},
+                status=status.HTTP_404_BAD_REQUEST,
+            )
     except Comment.DoesNotExist:
-        return Response({"error": "Comment not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"error": "Comment not found"}, status=status.HTTP_404_NOT_FOUND
+        )
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
@@ -502,21 +476,29 @@ def delete_reply_API(request):
         viewer = request.user.viewer
         reply = CommentReply.objects.get(id=reply_id)
         if not reply.channel.user == viewer:  # type: ignore
-            return Response({"success": False, "message": "You Don't own this Reply"}, status=status.HTTP_404_BAD_REQUEST)
+            return Response(
+                {"success": False, "message": "You Don't own this Reply"},
+                status=status.HTTP_404_BAD_REQUEST,
+            )
         try:
             reply.delete()
             return Response(status=status.HTTP_200_OK)
         except:
-            return Response({"success": False, "message": "Deletion Failed"}, status=status.HTTP_404_BAD_REQUEST)
+            return Response(
+                {"success": False, "message": "Deletion Failed"},
+                status=status.HTTP_404_BAD_REQUEST,
+            )
     except CommentReply.DoesNotExist:
-        return Response({"error": "CommentReply not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"error": "CommentReply not found"}, status=status.HTTP_404_NOT_FOUND
+        )
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['POST'])
+@api_view(["POST"])
 def subscribe_API(request):
     try:
         channel_id = request.data.get("channel_id")
@@ -525,19 +507,27 @@ def subscribe_API(request):
         viewer = Viewer.objects.get(id=viewer_id)
 
         if channel.user == viewer:
-            return Response({"success": False, "message": "You cannot subscribe to your own channel."}, status=status.HTTP_404_BAD_REQUEST)
+            return Response(
+                {
+                    "success": False,
+                    "message": "You cannot subscribe to your own channel.",
+                },
+                status=status.HTTP_404_BAD_REQUEST,
+            )
 
         try:
             subscriptions = Subscriptions.objects.get(viewer=viewer)
         except Subscriptions.DoesNotExist:
             subscriptions = Subscriptions(viewer=viewer)
             subscriptions.save()
-            
+
         subscriptions.subscriptions.add(channel)
         channel.subscribers.add(viewer)  # type: ignore
         return Response(status=status.HTTP_200_OK)
     except Channel.DoesNotExist:
-        return Response({"error": "Channel not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"error": "Channel not found"}, status=status.HTTP_404_NOT_FOUND
+        )
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
@@ -545,7 +535,7 @@ def subscribe_API(request):
 
 
 @csrf_exempt
-@api_view(['POST'])
+@api_view(["POST"])
 def unsubscribe_API(request):
     try:
         channel_id = request.data.get("channel_id")
@@ -554,7 +544,13 @@ def unsubscribe_API(request):
         viewer = Viewer.objects.get(id=viewer_id)
 
         if channel.user == viewer:
-            return Response({"success": False, "message": "You cannot unsubscribe to your own channel."}, status=status.HTTP_404_BAD_REQUEST)
+            return Response(
+                {
+                    "success": False,
+                    "message": "You cannot unsubscribe to your own channel.",
+                },
+                status=status.HTTP_404_BAD_REQUEST,
+            )
 
         try:
             subscriptions = Subscriptions.objects.get(viewer=viewer)
@@ -562,11 +558,13 @@ def unsubscribe_API(request):
         except Subscriptions.DoesNotExist:
             subscriptions = Subscriptions(viewer=viewer)
             subscriptions.save()
-            
+
         channel.subscribers.remove(viewer)  # type: ignore
         return Response(status=status.HTTP_200_OK)
     except Channel.DoesNotExist:
-        return Response({"error": "Channel not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"error": "Channel not found"}, status=status.HTTP_404_NOT_FOUND
+        )
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
@@ -576,22 +574,22 @@ def unsubscribe_API(request):
 @api_view(["POST"])
 def comment_API(request):
     try:
-        video_id = request.POST.get('video_id')
-        comment_text = request.POST.get('comment_text')
+        video_id = request.POST.get("video_id")
+        comment_text = request.POST.get("comment_text")
         viewer = request.user.viewer
         if len(comment_text) < 3:
             return JsonResponse({"success": False})
         video = Video.objects.get(id=video_id)
         channel = Channel.objects.get(user=viewer)
-        comment = Comment(
-            comment_text=comment_text, video=video, channel=channel
-        )
+        comment = Comment(comment_text=comment_text, video=video, channel=channel)
         comment.save()
         return Response(status=status.HTTP_201_CREATED)
     except Video.DoesNotExist:
         return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)
     except Channel.DoesNotExist:
-        return Response({"error": "Channel not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"error": "Channel not found"}, status=status.HTTP_404_NOT_FOUND
+        )
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
@@ -601,20 +599,20 @@ def comment_API(request):
 @api_view(["POST"])
 def comment_many_channels_API(request):
     try:
-        video_id = request.POST.get('video_id')
-        comment_text = request.POST.get('comment_text')
-        channel_id = request.POST.get('channel_id')
+        video_id = request.POST.get("video_id")
+        comment_text = request.POST.get("comment_text")
+        channel_id = request.POST.get("channel_id")
         if len(comment_text) < 3:
             return JsonResponse({"success": False})
         video = Video.objects.get(id=video_id)
         channel = Channel.objects.get(id=channel_id)
-        comment = Comment(
-            comment_text=comment_text, video=video, channel=channel
-        )
+        comment = Comment(comment_text=comment_text, video=video, channel=channel)
         comment.save()
         return Response(status=status.HTTP_201_CREATED)
     except Channel.DoesNotExist:
-        return Response({"error": "Channel not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"error": "Channel not found"}, status=status.HTTP_404_NOT_FOUND
+        )
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
@@ -624,22 +622,24 @@ def comment_many_channels_API(request):
 @api_view(["POST"])
 def reply_API(request):
     try:
-        comment_id = request.POST.get('comment_id')
-        reply_text = request.POST.get('reply_text')
+        comment_id = request.POST.get("comment_id")
+        reply_text = request.POST.get("reply_text")
         viewer = request.user.viewer
         if len(reply_text) < 3:
             return JsonResponse({"success": False})
         comment = Comment.objects.get(id=comment_id)
         channel = Channel.objects.get(user=viewer)
-        reply = CommentReply(
-            reply=reply_text, comment=comment, channel=channel
-        )
+        reply = CommentReply(reply=reply_text, comment=comment, channel=channel)
         reply.save()
         return Response(status=status.HTTP_201_CREATED)
     except Comment.DoesNotExist:
-        return Response({"error": "Comment not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"error": "Comment not found"}, status=status.HTTP_404_NOT_FOUND
+        )
     except Channel.DoesNotExist:
-        return Response({"error": "Channel not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"error": "Channel not found"}, status=status.HTTP_404_NOT_FOUND
+        )
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
@@ -649,29 +649,31 @@ def reply_API(request):
 @api_view(["POST"])
 def reply_many_channels_API(request):
     try:
-        comment_id = request.POST.get('comment_id')
-        reply_text = request.POST.get('reply_text')
-        channel_id = request.POST.get('channel_id')
+        comment_id = request.POST.get("comment_id")
+        reply_text = request.POST.get("reply_text")
+        channel_id = request.POST.get("channel_id")
         if len(reply_text) < 3:
             return JsonResponse({"success": False})
         comment = Comment.objects.get(id=comment_id)
         channel = Channel.objects.get(id=channel_id)
-        reply = CommentReply(
-            reply=reply_text, comment=comment, channel=channel
-        )
+        reply = CommentReply(reply=reply_text, comment=comment, channel=channel)
         reply.save()
         return Response(status=status.HTTP_201_CREATED)
     except Comment.DoesNotExist:
-        return Response({"error": "Comment not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"error": "Comment not found"}, status=status.HTTP_404_NOT_FOUND
+        )
     except Channel.DoesNotExist:
-        return Response({"error": "Channel not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"error": "Channel not found"}, status=status.HTTP_404_NOT_FOUND
+        )
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
         return Response(status=status.HTTP_400_BAD_REQUEST)
-    
 
-@api_view(['POST'])
+
+@api_view(["POST"])
 def like_API(request):
     try:
         video_id = request.data.get("video_id")
@@ -686,27 +688,31 @@ def like_API(request):
             liked_videos.save()
 
         if liked_videos.videos.contains(video):
-            return Response({"error": "Video already liked"}, status=status.HTTP_404_BAD_REQUEST)
+            return Response(
+                {"error": "Video already liked"}, status=status.HTTP_404_BAD_REQUEST
+            )
 
         else:
             video.likes += 1  # type: ignore
             liked_videos.videos.add(video)
             video.save()
             return Response(status=status.HTTP_200_OK)
-        
+
     except Video.DoesNotExist:
-        return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)      
+        return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)
     except LikedVideos.DoesNotExist:
-        return Response({"error": "LikedVideos not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"error": "LikedVideos not found"}, status=status.HTTP_404_NOT_FOUND
+        )
     except Viewer.DoesNotExist:
         return Response({"error": "Viewer not found"}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
         return Response(status=status.HTTP_400_BAD_REQUEST)
-    
 
-@api_view(['POST'])
+
+@api_view(["POST"])
 def dislike_API(request):
     try:
         video_id = request.data.get("video_id")
@@ -721,27 +727,31 @@ def dislike_API(request):
             disliked_videos.save()
 
         if disliked_videos.videos.contains(video):
-            return Response({"error": "Video already disliked"}, status=status.HTTP_404_BAD_REQUEST)
+            return Response(
+                {"error": "Video already disliked"}, status=status.HTTP_404_BAD_REQUEST
+            )
 
         else:
             video.dislikes += 1  # type: ignore
             disliked_videos.videos.add(video)
             video.save()
             return Response(status=status.HTTP_200_OK)
-        
+
     except Video.DoesNotExist:
-        return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)      
+        return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)
     except DisLikedVideos.DoesNotExist:
-        return Response({"error": "DisLikedVideos not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"error": "DisLikedVideos not found"}, status=status.HTTP_404_NOT_FOUND
+        )
     except Viewer.DoesNotExist:
         return Response({"error": "Viewer not found"}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
         return Response(status=status.HTTP_400_BAD_REQUEST)
-    
 
-@api_view(['POST'])
+
+@api_view(["POST"])
 def unlike_API(request):
     try:
         video_id = request.data.get("video_id")
@@ -758,25 +768,30 @@ def unlike_API(request):
                 return Response(status=status.HTTP_200_OK)
 
             else:
-                return Response({"error": "Video already unliked"}, status=status.HTTP_404_BAD_REQUEST)
+                return Response(
+                    {"error": "Video already unliked"},
+                    status=status.HTTP_404_BAD_REQUEST,
+                )
 
         except LikedVideos.DoesNotExist:
             liked_videos = LikedVideos(viewer=viewer)
             liked_videos.save()
-        
+
     except Video.DoesNotExist:
-        return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)      
+        return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)
     except LikedVideos.DoesNotExist:
-        return Response({"error": "LikedVideos not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"error": "LikedVideos not found"}, status=status.HTTP_404_NOT_FOUND
+        )
     except Viewer.DoesNotExist:
         return Response({"error": "Viewer not found"}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
         return Response(status=status.HTTP_400_BAD_REQUEST)
-    
 
-@api_view(['POST'])
+
+@api_view(["POST"])
 def undislike_API(request):
     try:
         video_id = request.data.get("video_id")
@@ -793,44 +808,52 @@ def undislike_API(request):
                 return Response(status=status.HTTP_200_OK)
 
             else:
-                return Response({"error": "Video already undisliked"}, status=status.HTTP_404_BAD_REQUEST)
+                return Response(
+                    {"error": "Video already undisliked"},
+                    status=status.HTTP_404_BAD_REQUEST,
+                )
 
         except DisLikedVideos.DoesNotExist:
             disliked_videos = DisLikedVideos(viewer=viewer)
             disliked_videos.save()
 
         if disliked_videos.videos.contains(video):
-            return Response({"error": "Video already disliked"}, status=status.HTTP_404_BAD_REQUEST)
+            return Response(
+                {"error": "Video already disliked"}, status=status.HTTP_404_BAD_REQUEST
+            )
 
         else:
             video.dislikes += 1  # type: ignore
             disliked_videos.videos.add(video)
             video.save()
             return Response(status=status.HTTP_200_OK)
-        
+
     except Video.DoesNotExist:
-        return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)      
+        return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)
     except DisLikedVideos.DoesNotExist:
-        return Response({"error": "DisLikedVideos not found"}, status=status.HTTP_404_NOT_FOUND)
+        return Response(
+            {"error": "DisLikedVideos not found"}, status=status.HTTP_404_NOT_FOUND
+        )
     except Viewer.DoesNotExist:
         return Response({"error": "Viewer not found"}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
         return Response(status=status.HTTP_400_BAD_REQUEST)
-    
-    
-@api_view(['POST'])
+
+
+@api_view(["POST"])
 def add_view_API(request):
     from .utils import view_valid
+
     INVALID_MINUTES = 5
     viewer_ip = request.META.get("REMOTE_ADDR")
     try:
         if request.user.is_authenticated:
-            viewer_id = request.data.get('viewer_id')
+            viewer_id = request.data.get("viewer_id")
             viewer = Viewer.objects.get(id=viewer_id)
-            print('viewer_id', viewer_id)
-            print('viewer', viewer)
+            print("viewer_id", viewer_id)
+            print("viewer", viewer)
             pk = request.data.get("video_id")
             video = Video.objects.get(id=pk)
             view = VideoView(viewer=viewer, video=video, viewer_ip=viewer_ip)
@@ -882,14 +905,12 @@ def add_view_API(request):
                 video.views += 1
                 video.save()
             return Response(status=status.HTTP_200_OK)
-    
-        
+
     except Video.DoesNotExist:
-        return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)    
+        return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)
     except Viewer.DoesNotExist:
         return Response({"error": "Viewer not found"}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except:
         return Response(status=status.HTTP_400_BAD_REQUEST)
-        

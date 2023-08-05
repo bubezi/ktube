@@ -161,7 +161,12 @@ export const handleRemoveFromWatchlater = (
     });
 };
 
-export const subOrUnsub = (url: string, channelId: number, viewerId: number, myToken: string) => {
+export const subOrUnsub = (
+  url: string,
+  channelId: number,
+  viewerId: number,
+  myToken: string
+) => {
   if (!channelId || !viewerId || !myToken || !url) {
     console.error(
       "Missing required parameters channelId, viewerId, or myToken"
@@ -202,10 +207,15 @@ export const subOrUnsub = (url: string, channelId: number, viewerId: number, myT
       }
       console.log(error.config);
     });
-}
+};
 
-export const likeunlikeOrdislikeUndislike = (url: string, videoId: number, viewerId: number, myToken: string) => {
-  if (!videoId || !viewerId || !myToken || !url ) {
+export const likeunlikeOrdislikeUndislike = (
+  url: string,
+  videoId: number,
+  viewerId: number,
+  myToken: string
+) => {
+  if (!videoId || !viewerId || !myToken || !url) {
     console.error(
       "Missing required parameters url, videoId, viewerId, or myToken"
     );
@@ -245,10 +255,9 @@ export const likeunlikeOrdislikeUndislike = (url: string, videoId: number, viewe
       }
       console.log(error.config);
     });
+};
 
-}
-
-export const toggleItem = (id: string, toggle:boolean) => {
+export const toggleItem = (id: string, toggle: boolean) => {
   let element = document.getElementById(id);
-  if (element) element.style.display = (toggle) ? 'block' : 'none';
+  if (element) element.style.display = toggle ? "block" : "none";
 };

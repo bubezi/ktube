@@ -8,7 +8,6 @@ import Commentitem from "./Commentitem";
 import CommentReplyItem from "./CommentReplyItem";
 import { toggleItem } from "../../functions/fun";
 
-
 const channelInit = {
   id: 0,
   name: "",
@@ -17,9 +16,9 @@ const channelInit = {
   private: true,
   unlisted: true,
   subscribers: [0],
-  website_official: '',
+  website_official: "",
   channel_active: false,
-  about: '',
+  about: "",
 };
 
 const channelsInit = [channelInit];
@@ -75,8 +74,8 @@ interface RepliesProps {
 }
 
 const commentRepiesStyle = {
-  display:'none'
-}
+  display: "none",
+};
 
 const CommentWithReplies: React.FC<RepliesProps> = ({
   comment,
@@ -86,22 +85,21 @@ const CommentWithReplies: React.FC<RepliesProps> = ({
   const [commentReplies, setCommentReplies] =
     React.useState<Array<CommentReply>>(commentReplyInit);
 
-    const repliesId = "repliesStyle" + comment.id
-    const toogleId = "replies-toggle" + comment.id
-    const unToogleId = "replies-untoggle" + comment.id
+  const repliesId = "repliesStyle" + comment.id;
+  const toogleId = "replies-toggle" + comment.id;
+  const unToogleId = "replies-untoggle" + comment.id;
 
-    const toggleReplies = () => {
-      toggleItem(repliesId, true);
-      toggleItem(toogleId, false); 
-      toggleItem(unToogleId, true); 
-    }
-    
-    const untoggleReplies = () => {
-      toggleItem(repliesId, false);
-      toggleItem(toogleId, true); 
-      toggleItem(unToogleId, false); 
-    }
-    
+  const toggleReplies = () => {
+    toggleItem(repliesId, true);
+    toggleItem(toogleId, false);
+    toggleItem(unToogleId, true);
+  };
+
+  const untoggleReplies = () => {
+    toggleItem(repliesId, false);
+    toggleItem(toogleId, true);
+    toggleItem(unToogleId, false);
+  };
 
   React.useEffect(() => {
     if (comment.id !== 0) {
@@ -127,7 +125,7 @@ const CommentWithReplies: React.FC<RepliesProps> = ({
     );
   });
 
-  if (commentReplies.length>0){
+  if (commentReplies.length > 0) {
     return (
       <React.Fragment key={comment.id}>
         <Commentitem
@@ -137,16 +135,28 @@ const CommentWithReplies: React.FC<RepliesProps> = ({
         />
         <div className="row">
           <div className="col-lg-3">
-            <a onClick={toggleReplies} id={"replies-toggle" + comment.id}><small>Show Replies</small></a>
-            <a onClick={untoggleReplies} id={"replies-untoggle"+ comment.id} style={commentRepiesStyle}><small>Hide Replies</small></a>
+            <a onClick={toggleReplies} id={"replies-toggle" + comment.id}>
+              <small>Show Replies</small>
+            </a>
+            <a
+              onClick={untoggleReplies}
+              id={"replies-untoggle" + comment.id}
+              style={commentRepiesStyle}
+            >
+              <small>Hide Replies</small>
+            </a>
           </div>
         </div>
-        <div className="col-lg-12" id={"repliesStyle"+ comment.id} style={commentRepiesStyle}>
+        <div
+          className="col-lg-12"
+          id={"repliesStyle" + comment.id}
+          style={commentRepiesStyle}
+        >
           {showCommentReplies}
         </div>
       </React.Fragment>
     );
-  }else{
+  } else {
     return (
       <React.Fragment key={comment.id}>
         <Commentitem
@@ -155,8 +165,8 @@ const CommentWithReplies: React.FC<RepliesProps> = ({
           channels={channels}
         />
       </React.Fragment>
-    );}
-
+    );
+  }
 };
 
 const Comments = (props: Props) => {
@@ -164,10 +174,7 @@ const Comments = (props: Props) => {
   const [manyChannels, setManyChannels] = React.useState<boolean>(false);
   const [channels, setChannels] = React.useState<Array<Channel>>(channelsInit);
   const [comments, setComments] = React.useState<Array<Comment>>(commentInit);
-  const [myToken] = React.useState(() => {
-    const savedToken = localStorage.getItem("token");
-    return savedToken ?? null;
-  });
+  const myToken = useViewerContext().myToken;
 
   React.useEffect(() => {
     if (props.videoId !== 0) {
@@ -206,7 +213,6 @@ const Comments = (props: Props) => {
         });
     }
   }, [viewerProvided.viewer.id]);
-  
 
   const showComments = comments.map((comment) => (
     <CommentWithReplies
@@ -216,22 +222,25 @@ const Comments = (props: Props) => {
       channels={channels}
     />
   ));
-  
-  return (
-      <>
-        <Commenting videoId={props.videoId} channels={channels} manyChannels={manyChannels}/>
-        <div className="row">
-          <h4 className="col-lg-12 box-element" id="comment-heading">
-            Comments
-          </h4>
-        </div>
-  
-        <div className="col-lg-12" id="comment-section">
-          {showComments}
-        </div>
-      </>
-    );
-  }
 
+  return (
+    <>
+      <Commenting
+        videoId={props.videoId}
+        channels={channels}
+        manyChannels={manyChannels}
+      />
+      <div className="row">
+        <h4 className="col-lg-12 box-element" id="comment-heading">
+          Comments
+        </h4>
+      </div>
+
+      <div className="col-lg-12" id="comment-section">
+        {showComments}
+      </div>
+    </>
+  );
+};
 
 export default Comments;

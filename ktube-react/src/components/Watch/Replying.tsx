@@ -4,6 +4,7 @@ import { Channel } from "../Watchpage";
 import axios from "axios";
 import { API_URL } from "../../constants";
 import { toggleItem } from "../../functions/fun";
+import { useViewerContext } from "../../providers/ViewerProvider";
 
 interface Props {
   commentId: number;
@@ -12,61 +13,52 @@ interface Props {
 }
 
 const formStyle = {
-    display: "none"
-}
-
+  display: "none",
+};
 
 const marginLeft = {
-    marginLeft: "30px"
-}
-
+  marginLeft: "30px",
+};
 
 const marginLeft2 = {
-    marginLeft: "10px"
-}
+  marginLeft: "10px",
+};
 
 const Replying = (props: Props) => {
   const [replyText, setReplyText] = React.useState<string>("");
   const [channelId, setChannelId] = React.useState<number>(0);
-  const [myToken] = React.useState(() => {
-    const savedToken = localStorage.getItem("token");
-    return savedToken ?? null;
-  });
+  const myToken = useViewerContext().myToken;
 
-
-
-const toggleId = "reply-toggle"+ props.commentId
-const untoggleId = "reply-untoggle"+ props.commentId
-const toggleFormMany = () => {
-    const formId = "reply-many-channels-form"+ props.commentId
+  const toggleId = "reply-toggle" + props.commentId;
+  const untoggleId = "reply-untoggle" + props.commentId;
+  const toggleFormMany = () => {
+    const formId = "reply-many-channels-form" + props.commentId;
     toggleItem(formId, true);
     toggleItem(toggleId, false);
     toggleItem(untoggleId, true);
-}
+  };
 
-
-const toggleForm = () => {
-    const formId = "reply-form"+ props.commentId
+  const toggleForm = () => {
+    const formId = "reply-form" + props.commentId;
     toggleItem(formId, true);
     toggleItem(toggleId, false);
     toggleItem(untoggleId, true);
-}
+  };
 
-const untoggleFormMany = () => {
-    const formId = "reply-many-channels-form"+ props.commentId
+  const untoggleFormMany = () => {
+    const formId = "reply-many-channels-form" + props.commentId;
     toggleItem(formId, false);
     toggleItem(toggleId, true);
     toggleItem(untoggleId, false);
-}
+  };
 
-
-const untoggleForm = () => {
-    const formId = "reply-form"+ props.commentId
+  const untoggleForm = () => {
+    const formId = "reply-form" + props.commentId;
     toggleItem(formId, false);
     toggleItem(toggleId, true);
     toggleItem(untoggleId, false);
-}
- 
+  };
+
   const handleReply = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -75,20 +67,16 @@ const untoggleForm = () => {
       formData.append("reply_text", replyText);
       formData.append("comment_id", props.commentId.toString());
 
-      const response = await axios.post(
-        API_URL + "reply",
-        formData,
-        {
-          headers: {
-            Authorization: `Token ${myToken}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axios.post(API_URL + "reply", formData, {
+        headers: {
+          Authorization: `Token ${myToken}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (response.status === 201) {
         setReplyText("");
-        alert('Reply Added');
+        alert("Reply Added");
       } else {
         // Handle error response
         console.error("Failed to submit reply");
@@ -101,17 +89,18 @@ const untoggleForm = () => {
     }
   };
 
- 
-  const handleManyChannelsReply = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleManyChannelsReply = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault();
 
-    if(channelId!==0){
+    if (channelId !== 0) {
       try {
         const formData = new FormData();
         formData.append("reply_text", replyText);
         formData.append("comment_id", props.commentId.toString());
         formData.append("channel_id", channelId.toString());
-  
+
         const response = await axios.post(
           API_URL + "replyManyChannels",
           formData,
@@ -122,10 +111,10 @@ const untoggleForm = () => {
             },
           }
         );
-  
+
         if (response.status === 201) {
           setReplyText("");
-          alert('Reply Added');
+          alert("Reply Added");
         } else {
           // Handle error response
           console.error("Failed to submit reply");
@@ -143,34 +132,42 @@ const untoggleForm = () => {
     if (!props.manyChannels) {
       return (
         <>
-        <a id={"reply-toggle"+ props.commentId} onClick={toggleForm}><small>Reply</small></a>
-        <a id={"reply-untoggle"+ props.commentId} onClick={untoggleForm} style={formStyle}><small>Hide</small></a>
-          <form 
-          style={formStyle}
-          id={"reply-form"+ props.commentId}
-          onSubmit={handleReply}
+          <a id={"reply-toggle" + props.commentId} onClick={toggleForm}>
+            <small>Reply</small>
+          </a>
+          <a
+            id={"reply-untoggle" + props.commentId}
+            onClick={untoggleForm}
+            style={formStyle}
           >
-            <fieldset
-                style={marginLeft}
+            <small>Hide</small>
+          </a>
+          <form
+            style={formStyle}
+            id={"reply-form" + props.commentId}
+            onSubmit={handleReply}
+          >
+            <fieldset style={marginLeft}>
+              <div className="row">
+                <textarea
+                  rows={2}
+                  cols={75}
+                  maxLength={350}
+                  id="reply-text"
+                  name="reply_text"
+                  value={replyText}
+                  onChange={(e) => setReplyText(e.target.value)}
+                ></textarea>
+              </div>
+              <div className="row" style={commentButton}>
+                <button
+                  className="btn btn-success"
+                  type="submit"
+                  disabled={!replyText}
                 >
-            <div className="row">
-              <textarea
-                rows={2}
-                cols={75}
-                maxLength={350}
-                id="reply-text"
-                name="reply_text"
-                value={replyText}
-                onChange={(e) => setReplyText(e.target.value)}
-              ></textarea>
-            </div>
-            <div className="row" style={commentButton}>
-              <button className="btn btn-success" type="submit"
-              disabled={!replyText}
-              >
-                Reply
-              </button>
-            </div>
+                  Reply
+                </button>
+              </div>
             </fieldset>
           </form>
         </>
@@ -187,48 +184,61 @@ const untoggleForm = () => {
       });
       return (
         <>
-        <a id={"reply-toggle"+ props.commentId} onClick={toggleFormMany}><small>Reply</small></a>
-        <a id={"reply-untoggle"+ props.commentId} onClick={untoggleFormMany} style={formStyle}><small>Hide</small></a>
-          <form 
+          <a id={"reply-toggle" + props.commentId} onClick={toggleFormMany}>
+            <small>Reply</small>
+          </a>
+          <a
+            id={"reply-untoggle" + props.commentId}
+            onClick={untoggleFormMany}
             style={formStyle}
-            id={"reply-many-channels-form"+ props.commentId}
+          >
+            <small>Hide</small>
+          </a>
+          <form
+            style={formStyle}
+            id={"reply-many-channels-form" + props.commentId}
             onSubmit={handleManyChannelsReply}
           >
-            <fieldset
-                style={marginLeft}>
-            <div className="row">
-              <textarea
-                rows={2}
-                cols={75}
-                maxLength={350}
-                id="reply-text"
-                name="reply_text"
-                value={replyText}
-                onChange={(e) => setReplyText(e.target.value)}
-              ></textarea>
-            </div>
-            <div className="row">
-              <div className="col-lg-12">
-                <div className="row">
-                  <label htmlFor="channel-id">Select channel</label>
-                </div>
-                <div className="row">
-                  <select name="channel_id" id="channel-id" onChange={(e) => setChannelId(Number(e.target.value))}>
-                  <option key="select_channel" value={0}>Select Channel</option>
-                    {options}
-                  </select>
+            <fieldset style={marginLeft}>
+              <div className="row">
+                <textarea
+                  rows={2}
+                  cols={75}
+                  maxLength={350}
+                  id="reply-text"
+                  name="reply_text"
+                  value={replyText}
+                  onChange={(e) => setReplyText(e.target.value)}
+                ></textarea>
+              </div>
+              <div className="row">
+                <div className="col-lg-12">
+                  <div className="row">
+                    <label htmlFor="channel-id">Select channel</label>
+                  </div>
+                  <div className="row">
+                    <select
+                      name="channel_id"
+                      id="channel-id"
+                      onChange={(e) => setChannelId(Number(e.target.value))}
+                    >
+                      <option key="select_channel" value={0}>
+                        Select Channel
+                      </option>
+                      {options}
+                    </select>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="row" style={commentButton}>
-              <button
-                className="btn btn-success"
-                type="submit"
-                disabled={!replyText || channelId === 0}
-              >
-                Reply
-              </button>
-            </div>
+              <div className="row" style={commentButton}>
+                <button
+                  className="btn btn-success"
+                  type="submit"
+                  disabled={!replyText || channelId === 0}
+                >
+                  Reply
+                </button>
+              </div>
             </fieldset>
           </form>
           <br />
@@ -238,7 +248,11 @@ const untoggleForm = () => {
   } else {
     return (
       <a href="/auth/login" target="_blank">
-        <h6 className="row" style={marginLeft2}><small><small>Login to reply</small></small></h6>
+        <h6 className="row" style={marginLeft2}>
+          <small>
+            <small>Login to reply</small>
+          </small>
+        </h6>
       </a>
     );
   }

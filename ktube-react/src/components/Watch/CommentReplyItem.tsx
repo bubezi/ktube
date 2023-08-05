@@ -9,6 +9,7 @@ import { colorRed, commentDpStyle } from "../../assets/styles/WatchStyles";
 import { ChannelDetailsState } from "../Videocard";
 import { CommentReply } from "./Comments";
 import { toggleItem } from "../../functions/fun";
+import { useViewerContext } from "../../providers/ViewerProvider";
 
 interface Props {
   reply: CommentReply;
@@ -30,10 +31,7 @@ const CommentReplyItem = (props: Props) => {
         }
     }, [props.reply]);
   
-    const [myToken] = React.useState(() => {
-      const savedToken = localStorage.getItem("token");
-      return savedToken ?? null;
-    });
+    const myToken = useViewerContext().myToken;
   
 
     React.useEffect(() => {

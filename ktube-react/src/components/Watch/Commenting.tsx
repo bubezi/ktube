@@ -3,6 +3,7 @@ import { commentButton } from "../../assets/styles/WatchStyles";
 import { Channel } from "../Watchpage";
 import axios from "axios";
 import { API_URL } from "../../constants";
+import { useViewerContext } from "../../providers/ViewerProvider";
 
 interface Props {
   videoId: number;
@@ -13,11 +14,7 @@ interface Props {
 const Commenting = (props: Props) => {
   const [commentText, setCommentText] = React.useState<string>("");
   const [channelId, setChannelId] = React.useState<number>(0);
-  const [myToken] = React.useState(() => {
-    const savedToken = localStorage.getItem("token");
-    return savedToken ?? null;
-  });
-
+  const myToken = useViewerContext().myToken;
  
   const handleComment = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
