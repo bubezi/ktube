@@ -3,6 +3,8 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { channelInit } from "./Watchpage";
 import { ChannelType } from "./Watchpage";
+import { Video } from "./Watchpage";
+import { videoInit } from "./Watchpage";
 import axios from "axios";
 import { API_BASE_URL, API_URL } from "../constants";
 import Footer from "./Footer";
@@ -17,10 +19,13 @@ import {
 import { useViewerContext } from "../providers/ViewerProvider";
 import Subscribe from "./Subscribe";
 
+const videosInit = [videoInit]
+
 const Channel = () => {
   const { channelId } = useParams();
   const myToken = useViewerContext().myToken;
   const [channel, setChannel] = React.useState<ChannelType>(channelInit);
+  const [ videos, setVideos ] = React.useState<Array<Video>>(videosInit);
   const [subscriberCount, setSubscriberCount] = React.useState<number>(0);
   const [owner, setOwner] = React.useState<boolean>(false);
 
@@ -29,13 +34,20 @@ const Channel = () => {
       axios({
         method: "get",
         url: API_URL + "channel/" + channelId,
-        // headers: {
-        //   Authorization: `Token ${myToken}`,
-        // },
       })
         .then((res) => {
-          console.log("response data: ", res.data);
           setChannel(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      axios({
+        method: "get",
+        url: API_URL + "channelVideos/" + channelId,
+      })
+        .then((res) => {
+          setVideos(res.data);
         })
         .catch((error) => {
           console.log(error);
@@ -146,6 +158,14 @@ const Channel = () => {
     }
   };
 
+  const show_videos = Map.videos((video)=>{
+    <div className="col-lg-4">
+      
+    </div>
+    
+  })
+
+
   if (channel.channel_active) {
     return (
       <>
@@ -161,6 +181,9 @@ const Channel = () => {
               </div>
               <div className="row">
                 <Actions />
+              </div>
+              <div className="row">
+                {show_videos}
               </div>
             </div>
           </div>
