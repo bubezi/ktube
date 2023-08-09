@@ -7,7 +7,7 @@ import Watchpagecontainer from "./Watch/Watchpagecontainer";
 import Morevideos from "./Watch/Morevideos";
 import { mainColStyle, mainRowStyle } from "../assets/styles/WatchStyles";
 
-interface Video {
+export interface Video {
   id: number;
   title: string;
   video: string;
@@ -52,24 +52,25 @@ export const channelInit = {
   about: '',
 };
 
+export const videoInit = {
+  id: 0,
+  title: "",
+  video: "",
+  thumbnail: "",
+  description: "",
+  upload_time: "",
+  channel: 0,
+  private: true,
+  unlisted: true,
+  likes: 0,
+  dislikes: 0,
+  views: 0,
+  slug: "",
+  path: "",
+  price: 0,
+};
+
 const Watchpage = () => {
-  const videoInit = {
-    id: 0,
-    title: "",
-    video: "",
-    thumbnail: "",
-    description: "",
-    upload_time: "",
-    channel: 0,
-    private: true,
-    unlisted: true,
-    likes: 0,
-    dislikes: 0,
-    views: 0,
-    slug: "",
-    path: "",
-    price: 0,
-  };
 
   const [channel, setChannel] = React.useState<ChannelType>(channelInit);
   const [video, setVideo] = React.useState<Video>(videoInit);

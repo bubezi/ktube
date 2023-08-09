@@ -316,6 +316,25 @@ class More_Videos_API(APIView):
         return Response({"videos": serializer.data}, status.HTTP_200_OK)
 
 
+class ChannelVideos(APIView):
+    def get(self, request, channelId):
+        try:
+            channel = Channel.objects.get(id=channelId)
+            videos = Video.objects.filter(channel=channel)
+            serializer = VideoSerializer(videos, many=True)
+            return Response(serializer.data, status.HTTP_200_OK)
+        except Channel.DoesNotExist:
+            return Response(
+                {"error": "Channel Not Found!"}, status=status.HTTP_404_NOT_FOUND
+            )
+        except:
+            return Response(
+                {"error": "Some other error"}, status=status.HTTP_400_BAD_REQUEST
+            )
+            
+        
+
+
 @api_view(["POST"])
 def add_video_to_playlist_API(request):
     video_id = request.data.get("video_id")

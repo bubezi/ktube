@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom/client'
 import App from './App.tsx'
 
 import './index.css'
+import "bootstrap";
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap.js";
 
 // import './assets/css/cdn/bootstrap.css'
 // import './assets/css/cdn/bootstrap.min.css'
