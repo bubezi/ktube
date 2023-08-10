@@ -18,14 +18,16 @@ import {
 } from "../assets/styles/WatchStyles";
 import { useViewerContext } from "../providers/ViewerProvider";
 import Subscribe from "./Subscribe";
+import Videocard from "./Videocard";
+import { channelVideosStyle } from "../assets/styles/Styles";
 
-const videosInit = [videoInit]
+const videosInit = [videoInit];
 
 const Channel = () => {
   const { channelId } = useParams();
   const myToken = useViewerContext().myToken;
   const [channel, setChannel] = React.useState<ChannelType>(channelInit);
-  const [ videos, setVideos ] = React.useState<Array<Video>>(videosInit);
+  const [videos, setVideos] = React.useState<Array<Video>>(videosInit);
   const [subscriberCount, setSubscriberCount] = React.useState<number>(0);
   const [owner, setOwner] = React.useState<boolean>(false);
 
@@ -158,13 +160,34 @@ const Channel = () => {
     }
   };
 
-  const show_videos = Map.videos((video)=>{
-    <div className="col-lg-4">
-      
-    </div>
-    
-  })
+  const Videocount = () => {
+    if (videos.length === 1 ){
+      return (
+          <h4 style={channelVideosStyle}>{videos.length} Video</h4>
+      );
+    }else{
+      return (
+        <h4 style={channelVideosStyle}>{videos.length} Videos</h4>
+      );
+    }
+  }
 
+  const show_videos = videos.map((video) => {
+    const thumbnailURL = API_BASE_URL + `${video.thumbnail}`;
+    return (
+      <Videocard
+        channelId={video.channel}
+        colSize="col-lg-4"
+        price={video.price}
+        slug={video.slug}
+        thumbnail={thumbnailURL}
+        title={video.title}
+        videoId={video.id}
+        views={video.views}
+        key={video.id}
+      />
+    );
+  });
 
   if (channel.channel_active) {
     return (
@@ -182,11 +205,10 @@ const Channel = () => {
               <div className="row">
                 <Actions />
               </div>
-              <div className="row">
-                {show_videos}
-              </div>
             </div>
           </div>
+          <div className="row box-element"><Videocount/></div>
+          <div className="row">{show_videos}</div>
         </div>
         <Footer />
       </>

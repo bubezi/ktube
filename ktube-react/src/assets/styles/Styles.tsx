@@ -12,3 +12,8 @@ export const toggleStyle = {
 export const elipsisStyle = {
   color: "black",
 };
+
+export const channelVideosStyle = {
+  marginBottom: "0",
+  paddingLeft: "10px"
+}
