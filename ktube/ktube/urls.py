@@ -135,6 +135,7 @@ urlpatterns += [
     path('api/moreVideos/<str:id>', tube_api.More_Videos_API.as_view()),
     
     path('api/channelVideos/<str:channelId>', tube_api.ChannelVideos.as_view()),
+    path('api/channelPlaylists/<str:channelId>', tube_api.ChannelPlaylists.as_view()),
     
     path('api/deleteComment', tube_api.delete_comment_API),
     path('api/deleteReply', tube_api.delete_reply_API),

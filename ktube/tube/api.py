@@ -331,6 +331,23 @@ class ChannelVideos(APIView):
             return Response(
                 {"error": "Some other error"}, status=status.HTTP_400_BAD_REQUEST
             )
+
+
+class ChannelPlaylists(APIView):
+    def get(self, request, channelId):
+        try:
+            channel = Channel.objects.get(id=channelId)
+            playlists = Playlist.objects.filter(channel=channel)
+            serializer = PlaylistsHomeSerializer(playlists, many=True)
+            return Response(serializer.data, status.HTTP_200_OK)
+        except Channel.DoesNotExist:
+            return Response(
+                {"error": "Channel Not Found!"}, status=status.HTTP_404_NOT_FOUND
+            )
+        except:
+            return Response(
+                {"error": "Some other error"}, status=status.HTTP_400_BAD_REQUEST
+            )
             
         
 

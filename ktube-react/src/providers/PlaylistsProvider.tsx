@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 import { API_URL } from "../constants";
 
-interface Playlist {
+export interface Playlist {
   id: number;
   name: string;
   videos: Array<number>;

@@ -20,6 +20,8 @@ import { useViewerContext } from "../providers/ViewerProvider";
 import Subscribe from "./Subscribe";
 import Videocard from "./Videocard";
 import { channelVideosStyle } from "../assets/styles/Styles";
+import { Playlist } from "../providers/PlaylistsProvider";
+import Playlistcard from "./Playlistcard";
 
 const videosInit = [videoInit];
 
@@ -28,6 +30,7 @@ const Channel = () => {
   const myToken = useViewerContext().myToken;
   const [channel, setChannel] = React.useState<ChannelType>(channelInit);
   const [videos, setVideos] = React.useState<Array<Video>>(videosInit);
+  const [playlists, setPlaylists] = React.useState<Array<Playlist>>([]);
   const [subscriberCount, setSubscriberCount] = React.useState<number>(0);
   const [owner, setOwner] = React.useState<boolean>(false);
 
@@ -44,16 +47,27 @@ const Channel = () => {
           console.log(error);
         });
 
-      axios({
-        method: "get",
-        url: API_URL + "channelVideos/" + channelId,
-      })
-        .then((res) => {
-          setVideos(res.data);
+        axios({
+          method: "get",
+          url: API_URL + "channelVideos/" + channelId,
         })
-        .catch((error) => {
-          console.log(error);
-        });
+          .then((res) => {
+            setVideos(res.data);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+
+          axios({
+            method: "get",
+            url: API_URL + "channelPlaylists/" + channelId,
+          })
+            .then((res) => {
+              setPlaylists(res.data);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
     }
   }, [channelId]);
 
@@ -189,6 +203,10 @@ const Channel = () => {
     );
   });
 
+  const show_playlists = playlists.map((playlist) =>{
+    return (<Playlistcard key={playlist.id} playlist={playlist}/>);
+  })
+
   if (channel.channel_active) {
     return (
       <>
@@ -209,6 +227,9 @@ const Channel = () => {
           </div>
           <div className="row box-element"><Videocount/></div>
           <div className="row">{show_videos}</div>
+          <br/>
+          <div className="row box-element"><h3>Playlists</h3></div>
+          <div className="row">{show_playlists}</div>
         </div>
         <Footer />
       </>
