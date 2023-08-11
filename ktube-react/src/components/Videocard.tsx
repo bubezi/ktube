@@ -33,7 +33,7 @@ const Videocard = (props: Prop) => {
                 .then(res => setChannelDetails(res.data))
                 .catch((error)=>{console.log(error)});
         }
-    },[]);
+    },[props.channelId]);
 
 
     const channelDp = `${channelDetails.profile_picture}`;
@@ -54,7 +54,7 @@ const Videocard = (props: Prop) => {
 
     const pluralViews = props.views === 1 ? 'view' : 'views';
 
-    const Thumbnail = () => {
+    const ChannelDP = () => {
         if (props.thumbnail===''){
             return ( <img src={imagePlaceholder} className="channel-icon" alt="Channel Profile picture" style={imageStyle}/>);
         }
@@ -87,7 +87,7 @@ const Videocard = (props: Prop) => {
                         <div className="col-lg-6">
                             <div className="row">
                                 <a href={"/channel/" + props.channelId}>
-                                    <Thumbnail/>
+                                    <ChannelDP/>
                                 </a>
                                 <a href={"/channel/" + props.channelId}>
                                     <h6>{videoChannelName}</h6>

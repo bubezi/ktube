@@ -20,17 +20,26 @@ import { useViewerContext } from "../providers/ViewerProvider";
 import Subscribe from "./Subscribe";
 import Videocard from "./Videocard";
 import { channelVideosStyle } from "../assets/styles/Styles";
-import { Playlist } from "../providers/PlaylistsProvider";
 import Playlistcard from "./Playlistcard";
 
 const videosInit = [videoInit];
+
+export interface PlaylistChannel {
+  id: number,
+  name: string,
+  views: number,
+  public: boolean,
+  created_on: string,
+  channel: string,
+  videos: number[],
+}
 
 const Channel = () => {
   const { channelId } = useParams();
   const myToken = useViewerContext().myToken;
   const [channel, setChannel] = React.useState<ChannelType>(channelInit);
   const [videos, setVideos] = React.useState<Array<Video>>(videosInit);
-  const [playlists, setPlaylists] = React.useState<Array<Playlist>>([]);
+  const [playlists, setPlaylists] = React.useState<Array<PlaylistChannel>>([]);
   const [subscriberCount, setSubscriberCount] = React.useState<number>(0);
   const [owner, setOwner] = React.useState<boolean>(false);
 

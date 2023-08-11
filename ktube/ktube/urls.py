@@ -112,6 +112,7 @@ urlpatterns += [
     path('api/auth/getCurrentViewer', views_reg.GetViewer.as_view()),
     path('api/playlistsHome', tube_api.PlaylistsHomeAPI.as_view()),
     path('api/watchlater', tube_api.WatchlaterHomeAPI.as_view()),
+    path('api/savedPlaylistsAPI', tube_api.SavedPlaylistsAPI.as_view()),
     
     path('api/add_video_to_playlist',tube_api.add_video_to_playlist_API),
     path('api/remove_video_from_playlist',tube_api.remove_video_from_playlist_API),

@@ -85,6 +85,10 @@ export const paddingLeft45 = {
   paddingLeft: "45px"
 }
 
+export const paddingLeft10 = {
+  paddingLeft: "10px"
+}
+
 export const paddingTop35 = {
   paddingTop: "35px"
 }

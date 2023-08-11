@@ -66,6 +66,23 @@ class WatchlaterHomeAPI(APIView):
         return Response({"watchlater": serializer.data}, status=status.HTTP_200_OK)
 
 
+class SavedPlaylistsAPI(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        viewer = request.user.viewer
+
+        try:
+            savedPlaylists = SavedPlaylists.objects.get(viewer=viewer)
+
+        except SavedPlaylists.DoesNotExist:
+            savedPlaylists = SavedPlaylists(viewer=viewer)
+            savedPlaylists.save()
+            
+        serializer = SavedPlaylistsSerializer(savedPlaylists, many=False)
+        return Response({"savedPlaylists": serializer.data}, status=status.HTTP_200_OK)
+
+
 class PlaylistsHomeAPI(APIView):
     permissions_classes = [IsAuthenticated]
 
