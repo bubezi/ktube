@@ -79,7 +79,7 @@ class SavedPlaylistsAPI(APIView):
             savedPlaylists = SavedPlaylists(viewer=viewer)
             savedPlaylists.save()
             
-        serializer = SavedPlaylistsSerializer(savedPlaylists, many=False)
+        serializer = SavedPlaylists_Serializer(savedPlaylists, many=False)
         return Response({"savedPlaylists": serializer.data}, status=status.HTTP_200_OK)
 
 
@@ -234,6 +234,26 @@ class Is_owner_API(APIView):
         owner = viewer_signed_in == viewer_in_db
 
         return Response({"is_owner": owner}, status=status.HTTP_200_OK)
+
+
+class Is_playlist_owner_API(APIView):
+    permissions_classes = [IsAuthenticated]
+
+    def get(self, request, id, format=None):
+        viewer_signed_in = request.user.viewer
+        try:
+            playlist = Playlist.objects.get(id=id)
+            viewer_in_db = playlist.channel.user
+        except Playlist.DoesNotExist:
+            return Response(
+                {"error": "Channel Not Found!"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        owner = viewer_signed_in == viewer_in_db
+
+        return Response({"is_owner": owner}, status=status.HTTP_200_OK)
+    
+    
 
 
 class Get_comments_API(APIView):
@@ -617,6 +637,58 @@ def unsubscribe_API(request):
     except Channel.DoesNotExist:
         return Response(
             {"error": "Channel not found"}, status=status.HTTP_404_NOT_FOUND
+        )
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+def save_playlist_API(request):
+    try:
+        playlist_id = request.data.get("playlist_id")
+        viewer_id = request.data.get("viewer_id")
+        playlist = Playlist.objects.get(id=playlist_id)
+        viewer = Viewer.objects.get(id=viewer_id)
+        try:
+            saved_playlists = SavedPlaylists.objects.get(viewer=viewer)
+        except SavedPlaylists.DoesNotExist:
+            saved_playlists = SavedPlaylists(viewer=viewer)
+            saved_playlists.save()
+
+        saved_playlists.playlists.add(playlist)
+        print(saved_playlists)
+        print("OYAAAHHHHH!!!!")
+        return Response(status=status.HTTP_200_OK)
+    except Playlist.DoesNotExist:
+        return Response(
+            {"error": "Playlist not found"}, status=status.HTTP_404_NOT_FOUND
+        )
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+def un_save_playlist_API(request):
+    try:
+        playlist_id = request.data.get("playlist_id")
+        viewer_id = request.data.get("viewer_id")
+        playlist = Playlist.objects.get(id=playlist_id)
+        viewer = Viewer.objects.get(id=viewer_id)
+        try:
+            saved_playlists = SavedPlaylists.objects.get(viewer=viewer)
+            saved_playlists.playlists.remove(playlist)
+        except SavedPlaylists.DoesNotExist:
+            saved_playlists = SavedPlaylists(viewer=viewer)
+            saved_playlists.save()
+
+        return Response(status=status.HTTP_200_OK)
+    except Playlist.DoesNotExist:
+        return Response(
+            {"error": "Playlist not found"}, status=status.HTTP_404_NOT_FOUND
         )
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

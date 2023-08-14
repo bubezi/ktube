@@ -29,24 +29,24 @@ const Subscribe = (props: Props) => {
 
   if (myToken) {
     const subscribe = () => {
+      setSubscribed(true);
       subOrUnsub(
         "subscribeAPI",
         props.channelId,
         viewerProvided.viewer.id,
         myToken
       );
-      setSubscribed(true);
       props.setSubscriberCount(props.subscriberCount + 1);
     };
 
     const unSubscribe = () => {
+      setSubscribed(false);
       subOrUnsub(
         "unSubscribeAPI",
         props.channelId,
         viewerProvided.viewer.id,
         myToken
       );
-      setSubscribed(false);
       props.setSubscriberCount(props.subscriberCount - 1);
     };
 

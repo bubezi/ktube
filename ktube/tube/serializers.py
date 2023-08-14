@@ -9,10 +9,10 @@ class PlaylistsHomeSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
         
-class SavedPlaylistsSerializer(serializers.ModelSerializer):
+class SavedPlaylists_Serializer(serializers.ModelSerializer):
     class Meta:
         model = SavedPlaylists
-        fields = ("playlists")
+        fields = ("id","playlists")
 
 
 class ViewerSerializer(serializers.ModelSerializer):

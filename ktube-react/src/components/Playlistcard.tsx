@@ -99,7 +99,7 @@ const Playlistcard = (props: Props) => {
                     {props.playlist.views} {pluralViews}
                 </div>
             </div>
-            <div className="col-lg-2  col-12 text-right mt-2 mt-lg-0"><Playlistoptions/></div>
+            <div className="col-lg-2  col-12 text-right mt-2 mt-lg-0"><Playlistoptions playlistId={props.playlist.id}/></div>
           </div>
         </div>
       </div>

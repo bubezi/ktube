@@ -126,6 +126,8 @@ urlpatterns += [
     path('api/getChannels/<str:id>', tube_api.Get_Channels_API.as_view()),
     
     path('api/isowner/<str:id>', tube_api.Is_owner_API.as_view()),
+    path('api/isPlaylistOwner/<str:id>', tube_api.Is_playlist_owner_API.as_view()),
+    
     path('api/getComments/<str:id>', tube_api.Get_comments_API.as_view()),
     
     path('api/getReplies/<str:id>', tube_api.Get_replies_API.as_view()),
@@ -149,6 +151,9 @@ urlpatterns += [
     
     path('api/subscribeAPI', tube_api.subscribe_API),
     path('api/unSubscribeAPI', tube_api.unsubscribe_API),
+    
+    path('api/savePlaylistsAPI', tube_api.save_playlist_API),
+    path('api/unSavePlaylistsAPI', tube_api.un_save_playlist_API),
     
     path('api/likeVideo', tube_api.like_API),
     path('api/unLikeVideo', tube_api.unlike_API),

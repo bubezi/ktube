@@ -184,7 +184,7 @@ class Watchlater(models.Model):
     public = False
 
     def __str__(self):
-        return "My watchlater"
+        return self.viewer.username + " My watchlater"
 
     def video_count(self):
         return self.videos.count()
@@ -199,7 +199,7 @@ class LikedVideos(models.Model):
     public = False
 
     def __str__(self):
-        return "My Liked Videos"
+        return self.viewer.username + " My Liked Videos"
 
     def video_count(self):
         return self.videos.count()
@@ -214,7 +214,7 @@ class DisLikedVideos(models.Model):
     public = False
 
     def __str__(self):
-        return "My DisLiked Videos"
+        return self.viewer.username + " My DisLiked Videos"
 
     def video_count(self):
         return self.videos.count()
@@ -231,7 +231,7 @@ class SavedPlaylists(models.Model):
     public = False
 
     def __str__(self):
-        return "My Saved Playlists"
+        return self.viewer.username + " Saved Playlists"
 
     def playlist_count(self):
         return self.playlists.count()
@@ -245,7 +245,7 @@ class Subscriptions(models.Model):
     public = False
 
     def __str__(self):
-        return "My Subscriptions"
+        return self.viewer.username + " My Subscriptions"
 
     def playlist_count(self):
         return self.subscriptions.count()
@@ -278,7 +278,7 @@ class History(models.Model):
     public = False
 
     def __str__(self):
-        return "My History"
+        return self.viewer.username + " My History"
 
     def video_count(self):
         return self.views.count()
@@ -290,12 +290,18 @@ class LikedComments(models.Model):
         Comment, related_name="liked_comments", blank=True
     )
 
+    def __str__(self):
+        return self.viewer.username + " Liked comments"
+
 
 class DisLikedComments(models.Model):
     viewer = models.OneToOneField(Viewer, null=True, on_delete=models.CASCADE)
     comments = models.ManyToManyField(
         Comment, related_name="disliked_comments", blank=True
     )
+
+    def __str__(self):
+        return self.viewer.username + " Disliked comments"
 
 
 class LikedCommentsReplies(models.Model):
@@ -304,6 +310,9 @@ class LikedCommentsReplies(models.Model):
         CommentReply, related_name="liked_comment_replies", blank=True
     )
 
+    def __str__(self):
+        return self.viewer.username + " Liked comments replies"
+
 
 class DisLikedCommentsReplies(models.Model):
     viewer = models.OneToOneField(Viewer, null=True, on_delete=models.CASCADE)
@@ -311,9 +320,12 @@ class DisLikedCommentsReplies(models.Model):
         CommentReply, related_name="disliked_comment_replies", blank=True
     )
 
+    def __str__(self):
+        return self.viewer.username + " Disliked comment replies"
+
 
 class Stream(models.Model):
-    user = models.ForeignKey(Viewer, on_delete=models.CASCADE)
+    viewer = models.ForeignKey(Viewer, on_delete=models.CASCADE)
     key = models.CharField(max_length=32, unique=True)
     started_at = models.DateTimeField(null=True, blank=True)
     title = models.CharField(max_length=255, null=False, default="LIVE Stream")
@@ -330,3 +342,6 @@ class Stream(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.viewer.username + " My History"
