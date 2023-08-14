@@ -1,6 +1,6 @@
 # KEY
     [] To do
-    [x] Done
+    [] Done
     [*] Will not do, for now
 
 
@@ -23,18 +23,13 @@ Kenya web experts
 
 [] Fieldset
 
-[x] Chat GPT Prompt
-    I am making a django youtube clone and I need the user to add a subscriber with a button. 
-    That is, having the Viewer Model added to the channel model's subscribers ManyToManyField
-    without having to handle using a new view function.
-    The same for like and deslike buttons
-[x] google HUMANIze Tags
-[x] Add page Loader
-[x] *return to last video time after sub from video redirect
-[x] Drag and drop functionality
-[x] Django video View count
-[x] Does Django use websockets
-[x] UPDATE Like and Dislike buttons / svg
+[] google HUMANIze Tags
+[] Add page Loader
+[] *return to last video time after sub from video redirect
+[] Drag and drop functionality
+[] Django video View count
+[] Does Django use websockets
+[] UPDATE Like and Dislike buttons / svg
 [] How to serve videos better django
 [] Better alternative for paginator (For comments and Comment replies)
 [] Dynamic login redirect
@@ -43,123 +38,136 @@ Kenya web experts
 
 ######
 
+# React 
+
+[] Watchpage
+    [x] Delete Comment
+    [] Subscribe
+    [] Like
+    [] Dislike
+    [] Comment
+        [] Single Channel
+        [] Many Channels
+
+######
+
 # PHASE ! - Initialise
-[x] Utilize the {% empty %} tag in for loop TAGS
-[x] Add DP
-[x] Profile Page
-[x] fix Change Channel details form
-[x] Sub
-[x] Organise Templates and views
-    [x] Script and css declarations
-    [x] include and tags
-[x] Like
-[x] add upload pages
-    [x] Video Upload
-    [x] add signup page
-    [x] Create playlist page
-[x] Fix Navbar
-[x] Privacy
-    [x] USER should Not be able to change other USER's details outside admin panel
-    [x] USER should Not be able to create other USER'S channel
-    [x] Private & Unlisted Videos
-    [x] Public playlists
-[x] History
-[x] Liked Videos 
-[x] Fix Correct box element places
-[x] Fix Channel page with multiple playlists
-[x] video views and view-count update
-[x] Add playlist(s) page
-    [x] Watch Later ** Possibly Created after Viewer is created
-    [x] Libary 
-        [x] Watch Later
-        [x] Saved Playlists
-        [x] Liked Videos
-        [x] History
-    [x] Subscriptions
-[x] playlist functionality
-    [x] Add video to Watchlater functionality
-    [x] Add video to playlist functionality
-    [x] Remove video from playlist functionality
-    [x] Remove video from Watchlater functionality
-    [x] Add add and/or remove to
-        [x] Playlist page (More of remove)
-        [x] Channel page
-        [x] Liked videos page and on library page
-        [x] Watch page
-        [x] Subscriptions page
-        [x] Watchlater page and on library page
-        [x] History page and on library page
-        [x] Library page (More of remove)
-    [x] ABILITY for USERS to delete playlists
-    [x] Save and Delete playlist functionality
-        [x] Playlist page
-        [x] Channel page
-        [x] Saved Playlists page (remove)
-        [x] Library page
-[x] Ability to Comment
-[x] Ability to reply to Comments
-[x] PLaylist in Watch Page init
-[x] PLaylist in Watch Page
-    [x] PLAY ALL BUTTON FOR Playlists
-    [x] Playlist views update
-[x] ABILITY for USERS to delete models
-    [x] Playlist
-    [x] Video
-    [x] Channel
-    [x] Comment
-    [x] Comment Reply
-    [x] Viewer (USER - unmark active status)
-    [x] Password before delete functionality
-        [x] Channel
-        [x] Viewer (USER - unmark active status)
+[] Utilize the {% empty %} tag in for loop TAGS
+[] Add DP
+[] Profile Page
+[] fix Change Channel details form
+[] Sub
+[] Organise Templates and views
+    [] Script and css declarations
+    [] include and tags
+[] Like
+[] add upload pages
+    [] Video Upload
+    [] add signup page
+    [] Create playlist page
+[] Fix Navbar
+[] Privacy
+    [] USER should Not be able to change other USER's details outside admin panel
+    [] USER should Not be able to create other USER'S channel
+    [] Private & Unlisted Videos
+    [] Public playlists
+[] History
+[] Liked Videos 
+[] Fix Correct box element places
+[] Fix Channel page with multiple playlists
+[] video views and view-count update
+[] Add playlist(s) page
+    [] Watch Later ** Possibly Created after Viewer is created
+    [] Libary 
+        [] Watch Later
+        [] Saved Playlists
+        [] Liked Videos
+        [] History
+    [] Subscriptions
+[] playlist functionality
+    [] Add video to Watchlater functionality
+    [] Add video to playlist functionality
+    [] Remove video from playlist functionality
+    [] Remove video from Watchlater functionality
+    [] Add add and/or remove to
+        [] Playlist page (More of remove)
+        [] Channel page
+        [] Liked videos page and on library page
+        [] Watch page
+        [] Subscriptions page
+        [] Watchlater page and on library page
+        [] History page and on library page
+        [] Library page (More of remove)
+    [] ABILITY for USERS to delete playlists
+    [] Save and Delete playlist functionality
+        [] Playlist page
+        [] Channel page
+        [] Saved Playlists page (remove)
+        [] Library page
+[] Ability to Comment
+[] Ability to reply to Comments
+[] PLaylist in Watch Page init
+[] PLaylist in Watch Page
+    [] PLAY ALL BUTTON FOR Playlists
+    [] Playlist views update
+[] ABILITY for USERS to delete models
+    [] Playlist
+    [] Video
+    [] Channel
+    [] Comment
+    [] Comment Reply
+    [] Viewer (USER - unmark active status)
+    [] Password before delete functionality
+        [] Channel
+        [] Viewer (USER - unmark active status)
         [*] Video
             [*] Prompt in browser for input JavaScript
 [] ABILITY for USERS to edit models
-    [x] Channel
+    [] Channel
     [] Playlist
-        [x] Change name
-        [x] Change Public status
-        [x] Change Videos
+        [] Change name
+        [] Change Public status
+        [] Change Videos
         [] Drag to rearange ****************************************************
-    [x] Video
-        [x] Change Title
+    [] Video
+        [] Change Title
         [*] Change Video
-        [x] Change Thumbnail
-        [x] Change Description
-        [x] Change private
-        [x] Change unlisted
+        [] Change Thumbnail
+        [] Change Description
+        [] Change private
+        [] Change unlisted
     [*] Viewer
     [*] Comment
     [*] Comment Reply
 [*] Like and Dislike Comments
-[x] PREVENT USER ABILITY TO WATCH VIDEO MULTILPLE TIMES TO INCREASE VIEW COUNT *************
-    [x] Currently 5 minutes
-[x] Search functionality
-[x] Create my Channels page
+[] PREVENT USER ABILITY TO WATCH VIDEO MULTILPLE TIMES TO INCREASE VIEW COUNT *************
+    [] Currently 5 minutes
+[] Search functionality
+[] Create my Channels page
 
-[x] UPDATE Favivons
+[] UPDATE Favivons
 
 ######
 
 # PHASE 2 - Perfect
-[x] Video slug - From link using video id to slug
-[x] Video costs something
-[x] Fix revenue percentage error
-[x] History compile similar adjacent videos
-[x] WARNING:waitress.queue:Task queue depth is 94
-[x] WARNING:waitress:total open connections reached the connection limit, no longer accepting new connections
-[x] robots.txt => https://ordinarycoders.com/blog/article/robots-text-file-django
-[x] Change like and dislike buttons
-[x] File too large test
+[] Video slug - From link using video id to slug
+[] Video costs something
+[] Fix revenue percentage error
+[] History compile similar adjacent videos
+[] WARNING:waitress.queue:Task queue depth is 94
+[] WARNING:waitress:total open connections reached the connection limit, no longer accepting new connections
+[] robots.txt => https://ordinarycoders.com/blog/article/robots-text-file-django
+[] Change like and dislike buttons
+[] File too large test
 [] Search
     [] history
     [] algorithm
 [] Create logic
-    [x] Channel
-    [x] comments
-    [x] likes and dislikes
-    [x] Subscriptions and Playlists
-    [x] ACC SHOUD ONLY LIKE, dislike & SUB ONCE
+    [] Channel
+    [] comments
+    [] likes and dislikes
+    [] Subscriptions and Playlists
+    [] ACC SHOUD ONLY LIKE, dislike & SUB ONCE
     [] Streaming
         [] Opencv (and/or) [] NodeJs 
     [] Get metadata from video 
@@ -167,8 +175,8 @@ Kenya web experts
     [] Resume capability
     [] Auto skip (Play next)
     [*] Pictures (For events and shit)
-[x] Get IP address of the view for (esp) logged out viewers
-    [x] Viewing algorithm limit
+[] Get IP address of the view for (esp) logged out viewers
+    [] Viewing algorithm limit
 [] Install rtmps in local nginx
     [] Dockerised rtmps server
 [] Dockerise django
@@ -176,20 +184,21 @@ Kenya web experts
 [] Use React-specific libraries like React-Bootstrap or Reactstrap
 [] Lighthouse 100% mobile
     [] PWA
-        [x] Installable
-        [x] Web app and manifest
+        [] Installable
+        [] Web app and manifest
         [] register a service worker that controls page and start_url
         [] Maskable Icon
     [] Performance
     [] Accessibility
     [] Best Practises
-    [x] SEO
+    [] SEO
+[] Learn React
+[] Fix login error feedback
 [] Use Docker
     [] Use RTMPs in docker
 [] Learn and Use Kubernetes
 [] Update types where possible
 [] Seperate logic into django apps
-[] Learn React
 [] Copyright DETECTION AND REGISTERING FUNCTIONALITY
 [] Recommend FUNCTIONALITY
 [] Analytics
@@ -265,7 +274,7 @@ Kenya web experts
         [] Themes
     [] responsiveness 
         [] Google Chrome Lighthouse (target 100%)
-            [x] How to convert images to WebP and AVIF from PNG or JPEG
+            [] How to convert images to WebP and AVIF from PNG or JPEG
             [] Types for video upload
         [] RWA
 [] Migrate Js from HTML to JS files
@@ -309,11 +318,11 @@ Kenya web experts
     [] 1. Store the video files in a directory on your 
     server or in a cloud storage service like AWS S3 or 
     Google Cloud Storage.
-    [x] 2. Use a media server like Nginx, Apache or HLS to 
+    [] 2. Use a media server like Nginx, Apache or HLS to 
     serve the video files to clients. These media servers 
     can handle requests for video files and deliver them 
     to clients over HTTP.
-    [x] 3. In your Django views, you can generate URLs to 
+    [] 3. In your Django views, you can generate URLs to 
     the video files based on their filename or ID in your 
     database.
     [] 4. Include a video player in your HTML templates to 
@@ -324,7 +333,7 @@ Kenya web experts
     that supports live streaming.
 [] Here are some additional tips and resources for implementing 
 video streaming in Django:
-    [x] - Use a media server that is optimized for video streaming. 
+    [] - Use a media server that is optimized for video streaming. 
     Nginx and Apache both have modules for serving video files over 
     HTTP, and HLS is a popular streaming protocol that can be used 
     with both servers.
@@ -365,5 +374,5 @@ video streaming in Django:
 ######
 
 # [] PROBLEMS
-[x] / THE URL problem
+[] / THE URL problem
 [] GET data from video

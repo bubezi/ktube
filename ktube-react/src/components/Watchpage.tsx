@@ -7,7 +7,7 @@ import Watchpagecontainer from "./Watch/Watchpagecontainer";
 import Morevideos from "./Watch/Morevideos";
 import { mainColStyle, mainRowStyle } from "../assets/styles/WatchStyles";
 
-interface Video {
+export interface Video {
   id: number;
   title: string;
   video: string;
@@ -25,39 +25,54 @@ interface Video {
   price: number;
 }
 
-export interface Channel {
-    id: number;
-    name: string;
-    profile_picture: string;
-    subscriber_count: number;
-    private: boolean;
-    unlisted: boolean;
-    subscribers: number[];
-    userId: number;
+
+export interface ChannelType {
+  id: number;
+  name: string;
+  profile_picture: string;
+  user: number;
+  private: boolean;
+  unlisted: boolean;
+  subscribers: number[];
+  website_official: string;
+  channel_active: boolean;
+  about: string;
 }
 
-export const channelInit = { id:0, name: "", profile_picture: "", subscriber_count: 0, private: true, unlisted:true, subscribers:[0], userId:0};
+export const channelInit = {
+  id: 0,
+  name: "",
+  profile_picture: "",
+  user: 0,
+  private: true,
+  unlisted: true,
+  subscribers: [0],
+  website_official: '',
+  channel_active: false,
+  about: '',
+};
 
-function Watchpage() {
-  const videoInit = {
-    id: 0,
-    title: "",
-    video: "",
-    thumbnail: "",
-    description: "",
-    upload_time: "",
-    channel: 0,
-    private: true,
-    unlisted: true,
-    likes: 0,
-    dislikes: 0,
-    views: 0,
-    slug: "",
-    path: "",
-    price: 0,
-  };
+export const videoInit = {
+  id: 0,
+  title: "",
+  video: "",
+  thumbnail: "",
+  description: "",
+  upload_time: "",
+  channel: 0,
+  private: true,
+  unlisted: true,
+  likes: 0,
+  dislikes: 0,
+  views: 0,
+  slug: "",
+  path: "",
+  price: 0,
+};
 
-  const [channel, setChannel] = React.useState<Channel>(channelInit);
+const Watchpage = () => {
+
+  const [channel, setChannel] = React.useState<ChannelType>(channelInit);
   const [video, setVideo] = React.useState<Video>(videoInit);
   const { slug } = useParams();
 
@@ -76,12 +91,11 @@ function Watchpage() {
       .catch((error) => {
         console.log(error);
       });
-
   }, [slug]);
 
   React.useEffect(() => {
-    document.title = video.title + ' | KTUBE';
-    if (video.channel !== 0){
+    document.title = video.title + " | KTUBE";
+    if (video.channel !== 0 && channel.id === 0) {
       axios({
         method: "get",
         url: API_URL + "channel/" + video.channel,
@@ -96,7 +110,7 @@ function Watchpage() {
           console.log(error);
         });
     }
-  }, [video]);
+  }, [video, channel]);
 
   return (
     <>
@@ -107,13 +121,13 @@ function Watchpage() {
           <Watchpagecontainer
             title={video.title}
             channel={channel.name}
-            subscriber_count={channel.subscriber_count}
+            subscriber_count={channel.subscribers.length}
             private={channel.private}
             unlisted={channel.unlisted}
             profile_picture={channel.profile_picture}
             channelId={channel.id}
             subscribers={channel.subscribers}
-            channelUserId={channel.userId}
+            channelUserId={channel.user}
             videoId={video.id}
             views={video.views}
             likes={video.likes}
@@ -123,11 +137,11 @@ function Watchpage() {
           />
         </div>
         <div className="col-lg-3">
-          <Morevideos videoId={video.id}/>
+          <Morevideos videoId={video.id} />
         </div>
       </div>
     </>
   );
-}
+};
 
 export default Watchpage;

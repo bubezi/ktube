@@ -1,10 +1,10 @@
 // import placeholder from '../assets/images/thumbnail-placeholder.webp'
-import imagePlaceholder from '../assets/images/placeholder.png'
+import imagePlaceholder from '../../assets/images/placeholder.png'
 import axios from 'axios'
-import { API_URL } from '../constants'
+import { API_BASE_URL, API_URL } from '../../constants'
 import React from 'react'
 
-import Videooptions from './Options/Videooptions'
+import Videooptions from '../Options/Videooptions'
 
 interface Prop {
     videoId: number,
@@ -22,7 +22,7 @@ export interface ChannelDetailsState {
     name: string,
 }
 
-const Videocard = (props: Prop) => {
+const MoreVideosCard = (props: Prop) => {
     const channelDetailsState: ChannelDetailsState = {profile_picture:'', name:''};
     const [channelDetails, setChannelDetails] = React.useState<ChannelDetailsState>(channelDetailsState);
 
@@ -33,7 +33,7 @@ const Videocard = (props: Prop) => {
                 .then(res => setChannelDetails(res.data))
                 .catch((error)=>{console.log(error)});
         }
-    },[props.channelId]);
+    },[]);
 
 
     const channelDp = `${channelDetails.profile_picture}`;
@@ -50,11 +50,16 @@ const Videocard = (props: Prop) => {
         color: "green",
         marginBottom: "0 !important",
     }
+
+    const cardStyle = {
+        paddingLeft: "0",
+        paddingRight: "0",
+    }
     
 
     const pluralViews = props.views === 1 ? 'view' : 'views';
 
-    const ChannelDP = () => {
+    const Thumbnail = () => {
         if (props.thumbnail===''){
             return ( <img src={imagePlaceholder} className="channel-icon" alt="Channel Profile picture" style={imageStyle}/>);
         }
@@ -73,9 +78,9 @@ const Videocard = (props: Prop) => {
     
     return (
         <>
-            <div className={props.colSize}>
+            <div className={props.colSize} style={cardStyle}>
                 <a href={"/watch/" + props.slug}>
-                    <img src={props.thumbnail} alt="thumbnail" className="thumbnail" />
+                    <img src={API_BASE_URL + props.thumbnail} alt="thumbnail" className="thumbnail" />
                 </a>
                 <div className="box-element product">
                     <div className="row">
@@ -87,7 +92,7 @@ const Videocard = (props: Prop) => {
                         <div className="col-lg-6">
                             <div className="row">
                                 <a href={"/channel/" + props.channelId}>
-                                    <ChannelDP/>
+                                    <Thumbnail/>
                                 </a>
                                 <a href={"/channel/" + props.channelId}>
                                     <h6>{videoChannelName}</h6>
@@ -116,4 +121,4 @@ const Videocard = (props: Prop) => {
     );
 }
 
-export default Videocard;
+export default MoreVideosCard;

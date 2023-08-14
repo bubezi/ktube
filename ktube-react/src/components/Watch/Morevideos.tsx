@@ -1,15 +1,14 @@
 import React from "react";
-import { VideoType } from "../Videos";
-import Videocard from "../Videocard";
-import { videoInit } from "../Videos";
+import { VideoType, videoInit } from "../Videos";
 import axios from "axios";
 import { API_URL } from "../../constants";
+import MoreVideosCard from "./MoreVideosCard";
 
 interface Props {
   videoId: number,
 }
 
-export default function Morevideos(props: Props) {
+const Morevideos = (props: Props) => {
   const [moreVideos, setMoreVideos] = React.useState<VideoType[]>(videoInit);
 
   React.useEffect(()=>{
@@ -27,11 +26,11 @@ export default function Morevideos(props: Props) {
         .catch((error) => {
           console.log(error);
         });}
-  }, []);
+  }, [props.videoId]);
 
   const morevideos = moreVideos.map((video) => {
     return (
-      <Videocard
+      <MoreVideosCard
         key={video.id}
         videoId={video.id}
         title={video.title}
@@ -53,3 +52,5 @@ export default function Morevideos(props: Props) {
     </>
   );
 }
+
+export default Morevideos;

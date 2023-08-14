@@ -16,7 +16,7 @@ export interface VideoType {
 
 export const videoInit: Array<VideoType> = [{id:0, title:'', thumbnail:'', channel:0, views:0, slug:'', path:'', price:0.0}]
 
-function Videos() {
+const Videos = () => {
   const [videos, setVideos] = React.useState<Array<VideoType>>(videoInit);
 
   React.useEffect(()=>{

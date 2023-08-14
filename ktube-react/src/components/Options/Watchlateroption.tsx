@@ -10,7 +10,8 @@ interface PropOption {
   itemId: string;
   myToken: string;
 }
-function Watchlateroption(props: PropOption) {
+
+const Watchlateroption = (props: PropOption) => {
   const [prompt, setPrompt] = React.useState(props.prompt);
   const [addTo, setAddTo] = React.useState(props.add);
   let handleClick = () => {};

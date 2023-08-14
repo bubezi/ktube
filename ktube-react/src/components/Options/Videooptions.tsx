@@ -4,57 +4,22 @@ import "bootstrap/dist/js/bootstrap.js";
 
 import { elipsisStyle, toggleStyle } from "../../assets/styles/Styles";
 
-import React from "react";
-import axios from "axios";
 import Dropdown from "react-bootstrap/Dropdown";
 import Playlistoption from "./Playlistoption";
 import Watchlateroption from "./Watchlateroption";
-import { API_URL } from "../../constants";
-
-interface Playlist {
-  id: number;
-  name: string;
-  videos: Array<number>;
-}
-
-interface Watchlater {
-  id: number;
-  videos: Array<number>;
-}
+import { useViewerContext } from "../../providers/ViewerProvider";
+import { usePlaylistsContext } from "../../providers/PlaylistsProvider";
 
 interface PropOptions {
   videoId: number;
 }
 
-function Videooptions(props: PropOptions) {
-  const [playlists, setPlaylists] = React.useState<Array<Playlist>>([]);
-  const [watchlater, setWatchlater] = React.useState<Array<Watchlater>>([]);
-  const [myToken] = React.useState(() => {
-    const savedToken = localStorage.getItem("token");
-    return savedToken ?? null;
-  });
+const Videooptions = (props: PropOptions) => {
+  const playlists = usePlaylistsContext().playlists;
+  const watchlater = usePlaylistsContext().watchlater;
+  const myToken = useViewerContext().myToken;
 
   if (myToken) {
-    React.useEffect(() => {
-      axios({
-        method: "get",
-        url: API_URL + "playlistsHome",
-        headers: {
-          Authorization: `Token ${myToken}`,
-        },
-      })
-        .then((res) => {
-          if (Array.isArray(res.data.playlists)) {
-            setPlaylists(res.data.playlists);
-          } else {
-            // handle error
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }, []);
-
     if (!Array.isArray(playlists)) {
       return null; // or handle the error in an appropriate way
     } else {
@@ -93,26 +58,6 @@ function Videooptions(props: PropOptions) {
           }
         }
       });
-
-      React.useEffect(() => {
-        axios({
-          method: "get",
-          url: API_URL + "watchlater",
-          headers: {
-            Authorization: `Token ${myToken}`,
-          },
-        })
-          .then((res) => {
-            if (Array.isArray(res.data.watchlater)) {
-              setWatchlater(res.data.watchlater);
-            } else {
-              setWatchlater(Array(res.data.watchlater));
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }, []);
 
       const watchlaterOption = watchlater.map((watchlaterItem) => {
         const playlistId = Number(watchlaterItem.id);

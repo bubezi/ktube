@@ -1,6 +1,6 @@
 import '../assets/css/loaders/loader0.css';
 
-function Loader () {
+const Loader = () => {
     setTimeout(()=>{
         const loader = document.getElementById('loader');
         if (loader!==null){

@@ -20,7 +20,7 @@ interface Prop {
   upload_time: string,
 }
 
-export default function Watchpagecontainer(props: Prop) {
+const Watchpagecontainer = (props: Prop) => {
   return (
     <>
       <div className="container" style={containerStyle}>
@@ -46,3 +46,5 @@ export default function Watchpagecontainer(props: Prop) {
     </>
   );
 }
+
+export default Watchpagecontainer;

@@ -5,6 +5,7 @@ from django.urls import path, include, re_path
 
 from tube import views as views_tube
 from register import views as views_reg
+from tube import api as tube_api
 
 from django.views.generic import TemplateView
 
@@ -104,34 +105,62 @@ urlpatterns = [
 urlpatterns += [
     # re_path(r'^api/videos/$', views_tube.videos_home),
     # re_path(r'^api/cdp/$', views_tube.channel_profile_picture),
-    path('api/homevideos', views_tube.VideosHome.as_view(), name='Videos_home'),
-    path('api/dp/<str:pk>', views_tube.ChannelProfilePicture.as_view(), name='channel_dp'),
+    path('api/homevideos', tube_api.VideosHome.as_view(), name='Videos_home'),
+    path('api/dp/<str:pk>', tube_api.ChannelProfilePicture.as_view(), name='channel_dp'),
     
     path('api/auth/login/', views_reg.LoginView.as_view()),
     path('api/auth/getCurrentViewer', views_reg.GetViewer.as_view()),
-    path('api/playlistsHome', views_tube.PlaylistsHomeAPI.as_view()),
-    path('api/watchlater', views_tube.WatchlaterHomeAPI.as_view()),
+    path('api/playlistsHome', tube_api.PlaylistsHomeAPI.as_view()),
+    path('api/watchlater', tube_api.WatchlaterHomeAPI.as_view()),
+    path('api/savedPlaylistsAPI', tube_api.SavedPlaylistsAPI.as_view()),
     
-    path('api/add_video_to_playlist',views_tube.add_video_to_playlist_API),
-    path('api/remove_video_from_playlist',views_tube.remove_video_from_playlist_API),
+    path('api/add_video_to_playlist',tube_api.add_video_to_playlist_API),
+    path('api/remove_video_from_playlist',tube_api.remove_video_from_playlist_API),
     
-    path('api/add_video_to_watchlater',views_tube.add_video_to_watchlater_API),
-    path('api/remove_video_from_watchlater',views_tube.remove_video_from_watchlater_API),
+    path('api/add_video_to_watchlater',tube_api.add_video_to_watchlater_API),
+    path('api/remove_video_from_watchlater',tube_api.remove_video_from_watchlater_API),
     
-    path('api/watch/v/<str:slug>', views_tube.Watch_video_API.as_view()),
-    path('api/channel/<str:id>', views_tube.Channel_API.as_view()),
+    path('api/watch/v/<str:slug>', tube_api.Watch_video_API.as_view()),
+    path('api/channel/<str:id>', tube_api.Channel_API.as_view()),
     
-    path('api/getChannels/<str:id>', views_tube.Get_Channels_API.as_view()),
+    path('api/getChannels/<str:id>', tube_api.Get_Channels_API.as_view()),
     
-    path('api/isowner/<str:id>', views_tube.Is_owner_API.as_view()),
-    path('api/getComments/<str:id>', views_tube.Get_comments_API.as_view()),
+    path('api/isowner/<str:id>', tube_api.Is_owner_API.as_view()),
+    path('api/isPlaylistOwner/<str:id>', tube_api.Is_playlist_owner_API.as_view()),
     
-    path('api/getReplies/<str:id>', views_tube.Get_replies_API.as_view()),
+    path('api/getComments/<str:id>', tube_api.Get_comments_API.as_view()),
     
-    path('api/liked/<str:id>', views_tube.Liked_API.as_view()),
-    path('api/disliked/<str:id>', views_tube.DisLiked_API.as_view()),
+    path('api/getReplies/<str:id>', tube_api.Get_replies_API.as_view()),
     
-    path('api/moreVideos/<str:id>', views_tube.More_Videos_API.as_view()),
+    path('api/liked/<str:id>', tube_api.Liked_API.as_view()),
+    path('api/disliked/<str:id>', tube_api.DisLiked_API.as_view()),
+    
+    path('api/moreVideos/<str:id>', tube_api.More_Videos_API.as_view()),
+    
+    path('api/channelVideos/<str:channelId>', tube_api.ChannelVideos.as_view()),
+    path('api/channelPlaylists/<str:channelId>', tube_api.ChannelPlaylists.as_view()),
+    
+    path('api/deleteComment', tube_api.delete_comment_API),
+    path('api/deleteReply', tube_api.delete_reply_API),
+    
+    path('api/comment', tube_api.comment_API),
+    path('api/commentManyChannels', tube_api.comment_many_channels_API),
+    
+    path('api/reply', tube_api.reply_API),
+    path('api/replyManyChannels', tube_api.reply_many_channels_API),
+    
+    path('api/subscribeAPI', tube_api.subscribe_API),
+    path('api/unSubscribeAPI', tube_api.unsubscribe_API),
+    
+    path('api/savePlaylistsAPI', tube_api.save_playlist_API),
+    path('api/unSavePlaylistsAPI', tube_api.un_save_playlist_API),
+    
+    path('api/likeVideo', tube_api.like_API),
+    path('api/unLikeVideo', tube_api.unlike_API),
+    path('api/disLikeVideo', tube_api.dislike_API),
+    path('api/unDisLikeVideo', tube_api.undislike_API),
+    
+    path('api/addView', tube_api.add_view_API),
 ]
 
 

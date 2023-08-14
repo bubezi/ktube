@@ -13,6 +13,10 @@ interface Props {
 
 interface PropsButtons {
   videoId: number;
+  setLikes: React.Dispatch<React.SetStateAction<number>>,
+  likes: number,
+  setDisLikes: React.Dispatch<React.SetStateAction<number>>,
+  disLikes: number,
 }
 
 
@@ -20,10 +24,10 @@ const Likeanddislikebuttons = (props: PropsButtons) => {
   const viewerProvided = useViewerContext();
   const [liked, setLiked] = React.useState<boolean>(false);
   const [disLiked, setDisLiked] = React.useState<boolean>(false);
-  const [myToken] = React.useState(() => {
-    const savedToken = localStorage.getItem("token");
-    return savedToken ?? null;
-  });
+  const myToken = useViewerContext().myToken;
+
+  if (myToken) {
+
 
   React.useEffect(() => {
     if (props.videoId !== 0 ) {
@@ -51,9 +55,9 @@ const Likeanddislikebuttons = (props: PropsButtons) => {
           console.log(error);
         });
       }
-    }, []);
+    }, [props.videoId]);
 
-  if (myToken) {
+
     const like = () => {
       likeunlikeOrdislikeUndislike(
         "likeVideo",
@@ -61,6 +65,7 @@ const Likeanddislikebuttons = (props: PropsButtons) => {
         viewerProvided.viewer.id,
         myToken
       );
+      props.setLikes(props.likes+1);
       setLiked(true);
     };
 
@@ -70,7 +75,8 @@ const Likeanddislikebuttons = (props: PropsButtons) => {
         props.videoId,
         viewerProvided.viewer.id,
         myToken
-      );
+        );
+      props.setDisLikes(props.disLikes+1);
       setDisLiked(true);
     };
 
@@ -81,6 +87,7 @@ const Likeanddislikebuttons = (props: PropsButtons) => {
         viewerProvided.viewer.id,
         myToken
       );
+      props.setLikes(props.likes-1);
       setLiked(false);
     };
 
@@ -91,6 +98,7 @@ const Likeanddislikebuttons = (props: PropsButtons) => {
         viewerProvided.viewer.id,
         myToken
       );
+      props.setDisLikes(props.disLikes-1);
       setDisLiked(false);
     };
 
@@ -195,7 +203,7 @@ const Likeanddislikebuttons = (props: PropsButtons) => {
     return (
       <>
         <div className="row">
-          <a href="{% url 'login' %}" target="_blank">
+          <a href="/auth/login" target="_blank">
             <button
               className="btn btn-outline-secondary add-btn update-cart"
               style={marginLeft0}
@@ -203,7 +211,7 @@ const Likeanddislikebuttons = (props: PropsButtons) => {
               <i className="fa-regular fa-thumbs-up"></i>
             </button>
           </a>
-          <a href="{% url 'login' %}" target="_blank">
+          <a href="/auth/login" target="_blank">
             <button
               className="btn btn-outline-secondary add-btn update-cart"
               style={marginLeft0}
@@ -217,33 +225,41 @@ const Likeanddislikebuttons = (props: PropsButtons) => {
   }
 };
 
-export default function Likeanddislike(props: Props) {
+const Likeanddislike = (props: Props) => {
+  const [ likes, setLikes ] = React.useState<number>(props.likes)
+  const [ disLikes, setDisLikes ] = React.useState<number>(props.dislikes)
+
+  React.useEffect(()=>{
+    setLikes(props.likes);
+    setDisLikes(props.dislikes);
+  }, [props.likes, props.dislikes])
+
   const Likes = () => {
-    if (props.likes === 1) {
+    if (likes === 1) {
       return (
         <h6>
-          <strong id="likes-count">{props.likes} like</strong>
+          <strong id="likes-count">{likes} like</strong>
         </h6>
       );
     } else {
       return (
         <h6>
-          <strong id="likes-count">{props.likes} likes</strong>
+          <strong id="likes-count">{likes} likes</strong>
         </h6>
       );
     }
   };
   const DisLikes = () => {
-    if (props.dislikes === 1) {
+    if (disLikes === 1) {
       return (
         <h6>
-          <strong id="dislikes-count">{props.dislikes} dislike</strong>
+          <strong id="dislikes-count">{disLikes} dislike</strong>
         </h6>
       );
     } else {
       return (
         <h6>
-          <strong id="dislikes-count">{props.dislikes} dislikes</strong>
+          <strong id="dislikes-count">{disLikes} dislikes</strong>
         </h6>
       );
     }
@@ -251,10 +267,12 @@ export default function Likeanddislike(props: Props) {
   return (
     <>
       <div className="row">
-        <Likes />
+        <Likes/>
         <DisLikes />
       </div>
-      <Likeanddislikebuttons videoId={props.videoId} />
+      <Likeanddislikebuttons videoId={props.videoId} setLikes={setLikes} likes={likes} setDisLikes={setDisLikes} disLikes={disLikes}/>
     </>
   );
 }
+
+export default Likeanddislike;
