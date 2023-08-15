@@ -42,7 +42,7 @@ const Videos = () => {
               slug={video.slug}
               price={video.price} 
               views={video.views}
-              colSize="col-lg-4"
+              colSize="4"
               />
     );
 }})

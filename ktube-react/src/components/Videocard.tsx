@@ -73,7 +73,7 @@ const Videocard = (props: Prop) => {
     
     return (
         <>
-            <div className={props.colSize}>
+            <div className={"col-lg-"+props.colSize}>
                 <a href={"/watch/" + props.slug}>
                     <img src={props.thumbnail} alt="thumbnail" className="thumbnail" />
                 </a>

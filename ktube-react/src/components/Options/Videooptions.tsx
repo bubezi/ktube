@@ -17,6 +17,7 @@ interface PropOptions {
 const Videooptions = (props: PropOptions) => {
   const playlists = usePlaylistsContext().playlists;
   const watchlater = usePlaylistsContext().watchlater;
+  const viewerId = useViewerContext().viewer.id;
   const myToken = useViewerContext().myToken;
 
   if (myToken) {
@@ -106,6 +107,9 @@ const Videooptions = (props: PropOptions) => {
                 <Dropdown.Menu>
                   {playlistoptions}
                   {watchlaterOption}
+                <Dropdown.Item href={"/createPlaylist/"+viewerId}>
+                  Create Playlist
+                </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </div>

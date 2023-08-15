@@ -357,7 +357,7 @@ class ChannelVideos(APIView):
     def get(self, request, channelId):
         try:
             channel = Channel.objects.get(id=channelId)
-            videos = Video.objects.filter(channel=channel)
+            videos = Video.objects.filter(channel=channel, private=False, unlisted=False)
             serializer = VideoSerializer(videos, many=True)
             return Response(serializer.data, status.HTTP_200_OK)
         except Channel.DoesNotExist:
@@ -369,6 +369,40 @@ class ChannelVideos(APIView):
                 {"error": "Some other error"}, status=status.HTTP_400_BAD_REQUEST
             )
 
+
+class ChannelUnlistedVideos(APIView):
+    def get(self, request, channelId):
+        try:
+            channel = Channel.objects.get(id=channelId)
+            videos = Video.objects.filter(channel=channel, unlisted=True)
+            serializer = VideoSerializer(videos, many=True)
+            return Response(serializer.data, status.HTTP_200_OK)
+        except Channel.DoesNotExist:
+            return Response(
+                {"error": "Channel Not Found!"}, status=status.HTTP_404_NOT_FOUND
+            )
+        except:
+            return Response(
+                {"error": "Some other error"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+class ChannelPrivateVideos(APIView):
+    def get(self, request, channelId):
+        try:
+            channel = Channel.objects.get(id=channelId)
+            videos = Video.objects.filter(channel=channel, private=True)
+            serializer = VideoSerializer(videos, many=True)
+            return Response(serializer.data, status.HTTP_200_OK)
+        except Channel.DoesNotExist:
+            return Response(
+                {"error": "Channel Not Found!"}, status=status.HTTP_404_NOT_FOUND
+            )
+        except:
+            return Response(
+                {"error": "Some other error"}, status=status.HTTP_400_BAD_REQUEST
+            )
+            
 
 class ChannelPlaylists(APIView):
     def get(self, request, channelId):
@@ -658,8 +692,6 @@ def save_playlist_API(request):
             saved_playlists.save()
 
         saved_playlists.playlists.add(playlist)
-        print(saved_playlists)
-        print("OYAAAHHHHH!!!!")
         return Response(status=status.HTTP_200_OK)
     except Playlist.DoesNotExist:
         return Response(

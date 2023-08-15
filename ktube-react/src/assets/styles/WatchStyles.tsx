@@ -92,3 +92,7 @@ export const paddingLeft10 = {
 export const paddingTop35 = {
   paddingTop: "35px"
 }
+
+export const paddingTop3 = {
+  paddingTop: "3px"
+}

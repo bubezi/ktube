@@ -138,6 +138,8 @@ urlpatterns += [
     path('api/moreVideos/<str:id>', tube_api.More_Videos_API.as_view()),
     
     path('api/channelVideos/<str:channelId>', tube_api.ChannelVideos.as_view()),
+    path('api/channelUnlistedVideos/<str:channelId>', tube_api.ChannelUnlistedVideos.as_view()),
+    path('api/channelPrivateVideos/<str:channelId>', tube_api.ChannelPrivateVideos.as_view()),
     path('api/channelPlaylists/<str:channelId>', tube_api.ChannelPlaylists.as_view()),
     
     path('api/deleteComment', tube_api.delete_comment_API),
