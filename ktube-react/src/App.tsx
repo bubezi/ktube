@@ -11,6 +11,7 @@ import ViewerProvider from "./providers/ViewerProvider";
 import Watchpage from "./components/Watchpage";
 import PlaylistProvider from "./providers/PlaylistsProvider";
 import Channel from "./components/Channel";
+import Playlist from "./components/Playlist";
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
               <Route path="/auth/login" element={<Auth />} />
               <Route path="/watch/:slug" element={<Watchpage/>} />
               <Route path="/channel/:channelId" element={<Channel/>} />
+              <Route path="/playlist/:playlistId" element={<Playlist/>} />
             </Routes>
           </BrowserRouter>
       </PlaylistProvider>

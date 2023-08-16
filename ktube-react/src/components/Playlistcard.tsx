@@ -9,6 +9,7 @@ import Playlistoptions from "./Options/Playlistoptions";
 
 interface Props {
   playlist: PlaylistChannel;
+  colSize: string;
 }
 
 const Playlistcard = (props: Props) => {
@@ -65,7 +66,7 @@ const Playlistcard = (props: Props) => {
 
   return (
     <>
-      <div className="col-lg-4 box-element">
+      <div className={"col-lg-"+props.colSize +" "+"box-element"}>
         <div style={paddingLeft10}>
           <div className="row">
             <div className="col-lg-12">

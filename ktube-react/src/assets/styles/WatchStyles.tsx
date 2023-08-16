@@ -14,6 +14,10 @@ export const titleStyle = {
   fontSize: "25px",
 };
 
+export const height180px = {
+  height: "180px",
+};
+
 export const publicityStyle = {
   paddingLeft: "10px",
 };

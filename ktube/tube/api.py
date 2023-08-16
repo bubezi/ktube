@@ -353,6 +353,54 @@ class More_Videos_API(APIView):
         return Response({"videos": serializer.data}, status.HTTP_200_OK)
 
 
+class PlaylistAPI (APIView):
+    def get(self, request, playlistId):
+        try:
+            playlist = Playlist.objects.get(id=playlistId)
+            if playlist.public:
+                serializer = PlaylistSerializer(playlist, many=False)
+                return Response(serializer.data, status.HTTP_200_OK)
+            elif request.user.viewer == playlist.channel.user:
+                serializer = PlaylistSerializer(playlist, many=False)
+                return Response(serializer.data, status.HTTP_200_OK)                
+            else:
+                return Response(
+                    {"error": "Playlist Not public!"}, status=status.HTTP_403_FORBIDDEN
+                )
+        except Playlist.DoesNotExist:
+            return Response(
+                {"error": "Playlist Not Found!"}, status=status.HTTP_404_NOT_FOUND
+            )
+        except:
+            return Response(
+                {"error": "Some other error"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+class PlaylistVideosAPI(APIView):
+    def get(self, request, playlistId):
+        try:
+            videos = Playlist.objects.get(id=playlistId).videos
+            serializer = VideoSerializer(videos, many=True)
+            return Response(serializer.data, status.HTTP_200_OK)
+        except Playlist.DoesNotExist:
+            return Response(
+                {"error": "Playlist Not Found!"}, status=status.HTTP_404_NOT_FOUND
+            )
+        except Video.DoesNotExist:
+            return Response(
+                {"error": "Video Not Found!"}, status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {"error": e}, status=status.HTTP_400_BAD_REQUEST
+            )
+        except:
+            return Response(
+                {"error": "Some other error"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+
 class ChannelVideos(APIView):
     def get(self, request, channelId):
         try:
@@ -1009,8 +1057,6 @@ def add_view_API(request):
         if request.user.is_authenticated:
             viewer_id = request.data.get("viewer_id")
             viewer = Viewer.objects.get(id=viewer_id)
-            print("viewer_id", viewer_id)
-            print("viewer", viewer)
             pk = request.data.get("video_id")
             video = Video.objects.get(id=pk)
             view = VideoView(viewer=viewer, video=video, viewer_ip=viewer_ip)

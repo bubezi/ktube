@@ -316,7 +316,7 @@ const Channel = () => {
   });
 
   const show_playlists = playlists.map((playlist) => {
-    return <Playlistcard key={playlist.id} playlist={playlist} />;
+    return <Playlistcard key={playlist.id} playlist={playlist} colSize="4"/>;
   });
 
   if (channel.channel_active) {
