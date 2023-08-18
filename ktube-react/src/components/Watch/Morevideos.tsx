@@ -46,9 +46,14 @@ const Morevideos = (props: Props) => {
 
   return (
     <>
+    <>
+      <div className="row box-element">
+        <h3>More Videos</h3>
+      </div>
       <div className="row box-element" id="more-videos">
         {morevideos}
       </div>
+    </>
     </>
   );
 }

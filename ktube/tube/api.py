@@ -171,6 +171,57 @@ class Watch_video_API(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class Watch_playlist_API(APIView):
+    def get(self, request, id, format=None):
+        try:
+            video = Video.objects.get(id=id)
+        except Video.DoesNotExist:
+            return Response(
+                {"error": "Video Not Found!"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        # If the video is private, make sure the viewer is the owner
+        if video.private:
+            if request.user.is_authenticated:
+                try:
+                    viewer = request.user.viewer
+                    if not video.channel.user == viewer:
+                        raise PermissionDenied("You are not the owner of this video")
+                except Viewer.DoesNotExist:
+                    raise PermissionDenied("You are not the owner of this video")
+
+        # Handle monetisation
+        if video.price > 0:
+            if request.user.is_authenticated:
+                viewer = request.user.viewer
+                if not video.channel.user == viewer:
+                    if not video.paid_viewers.contains(viewer):
+                        if viewer.spend(video.price):
+                            video_owner_cut = PERCENTAGE_OF_REVENUE * Decimal(
+                                video.price
+                            )
+                            company_cut = Decimal(video.price) - video_owner_cut
+                            video.channel.user.wallet += float(video_owner_cut)
+                            main_viewer = Viewer.objects.get(username=COMPANY_USERNAME)
+                            main_viewer.wallet += float(company_cut)
+                            video.paid_viewers.add(viewer)
+                            viewer.save()
+                            main_viewer.save()
+                            video.channel.user.save()
+                            video.save()
+                        else:
+                            return Response(
+                                {"error": "Please deposit money to watch this video"},
+                                status=status.HTTP_403_FORBIDDEN,
+                            )
+            else:
+                raise PermissionDenied("You are not logged in")
+
+        # Serialize video
+        serializer = VideoSerializer(video)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 class Channel_API(APIView):
     def get(self, request, id, format=None):
         try:
@@ -344,7 +395,22 @@ class DisLiked_API(APIView):
 class More_Videos_API(APIView):
     def get(self, request, id, format=None):
         try:
-            more_videos = Video.objects.exclude(id=id)
+            more_videos = Video.objects.exclude(id=id).exclude(private=True).exclude(unlisted=True)
+                    
+        except Exception as e:
+            return Response({"error": e}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = VideoSerializer(more_videos, many=True)
+
+        return Response({"videos": serializer.data}, status.HTTP_200_OK)
+    
+
+class More_Playlist_Videos_API(APIView):
+    def get(self, request, playlistId, videoId, format=None):
+        try:
+            playlist = Playlist.objects.get(id=playlistId)
+            
+            more_videos = playlist.videos
         except Exception as e:
             return Response({"error": e}, status=status.HTTP_404_NOT_FOUND)
 

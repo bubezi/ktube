@@ -121,6 +121,7 @@ urlpatterns += [
     path('api/remove_video_from_watchlater',tube_api.remove_video_from_watchlater_API),
     
     path('api/watch/v/<str:slug>', tube_api.Watch_video_API.as_view()),
+    path('api/watch/p/<str:id>', tube_api.Watch_playlist_API.as_view()),
     path('api/channel/<str:id>', tube_api.Channel_API.as_view()),
     
     path('api/getChannels/<str:id>', tube_api.Get_Channels_API.as_view()),
@@ -136,6 +137,7 @@ urlpatterns += [
     path('api/disliked/<str:id>', tube_api.DisLiked_API.as_view()),
     
     path('api/moreVideos/<str:id>', tube_api.More_Videos_API.as_view()),
+    path('api/morePlaylistVideos/<str:playlistId>/<str:videoId>', tube_api.More_Playlist_Videos_API.as_view()),
     
     path('api/channelVideos/<str:channelId>', tube_api.ChannelVideos.as_view()),
     path('api/channelUnlistedVideos/<str:channelId>', tube_api.ChannelUnlistedVideos.as_view()),

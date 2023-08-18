@@ -9,6 +9,7 @@ import Auth from "./components/Auth/Auth";
 import Navbar from "./components/Navbar";
 import ViewerProvider from "./providers/ViewerProvider";
 import Watchpage from "./components/Watchpage";
+import Watchplaylist from "./components/Watchplaylist";
 import PlaylistProvider from "./providers/PlaylistsProvider";
 import Channel from "./components/Channel";
 import Playlist from "./components/Playlist";
@@ -29,6 +30,7 @@ function App() {
               <Route path="/watch/:slug" element={<Watchpage/>} />
               <Route path="/channel/:channelId" element={<Channel/>} />
               <Route path="/playlist/:playlistId" element={<Playlist/>} />
+              <Route path="/watchplaylist/:playlistId/:positionN" element={<Watchplaylist/>} />
             </Routes>
           </BrowserRouter>
       </PlaylistProvider>

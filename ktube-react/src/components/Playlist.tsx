@@ -8,7 +8,7 @@ import Playlistcard from "./Playlistcard";
 import { PlaylistChannel } from "./Channel";
 import Playlistvideocard from "./Playlistvideocard";
 
-const playlistInit = {
+export const playlistInit = {
   id: 0,
   name: "",
   views: 0,
@@ -65,7 +65,7 @@ const Playlist = () => {
         </div>
         <div className="row">
           <div className="col-lg-2">
-            <a href={"/watchplaylist/" + playlist.id}>
+            <a href={"/watchplaylist/" + playlist.id+"/"+1}>
               <button className="btn btn-success">Watch Playlist</button>
             </a>
           </div>

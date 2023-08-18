@@ -146,9 +146,6 @@ CORS_ALLOW_HEADERS = (
     "x-requested-with",
 )
 
-CORS_ORIGIN_ALLOW_ALL = True
-# CORS_ORIGIN_WHITELIST = [ 'http://localhost:5173', 'http://127.0.0.1:5173']
-# CORS_ALLOWED_ORIGINS = ['http://localhost:5173', 'http://127.0.0.1:5173']
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
@@ -158,6 +155,10 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.AllowAny",
     ],
 }
+
+CORS_ORIGIN_WHITELIST = [ 'http://localhost:5173', 'http://127.0.0.1:5173']
+CORS_ALLOWED_ORIGINS = ['http://localhost:5173', 'http://127.0.0.1:5173']
+CORS_ORIGIN_ALLOW_ALL = True
 
 
 # SITE_ID = 1

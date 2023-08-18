@@ -217,7 +217,6 @@ a:hover {
 
 #comment-heading {
   margin-top: 0;
-
 }
 
 #comment-section {
@@ -233,6 +232,20 @@ a:hover {
   overflow-y: scroll;
   scroll-behavior: smooth;
   padding-top: 0;
+}
+
+#more-playlist-videos {
+  max-height: 300px;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+  padding-top: 0;
+}
+
+.box-element-highlight {
+	box-shadow:hsl(0, 0%, 80%) 0 0 16px;
+	background-color: lightgreen;
+	border-radius: 4px;
+	padding: 10px;
 }
 
 #repliesStyle {

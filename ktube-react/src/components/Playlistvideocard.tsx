@@ -1,6 +1,6 @@
 import axios from "axios";
 import React from "react";
-import { imageStyle, 
+import { imageStyle, priceStyle, 
   // height180px 
 } from "../assets/styles/WatchStyles";
 import { API_URL, API_BASE_URL } from "../constants";
@@ -33,6 +33,14 @@ const Playlistvideocard: React.FC<Props> = ({ video }) => {
   }, [video.channel]);
 
   const pluralViews = video.views === 1 ? "view" : "views";
+
+  const Price = () => {
+      if (video.price>0) {
+          return (<h6 style={priceStyle}>KShs. { video.price }</h6>);
+      }else{
+          return (<></>);
+      }
+  }
 
   const ChannelDP = () => {
     if (channelDetails.profile_picture === "") {
@@ -83,6 +91,12 @@ const Playlistvideocard: React.FC<Props> = ({ video }) => {
               <a href={"/channel/" + video.channel}>
                 <h6>{channelDetails.name}</h6>
               </a>
+            </div>
+            <div className="row">
+              <div className="col-lg-2">
+                <Price/>
+              </div>
+              <div className="col-lg-10"></div>
             </div>
             <div className="row">
               <div className="col-lg-10">
