@@ -54,7 +54,7 @@ const Playlist = () => {
   }, [playlist]);
 
   const showVideos = videos.map((video) => {
-    return <Playlistvideocard key={video.id} video={video} />;
+    return <Playlistvideocard key={video.id} video={video} playlistId={playlist.id} position={videos.indexOf(video)+1}/>;
   });
 
   return (

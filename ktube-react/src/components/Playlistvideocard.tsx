@@ -11,9 +11,11 @@ import imagePlaceholder from "../assets/images/placeholder.png";
 
 interface Props {
   video: VideoType;
+  playlistId: number;
+  position: number;
 }
 
-const Playlistvideocard: React.FC<Props> = ({ video }) => {
+const Playlistvideocard: React.FC<Props> = ({ video, playlistId, position }) => {
   const channelDetailsState: ChannelDetailsState = {
     profile_picture: "",
     name: "",
@@ -72,7 +74,7 @@ const Playlistvideocard: React.FC<Props> = ({ video }) => {
       >
         <div className="row">
           <div className="col-lg-4">
-            <a href={"/watch/" + video.slug}>
+            <a href={"/watchplaylist/" + playlistId + "/" + position}>
               <img
                 src={API_BASE_URL + video.thumbnail}
                 alt="thumbnail"

@@ -1,7 +1,7 @@
 // import placeholder from '../assets/images/thumbnail-placeholder.webp'
 import imagePlaceholder from "../../assets/images/placeholder.png";
 import axios from "axios";
-import { API_BASE_URL, API_URL } from "../../constants";
+import { API_URL } from "../../constants";
 import React from "react";
 
 import Videooptions from "../Options/Videooptions";
@@ -15,6 +15,8 @@ interface Prop {
   price: number;
   views: number;
   colSize: string;
+  playlistId: number;
+  position: number;
 }
 
 export interface ChannelDetailsState {
@@ -97,7 +99,7 @@ const MorePlaylistVideosCard = (props: Prop) => {
       <div className={props.colSize} style={cardStyle}>
         <div className="box-element product">
           <div className="row">
-            <a href={"/watch/" + props.slug}>
+            <a href={"/watchplaylist/" + props.playlistId + "/"+ props.position}>
               <h6>{props.title}</h6>
             </a>
           </div>

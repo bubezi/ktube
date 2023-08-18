@@ -50,6 +50,8 @@ const Moreplaylistvideos = (props: Props) => {
             price={video.price}
             views={video.views}
             colSize="col-lg-12 box-element-highlight"
+            playlistId={props.playlist.id}
+            position={moreVideos.indexOf(video)+1}
           />
       );
     } else {
@@ -64,6 +66,8 @@ const Moreplaylistvideos = (props: Props) => {
           price={video.price}
           views={video.views}
           colSize="col-lg-12"
+          playlistId={props.playlist.id}
+          position={moreVideos.indexOf(video)+1}
         />
       );
     }
