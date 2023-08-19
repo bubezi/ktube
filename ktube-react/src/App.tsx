@@ -13,6 +13,7 @@ import Watchplaylist from "./components/Watchplaylist";
 import PlaylistProvider from "./providers/PlaylistsProvider";
 import Channel from "./components/Channel";
 import Playlist from "./components/Playlist";
+import Library from "./components/Library";
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Homepage />} />
+              <Route path="/library" element={<Library />} />
               <Route path="/auth/login" element={<Auth />} />
               <Route path="/watch/:slug" element={<Watchpage/>} />
               <Route path="/channel/:channelId" element={<Channel/>} />

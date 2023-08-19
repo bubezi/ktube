@@ -49,7 +49,7 @@ const Moreplaylistvideos = (props: Props) => {
             slug={video.slug}
             price={video.price}
             views={video.views}
-            colSize="col-lg-12 box-element-highlight"
+            colSize={"col-lg-12"+" "+"box-element-highlight"}
             playlistId={props.playlist.id}
             position={moreVideos.indexOf(video)+1}
           />

@@ -24,7 +24,7 @@ const Navbar = () => {
                 Library
               </a>
               <div className="dropdown-menu">
-                <a className="dropdown-item" href="#">
+                <a className="dropdown-item" href="/library">
                   My Library
                 </a>
                 <div className="dropdown-divider"></div>
