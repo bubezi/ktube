@@ -59,9 +59,7 @@ const PlaylistProvider: React.FC<PlaylistsProvidedProps> = ({ children }) => {
         .catch((error) => {
           console.log(error);
         });
-    }, []);
 
-    React.useEffect(() => {
       axios({
         method: "get",
         url: API_URL + "watchlater",
@@ -79,9 +77,7 @@ const PlaylistProvider: React.FC<PlaylistsProvidedProps> = ({ children }) => {
         .catch((error) => {
           console.log(error);
         });
-    }, []);
 
-    React.useEffect(() => {
       axios({
         method: "get",
         url: API_URL + "savedPlaylistsAPI",
@@ -102,13 +98,17 @@ const PlaylistProvider: React.FC<PlaylistsProvidedProps> = ({ children }) => {
     }, []);
 
     return (
-      <PlaylistContext.Provider value={{ playlists, watchlater, savedPlaylists }}>
+      <PlaylistContext.Provider
+        value={{ playlists, watchlater, savedPlaylists }}
+      >
         {children}
       </PlaylistContext.Provider>
     );
   } else {
     return (
-      <PlaylistContext.Provider value={{ playlists, watchlater, savedPlaylists }}>
+      <PlaylistContext.Provider
+        value={{ playlists, watchlater, savedPlaylists }}
+      >
         {children}
       </PlaylistContext.Provider>
     );

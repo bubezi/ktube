@@ -44,7 +44,7 @@ const Navbar = () => {
                                 {% endif %}
                             {% endif %} */}
 
-                <a className="dropdown-item" href="#">
+                <a className="dropdown-item" href="/watchlater">
                   My Watchlater
                 </a>
                 <a className="dropdown-item" href="#">
@@ -53,8 +53,8 @@ const Navbar = () => {
                 <a className="dropdown-item" href="#">
                   My History
                 </a>
-                <a className="dropdown-item" href="#">
-                  My Playlists
+                <a className="dropdown-item" href="/savedplaylists">
+                  My Saved Playlists
                 </a>
 
                 {/* {% if user.is_authenticated and not no_channel and not many_channels %}

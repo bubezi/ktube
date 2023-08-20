@@ -14,6 +14,8 @@ import PlaylistProvider from "./providers/PlaylistsProvider";
 import Channel from "./components/Channel";
 import Playlist from "./components/Playlist";
 import Library from "./components/Library";
+import Watchlater from "./components/Watchlater";
+import Savedplaylists from "./components/Savedplaylists";
 
 
 function App() {
@@ -28,6 +30,8 @@ function App() {
             <Routes>
               <Route path="/" element={<Homepage />} />
               <Route path="/library" element={<Library />} />
+              <Route path="/watchlater" element={<Watchlater />} />
+              <Route path="/savedplaylists" element={<Savedplaylists />} />
               <Route path="/auth/login" element={<Auth />} />
               <Route path="/watch/:slug" element={<Watchpage/>} />
               <Route path="/channel/:channelId" element={<Channel/>} />

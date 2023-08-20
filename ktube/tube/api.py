@@ -66,21 +66,66 @@ class WatchlaterHomeAPI(APIView):
         return Response({"watchlater": serializer.data}, status=status.HTTP_200_OK)
 
 
+class WatchlaterVideosAPI(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        viewer = request.user.viewer
+        try:
+            watchlater = Watchlater.objects.get(viewer=viewer)
+            videos = watchlater.videos
+            serializer = VideoSerializer(videos, many=True)
+            return Response({"watchlater": serializer.data}, status=status.HTTP_200_OK)
+
+        except Watchlater.DoesNotExist:
+            watchlater = Watchlater(viewer=viewer)
+            watchlater.save()
+            return Response(
+                {"error": "Video Not Found!"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+
 class SavedPlaylistsAPI(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         viewer = request.user.viewer
-
         try:
             savedPlaylists = SavedPlaylists.objects.get(viewer=viewer)
-
         except SavedPlaylists.DoesNotExist:
             savedPlaylists = SavedPlaylists(viewer=viewer)
             savedPlaylists.save()
-            
         serializer = SavedPlaylists_Serializer(savedPlaylists, many=False)
         return Response({"savedPlaylists": serializer.data}, status=status.HTTP_200_OK)
+
+
+class SavedPlaylists2API(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        viewer = request.user.viewer
+        try:
+            saved_playlists = SavedPlaylists.objects.get(viewer=viewer).playlists.all()
+            serializer = PlaylistSerializer(saved_playlists, many=True)
+            return Response(
+                {"savedPlaylists": serializer.data}, status=status.HTTP_200_OK
+            )
+        except SavedPlaylists.DoesNotExist:
+            savedPlaylists = SavedPlaylists(viewer=viewer)
+            savedPlaylists.save()
+            return Response(
+                {"error": "Playlists Not Found!"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+
+class MyPlaylistsAPI(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        viewer = request.user.viewer
+        my_playlists = Playlist.objects.filter(channel__user=viewer)
+        serializer = PlaylistSerializer(my_playlists, many=True)
+        return Response({"myPlaylists": serializer.data}, status=status.HTTP_200_OK)
 
 
 class PlaylistsHomeAPI(APIView):
@@ -92,8 +137,7 @@ class PlaylistsHomeAPI(APIView):
         playlists = []
 
         try:
-            nav_channel = Channel.objects.get(user=viewer)
-            playlists = Playlist.objects.filter(channel=nav_channel)
+            playlists = Playlist.objects.filter(channel__user=viewer)
 
         except Channel.DoesNotExist:
             pass
@@ -303,8 +347,6 @@ class Is_playlist_owner_API(APIView):
         owner = viewer_signed_in == viewer_in_db
 
         return Response({"is_owner": owner}, status=status.HTTP_200_OK)
-    
-    
 
 
 class Get_comments_API(APIView):
@@ -395,21 +437,25 @@ class DisLiked_API(APIView):
 class More_Videos_API(APIView):
     def get(self, request, id, format=None):
         try:
-            more_videos = Video.objects.exclude(id=id).exclude(private=True).exclude(unlisted=True)
-                    
+            more_videos = (
+                Video.objects.exclude(id=id)
+                .exclude(private=True)
+                .exclude(unlisted=True)
+            )
+
         except Exception as e:
             return Response({"error": e}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = VideoSerializer(more_videos, many=True)
 
         return Response({"videos": serializer.data}, status.HTTP_200_OK)
-    
+
 
 class More_Playlist_Videos_API(APIView):
     def get(self, request, playlistId, videoId, format=None):
         try:
             playlist = Playlist.objects.get(id=playlistId)
-            
+
             more_videos = playlist.videos
         except Exception as e:
             return Response({"error": e}, status=status.HTTP_404_NOT_FOUND)
@@ -419,7 +465,7 @@ class More_Playlist_Videos_API(APIView):
         return Response({"videos": serializer.data}, status.HTTP_200_OK)
 
 
-class PlaylistAPI (APIView):
+class PlaylistAPI(APIView):
     def get(self, request, playlistId):
         try:
             playlist = Playlist.objects.get(id=playlistId)
@@ -428,7 +474,7 @@ class PlaylistAPI (APIView):
                 return Response(serializer.data, status.HTTP_200_OK)
             elif request.user.viewer == playlist.channel.user:
                 serializer = PlaylistSerializer(playlist, many=False)
-                return Response(serializer.data, status.HTTP_200_OK)                
+                return Response(serializer.data, status.HTTP_200_OK)
             else:
                 return Response(
                     {"error": "Playlist Not public!"}, status=status.HTTP_403_FORBIDDEN
@@ -458,9 +504,7 @@ class PlaylistVideosAPI(APIView):
                 {"error": "Video Not Found!"}, status=status.HTTP_404_NOT_FOUND
             )
         except Exception as e:
-            return Response(
-                {"error": e}, status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({"error": e}, status=status.HTTP_400_BAD_REQUEST)
         except:
             return Response(
                 {"error": "Some other error"}, status=status.HTTP_400_BAD_REQUEST
@@ -471,7 +515,9 @@ class ChannelVideos(APIView):
     def get(self, request, channelId):
         try:
             channel = Channel.objects.get(id=channelId)
-            videos = Video.objects.filter(channel=channel, private=False, unlisted=False)
+            videos = Video.objects.filter(
+                channel=channel, private=False, unlisted=False
+            )
             serializer = VideoSerializer(videos, many=True)
             return Response(serializer.data, status.HTTP_200_OK)
         except Channel.DoesNotExist:
@@ -516,7 +562,7 @@ class ChannelPrivateVideos(APIView):
             return Response(
                 {"error": "Some other error"}, status=status.HTTP_400_BAD_REQUEST
             )
-            
+
 
 class ChannelPlaylists(APIView):
     def get(self, request, channelId):
@@ -533,8 +579,6 @@ class ChannelPlaylists(APIView):
             return Response(
                 {"error": "Some other error"}, status=status.HTTP_400_BAD_REQUEST
             )
-            
-        
 
 
 @api_view(["POST"])
