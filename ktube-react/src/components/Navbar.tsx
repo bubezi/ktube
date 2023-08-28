@@ -71,7 +71,7 @@ const Navbar = () => {
             </li>
 
             <li className="nav-item active">
-              <a className="nav-link" href="#">
+              <a className="nav-link" href="/subscriptions">
                 Subscriptions<span className="sr-only">(current)</span>
               </a>
             </li>

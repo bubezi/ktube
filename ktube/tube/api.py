@@ -545,6 +545,49 @@ class PlaylistVideosAPI(APIView):
             )
 
 
+class SubedChannelsAPI(APIView):
+    permissions_classes = [IsAuthenticated]
+    def get(self, request):
+        try:
+            channels = Subscriptions.objects.get(viewer=request.user.viewer).subscriptions
+            serializer = ChannelSerializer(channels, many=True)
+            return Response(serializer.data, status.HTTP_200_OK)
+        except Subscriptions.DoesNotExist:
+            return Response(
+                {"error": "Subscriptions Not Found!"}, status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response({"error": e}, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response(
+                {"error": "Some other error"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+class SubedChannelsVideosAPI(APIView):
+    permissions_classes = [IsAuthenticated]
+    def get(self, request):
+        try:
+            channels = Subscriptions.objects.get(viewer=request.user.viewer).subscriptions
+            videos = []
+            for channel in channels:
+                c_videos = Videos.objects.filter(private=False, unlisted=False, channel=channel)
+                videos.append(c_videos)
+                                
+            serializer = VideoSerializer(videos, many=True)
+            return Response(serializer.data, status.HTTP_200_OK)
+        except Subscriptions.DoesNotExist:
+            return Response(
+                {"error": "Subscriptions Not Found!"}, status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response({"error": e}, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response(
+                {"error": "Some other error"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+
 class ChannelVideos(APIView):
     def get(self, request, channelId):
         try:

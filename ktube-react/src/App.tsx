@@ -18,6 +18,7 @@ import Watchlater from "./components/Watchlater";
 import Savedplaylists from "./components/Savedplaylists";
 import Mylikedvideos from "./components/Mylikedvideos";
 import Myhistory from "./components/Myhistory";
+import Subscriptions from "./components/Subscriptions";
 
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
               <Route path="/library" element={<Library />} />
               <Route path="/myhistory" element={<Myhistory />} />
               <Route path="/watchlater" element={<Watchlater />} />
+              <Route path="/subscriptions" element={<Subscriptions />} />
               <Route path="/savedplaylists" element={<Savedplaylists />} />
               <Route path="/mylikedvideos" element={<Mylikedvideos />} />
               <Route path="/auth/login" element={<Auth />} />
