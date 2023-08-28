@@ -34,35 +34,33 @@ interface Prop {
 }
 
 const Videodetails = (props: Prop) => {
+  const myToken = useViewerContext().myToken;
+  const viewerId = useViewerContext().viewer.id;
   const [subscriberCount, setSubscriberCount] = React.useState<number>(
     props.subscriber_count
   );
-  
-  const myToken = useViewerContext().myToken;
-  const viewerId = useViewerContext().viewer.id;
 
   React.useEffect(() => {
     setSubscriberCount(props.subscriber_count);
   }, [props.subscriber_count]);
 
-  React.useEffect(()=>{
-    setTimeout(async ()=>{
-    
-      if(props.videoId !== 0){
+  React.useEffect(() => {
+    setTimeout(async () => {
+      if (props.videoId !== 0 && viewerId !== 0) {
         const data = {
           video_id: props.videoId,
           viewer_id: viewerId,
         };
-      
+
         // const config = {
         //   headers: {
         //     "Content-Type": "application/json",
         //     Authorization: `Token ${myToken}`,
         //   },
         // };
-        if(myToken){
+        if (myToken) {
           await axios
-            .post(API_URL + "addView", data)
+            .post(API_URL + "addViewAuth", data)
             .then((response) => {
               console.log(response.data);
             })
@@ -82,7 +80,7 @@ const Videodetails = (props: Prop) => {
               }
               console.log(error.config);
             });
-        }else{
+        } else {
           const data = {
             video_id: props.videoId,
           };
@@ -111,7 +109,7 @@ const Videodetails = (props: Prop) => {
         }
       }
     }, 5000);
-  },[props.videoId])
+  }, [props.videoId, viewerId]);
 
   const PrivateOrUnlisted = () => {
     if (props.private) {

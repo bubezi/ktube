@@ -177,6 +177,8 @@ urlpatterns += [
     path('api/unDisLikeVideo', tube_api.undislike_API),
     
     path('api/addView', tube_api.add_view_API),
+    
+    path('api/addViewAuth', tube_api.add_view_auth_API),
 ]
 
 

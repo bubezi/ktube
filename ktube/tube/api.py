@@ -141,7 +141,11 @@ class MyHistoryAPI(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        views = History.objects.get(viewer=request.user.viewer).views.order_by("viewed_on").reverse()
+        views = (
+            History.objects.get(viewer=request.user.viewer)
+            .views.order_by("viewed_on")
+            .reverse()
+        )
         new_views = []
         for index, v in enumerate(views):
             if index == 0:
@@ -149,8 +153,8 @@ class MyHistoryAPI(APIView):
             else:
                 if not new_views[-1].video == v.video:
                     new_views.append(v)
-                        
-        videos = []    
+
+        videos = []
         for view in new_views:
             videos.append(view.video)
         serializer = VideoSerializer(videos, many=True)
@@ -1187,67 +1191,83 @@ def undislike_API(request):
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+INVALID_MINUTES = 5
+from .utils import view_valid
+
+
 @api_view(["POST"])
 def add_view_API(request):
-    from .utils import view_valid
-
-    INVALID_MINUTES = 5
+    
     viewer_ip = request.META.get("REMOTE_ADDR")
     try:
-        if request.user.is_authenticated:
-            viewer_id = request.data.get("viewer_id")
-            viewer = Viewer.objects.get(id=viewer_id)
-            pk = request.data.get("video_id")
-            video = Video.objects.get(id=pk)
-            view = VideoView(viewer=viewer, video=video, viewer_ip=viewer_ip)
-            view.save()
+        pk = request.data.get("video_id")
+        video = Video.objects.get(id=pk)
+        view = VideoView(video=video, viewer_ip=viewer_ip)
+        view.save()
+        video.save()
 
-            try:
-                history = History.objects.get(viewer=viewer)
+        # previous_views=[]
+        previous_views = video.videoview_set.order_by("viewed_on").filter(viewer_ip=viewer_ip).reverse().in_bulk().values()  # type: ignore
+        if len(previous_views) > 1:
+            for index, v in enumerate(previous_views):
+                previous_view = v
+                if index == 1:
+                    break
 
-            except:
-                history = History(viewer=viewer)
-                history.save()
-
-            history.views.add(view)
-
-            # The python approach, lie there and wait
-            previous_view = 0
-            previous_views = video.videoview_set.order_by("viewed_on").filter(viewer=viewer).reverse().in_bulk().values()  # type: ignore
-            if len(previous_views) > 1:
-                for index, v in enumerate(previous_views):
-                    previous_view = v
-                    if index == 1:
-                        break
-                if view_valid(previous_view, INVALID_MINUTES):
-                    video.views += 1
-                    video.save()
-            else:
+            if view_valid(previous_view, INVALID_MINUTES):
                 video.views += 1
                 video.save()
-            return Response(status=status.HTTP_200_OK)
         else:
-            pk = request.data.get("video_id")
-            video = Video.objects.get(id=pk)
-            view = VideoView(video=video, viewer_ip=viewer_ip)
-            view.save()
+            video.views += 1
             video.save()
+        return Response(status=status.HTTP_200_OK)
 
-            # previous_views=[]
-            previous_views = video.videoview_set.order_by("viewed_on").filter(viewer_ip=viewer_ip).reverse().in_bulk().values()  # type: ignore
-            if len(previous_views) > 1:
-                for index, v in enumerate(previous_views):
-                    previous_view = v
-                    if index == 1:
-                        break
+    except Video.DoesNotExist:
+        return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Viewer.DoesNotExist:
+        return Response({"error": "Viewer not found"}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    except:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
-                if view_valid(previous_view, INVALID_MINUTES):
-                    video.views += 1
-                    video.save()
-            else:
+
+@api_view(["POST"])
+def add_view_auth_API(request):
+    viewer_ip = request.META.get("REMOTE_ADDR")
+
+    try:    
+        viewer_id = request.data.get("viewer_id")
+        pk = request.data.get("video_id")
+        viewer = Viewer.objects.get(id=viewer_id)
+        video = Video.objects.get(id=pk)
+        view = VideoView(viewer=viewer, video=video, viewer_ip=viewer_ip)
+        view.save()
+
+        try:
+            history = History.objects.get(viewer=viewer)
+
+        except:
+            history = History(viewer=viewer)
+            history.save()
+
+        history.views.add(view)
+
+        # The python approach, lie there and wait
+        previous_view = 0
+        previous_views = video.videoview_set.order_by("viewed_on").filter(viewer=viewer).reverse().in_bulk().values()  # type: ignore
+        if len(previous_views) > 1:
+            for index, v in enumerate(previous_views):
+                previous_view = v
+                if index == 1:
+                    break
+            if view_valid(previous_view, INVALID_MINUTES):
                 video.views += 1
                 video.save()
-            return Response(status=status.HTTP_200_OK)
+        else:
+            video.views += 1
+            video.save()
+        return Response(status=status.HTTP_200_OK)
 
     except Video.DoesNotExist:
         return Response({"error": "Video not found"}, status=status.HTTP_404_NOT_FOUND)
