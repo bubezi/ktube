@@ -16,6 +16,8 @@ import Playlist from "./components/Playlist";
 import Library from "./components/Library";
 import Watchlater from "./components/Watchlater";
 import Savedplaylists from "./components/Savedplaylists";
+import Mylikedvideos from "./components/Mylikedvideos";
+import Myhistory from "./components/Myhistory";
 
 
 function App() {
@@ -30,8 +32,10 @@ function App() {
             <Routes>
               <Route path="/" element={<Homepage />} />
               <Route path="/library" element={<Library />} />
+              <Route path="/myhistory" element={<Myhistory />} />
               <Route path="/watchlater" element={<Watchlater />} />
               <Route path="/savedplaylists" element={<Savedplaylists />} />
+              <Route path="/mylikedvideos" element={<Mylikedvideos />} />
               <Route path="/auth/login" element={<Auth />} />
               <Route path="/watch/:slug" element={<Watchpage/>} />
               <Route path="/channel/:channelId" element={<Channel/>} />

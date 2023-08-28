@@ -8,11 +8,11 @@ class PlaylistsHomeSerializer(serializers.ModelSerializer):
         model = Playlist
         fields = "__all__"
 
-        
+
 class SavedPlaylists_Serializer(serializers.ModelSerializer):
     class Meta:
         model = SavedPlaylists
-        fields = ("id","playlists")
+        fields = ("id", "playlists")
 
 
 class ViewerSerializer(serializers.ModelSerializer):
@@ -151,12 +151,6 @@ class SubscriptionsSerializer(serializers.ModelSerializer):
         fields = ("id", "viewer", "subscriptions", "public")
 
 
-class VideoViewSerializer(serializers.ModelSerializer):
-    class Meta:
-        models = VideoView
-        fields = ("id", "video", "viewer", "viewer_ip", "viewed_on")
-
-
 class HistorySerializer(serializers.ModelSerializer):
     class Meta:
         models = History
@@ -185,3 +179,9 @@ class DisLikedCommentsRepliesSerializer(serializers.ModelSerializer):
     class Meta:
         model = DisLikedCommentsReplies
         fields = ("id", "viewer", "comment_replies")
+
+
+class VideoViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        models = VideoView
+        fields = ("id", "video", "viewer", "viewer_ip", "viewed_on")

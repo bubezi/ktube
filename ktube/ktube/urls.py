@@ -119,6 +119,10 @@ urlpatterns += [
     
     path('api/myPlaylistsAPI', tube_api.MyPlaylistsAPI.as_view()),
     
+    path('api/myLikedVideosAPI', tube_api.MyLikedVideosAPI.as_view()),
+    
+    path('api/myHistoryAPI', tube_api.MyHistoryAPI.as_view()),
+    
     path('api/add_video_to_playlist',tube_api.add_video_to_playlist_API),
     path('api/remove_video_from_playlist',tube_api.remove_video_from_playlist_API),
     

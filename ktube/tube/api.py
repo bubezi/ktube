@@ -128,6 +128,36 @@ class MyPlaylistsAPI(APIView):
         return Response({"myPlaylists": serializer.data}, status=status.HTTP_200_OK)
 
 
+class MyLikedVideosAPI(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        videos = LikedVideos.objects.get(viewer=request.user.viewer).videos
+        serializer = VideoSerializer(videos, many=True)
+        return Response({"MyLikedVideos": serializer.data}, status=status.HTTP_200_OK)
+
+
+class MyHistoryAPI(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        views = History.objects.get(viewer=request.user.viewer).views.order_by("viewed_on").reverse()
+        new_views = []
+        for index, v in enumerate(views):
+            if index == 0:
+                new_views.append(v)
+            else:
+                if not new_views[-1].video == v.video:
+                    new_views.append(v)
+                        
+        videos = []    
+        for view in new_views:
+            videos.append(view.video)
+        serializer = VideoSerializer(videos, many=True)
+        # serializer = VideoViewSerializer(new_views)
+        return Response({"MyHistory": serializer.data}, status=status.HTTP_200_OK)
+
+
 class PlaylistsHomeAPI(APIView):
     permissions_classes = [IsAuthenticated]
 

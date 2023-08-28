@@ -54,15 +54,15 @@ const Videodetails = (props: Prop) => {
           viewer_id: viewerId,
         };
       
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${myToken}`,
-          },
-        };
+        // const config = {
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //     Authorization: `Token ${myToken}`,
+        //   },
+        // };
         if(myToken){
           await axios
-            .post(API_URL + "addView", data, config)
+            .post(API_URL + "addView", data)
             .then((response) => {
               console.log(response.data);
             })

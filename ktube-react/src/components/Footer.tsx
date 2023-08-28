@@ -7,11 +7,11 @@ const Footer = () => {
                         
                     {/* {% if not user.is_authenticated %} */}
                     <p className="footer-links">
-                    <a href="#">Home</a>
+                    <a href="/">Home</a>
                     </p>
                     {/* {% else %} */}
                     <p className="footer-links">
-                        <a href="#">Home</a>
+                        <a href="/">Home</a>
                         ·
                         <a href="#">Subscriptions</a>
                         ·

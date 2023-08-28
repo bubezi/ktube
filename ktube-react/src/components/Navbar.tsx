@@ -47,10 +47,10 @@ const Navbar = () => {
                 <a className="dropdown-item" href="/watchlater">
                   My Watchlater
                 </a>
-                <a className="dropdown-item" href="#">
+                <a className="dropdown-item" href="/mylikedvideos">
                   My Liked Videos
                 </a>
-                <a className="dropdown-item" href="#">
+                <a className="dropdown-item" href="/myhistory">
                   My History
                 </a>
                 <a className="dropdown-item" href="/savedplaylists">
