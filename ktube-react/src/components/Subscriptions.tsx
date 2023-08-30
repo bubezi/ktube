@@ -20,13 +20,11 @@ const Subscriptions = () => {
   const [subscribedChannelsVideos, setSubscribedChannelsVideos] = React.useState<
     Array<Video>
   >([]);
-  const viewerId = useViewerContext().viewer.id;
 
   if (myToken) {
     document.title = "My Subscriptions | KTUBE";
 
     React.useEffect(() => {
-      if (viewerId !== 0) {
         axios({
           method: "get",
           url: API_URL + "subedChannels",
@@ -44,6 +42,7 @@ const Subscriptions = () => {
           .catch((error) => {
             console.log(error);
           });
+
           axios({
             method: "get",
             url: API_URL + "subedChannelsVideos",
@@ -61,8 +60,7 @@ const Subscriptions = () => {
             .catch((error) => {
               console.log(error);
             });
-      }
-    }, [viewerId]);
+    }, [myToken]);
 
     const SubscribedChannels = () => {
       const pluralChannels =

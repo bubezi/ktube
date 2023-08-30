@@ -156,6 +156,10 @@ urlpatterns += [
     path('api/playlistAPI/<str:playlistId>', tube_api.PlaylistAPI.as_view()),
     path('api/playlistVideosAPI/<str:playlistId>', tube_api.PlaylistVideosAPI.as_view()),
     
+    path('api/subedChannels', tube_api.SubedChannelsAPI.as_view()),
+    
+    path('api/subedChannelsVideos', tube_api.SubedChannelsVideosAPI.as_view()),
+    
     path('api/deleteComment', tube_api.delete_comment_API),
     path('api/deleteReply', tube_api.delete_reply_API),
     
@@ -176,12 +180,7 @@ urlpatterns += [
     path('api/disLikeVideo', tube_api.dislike_API),
     path('api/unDisLikeVideo', tube_api.undislike_API),
     
-    path('api/subedChannels', tube_api.SubedChannelsAPI.as_view()),
-    
-    path('api/subedChannelsVideos', tube_api.SubedChannelsVideosAPI.as_view()),
-    
     path('api/addView', tube_api.add_view_API),
-    
     path('api/addViewAuth', tube_api.add_view_auth_API),
 ]
 

@@ -95,9 +95,9 @@ const Navbar = () => {
                   Deposit
                 </a>
                 {/* {% if user.is_superuser %} */}
-                <a className="dropdown-item" href="#">
+                {/* <a className="dropdown-item" href="#">
                   Admin
-                </a>
+                </a> */}
                 {/* {% endif %} */}
                 <a className="dropdown-item" href="#">
                   Change Password

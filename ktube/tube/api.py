@@ -570,9 +570,10 @@ class SubedChannelsVideosAPI(APIView):
         try:
             channels = Subscriptions.objects.get(viewer=request.user.viewer).subscriptions
             videos = []
-            for channel in channels:
-                c_videos = Videos.objects.filter(private=False, unlisted=False, channel=channel)
-                videos.append(c_videos)
+            if channels:
+                for channel in channels:
+                    c_videos = Video.objects.filter(channel=channel, private=False, unlisted=False)
+                    videos.append(c_videos)
                                 
             serializer = VideoSerializer(videos, many=True)
             return Response(serializer.data, status.HTTP_200_OK)
