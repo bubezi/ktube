@@ -22,12 +22,12 @@ server {
 
     location /static {
         autoindex on;
-        alias /home/black/Documents/code/ktube/ktube/staticfiles;
+        alias /home/black/Documents/code/ktube/ktube-django/ktube/staticfiles;
     }
 
     location /media {
        autoindex on;
-       alias /home/black/Documents/code/ktube/ktube/media;
+       alias /home/black/Documents/code/ktube/ktube-django/ktube/media;
     }
     
     location / {
