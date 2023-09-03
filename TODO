@@ -21,6 +21,7 @@ Kenya web experts
 
 # GOOGLE AND Research
 
+
 [] Fieldset
 
 [] google HUMANIze Tags
@@ -310,10 +311,21 @@ Kenya web experts
 
 [] Learn Squel and Bash
 
+[] FIX ALL PAGES IN REACT ****
+
 
 ######
 
-# Phase 3 - LiveStream
+# Phase 3 - Dockerise
+
+[] Learn Docker
+
+
+
+
+######
+
+# Phase 4 - LiveStream
 
 [] To enable video streaming in your Django site, you can follow these general steps:
     [] 1. Store the video files in a directory on your 
