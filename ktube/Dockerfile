@@ -14,7 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Mounts the application code to the image
 WORKDIR /docker-django
-COPY . /docker-django/
+COPY . .
 
 # EXPOSE 8000
 
