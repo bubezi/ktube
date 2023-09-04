@@ -136,7 +136,7 @@ env.bak/
 venv.bak/
 env1
 env1/
-ktube-django/myenvs/
+ktube/myenvs/
 
 # Spyder project settings
 .spyderproject
